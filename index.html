@@ -373,6 +373,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 <script src="rewrite_01h_spouses_noncore.js"></script>
 <script src="rewrite_01i_spouses_noncore.js"></script>
 <script src="rewrite_01j_spouses_noncore.js"></script>
+<script src="rewrite_01m_yuji_lvzhi.js"></script>
 <script src="rewrite_01z_qing_terms.js"></script>
 <script>
 {
@@ -1791,10 +1792,10 @@ function doIA(id,k){const w=wed(id),h=H(id);if(!w)return;if(S.ap<1){sfx('deny');
 
 /* ---- 凰戒 ---- */
 function phxCrown(id,old,cb){if(!S.heroes[id]||!wed(id))return cb&&cb();const P=GD.phoenix||{};S.ringOn=id;S.ringCount=(S.ringCount||0)+1;const who={a:id};
- if(old&&old!==id&&S.heroes[old]&&wed(old)){S.ringSwap=(S.ringSwap||0)+1;wed(old).fav=Math.max(0,wed(old).fav-10);loveAdd(old,-30,true);const rv=P.revoke&&P.revoke[old];if(rv)hxPush(old,rv,'凰戒收回')}
+ if(old&&old!==id&&S.heroes[old]&&wed(old)){S.ringSwap=(S.ringSwap||0)+1;wed(old).fav=Math.max(0,wed(old).fav-10);loveAdd(old,-30,true);const rv=rankSpeech(old,'down',RANKN[rankOf(old)])||P.revoke&&P.revoke[old];if(rv)hxPush(old,rv,'凰戒收回')}
  spouses().filter(x=>x!==id&&x!==old).sort(()=>Math.random()-.5).slice(0,2).forEach(x=>{const ev=P.envy&&P.envy[x];if(ev)hxPush(x,fill30(ev,who),'凰戒易主')});
  const C=P.ceremony||{};loveAdd(id,60,true);hp(id).inf=Math.min(100,hp(id).inf+15);
- scene(null,()=>{go('game');render();hxShow(()=>cb&&cb())},{bg:'ev_phoenix_crown',l:[['s','授戒・凰戒加身'],...(C.narr||['你親手將凰戒戴上{mother}的指間。']).map(x=>['n',fill30(x.replace(/\{mother\}/g,H(id).n),who)]),['p',C.you||'此戒代我鎮守內廷。'],[id,(P.receive&&P.receive[id])||C.mother||'臣妾領受凰戒。']]})}
+ scene(null,()=>{go('game');render();hxShow(()=>cb&&cb())},{bg:'ev_phoenix_crown',l:[['s','授戒・凰戒加身'],...(C.narr||['你親手將凰戒戴上{mother}的指間。']).map(x=>['n',fill30(x.replace(/\{mother\}/g,H(id).n),who)]),['p',C.you||'此戒代我鎮守內廷。'],[id,rankSpeech(id,'up','皇后')||(P.receive&&P.receive[id])||C.mother||'臣妾領受凰戒。']]})}
 const ringImg='<img src="img/ic_phoenix.jpg" style="width:16px;height:16px;border-radius:50%;vertical-align:-3px;margin-right:2px" title="凰戒">';
 
 /* ---- 夫人專屬職司 ---- */
@@ -1859,7 +1860,7 @@ const L67={heart:{癲狂:['你今天看了誰？說話。……不，別說，�
  act:{癲狂:[{d:'{a}整夜站在你寢殿外的迴廊上，宮燈一盞盞燃盡，她也不肯離開。',say:'我只是想確定，你今晚是一個人。',eff:{love:20,mood:'癲狂'}},{d:'{a}把{b}送來的香囊從你書房裡翻出來，當著宮人的面一寸寸剪碎。',say:'這種東西，也配沾你的衣袖？',eff:{love:15,_fb:-6,rel:[['a','b',-20]],rumor:'聽說{a}剪碎了{b}送的香囊，殿裡的宮女嚇得不敢出聲……'}},{d:'{a}砸碎了殿中所有銅鏡，說鏡子裡總有別的女人在看你。',say:'現在乾淨了。只剩我。',eff:{love:18,food:-10,rumor:'{a}殿中的銅鏡一夜之間全碎了。'}}],
   無理智:[{d:'{a}換掉了你身邊所有的宮人，只留下她親手挑的人。',say:'從今以後，你喝的每一口茶，都只會經過我的手。',eff:{love:25,_all:-3,rumor:'各宮都在傳，天運者身邊如今全是{a}的人。'}},{d:'{a}擋在{b}的殿門前，不許她出來見你。',say:'她病了，見不得風。……你不必去看她。',eff:{love:20,_fb:-8,rel:[['a','b',-25]],_mb:'委屈'}},{d:'黑霧逼近城牆的那夜，{a}一步不離地守在你身側，誰來稟報都要先過她這一關。',say:'誰想碰你，先從我身上踏過去。',eff:{love:30,_fa:5}}]},
  up:['她看你的眼神變了——那裡面除了你，再也容不下任何東西。','她笑著說「沒關係」，可那笑容讓整座宮殿都安靜了下來。']};
-function heartLine(id){const l=loveLv(id);if(l<0)return'';const P=PS(id),k=LOVEN[l];const A=(l>=6?L67.heart[k]:P&&P.heart&&P.heart[k])||[];if(!A.length)return'';const o=spouses().filter(x=>x!==id);return PHX(fill30(A[(S.t+id.length)%A.length],{a:id,b:o.length?o[(S.t)%o.length]:null}))}
+function heartLine(id){const l=loveLv(id);if(l<0)return'';const P=PS(id),k=LOVEN[l];const A=(l>=6?(GD.love78?.[id]?.['persona.heart']?.[k]||L67.heart[k]):P&&P.heart&&P.heart[k])||[];if(!A.length)return'';const o=spouses().filter(x=>x!==id);return PHX(fill30(A[(S.t+id.length)%A.length],{a:id,b:o.length?o[(S.t)%o.length]:null}))}
 
 /* ---- 宮中動態 ---- */
 function feedPush(s,c){S.hfeed=S.hfeed||[];S.hfeed.unshift({t:S.t,s,c:c||''});if(S.hfeed.length>60)S.hfeed.length=60}
@@ -1924,7 +1925,7 @@ function rvEvent(q,nx){const r=GD.hrival[q.i];if(!r)return nx();S.rvS=S.rvS||{};
  dlgScene(sc.l||[],who,'ev_rivalry',`宿敵與姐妹・${r.t}｜${sc.t}`,()=>{if(sc.c){choiceSheet(sc.t,null,r.ids,sc.c,who,(c)=>{fx33(c[1],who);reactSheet(c[2],who,c[1],null,nx)})}else{fx33(sc.eff,who);feedPush(`【${r.t}】${sc.t}`,/決裂/.test(sc.t)?'neg':'');if(/和解/.test(sc.t))S.rvPeace=(S.rvPeace||0)+1;reactSheet('',who,sc.eff,null,nx)}})}
 
 /* ---- 人格：每旬實際行為 ---- */
-function personaTurn(add){const sp=spouses().filter(hOK);let n=0;sp.sort(()=>Math.random()-.5).forEach(id=>{if(n>=3)return;const l=loveLv(id);if(Math.random()>(l>=4?.32:.22))return;const P=PS(id);const k=LOVEN[l];const A=l>=6?L67.act[k]:P&&P.act&&P.act[k];if(!A||!A.length)return;const it=pick(A);const others=spouses().filter(x=>x!==id&&hOK(x));const who={a:id,b:others.length?pick(others):null};if(/\{b\}/.test(it.d+(it.say||'')+JSON.stringify(it.eff||{}))&&!who.b)return;n++;
+function personaTurn(add){const sp=spouses().filter(hOK);let n=0;sp.sort(()=>Math.random()-.5).forEach(id=>{if(n>=3)return;const l=loveLv(id);if(Math.random()>(l>=4?.32:.22))return;const P=PS(id);const k=LOVEN[l];const A=l>=6?L67.act[k]:P&&P.act&&P.act[k];if(!A||!A.length)return;const index=R(0,A.length-1);const original=A[index];const custom=l>=6&&GD.love78?.[id]?.['persona.act']?.[k]?.[index];const it=custom?{...original,d:custom.d,say:custom.say}:original;const others=spouses().filter(x=>x!==id&&hOK(x));const who={a:id,b:others.length?pick(others):null};if(/\{b\}/.test(it.d+(it.say||'')+JSON.stringify(it.eff||{}))&&!who.b)return;n++;
   fx33(it.eff,who);const s=`${fill30(it.d,who)}${it.say?`<br><span style="color:var(--pink)">${H(id).n}：「${fill30(it.say,who)}」</span>`:''}`;feedPush(s,l>=4?'neg':'');add(`【宮中・${H(id).n}・${k}】${s}`,l>=4?'neg':'')})}
 
 /* ---- 心境轉換 ---- */
@@ -1969,19 +1970,34 @@ function bdayEvent(q,nx){const id=q.id,B=IG('bday')[id];if(!B||!wed(id))return n
 function annivEvent(q,nx){const id=q.id,A=IG('anniv')[id];if(!A||!wed(id))return nx();const o={love:30,_fa:5};fx33(o,{a:id});sfx('heart');sheet(`<div class="evimg" style="background-image:url(img/${WEDART.has(id)?'nv_'+id:'b_harem'}.jpg)"></div><div class="small" style="letter-spacing:.2em;color:var(--pink)">成婚紀念日</div>${A.map(x=>`<div class="dlg" style="margin:6px 0"><div class="pic" style="background-image:url(img/${face(id)}.jpg)"></div><div><h3>${H(id).n}</h3><p style="margin-top:4px">「${x}」</p></div></div>`).join('')}<div class="small" style="color:var(--jade)">${lab33(o,{a:id})}</div><button class="btn" id="anOk" style="width:100%">好</button>`,true);$('#anOk').onclick=()=>{closeSheet();nx()}}
 
 /* ---- 處置 ---- */
-const RANKN=['才人','美人','婕妤','昭儀','貴妃'];const rankOf=id=>{const w=wed(id);return w?(w.rank==null?1:w.rank):1};
+const RANKN=['采女','御女','寶林','才人','美人','婕妤','昭儀','昭容','昭媛','修儀','修容','修媛','充儀','充容','充媛','賢妃','德妃','淑妃','貴妃'];
+const OLD_RANK=[3,4,5,6,18];
+function rankOf(id){
+ const w=wed(id);
+ if(!w)return 4;
+ if(w.rkMap!=='v32'){
+  const old=w.rank;
+  w.rank=Number.isInteger(old)?(OLD_RANK[old]??clamp(old,0,RANKN.length-1)):4;
+  w.rkMap='v32';
+ }
+ return w.rank;
+}
+function rankSpeech(id,kind,name){
+ const lines=GD.rank?.[id]?.[kind]?.[name??(mother()===id?'皇后':RANKN[rankOf(id)])];
+ return lines?.length?fill30(pick(lines),{a:id}):'';
+}
 const VD=[['pamper','寵溺','💗','情深與寵愛大增；其他夫人會吃醋',0],['comfort','安撫','🌙','平息她的委屈、焦躁、嫉恨或癲狂',0],['scold','訓斥','📢','寵愛、情深下降；壓她的野心',0],['promote','晉位','⬆','位分升一階，情深大增；宿敵眼紅',1],['demote','降位','⬇','位分降一階，寵愛權勢下降',1],['ban','禁足','🚪','禁足 2 旬',1],['coldpalace','打入冷宮','🥀','關進冷宮，不再參與後宮與職司',1],['forgive','原諒','🕊','解除禁足或放出冷宮',0],['mediate','調解','🤝','化解她與最不睦之人的恩怨',1],['expose','揭穿','🔍','揭穿她近來的陷害（廷尉、錦衣衛提高成功率）',1],['flog','杖責','🩸','當眾廷杖：情深 −35、受傷 2 旬，記恨在心',1],['strip','廢為庶人','⛓','褫奪一切身分，逐出後宮（無法挽回）',1],['execute','賜死','☠','鴆酒白綾，永遠除去她（無法挽回）',1]];
 function vdLine(k,who){const V=GD.verdict&&GD.verdict[k];return V&&V.n?fill30(pick(V.n),who):{mediate:'你把{a}與{b}叫到一處，各自聽完，又各自勸了幾句。兩人沉默良久，終究還是低頭福了一禮。',expose:'你把證物一件件擺在{a}面前，殿中靜得只聽得見更漏。'}[k]&&fill30({mediate:'你把{a}與{b}叫到一處，各自聽完，又各自勸了幾句。兩人沉默良久，終究還是低頭福了一禮。',expose:'你把證物一件件擺在{a}面前，殿中靜得只聽得見更漏。'}[k],who)||''}
 function vdSheet(id){const w=wed(id);if(!w)return;const h=H(id),m=md2(id),rkk=rankOf(id),mo=mother()===id;const worst=spouses().filter(x=>x!==id).sort((a,b)=>relG(id,a)-relG(id,b))[0];
- const can=k=>{if(w.vdT===S.t)return'這旬已處置過她';if(VD.find(v=>v[0]===k)[4]&&S.ap<1)return'行動力不足';if(k==='comfort'&&!['委屈','焦躁','冷戰','嫉恨','癲狂'].includes(m))return'她現在心情不差';if(k==='promote'&&rkk>=4)return'已是最高位分';if(k==='demote'&&(rkk<=0||mo))return mo?'主母不可降位':'已是最低位分';if(k==='coldpalace'&&(w.cold||mo))return mo?'主母不可打入冷宮':'已在冷宮';if(k==='forgive'&&!w.cold&&hst(id)!=='ban')return'她沒有受罰';if(k==='mediate'&&(!worst||relG(id,worst)>=0))return'她和大家都沒有過節';if(w.cold&&!['forgive'].includes(k))return'她在冷宮';if(w.pal)return'她在行宮';if(k==='ban'&&hst(id)==='ban')return'已在禁足';if(k==='flog'&&hst(id)==='inj')return'她傷還沒好';return''};
+ const can=k=>{if(w.vdT===S.t)return'這旬已處置過她';if(VD.find(v=>v[0]===k)[4]&&S.ap<1)return'行動力不足';if(k==='comfort'&&!['委屈','焦躁','冷戰','嫉恨','癲狂'].includes(m))return'她現在心情不差';if(k==='promote'&&(mo||rkk>=RANKN.length-1))return'已是最高位分';if(k==='demote'&&(rkk<=0||mo))return mo?'主母不可降位':'已是最低位分';if(k==='coldpalace'&&(w.cold||mo))return mo?'主母不可打入冷宮':'已在冷宮';if(k==='forgive'&&!w.cold&&hst(id)!=='ban')return'她沒有受罰';if(k==='mediate'&&(!worst||relG(id,worst)>=0))return'她和大家都沒有過節';if(w.cold&&!['forgive'].includes(k))return'她在冷宮';if(w.pal)return'她在行宮';if(k==='ban'&&hst(id)==='ban')return'已在禁足';if(k==='flog'&&hst(id)==='inj')return'她傷還沒好';return''};
  sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(id)}.jpg)"></div><div><h3>處置・${h.n}</h3><p class="small" style="margin-top:4px">${mo?'主母':RANKN[rkk]}・${MDI[m]}${m}・寵愛 ${w.fav}・情深 ${LOVEN[loveLv(id)]}</p></div></div>${VD.map(([k,n,ic,d,ap])=>{const x=can(k);const red=['flog','strip','execute'].includes(k);return`<button class="opt frame" data-vd="${k}" style="margin-bottom:6px;${red?'border-color:#8a2020;background:#2a0d10':''}" ${x?'disabled':''}><span class="t"><b>${ic} ${n}</b>${ap?' <span class="small">行動 1</span>':''}<div>${x||d}</div></span></button>`}).join('')}`,true);
  $$('#sheetIn [data-vd]').forEach(b=>b.onclick=()=>{const k=b.dataset.vd;closeSheet();doVerdict(id,k,worst)})}
-function doVerdict(id,k,worst){if(['flog','strip','execute'].includes(k)){return dkConfirm(id,k,ok=>{if(!ok)return;const w0=wed(id);if(w0)w0.vdT=S.t;S.ap--;const V=GD.verdict&&GD.verdict[k];const nar=V&&V.n?fill30(pick(V.n),{a:id}):'';const say=k==='flog'?pick(((PS(id)||{}).react||{}).punish||['']):'';dkAct(id,k);barAdd('tyranny',{flog:6,strip:5,execute:12}[k]);sfx('page');sheet(`<div class="evimg" style="background-image:url(img/${k==='flog'?'ev_prison':'ev_execground'}.jpg)"></div><p style="font-family:Noto Serif TC,serif;margin:6px 0">${nar}</p>${say?`<div class="dlg"><div class="pic" style="background-image:url(img/${face(id)}.jpg)"></div><div><h3>${H(id).n}</h3><p style="margin-top:4px">${say.startsWith('（')?say:`「${say}」`}</p></div></div>`:''}<button class="btn" id="vdOk" style="width:100%">好</button>`,true);$('#vdOk').onclick=()=>{closeSheet();hxShow&&typeof hxShow==='function'?hxShow(()=>render()):render()}})}const w=wed(id),P=PS(id),R0=(P&&P.react)||{},who={a:id,b:worst||null};const ap=VD.find(v=>v[0]===k)[4];if(ap)S.ap--;w.vdT=S.t;let o={},say='';const others=spouses().filter(x=>x!==id&&hOK(x));
+function doVerdict(id,k,worst){if(['flog','strip','execute'].includes(k)){return dkConfirm(id,k,ok=>{if(!ok)return;const w0=wed(id);if(w0)w0.vdT=S.t;S.ap--;const V=GD.verdict&&GD.verdict[k];const nar=V&&V.n?fill30(pick(V.n),{a:id}):'';const say=k==='flog'?pick(((PS(id)||{}).react||{}).punish||['']):'';dkAct(id,k);barAdd('tyranny',{flog:6,strip:5,execute:12}[k]);sfx('page');sheet(`<div class="evimg" style="background-image:url(img/${k==='flog'?'ev_prison':'ev_execground'}.jpg)"></div><p style="font-family:Noto Serif TC,serif;margin:6px 0">${nar}</p>${say?`<div class="dlg"><div class="pic" style="background-image:url(img/${face(id)}.jpg)"></div><div><h3>${H(id).n}</h3><p style="margin-top:4px">${say.startsWith('（')?say:`「${say}」`}</p></div></div>`:''}<button class="btn" id="vdOk" style="width:100%">好</button>`,true);$('#vdOk').onclick=()=>{closeSheet();hxShow&&typeof hxShow==='function'?hxShow(()=>render()):render()}})}const w=wed(id),P=PS(id),R0=(P&&P.react)||{},who={a:id,b:worst||null};if((k==='promote'&&(mother()===id||rankOf(id)>=RANKN.length-1))||(k==='demote'&&(mother()===id||rankOf(id)<=0)))return;const ap=VD.find(v=>v[0]===k)[4];if(ap)S.ap--;w.vdT=S.t;let o={},say='';const others=spouses().filter(x=>x!==id&&hOK(x));
  switch(k){case'pamper':o={_fa:10,love:40,mood:'甜蜜'};say=pick(R0.pamper||['']);others.forEach(x=>{const t=ntagAll(x).includes('善妒')?-4:-2;wed(x).fav=Math.max(0,wed(x).fav+t)});break;
   case'comfort':o={_fa:5,love:20};setMd(id,md2(id)==='癲狂'||grudge(id)?'焦躁':'平靜');say=(P&&P.mood&&P.mood[md2(id)])||'';break;
   case'scold':setGrudge(id,4);o={_fa:-6,love:-15,mood:ntagAll(id).includes('驕縱')?'焦躁':'委屈'};hp(id).amb=Math.max(0,hp(id).amb-4);say=pick(R0.scold||['']);break;
-  case'promote':w.rank=rankOf(id)+1;w.rkT=S.t;w.rkD=1;o={_fa:12,love:50,mood:'歡喜'};hp(id).inf=Math.min(100,hp(id).inf+5);say=pick(R0.win||R0.pamper||['']);others.filter(x=>relG(id,x)<0||ntagAll(x).includes('善妒')).forEach(x=>{setMd(x,'嫉恨');relAdd(id,x,-8)});break;
-  case'demote':setGrudge(id,8);w.rank=rankOf(id)-1;w.rkT=S.t;w.rkD=-1;o={_fa:-15,love:-35,mood:ntagAll(id).some(t=>['驕縱','好強','記仇'].includes(t))?'嫉恨':'委屈'};hp(id).inf=Math.max(0,hp(id).inf-10);say=pick(R0.punish||['']);break;
+  case'promote':w.rank=rankOf(id)+1;w.rkT=S.t;w.rkD=1;o={_fa:12,love:50,mood:'歡喜'};hp(id).inf=Math.min(100,hp(id).inf+5);say=rankSpeech(id,'up')||GD.valTalk?.[id]?.rankUp||pick(R0.win||R0.pamper||['']);others.filter(x=>relG(id,x)<0||ntagAll(x).includes('善妒')).forEach(x=>{setMd(x,'嫉恨');relAdd(id,x,-8)});break;
+  case'demote':setGrudge(id,8);w.rank=rankOf(id)-1;w.rkT=S.t;w.rkD=-1;o={_fa:-15,love:-35,mood:ntagAll(id).some(t=>['驕縱','好強','記仇'].includes(t))?'嫉恨':'委屈'};hp(id).inf=Math.max(0,hp(id).inf-10);say=rankSpeech(id,'down')||GD.valTalk?.[id]?.rankDown||pick(R0.punish||['']);break;
   case'ban':setGrudge(id,6);setHst(id,'ban',2);o={_fa:-5,mood:'委屈'};say=pick(R0.punish||['']);break;
   case'coldpalace':setGrudge(id,12);w.cold={t:S.t};w.duty=null;o={_fa:-30,love:-60,mood:'冷戰'};say=(GD.cold&&GD.cold[id]&&GD.cold[id].in)||pick(R0.punish||['']);S.coldN=(S.coldN||0)+1;others.forEach(x=>{if(relG(id,x)<0)wed(x).fav=Math.min(100,wed(x).fav+2)});break;
   case'forgive':if(w.cold){w.cold=null;o={love:20,mood:grudge(id)?'嫉恨':'委屈'};say=(GD.cold&&GD.cold[id]&&GD.cold[id].out)||pick(R0.forgive||[''])}else{const st=hs(id);if(st.hst)st.hst.u=S.t;o={love:15,_fa:5,mood:grudge(id)?'嫉恨':'平靜'};say=pick(R0.forgive||[''])}break;
@@ -2247,7 +2263,7 @@ function effLine(id){const w=wed(id),P=hp(id),i=P.inf||0,a=P.amb||0,h=cH(id),t=c
  out.push(`職司效果 ×${cMult(id).toFixed(2)}`);
  out.push(`權柄【${stg(i,INFT)}】${i>=70?'：處置她要多花 1 行動、可能被頂回':i>=50?'：會自行頒布權柄令':i>=30?'：每旬為派系添勢':''}`);
  if(a>=60)out.push(`野心 ${a}：每旬自行累積權勢${a>=80&&mother()!==id?'、覬覦主母之位':''}`);
- out.push(`位分【${mother()===id?'主母':RANKN[r]}】月例糧 −${r*2}/旬`);
+ out.push(`位分【${mother()===id?'皇后（主母）':RANKN[r]}】月例糧 −${r*2}/旬，位分職司 +${r*5}%，每旬 ${r*4}% 權勢 +1${mother()===id?'；主母職司另加 50%、寵愛自然下降減半':''}`);
  if(h>=50)out.push(`昏庸 ${h}：探望她可能害你罷朝`);if(t>=50)out.push(`暴虐 ${t}：六宮畏懼、私通減少，但百官離心`);
  out.push(`${CYI[c]}${CYN[c]}：${['職司 −15%、易焦躁','懷孕機率 ×2、寵愛自然上升','易焦躁嫉恨'][c]}`);
  out.push(`${MDI[m]}${m}：職司 ×${MDM[m]}`);return out.join('・')}
@@ -2268,7 +2284,7 @@ function edictTurn(add){spouses().filter(hOK).forEach(id=>{const P=hp(id);if((P.
 /* 每旬：權勢、位分、野心、昏庸暴虐、週期的實際作用 */
 function powerTurn(add){const sp=spouses();let tithe=0,stip=0;
  sp.forEach(id=>{const w=wed(id),P=hp(id);if(!w)return;if(w.cold||w.pal)return;const r=rankOf(id);
-  stip+=r*2;if(Math.random()<(r-1)*.25)P.inf=Math.min(100,(P.inf||0)+1);
+  stip+=r*2;if(Math.random()<r*.04)P.inf=Math.min(100,(P.inf||0)+1);
   if((P.amb||0)>=60&&Math.random()<P.amb/120)P.inf=Math.min(100,(P.inf||0)+1);
   const i=P.inf||0;if(i>=30){const loyal=hs(id).aff>=70&&loveLv(id)>=2&&!grudge(id);const v=Math.round(i/10);tithe+=loyal?v:-v}
   if((P.amb||0)>=80&&mother()&&mother()!==id&&Math.random()<.12){relAdd(id,mother(),-10);hp(mother()).inf=Math.max(0,hp(mother()).inf-3);feedPush(`${H(id).n}私下拉攏內廷管事，覬覦凰戒之意已是路人皆知。`,'neg')}
@@ -2292,7 +2308,7 @@ function vdPush(id,k,cont){const P=hp(id),i=P.inf||0;if(i<70||!['scold','demote'
 
 /* ===== v27：權柄事件・數值事件與台詞・週期事件・夫人專屬建築與奇觀 ===== */
 /* 效果鍵：_inf／_amb／rank */
-{const _f=fx34;fx34=function(o,who){if(o&&who&&who.a){o={...o};const a=who.a;if(o._inf){const P=hp(a);P.inf=clamp((P.inf||0)+o._inf,0,100);delete o._inf}if(o._amb){const P=hp(a);P.amb=clamp((P.amb||0)+o._amb,0,100);delete o._amb}if(o.rank){const w=wed(a);if(w&&mother()!==a){w.rank=clamp(rankOf(a)+o.rank,0,4);w.rkT=S.t;w.rkD=o.rank}delete o.rank}if(o._love){o.love=(o.love||0)+o._love;delete o._love}}return _f(o,who)}}
+{const _f=fx34;fx34=function(o,who){if(o&&who&&who.a){o={...o};const a=who.a;if(o._inf){const P=hp(a);P.inf=clamp((P.inf||0)+o._inf,0,100);delete o._inf}if(o._amb){const P=hp(a);P.amb=clamp((P.amb||0)+o._amb,0,100);delete o._amb}if(o.rank){const w=wed(a);if(w&&mother()!==a){const before=rankOf(a);w.rank=clamp(before+o.rank,0,RANKN.length-1);if(before!==w.rank){w.rkT=S.t;w.rkD=w.rank-before;const line=rankSpeech(a,w.rkD>0?'up':'down')||GD.valTalk?.[a]?.[w.rkD>0?'rankUp':'rankDown'];if(line)hxPush(a,line,'位分')}}delete o.rank}if(o._love){o.love=(o.love||0)+o._love;delete o._love}}return _f(o,who)}}
 {const _l=lab34;lab34=function(o,who){let s=_l(o,who);if(!o)return s;const P=v=>(v>0?'+':'')+v;const a=[];const n=who&&who.a&&H(who.a)?H(who.a).n:'她';if(o._inf)a.push(`${n}權勢 ${P(o._inf)}`);if(o._amb)a.push(`${n}野心 ${P(o._amb)}`);if(o.rank)a.push(`${n}位分${o.rank>0?'晉升':'降低'}`);return[s,...a].filter(Boolean).join('・')}}
 /* 頂回處置改用專屬台詞 */
 {const _sd=sheetDlg;sheetDlg=function(id,line,btn,cb){if(typeof btn==='string'&&btn.startsWith('處置被頂回')){const V=GD.power&&GD.power[id]&&GD.power[id].veto;if(V&&V.length)line=PHX(pick(V))}return _sd(id,line,btn,cb)}}
@@ -2305,7 +2321,7 @@ function powerEvTurn(add){spouses().forEach(id=>{const w=wed(id),P=hp(id),i=P.in
 function vOK(e,a,b){const w=wed(a),P=hp(a),lv=loveLv(a);const val={fav:w.fav,inf:P.inf||0,amb:P.amb||0,hedon:cH(a),tyranny:cT(a)};
  switch(e.v){case'fav':case'inf':case'amb':case'hedon':case'tyranny':{const v=val[e.v];return(e.min==null||v>=e.min)&&(e.max==null||v<=e.max)}
   case'love':return(e.lv==null||lv>=LOVEN.indexOf(e.lv))&&(e.maxLv==null||lv<=LOVEN.indexOf(e.maxLv));
-  case'rank':return mother()!==a&&rankOf(a)===e.rank;case'mood':return md2(a)===e.mood;case'cycle':return cyc(a)===e.phase;
+  case'rank':return mother()!==a&&rankOf(a)===OLD_RANK[e.rank];case'mood':return md2(a)===e.mood;case'cycle':return cyc(a)===e.phase;
   case'rel':{if(!b)return false;const r=relG(a,b);return(e.min==null||r>=e.min)&&(e.max==null||r<=e.max)}}return false}
 function valEvTurn(add){const E=GD.valEv||[];const sp=spouses().filter(hOK);if(!E.length||!sp.length)return;S.agQ=S.agQ||[];if(S.agQ.some(q=>q.k==='dk')||Math.random()>.22)return;
  const c=[];E.forEach(e=>{if((S.dkDone||[]).includes(e.id))return;sp.forEach(a=>{if(e.v==='rel'){sp.forEach(b=>{if(b!==a&&vOK(e,a,b))c.push([e,a,b])})}else if(vOK(e,a)){const o=sp.filter(x=>x!==a);c.push([e,a,o.length?pick(o):null])}})});
@@ -2316,7 +2332,7 @@ function cycEvTurn(add){S.agQ=S.agQ||[];if(S.agQ.some(q=>q.k==='dk')||Math.rando
  if(!c.length)return;const e=pick(c);const a=e.id.split('_')[1];S.agQ.push({k:'dk',e,who:{a,b:null}})}
 /* 數值專屬台詞 */
 function valLine(id){const V=GD.valTalk&&GD.valTalk[id];const w=wed(id);if(!V||!w||Math.random()>.35)return null;const P=hp(id);const c=[];
- if(both70c(id)&&V.bothHi)c.push(V.bothHi);if(w.fav>=80&&V.favHi)c.push(V.favHi);if(w.fav<=20&&V.favLo)c.push(V.favLo);if((P.inf||0)>=70&&V.infHi)c.push(V.infHi);if((P.inf||0)<=10&&V.infLo)c.push(V.infLo);if((P.amb||0)>=70&&V.ambHi)c.push(V.ambHi);
+ const current=rankSpeech(id,'now');if(current)c.push(current);if(both70c(id)&&V.bothHi)c.push(V.bothHi);if(w.fav>=80&&V.favHi)c.push(V.favHi);if(w.fav<=20&&V.favLo)c.push(V.favLo);if((P.inf||0)>=70&&V.infHi)c.push(V.infHi);if((P.inf||0)<=10&&V.infLo)c.push(V.infLo);if((P.amb||0)>=70&&V.ambHi)c.push(V.ambHi);
  if(w.rkT!=null&&S.t-w.rkT<=2){if((w.rkD||0)>0&&V.rankUp)c.push(V.rankUp);if((w.rkD||0)<0&&V.rankDown)c.push(V.rankDown)}if(cH(id)>=60&&V.hedonHi)c.push(V.hedonHi);if(cT(id)>=60&&V.tyrannyHi)c.push(V.tyrannyHi);
  return c.length?PHX(pick(c)):null}
 
@@ -2879,6 +2895,16 @@ function fight(our,en,quiet,hooks={}){
   if(et>0){if(round===1&&fGuard){hooks.guard&&hooks.guard()}else if(stun){stun=false;hooks.stunned&&hooks.stunned()}else if(m.counter&&Math.random()<m.counter){hooks.countered&&hooks.countered()}else{let ed=et*.1*(en.atk/55)*(1-m.def)*(.85+Math.random()*.3);if(ot<our.max*.3)ed*=1-m.last;if(ot<our.max*.5)ed*=1-m.halfdef;ed*=lvD*cmdDef;if(round<=3)ed*=1-m.earlydef;if(TM.oc==='步')ed*=.9;if(TM.adv<0)ed*=1.15;if(TM.ec==='騎'&&round===1)ed*=1.2;if(AF.includes('swift')&&round<=2)ed*=1.4;ed=Math.round(ed);ot-=ed;hooks.ehit&&hooks.ehit(ed);if(en.tr==='leech'){const lh=Math.round(ed*.3);et=Math.min(en.max,et+lh);hooks.leech&&hooks.leech(lh)}}}
  }
  const win=et<=0||(round>=10&&et/en.max<ot/our.max);return{win,left:Math.max(0,Math.round(ot)),eleft:Math.max(0,Math.round(et)),round}}
+function battleVoices(ids,win){
+ const fieldKey=win?'winIn':'loseIn', homeKey=win?'winHome':'loseHome';
+ const field=ids.find(id=>GD.war?.[id]?.[fieldKey]?.length)||ids[0];
+ const home=spouses().filter(id=>!ids.includes(id)&&!busyArmy(id)&&hOK(id)&&GD.war?.[id]?.[homeKey]?.length);
+ function voice(id,place,line){return `<div class="dlg"><div class="pic" style="background-image:url(img/${face(id)}.jpg);width:64px;height:86px"></div><div><b>${place}・${H(id).n}</b><p>${fill30(line,{a:id})}</p></div></div>`}
+ let html='';
+ if(field){const lines=GD.war?.[field]?.[fieldKey]||GD.personal?.[field]?.[win?'win':'lose'];html+=voice(field,'隨軍',lines?.length?pick(lines):(win?pick(['這種程度，還不夠我熱身。','回燈塔吧，今晚可以睡個好覺了。','黑霧……退了。']):'……撤！保存兵力，下次再來！'))}
+ if(home.length){const id=pick(home);html+=voice(id,'留城',pick(GD.war[id][homeKey]))}
+ return html;
+}
 function battle(our,en,cb,title){
  go('battle');const el=$('#battle');const gens=our.gens.map(H);const bs=activeBonds(our.gens);
  const tmB=troopMatch(our,en),bgB=inWorld()?WD(S.cur).bg:our.siege?'bg_tower2':en.eld?'cg_battle':(S.wx==='xue'||S.wx==='wu'||S.wx==='yu')?'bg_night':'bg_day';
@@ -2915,7 +2941,7 @@ function battle(our,en,cb,title){
   if(win){en.troops=0;sfx('win');burst(240,200,'#f0d79a',60,7)}else{en.troops=Math.max(1,res.eleft);sfx('lose');shake()}
   if(S.blessed===our.id)S.blessed=null;
   sheet(`<h2>${win?'勝利':'敗北'}</h2><p class="small" style="margin:4px 0 0">${res.round} 回合・我軍剩餘 ${res.left}・敵軍剩餘 ${res.eleft}</p>
-  ${gens.length?`<div class="dlg"><div class="pic" style="background-image:url(img/${gens[0].id}.jpg);width:64px;height:86px"></div><p>「${(GD.personal[gens[0].id]&&pick(GD.personal[gens[0].id][win?'win':'lose']||[]))||(win?pick(['這種程度，還不夠我熱身。','回燈塔吧，今晚可以睡個好覺了。','黑霧……退了。']):'……撤！保存兵力，下次再來！')}」</p></div>`:''}
+  ${battleVoices(our.gens,win)}
   <button class="btn" id="bOk" style="width:100%">繼續</button>`);
   $('#bOk').onclick=()=>{closeSheet();go('game');if(!our.siege)S.atkNext=0;let left=res.left;if(!win){const rt=our.gens.reduce((a,id)=>a+heroEff(id,'retreat'),0);if(rt)left=Math.round(left+(our.troops-left)*Math.min(.6,rt))}if(win){const lt=our.gens.reduce((a,id)=>a+heroEff(id,'loot'),0);if(lt){const e=Math.round(20*lt*5);S.energy+=e}}cb({win,left})}}
  const loop=()=>{if(k>=evs.length)return finish();stepEv();timer=setTimeout(loop,evs[k]&&evs[k][0]==='round'?spd*1.3:spd)};timer=setTimeout(loop,700);
