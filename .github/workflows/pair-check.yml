@@ -1,0 +1,49 @@
+name: Yu Ji and Lu Zhi mobile regression
+on:
+  push:
+    branches: [qa/pair-v32-final]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [t40, t41, t41b, t43]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: pip install playwright
+      - name: Prepare instrumented local game
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text()
+          i=s.rindex('}',0,s.rindex('</script>'))
+          Path('t.html').write_text(s[:i]+'window.X=c=>eval(c);\n'+s[i:])
+          for p in Path('qa').glob('t*.py'):
+              if p.stem=='t7': continue
+              s=p.read_text().replace("    await pg.goto(", "    failures=[]\n    pg.on('response',lambda r:failures.append(r.url) if r.status>=400 else None)\n    await pg.goto(")
+              s=s.replace('    await b.close()', "    assert not errs and not failures, (errs, failures)\n    await b.close()")
+              if p.stem=='t41':
+                  checks = """
+              for old, expected in [(None,4),(0,3),(1,4),(2,5),(3,6),(4,18),(9,9)]:
+                  assert await X("(()=>{const w=wed('lvzhi');delete w.rkMap;w.rank="+str(old if old is not None else 'null')+";return [rankOf('lvzhi'),rankOf('lvzhi')]})()")==[expected,expected]
+              assert await X("effLine('lvzhi').includes('修儀')")
+              assert await X("['yuji','lvzhi'].every(id=>['up','down','now'].every(k=>(k==='down'?RANKN:[...RANKN,'皇后']).every(n=>rankSpeech(id,k,n))))")
+              for won in ('true','false'):
+                  assert await X("(()=>{const line=battleVoices(['yuji'],"+won+");return line.includes('隨軍・虞姬')&&line.includes('留城・呂雉')})()")
+              assert await X("(()=>{const w=wed('yuji');w.love=99999;const k=LOVEN[loveLv('yuji')];return GD.love78.yuji['persona.heart'][k].includes(heartLine('yuji'))})()")
+                  """
+                  checks=__import__('textwrap').dedent(checks)
+                  checks=__import__('textwrap').indent(checks,'    ')
+                  s=s.replace('    # aff cap',checks+'\n    # aff cap')
+              p.write_text(s)
+          PY
+      - name: Run mobile regression
+        run: |
+          python -m http.server 8765 >/tmp/server.log 2>&1 &
+          python -u qa/${{ matrix.suite }}.py
