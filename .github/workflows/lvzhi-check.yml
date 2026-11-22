@@ -1,0 +1,36 @@
+name: Six spouses mobile regression
+on:
+  push:
+    branches: [qa/six-spouses]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [t40, t41, t41b, t43]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: pip install playwright
+      - name: Prepare instrumented local game
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text()
+          i=s.rindex('}',0,s.rindex('</script>'))
+          Path('t.html').write_text(s[:i]+'window.X=c=>eval(c);\n'+s[i:])
+          for p in Path('qa').glob('t*.py'):
+              if p.stem=='t7': continue
+              s=p.read_text().replace("    await pg.goto(", "    failures=[]\n    pg.on('response',lambda r:failures.append(r.url) if r.status>=400 else None)\n    await pg.goto(")
+              s=s.replace('    await b.close()', "    assert not errs and not failures, (errs, failures)\n    assert await pg.evaluate(\"GD.love.special.lvzhi[0].t\") == '椒房密酌'\n    await b.close()")
+              p.write_text(s)
+          PY
+      - name: Run mobile regression
+        run: |
+          python -m http.server 8765 >/tmp/server.log 2>&1 &
+          python -u qa/${{ matrix.suite }}.py
