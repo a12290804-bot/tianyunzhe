@@ -368,7 +368,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 <script src="story4.js"></script>
 <script src="story5.js"></script>
 <script src="story6.js"></script>
-<script src="story7.js"></script><script src="story8.js"></script><script src="story9.js"></script><script src="story10.js"></script><script src="story11.js"></script><script src="story12.js"></script><script src="story13.js"></script><script src="story14.js"></script><script src="story15.js"></script><script src="story16.js"></script><script src="story17.js"></script>
+<script src="story7.js"></script><script src="story8.js"></script><script src="story9.js"></script><script src="story10.js"></script><script src="story11.js"></script><script src="story12.js"></script><script src="story13.js"></script><script src="story14.js"></script><script src="story15.js"></script><script src="story16.js"></script><script src="rewrite_01a_spouses.js"></script><script src="rewrite_01b_spouses.js"></script><script src="rewrite_01c_spouses.js"></script><script src="rewrite_01d_spouses.js"></script><script src="rewrite_50_histx.js"></script><script src="rewrite_51_wtx.js"></script><script src="rewrite_52_wtx2.js"></script><script src="rewrite_53_scenes.js"></script><script src="rewrite_55_newworlds.js"></script><script src="story17.js"></script><script src="rewrite_01z_qing_terms.js"></script>
 <script>
 {
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -629,7 +629,10 @@ const WORLDS=[
  {id:'mawei',n:'馬嵬坡',era:'唐・756',lv:[16,32],arrive:28,limit:15,bg:'bg_tower2',heroes:['yangguifei','shangguan'],rescue:'yangguifei',tragedy:'六軍不發，貴妃即將被縊死於佛堂之前。',goal:'平定譁變禁軍與叛軍，護住貴妃',sides:[{id:'w_rebel',n:'范陽叛軍',kind:'war',color:'#b04a4a',img:'fl_xiongnu',mark:'叛',leader:'安祿山殘影',caps:['史思明','田承嗣']},{id:'w_guard',n:'譁變禁軍',kind:'war',color:'#c0a060',img:'fl_huangjin',mark:'禁',leader:'陳玄禮',caps:['龍武軍','飛騎']}]},
  {id:'mobei',n:'漠北決戰',era:'西漢・前119',lv:[15,30],arrive:34,limit:15,bg:'bg_polluted',heroes:['huoqubing','weiqing','zhangqian','wangzhaojun'],rescue:'zhangqian',tragedy:'封狼居胥之後，毒泉與瘟疫將奪走二十四歲的驃騎將軍。',goal:'擊破伊稚斜王帳，淨化毒泉',sides:[{id:'w_xn',n:'伊稚斜王庭',kind:'war',color:'#e3a33c',img:'fa_xiongnu',seatImg:'seat_xiongnu',mark:'狼',leader:'伊稚斜',caps:['左賢王','渾邪王']},{id:'w_plague',n:'瘟疫毒泉',kind:'cult',color:'#7ab04a',img:'en_taotie',mark:'疫',leader:'疫泉之主',caps:['腐屍','疫鴉']}]},
  {id:'chibi',n:'赤壁霧火',era:'東漢末・208',lv:[18,34],arrive:40,limit:15,bg:'cg_battle',heroes:['zhugeliang','guanyu','sunshangxiang','huangyueying','diaochan','huatuo','caiwenji'],rescue:'huangyueying',tragedy:'東風燃起的大火化作吞噬一切的黑霧火海，三方軍民無一倖免。',goal:'擊破霧火曹營，在火海中開出生路',sides:[{id:'w_cao',n:'霧火曹營',kind:'war',color:'#5a6ad0',img:'en_bingzhong_e',mark:'曹',leader:'曹操殘影',caps:['夏侯惇','張遼']},{id:'w_wu2',n:'江東水師',kind:'war',color:'#d06a4a',img:'fl_qin',mark:'吳',leader:'周瑜',caps:['黃蓋','甘寧']}]},
- {id:'fengbo',n:'風波亭',era:'南宋・1142',lv:[20,36],arrive:46,limit:15,bg:'bg_tower1',heroes:['yuefei','hanshizhong','lianghongyu','liqingzhao'],rescue:'yuefei',tragedy:'十二道金牌之後，岳飛將以「莫須有」之罪死於風波亭。',goal:'擊破奸佞傀儡本陣，救出岳飛',sides:[{id:'w_jian',n:'奸佞傀儡',kind:'cult',color:'#8a5ab0',img:'en_huapi',mark:'奸',leader:'秦檜殘影',caps:['萬俟卨','張俊']},{id:'w_jin',n:'金兵鐵浮屠',kind:'war',color:'#6a7a8a',img:'fl_xiongnu',mark:'金',leader:'金兀朮',caps:['拐子馬','鐵浮屠']}]}];
+ {id:'fengbo',n:'風波亭',era:'南宋・1142',lv:[20,36],arrive:46,limit:15,bg:'bg_tower1',heroes:['yuefei','hanshizhong','lianghongyu','liqingzhao'],rescue:'yuefei',tragedy:'十二道金牌之後，岳飛將以「莫須有」之罪死於風波亭。',goal:'擊破奸佞傀儡本陣，救出岳飛',sides:[{id:'w_jian',n:'奸佞傀儡',kind:'cult',color:'#8a5ab0',img:'en_huapi',mark:'奸',leader:'秦檜殘影',caps:['萬俟卨','張俊']},{id:'w_jin',n:'金兵鐵浮屠',kind:'war',color:'#6a7a8a',img:'fl_xiongnu',mark:'金',leader:'金兀朮',caps:['拐子馬','鐵浮屠']}]},
+ {id:'wugu',n:'巫蠱之禍',era:'西漢・前91',lv:[22,38],arrive:52,limit:15,bg:'bg_tower1',heroes:['hanwudi','weiqing','huoqubing'],rescue:'weiqing',tragedy:'江充誣太子巫蠱，太子兵敗自縊，衛皇后被收璽綬後自盡，以小棺草葬城南桐柏亭。',goal:'擊破繡衣巫蠱獄本陣，救出衛皇后與太子',sides:[{id:'w_wugu',n:'繡衣巫蠱獄',kind:'cult',color:'#7a4ab0',img:'en_huapi',mark:'蠱',leader:'江充殘影',caps:['胡巫','蘇文']},{id:'w_chengxiang',n:'丞相軍',kind:'war',color:'#b08a4a',img:'fl_huangjin',mark:'丞',leader:'劉屈氂',caps:['商丘成','莽通']}]},
+ {id:'danggu',n:'黨錮之禍',era:'東漢・147～169',lv:[24,40],arrive:58,limit:15,bg:'bg_night',heroes:['caiwenji','caocao','huatuo'],rescue:'caiwenji',tragedy:'梁冀殺李固暴屍四衢，宦官大興黨獄，黨人死獄中百餘，收留者滅門。李氏只剩十三歲的李燮。',goal:'擊破北寺獄本陣，護住李氏遺孤與黨人家眷',sides:[{id:'w_beisi',n:'北寺獄',kind:'cult',color:'#5a5a8a',img:'en_huapi_e',mark:'獄',leader:'曹節殘影',caps:['王甫','侯覽']},{id:'w_liangji',n:'梁府家兵',kind:'war',color:'#a05a3a',img:'fl_qin',mark:'梁',leader:'梁冀殘影',caps:['孫壽','梁胤']}]},
+ {id:'ganlu',n:'甘露之變',era:'唐・835',lv:[26,42],arrive:64,limit:15,bg:'bg_tower2',heroes:['shangguan','tangtaizong','wuzetian'],rescue:'shangguan',tragedy:'甘露事敗，神策軍屠殺千餘人，宰相親屬孩稚無遺，妻女沒為官婢。',goal:'擊破神策軍本陣，護住宰相家眷',sides:[{id:'w_shence',n:'神策軍',kind:'war',color:'#4a6a9a',img:'fl_xiongnu',mark:'神',leader:'仇士良殘影',caps:['魚弘志','左軍騎']},{id:'w_jinwu',n:'金吾殘兵',kind:'war',color:'#c0a060',img:'fl_huangjin',mark:'金',leader:'李訓',caps:['韓約','郭行餘']}]}];
 {const HV=new Set(["wa_changping_b", "wa_changping_s", "wa_chibi_b", "wa_chibi_s", "wa_fengbo_b", "wa_fengbo_s", "wa_gaixia_b", "wa_gaixia_s", "wa_mawei_b", "wa_mawei_s", "wa_mobei_b", "wa_mobei_s", "wa_muye_b", "wa_muye_s", "wa_wuyue_b", "wa_wuyue_s", "wangzhaojun", "wbg_changping", "wbg_chibi", "wbg_fengbo", "wbg_gaixia", "wbg_mawei", "wbg_mobei", "wbg_muye", "wbg_wuyue", "wl_changping_s", "wl_chibi_b", "wl_chibi_s", "wl_fengbo_b", "wl_fengbo_s", "wl_gaixia_b", "wl_gaixia_s", "wl_mawei_b", "wl_mawei_s", "wl_mobei_b", "wl_mobei_s", "wl_muye_b", "wl_muye_s", "wl_wuyue_b", "wl_wuyue_s", "wrev_changping", "wrev_chibi", "wrev_fengbo", "wrev_gaixia", "wrev_mawei", "wrev_mobei", "wrev_muye", "wrev_wuyue"]);WORLDS.forEach(w=>{if(HV.has('wbg_'+w.id))w.bg='wbg_'+w.id;w.rev=HV.has('wrev_'+w.id)?'wrev_'+w.id:w.bg;w.sides.forEach((sd,i)=>{const k=i?'s':'b';if(HV.has(`wa_${w.id}_${k}`))sd.img=`wa_${w.id}_${k}`;if(HV.has(`wl_${w.id}_${k}`))sd.limg=`wl_${w.id}_${k}`;else if(!sd.limg)sd.limg=sd.img})})}
 const WD=id=>WORLDS.find(w=>w.id===id);const WSIDE={};WORLDS.forEach(w=>w.sides.forEach(s=>WSIDE[s.id]=s));
 const wst=id=>{S.wst=S.wst||{};const w=WD(id);return S.wst[id]=S.wst[id]||{state:'locked',arrive:w.arrive,deadline:w.arrive+w.limit}};
@@ -2507,6 +2510,25 @@ function bfInfo(k){
   return [k,[0,0],''];
 }
 
+/* ===== v30: 燈塔耐久歸零不結束（無 Game Over、保留存檔） ===== */
+function towerBreach(){
+  const floor=Math.max(15,Math.round((S.durMax||100)*0.15));
+  const lf=Math.round((S.food||0)*0.2),lw=Math.round((S.wood||0)*0.2),ls=Math.round((S.stone||0)*0.2),lsol=Math.round((S.soldiers||0)*0.15);
+  S.food=Math.max(0,(S.food||0)-lf);
+  S.wood=Math.max(0,(S.wood||0)-lw);
+  S.stone=Math.max(0,(S.stone||0)-ls);
+  S.soldiers=Math.max(0,(S.soldiers||0)-lsol);
+  S.pol=clamp((S.pol||0)+12,0,100);
+  (S.order||[]).forEach(id=>gainAff(id,-3));
+  S.dur=floor;
+  S.breaches=(S.breaches||0)+1;
+  const msg=`【燈塔破防・星火重燃】黑霧衝破殘垣，星盤緊急燃起餘燼護住核心（耐久回穩至 ${floor}）！損失糧 ${lf}、木 ${lw}、石 ${ls}、兵 ${lsol}，據點污染 +12，眾將好感 −3。`;
+  if(typeof report!=='undefined'&&Array.isArray(report))report.push([msg,'neg']);
+  if(typeof feedPush==='function')feedPush(msg,'neg');
+  if(typeof save==='function')save();
+  if(typeof toast==='function')toast('燈塔破防！損失物資與兵力，星盤餘燼已重燃（存檔保留）');
+}
+
 function hstTurn(add){haremAI(add);ambTurn(add);S.hxN=0;desireTurn(add);facTurn2(add);cityTurn(add);agendaTurn(add);dutyMigrate();favSync();loveTurn(add);v21Turn(add);dkTurn(add);v23Turn(add);corruptTurn(add);barTurn(add);powerTurn(add);powerEvTurn(add);valEvTurn(add);cycEvTurn(add);pbTurn(add);S.clean0=S.pol===0?(S.clean0||0)+1:0;checkAch2();(T_('h3')&&Math.random()<.3?0:ownEvRoll());S.order.forEach(id=>{const st=hs(id),x=st.hst;if(!x)return;if(x.u<=S.t){add(`${H(id).n}的【${HST[x.k][0]}】狀態解除了`,'pos');st.hst=null;return}const w=wed(id);
   if(x.k==='jail'){if(w)w.fav=Math.max(0,w.fav-3);gainAff(id,-2)}if(x.k==='ban'&&w)w.fav=Math.max(0,w.fav-2);if(x.k==='spoil'){spouses().filter(y=>y!==id).forEach(y=>{wed(y).fav=Math.max(0,wed(y).fav-2)});S.food=Math.max(0,S.food-15)}});
  S.order.forEach(id=>{if(hs(id).traitor&&!unavail(id)&&Math.random()<.14){const f=Math.min(S.food,40),so=Math.min(S.soldiers,30);S.food-=f;S.soldiers-=so;S.lastRaid=-9;add(`【內奸】糧倉帳目出現缺口（糧 −${f}），巡邏路線被敵人摸清（兵力 −${so}），敵襲機率上升……`,'neg')}});
@@ -2660,7 +2682,7 @@ function endTurn(){
  S.ap=maxAP()-(S.apDebt||0);S.apDebt=0;S.blessed=S.blessed&&S.units.some(u=>u.id===S.blessed)?S.blessed:null;
  S.units.forEach(u=>{if(!inWorld()&&u.r===BASE.r&&u.c===BASE.c&&!u.tgt){S.soldiers+=u.troops;u.gens.forEach(g=>hs(g).task='idle');u.dead=true;add(`${H(u.gens[0]).n}的部隊回到燈塔，解散歸營（武將改為待命）`)}});
  S.units=S.units.filter(u=>!u.dead);
- const finish=()=>{checkFalls(r=>report.push([r,'pos']));if(wasTide&&S.dur>0){S.tides++;if(battleQ.length===0||true){}}showReport()};
+ const finish=()=>{checkFalls(r=>report.push([r,'pos']));if(wasTide){S.tides++;if(battleQ.length===0||true){}}showReport()};
  if(wasTide)tideCutscene(()=>runBattles(finish));else runBattles(finish);
 }
 function spreadPol(add){const guard=t=>typeof polGuard==='function'?polGuard(t):(ownTiles().some(o=>(o.out==='U'||o.out==='W')&&dist(o,t)<=1)||(hasFac('purify')&&dist(t,BASE)<=2+facLv('purify')));let n=0,lost=0,blocked=0;
@@ -2735,7 +2757,7 @@ function runBattles(done){const b=battleQ.shift();if(!b)return done();
   S.units=S.units.filter(x=>!x.dead);S.enemies=S.enemies.filter(e=>e.troops>0);runBattles(done)})}
 const WX={qing:['晴','☀️','無特殊影響',{}],yu:['雨','🌧️','弓弩傷害 −20%、全軍行軍 −1、火攻類戰法發動率 −5%',{gong:-.2,move:-1}],wu:['霧','🌫️','雙方首回合傷害 −30%、視野縮小；術士戰法發動率 +6%',{first:-.3,mou:.06,vis:-1}],xue:['雪','❄️','騎兵傷害 −15%、全軍行軍 −1、重步受傷 −8%',{qi:-.15,move:-1,budef:.08}],feng:['大風','🌬️','術士戰法發動率 +10%、弓弩傷害 −10%',{mou:.1,gong:-.1}],re:['酷暑','🔥','全軍每回合流失 1% 兵力、機關傷害 +10%',{heat:.01,xie:.1}]};
 const wxNow=()=>WX[S.wx||'qing'];function mods0(our,en,M0){const w=wxNow()[3],oc=our.gens&&our.gens[0]?tcls(our.gens[0]):'步';if(w.gong&&oc==='弓')M0.atk+=w.gong;if(w.qi&&oc==='騎')M0.atk+=w.qi;if(w.xie&&oc==='器')M0.atk+=w.xie;if(w.first)M0.first+=w.first;if(w.mou&&oc==='謀')M0.rate+=w.mou;if(w.budef&&oc==='步')M0.def=Math.min(.7,M0.def+w.budef);if(w.heat)M0.regen-=w.heat;return M0}
-function wxRoll(add){const pool=inWorld()?{mobei:['qing','feng','re','re','feng'],gaixia:['xue','xue','wu','feng'],chibi:['feng','feng','wu','yu'],wuyue:['yu','wu','qing','yu'],mawei:['yu','yu','wu'],fengbo:['xue','yu','wu'],muye:['re','qing','feng'],changping:['qing','feng','wu']}[S.cur]:null;const mo=Math.floor(S.t/3)%12;const base=mo<3||mo>=11?['qing','xue','xue','feng','wu']:mo<5?['qing','yu','wu','feng']:mo<8?['qing','re','yu','yu']:['qing','feng','wu','qing'];const old=S.wx;S.wx=pick(pool||base);if(S.wx!==old&&S.wx!=='qing')add(`【天氣】${wxNow()[1]} ${wxNow()[0]}：${wxNow()[2]}`)}
+function wxRoll(add){const pool=inWorld()?{mobei:['qing','feng','re','re','feng'],gaixia:['xue','xue','wu','feng'],chibi:['feng','feng','wu','yu'],wuyue:['yu','wu','qing','yu'],mawei:['yu','yu','wu'],fengbo:['xue','yu','wu'],wugu:['qing','feng','wu'],danggu:['xue','qing','feng'],ganlu:['xue','wu','qing'],muye:['re','qing','feng'],changping:['qing','feng','wu']}[S.cur]:null;const mo=Math.floor(S.t/3)%12;const base=mo<3||mo>=11?['qing','xue','xue','feng','wu']:mo<5?['qing','yu','wu','feng']:mo<8?['qing','re','yu','yu']:['qing','feng','wu','qing'];const old=S.wx;S.wx=pick(pool||base);if(S.wx!==old&&S.wx!=='qing')add(`【天氣】${wxNow()[1]} ${wxNow()[0]}：${wxNow()[2]}`)}
 function mods(our,en){return mods0(our,en,mods1(our,en))}
 function mods1(our,en){const ids=our.gens;const sum=k=>ids.reduce((a,id)=>a+heroEff(id,k),0)+bondEff(k,ids)+(['atk','def','rate','regen','eld','siege'].includes(k)?perkEff(k)+polEff(k):0);
  return{atk:1+sum('atk')+(our.siege?0:sum('atkOff')+(S.atkNext||0))+ids.reduce((a,id)=>a+(hs(id)&&hs(id).aff>=80?heroEff(id,'affAtk'):0),0)+(T_('c6')?.1:0)+(ids.some(id=>hs(id)&&hs(id).aff>=100)&&T_('m6')?.2:0),def:clamp(sum('def')+(our.siege?(sum('siege')+(hasFac('wall')?facVal(slotsOf('wall')[0])/100:0)+(T_('s6')?.3:0)+ownTiles().filter(t=>t.out==='U').length*.05):0),0,.7),
@@ -2814,7 +2836,7 @@ function battle(our,en,cb,title){
 
 /* ================= REPORT ================= */
 function showReport(){
- if(S.dur<=0)return ending(false);
+ if(S.dur<=0&&typeof towerBreach==='function')towerBreach();
  if(S.pop>S.prev.pop)S.popIn=(S.popIn||0)+(S.pop-S.prev.pop);
  const p=S.prev,d=(k,v)=>{const x=v-p[k];return x===0?'':`<span class="${x>0?'pos':'neg'}">${x>0?'+':''}${x}</span>`};
  const go2=()=>{checkStage();if(celQ.length){afterCel=go2b;return}go2b()};
@@ -2846,7 +2868,7 @@ function variant(){if(!S['vsc_'+pendingVariant]){S['vsc_'+pendingVariant]=1;retu
  $('#vFuse').onclick=()=>{hs(id).star=Math.min(6,hs(id).star+2);S['fused_'+id]=1;S.pol=Math.min(100,S.pol+10);unlock('fuse');closeSheet();celebrate(null,'命格融合',`${h.n}・${hs(id).star} 星`,'兩條世界線的記憶在星盤中交會、收束。新的力量甦醒了。',img)};
  $('#vLeave').onclick=()=>{closeSheet();render()};
 }
-function ending(win){clearSave();if(!S.endScene){S.endScene=1;if(win)unlock('win');return scene(win?'win':'lose',()=>ending(win))}go('ending');setDanger(false);bgm(win?'bgmFall':null);if(win)sfx('fanfare');else sfx('lose');
+function ending(win){if(!win){if(typeof towerBreach==='function')towerBreach();return}clearSave();if(!S.endScene){S.endScene=1;if(win)unlock('win');return scene(win?'win':'lose',()=>ending(win))}go('ending');setDanger(false);bgm(win?'bgmFall':null);if(win)sfx('fanfare');else sfx('lose');
  $('#ending').innerHTML=`<div class="bgimg" style="background-image:url(img/${win?'stage3':'bg_tide'}.jpg)"></div><div class="top" style="margin-top:auto;padding:24px">
  <h1 style="font-size:38px">${win?'第一章・燈塔與長安':'結局・星火熄滅'}</h1>
  <p style="font-family:Noto Serif TC,serif;font-size:17px">${win?'沉沒長安的黑霧散去了。這是你在歸墟奪下的第一座城——從一座廢墟燈塔，到一方勢力。<br><br>但在更遠的潮水深處，百眼饕餮教、無終兵塚、蝕夢織網者，正注視著你。':'星盤的光熄滅了。黑潮再次漲起，吞沒了最後的燈火。'}</p>
