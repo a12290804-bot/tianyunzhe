@@ -5,7 +5,7 @@ from playwright.async_api import async_playwright
 async def main():
   async with async_playwright() as p:
     b=await p.chromium.launch(executable_path='/usr/bin/google-chrome');pg=await b.new_page(viewport={'width':390,'height':844})
-    errs=[];pg.on('pageerror',lambda e:errs.append(str(e)));bad=[];pg.on('response',lambda r:bad.append(r.url) if r.status>=400 else None)
+    errs=[];pg.on('pageerror',lambda e:errs.append(e.stack or str(e)));bad=[];pg.on('response',lambda r:bad.append(r.url) if r.status>=400 else None)
     await pg.goto('http://localhost:8765/t.html');await pg.wait_for_timeout(800)
     X=lambda c:pg.evaluate("c=>X(c)",c)
     async def drain(flag):
