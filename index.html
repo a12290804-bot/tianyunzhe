@@ -1032,16 +1032,17 @@ function mapView(){setTimeout(()=>{ANIM=null},50);
  for(const row of S.tiles)for(const t of row){if(t.t==='X')continue;const[x,y]=hxy(t.r,t.c);const seen=t.seen,vis=visible(t);
   const isSel=sel&&sel.r===t.r&&sel.c===t.c;if(!seen){g+=`<g class="hex ${isSel?'on':''}" data-r="${t.r}" data-c="${t.c}" data-silent="1"><polygon points="${hpts(x,y)}" fill="#0a0a0f" stroke="#15151c" stroke-width=".6"/><polygon class="sel" points="${hpts(x,y)}"/></g>`;continue}const ex=canExpand(t);
   g+=`<g class="hex ${isSel?'on':''} ${ex?'exp':''}" data-r="${t.r}" data-c="${t.c}" data-silent="1"><polygon points="${hpts(x,y)}" fill="url(#p-${t.city?(t.city>1?'hex_city':'hex_fort'):t.t==='B'&&inWorld()?'hex_camp':t.own&&t.out&&OIMG[t.out]?OIMG[t.out]:TERR[t.t][1]})" stroke="${t.own?'#e0bf74':'#0006'}" stroke-width="${t.own?1.8:.8}"/>`;
+  {const hk=typeof hexFillKeys==='function'?hexFillKeys(t):null,hf=hk&&typeof mapHexFill==='function'?mapHexFill(x,y,hk,t.r+'_'+t.c):'';if(hf){g+=hf;g+=`<polygon points="${hpts(x,y)}" fill="none" stroke="${t.own?'#e0bf74':'#0006'}" stroke-width="${t.own?1.8:.8}"/>`}}
   if(t.own)g+=`<polygon class="owntint" points="${hpts(x,y)}"/>`;if(t.fac&&FD(t.fac))g+=`<polygon points="${hpts(x,y)}" fill="${FD(t.fac).color}" fill-opacity=".22" stroke="${FD(t.fac).color}" stroke-width="1.4" stroke-opacity=".8"/>`;
   if(t.city&&seen)g+=`<rect x="${x-16}" y="${y+7}" width="32" height="11" rx="3" fill="#1a1408d0" stroke="#ffd77a" stroke-width="1"/><text x="${x}" y="${y+15.5}" text-anchor="middle" font-size="8" font-weight="900" fill="#ffd77a" font-family="Noto Serif TC">${cityName(t)}</text>`;
  if(t.t==='K'){const fz=Object.values(S.facs).find(f=>f.seat.r===t.r&&f.seat.c===t.c),fd=fz&&FD(fz.id);const SI=fd&&fd.seatImg;if(SI)g+=`<polygon points="${hpts(x,y)}" fill="url(#p-${SI})" style="opacity:${fz.alive?1:.45}"/>`;g+=SI?`<rect x="${x-8}" y="${y+5}" width="16" height="13" rx="3" fill="#120c08d0" stroke="${fz.alive?fd.color:'#666'}" stroke-width="1.5"/>${mapGlyph(x,y+15,['fac_'+fz.id,'mark_'+fd.mark],fd.mark,{fontSize:10,fill:fz.alive?fd.color:'#888',size:14,cy:y+10})}`:`<rect x="${x-12}" y="${y-11}" width="24" height="22" rx="4" fill="#120c08" stroke="${fd&&fz.alive?fd.color:'#666'}" stroke-width="2"/>${mapGlyph(x,y+5,[fz&&fz.id?'fac_'+fz.id:null,fd?'mark_'+fd.mark:null,'mark_zhai'].filter(Boolean),fd?fd.mark:'寨',{fontSize:13,fill:fd&&fz.alive?fd.color:'#888',size:18,cy:y-2})}`}
   if(t.own&&!t.pol&&t.t!=='B'){const yt=yText(tileYield(t));if(yt)g+=`<text class="yl" x="${x}" y="${y+15}" text-anchor="middle">${yt}</text>`}
-  if('IWVDT'.includes(t.t)&&seen&&!t.out)g+=`<circle cx="${x}" cy="${y-2}" r="8" fill="${'DT'.includes(t.t)?'#2a0a3a':'#10242a'}" stroke="${'DT'.includes(t.t)?'#d04aff':'#7fd0bd'}" stroke-width="1.5"/>${mapGlyph(x,y+2,'terr_'+t.t,{I:'礦',W:'泉',V:'村',D:'秘',T:'秘'}[t.t],{fontSize:9,fill:'#fff',size:16,cy:y-2})}`;
+  if('IWVDT'.includes(t.t)&&seen&&!t.out&&!(typeof mapIcoHref==='function'&&mapIcoHref(['terr_'+t.t])))g+=`<circle cx="${x}" cy="${y-2}" r="8" fill="${'DT'.includes(t.t)?'#2a0a3a':'#10242a'}" stroke="${'DT'.includes(t.t)?'#d04aff':'#7fd0bd'}" stroke-width="1.5"/>${mapGlyph(x,y+2,'terr_'+t.t,{I:'礦',W:'泉',V:'村',D:'秘',T:'秘'}[t.t],{fontSize:9,fill:'#fff',size:16,cy:y-2})}`;
   if(t.pol&&seen)g+=`<polygon class="pol ${S.newPol.includes(t.r*COLS+t.c)?'new':''}" points="${hpts(x,y)}"/>`;if(t.own&&seen&&!t.pol&&typeof polGuard==='function'&&polGuard(t))g+=`<circle cx="${x}" cy="${y+11}" r="5" fill="#14352ad0" stroke="#7fd0bd" stroke-width="1"/>${mapGlyph(x,y+14,['mark_bi','mark_庇'],'庇',{fontSize:7,fill:'#9fe0d0',size:12,cy:y+10})}`;if(t.rebFid&&seen)g+=`${mapGlyph(x,y-12,['mark_fan','mark_叛'],'叛',{fontSize:9,fill:'#ffb39e',size:14,cy:y-16})}`;
-  if(t.out){const mil=!!MIL[t.out];g+=`<circle cx="${x}" cy="${y}" r="9" fill="${mil?'#1d0d0b':'#1a1408'}" stroke="${mil?'#e07a5f':'#e0bf74'}" stroke-width="1.5"/>${mapGlyph(x,y+4,['out_'+t.out,'mark_'+OD(t.out)[1]],OD(t.out)[1],{fontSize:11,fill:mil?'#ffb39e':'#f0d79a',size:16,cy:y-2})}`;for(let i=0;i<(t.olv||1);i++)g+=`<circle cx="${x-5+i*5}" cy="${y-12}" r="1.8" fill="#ffd77a"/>`}
+  if(t.out){const mil=!!MIL[t.out];if(!(typeof mapIcoHref==='function'&&mapIcoHref(['out_'+t.out])))g+=`<circle cx="${x}" cy="${y}" r="9" fill="${mil?'#1d0d0b':'#1a1408'}" stroke="${mil?'#e07a5f':'#e0bf74'}" stroke-width="1.5"/>${mapGlyph(x,y+4,['out_'+t.out,'mark_'+OD(t.out)[1]],OD(t.out)[1],{fontSize:11,fill:mil?'#ffb39e':'#f0d79a',size:16,cy:y-2})}`;for(let i=0;i<(t.olv||1);i++)g+=`<circle cx="${x-5+i*5}" cy="${y-12}" r="1.8" fill="#ffd77a"/>`}
   else if(t.own&&!t.pol&&t.t!=='B'&&!(t.t==='U'&&!t.looted))g+=`${mapGlyph(x,y-6,['expand'],'＋',{fontSize:10,fill:'#7fd0bd',size:12,cy:y-10})}`;
-  if(t.t==='B'){const s=S.stage;g+=`<circle cx="${x}" cy="${y}" r="${12+s}" fill="#1a1408" stroke="#f0d79a" stroke-width="2.5"/>${mapGlyph(x,y+5,S.cur&&S.cur!=='home'?['mark_ying','base_camp']:['base_'+s,'mark_'+'燈哨寨城'[s]],S.cur&&S.cur!=='home'?'營':'燈哨寨城'[s],{fontSize:13,fill:'#f0d79a',size:18,cy:y-2})}`}
-  if(t.t==='C'&&seen)g+=`<rect x="${x-12}" y="${y-10}" width="24" height="20" rx="3" fill="${t.own?'#1a1408':'#2a0f1a'}" stroke="${t.own?'#f0d79a':'#c7a9ff'}"/>${mapGlyph(x,y+5,['mark_cheng','terr_C'],'城',{fontSize:13,fill:'#e8d6ff',size:18,cy:y-2})}`;
+  if(t.t==='B'){const s=S.stage;if(!(typeof mapIcoHref==='function'&&mapIcoHref((S.cur&&S.cur!=='home')?['base_camp']:['base_'+s])))g+=`<circle cx="${x}" cy="${y}" r="${12+s}" fill="#1a1408" stroke="#f0d79a" stroke-width="2.5"/>${mapGlyph(x,y+5,S.cur&&S.cur!=='home'?['mark_ying','base_camp']:['base_'+s,'mark_'+'燈哨寨城'[s]],S.cur&&S.cur!=='home'?'營':'燈哨寨城'[s],{fontSize:13,fill:'#f0d79a',size:18,cy:y-2})}`}
+  if(t.t==='C'&&seen){if(!(typeof mapIcoHref==='function'&&mapIcoHref(['mark_cheng','terr_C','tile_C'])))g+=`<rect x="${x-12}" y="${y-10}" width="24" height="20" rx="3" fill="${t.own?'#1a1408':'#2a0f1a'}" stroke="${t.own?'#f0d79a':'#c7a9ff'}"/>${mapGlyph(x,y+5,['mark_cheng','terr_C'],'城',{fontSize:13,fill:'#e8d6ff',size:18,cy:y-2})}`}
   if(t.t==='N'&&seen&&!S.nestDead)g+=`<circle cx="${x}" cy="${y}" r="7" fill="#2a0a3a" stroke="#d04aff"/>`;
   {if(t.wev)g+=`<circle cx="${x}" cy="${y-2}" r="9" fill="#2a0d2a" stroke="#f0a6ff" stroke-width="2"><animate attributeName="r" values="8;10;8" dur="1.6s" repeatCount="indefinite"/></circle>${mapGlyph(x,y+2,['wev','mark_shi'],'事',{fontSize:10,fill:'#ffd6ff',size:14,cy:y-2})}`;const pp=poiAt(t);if(pp)g+=`<circle cx="${x}" cy="${y-2}" r="11" fill="url(#u-${POIIMG[pp.k]})" stroke="#ffd77a" stroke-width="2"><animate attributeName="stroke-width" values="1.5;3;1.5" dur="1.6s" repeatCount="indefinite"/></circle><rect x="${x-6}" y="${y+6}" width="12" height="10" rx="2" fill="#2a1d05e0"/>${mapGlyph(x,y+14,['poi_'+pp.k,'mark_'+POI[pp.k][1]],POI[pp.k][1],{fontSize:8,fill:'#ffe7a8',size:14,cy:y+10})}`}
   if(t.t==='U'&&!t.looted&&seen)g+=`${mapGlyph(x+11,y-4,['loot'],'✦',{fontSize:11,fill:'#f0d79a',size:12,cy:y-10})}`;
@@ -2478,12 +2479,11 @@ function ensureMapIco(key){
   im.onerror=()=>{MAPICO[key]={s:'no'}};
   im.src=url;
 }
-function mapIcoUrl(key){const e=MAPICO[key];return e&&e.s==='ok'?e.url:''}
+function mapIcoUrl(key){const e=MAPICO[key];if(e&&e.s==='ok')return e.url;if(e&&e.s==='pend'&&typeof mapIcoFile==='function')return mapIcoFile(key)||'';return ''}
 function mapGlyph(x,ty,keys,ch,opt){
   opt=opt||{};
   const ks=Array.isArray(keys)?keys:[keys];
-  ks.forEach(ensureMapIco);
-  const href=ks.map(mapIcoUrl).find(Boolean);
+  const href=typeof mapIcoHref==='function'?mapIcoHref(ks):(ks.forEach(ensureMapIco),ks.map(mapIcoUrl).find(Boolean));
   if(href){
     const s=opt.size||16,cy=opt.cy!=null?opt.cy:ty-s*0.35;
     return `<image href="${href}" x="${x-s/2}" y="${cy-s/2}" width="${s}" height="${s}" preserveAspectRatio="xMidYMid meet"/>`;
@@ -2585,6 +2585,33 @@ const MAP_ICO_ALIAS={
   fac_w_shence:'fac__fallback',fac_w_wugu:'fac__fallback',
   fac_w_guard:'fac__fallback'
 };
+
+/* ===== v31b：地圖圖標鋪滿六邊形，有圖時不再畫舊字 ===== */
+function mapIcoHref(keys){
+  const ks=Array.isArray(keys)?keys:[keys];
+  ks.forEach(ensureMapIco);
+  for(let i=0;i<ks.length;i++){
+    const k=ks[i];if(!k)continue;
+    const e=MAPICO[k];
+    if(e&&e.s==='ok')return e.url;
+    const url=typeof mapIcoFile==='function'?mapIcoFile(k):'';
+    if(url&&(!e||e.s!=='no'))return url;
+  }
+  return '';
+}
+function hexFillKeys(t){
+  if(t.out)return ['out_'+t.out];
+  if(t.t==='B')return (S.cur&&S.cur!=='home')?['base_camp','mark_ying']:['base_'+S.stage];
+  if(t.t==='C')return ['mark_cheng','terr_C','tile_C'];
+  if('IWVDT'.includes(t.t))return ['terr_'+t.t];
+  return null;
+}
+function mapHexFill(x,y,keys,id){
+  const href=mapIcoHref(keys);
+  if(!href)return '';
+  const s=HR*2.7,cid='hc'+id;
+  return `<clipPath id="${cid}"><polygon points="${hpts(x,y)}"/></clipPath><image href="${href}" x="${(x-s/2).toFixed(1)}" y="${(y-s/2).toFixed(1)}" width="${s}" height="${s}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${cid})"/>`;
+}
 
 function hstTurn(add){haremAI(add);ambTurn(add);S.hxN=0;desireTurn(add);facTurn2(add);cityTurn(add);agendaTurn(add);dutyMigrate();favSync();loveTurn(add);v21Turn(add);dkTurn(add);v23Turn(add);corruptTurn(add);barTurn(add);powerTurn(add);powerEvTurn(add);valEvTurn(add);cycEvTurn(add);pbTurn(add);S.clean0=S.pol===0?(S.clean0||0)+1:0;checkAch2();(T_('h3')&&Math.random()<.3?0:ownEvRoll());S.order.forEach(id=>{const st=hs(id),x=st.hst;if(!x)return;if(x.u<=S.t){add(`${H(id).n}的【${HST[x.k][0]}】狀態解除了`,'pos');st.hst=null;return}const w=wed(id);
   if(x.k==='jail'){if(w)w.fav=Math.max(0,w.fav-3);gainAff(id,-2)}if(x.k==='ban'&&w)w.fav=Math.max(0,w.fav-2);if(x.k==='spoil'){spouses().filter(y=>y!==id).forEach(y=>{wed(y).fav=Math.max(0,wed(y).fav-2)});S.food=Math.max(0,S.food-15)}});
