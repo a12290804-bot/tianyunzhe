@@ -1,0 +1,26 @@
+from playwright.sync_api import sync_playwright
+from pathlib import Path
+s=Path('index.html').read_text();i=s.rindex('}',0,s.rindex('</script>'))
+with sync_playwright() as p:
+ b=p.chromium.launch(executable_path='/usr/bin/google-chrome',args=['--no-sandbox','--disable-dev-shm-usage'])
+ pg=b.new_page(viewport={'width':390,'height':844},is_mobile=True,has_touch=True)
+ pg.route('**/index.html',lambda r:r.fulfill(body=s[:i]+'window.X=c=>eval(c);'+s[i:],content_type='text/html'))
+ errs=[];pg.on('pageerror',lambda e:errs.append(str(e)))
+ pg.goto('http://localhost:8746/index.html')
+ def x(s):return pg.evaluate('s=>window.X(s)',s)
+
+ x("genWorld();go('game');for(const id of ['fuhao','hanxin'])addHero(id,60);S.off={war:'hanxin'};S.slots[0].gar='fuhao';hs('fuhao').wed={fav:60};S.mainWife='fuhao';S.aff2={'fuhao|hanxin':{k:2,v:80}};affairEvent({f:'fuhao',m:'hanxin',stage:2},()=>{})")
+ pg.get_by_role('button',name='成全',exact=False).click()
+ assert x("['fuhao','hanxin'].every(id=>!S.order.includes(id)&&S.gone[id].k==='elope')&&!S.mainWife&&!S.off.war&&!S.slots[0].gar")
+ assert x("loadGame() && !wed('fuhao') && !S.order.includes('fuhao')")
+ x("window.oldFood=S.food;S.t+=3;rebelTurn(()=>{})")
+ assert x("S.gone.fuhao.k==='rebel'&&S.gone.fuhao.fid===S.gone.hanxin.fid&&S.food===oldFood")
+ assert x("window.fid=S.gone.fuhao.fid;FS(fid).alive && S.enemies.some(e=>e.fac===fid&&e.seat)&&facTiles(fid).length>0")
+ x("window.sold=FS(fid).troops;const old=Math.random;Math.random=()=>0.99;try{facTurn(()=>{})}finally{Math.random=old};save();loadGame()")
+ assert x("FS(fid).troops>sold && S.gone.hanxin.fid===fid")
+ x("heroBack('fuhao');heroBack('hanxin');delete S.aff2['fuhao|hanxin'].departureFixed;save();loadGame()")
+ assert x("S.gone.fuhao.k==='elope'&&S.gone.hanxin.k==='elope'")
+ x("heroBack('fuhao');heroBack('hanxin');save();loadGame()")
+ assert x("S.order.includes('hanxin')&&S.order.includes('fuhao')")
+ assert not errs,errs
+ print('Affair event, departure, map faction, military growth and legacy save passed.')
