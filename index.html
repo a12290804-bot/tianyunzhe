@@ -112,9 +112,9 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 .tidebar .meter{flex:1;height:7px}
 .tidebar.warn{color:#e6c7ff}
 .tidebar.warn .meter i{background:linear-gradient(90deg,#9a6be0,#d0554a);animation:pulse 1s infinite}
-.view{flex:1;overflow-y:auto;overflow-x:hidden;position:relative;padding-bottom:84px}
-.nav{position:absolute;left:0;right:0;bottom:0;z-index:6;display:grid;grid-template-columns:repeat(5,1fr) 1.2fr;background:linear-gradient(180deg,#0e0f14,#060608);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
-.nav button{min-height:58px;font-size:12px;color:var(--dim);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.view{min-height:0;flex:1;overflow-y:auto;overflow-x:hidden;position:relative;padding-bottom:12px}
+.nav{position:relative;flex:none;z-index:6;display:grid;grid-template-columns:repeat(6,minmax(0,1fr)) minmax(0,1.25fr);background:linear-gradient(180deg,#0e0f14,#060608);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.nav button{padding:0;min-width:0;min-height:56px;font-size:12px;color:var(--dim);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
 .nav button b{font-family:"Noto Serif TC",serif;font-size:20px;font-weight:900}
 .nav button.on{color:var(--gold2)}
 .nav button.on::before{content:"";position:absolute;top:0;left:22%;right:22%;height:2px;background:var(--gold2);box-shadow:0 0 8px var(--gold2)}
@@ -380,6 +380,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 <script src="rewrite_01p_xuzhaopei.js?v=aee5e9a962ac"></script>
 <script src="rewrite_01q_six.js?v=42a2d6d94e63"></script>
 <script src="rewrite_01r_xishi.js?v=b56b2028891a"></script>
+<script src="rewrite_01s_pair.js?v=2c7263931264"></script>
 <script src="rewrite_01z_qing_terms.js"></script>
 <script>
 {
@@ -797,7 +798,7 @@ function facArrive(e,add){if(campHold(T(e.r,e.c),e,add))return;const t0=T(e.r,e.
  if(!t0.own){if(t0.city){releaseTownStaff(t0);(t0.cg||[]).forEach(id=>{if(hs(id))hs(id).task='idle'});t0.cg=[]}t0.fac=e.fac;if(f.kind==='cult')t0.pol=true}
  if(prev&&prev!=='me'&&prev!==e.fac&&visible(t0))add(`${f.n}從${FD(prev).n}手中奪下一格`);
  e.tgt=Math.random()<.65?facPickTarget(e.fac,t0):null}
-function siegeHold(e,add){const t0=T(e.r,e.c);if(!t0.own||t0.t==='B'||inWorld())return false;if(!e.sg||e.sg.r!==t0.r||e.sg.c!==t0.c)e.sg={r:t0.r,c:t0.c,n:0};e.sg.n++;if(e.sg.n>=2+cityHold(t0)){if(t0.city){if(t0.city>1){t0.dur=Math.max(0,(t0.dur??100)-35);if(t0.dur>0){add('【攻城】'+cityName(t0)+'耐久剩 '+t0.dur,'neg');e.sg=null;return true}releaseTownStaff(t0)}t0.city--;(t0.cg||[]).forEach(g=>H(g).pool==='對外'&&setHst(g,'inj',2));if(!t0.city){(t0.cg||[]).forEach(g=>hs(g).task='idle');t0.cg=[]}add(`【陷落】${cityName(t0)}被${e.n}攻破，降為${t0.city?'堡寨':'廢墟'}！`,'neg');e.troops=Math.round(e.troops*.6);e.sg=null;return true}return false}
+function siegeHold(e,add){const t0=T(e.r,e.c);if(!t0.own||t0.t==='B'||inWorld())return false;if(!e.sg||e.sg.r!==t0.r||e.sg.c!==t0.c)e.sg={r:t0.r,c:t0.c,n:0};e.sg.n++;if(e.sg.n>=2+cityHold(t0)){if(t0.city){if(t0.city>1){const store=townStores(t0),defenders=Math.min(store.soldiers,Math.ceil(e.troops/3));if(defenders){store.soldiers-=defenders;e.troops=Math.max(0,e.troops-defenders*2);add('【守城】'+cityName(t0)+'動用本城 '+defenders+' 兵還擊');if(!e.troops){e.sg=null;return true}}t0.dur=Math.max(0,(t0.dur??100)-35);if(t0.dur>0){add('【攻城】'+cityName(t0)+'耐久剩 '+t0.dur,'neg');e.sg=null;return true}releaseTownStaff(t0)}t0.city--;(t0.cg||[]).forEach(g=>H(g).pool==='對外'&&setHst(g,'inj',2));if(!t0.city){(t0.cg||[]).forEach(g=>hs(g).task='idle');t0.cg=[]}add(`【陷落】${cityName(t0)}被${e.n}攻破，降為${t0.city?'堡寨':'廢墟'}！`,'neg');e.troops=Math.round(e.troops*.6);e.sg=null;return true}return false}
  add(`【圍攻】${e.n}（${e.troops}）正在圍攻你的${t0.out?OD(t0.out)[0]:'領地'} (${t0.c},${t0.r})！下一旬就會被攻破——快派部隊去解圍`,'neg');setTimeout(()=>sfx('siren'),600);return true}
 function moveEnemies(add){
  for(const e of S.enemies){if(e.front&&e.still&&(S.units.some(u=>dist(u,e)<=3)||Math.random()<.2)){e.still=false;e.tgt={r:BASE.r,c:BASE.c}}if(e.still||e.troops<=0)continue;
@@ -948,7 +949,7 @@ const SKEY='tianyun_save_v7';
 function save(){try{localStorage.setItem(SKEY,JSON.stringify(S))}catch(e){}}
 function hasSave(){try{return !!localStorage.getItem(SKEY)}catch(e){return false}}
 function clearSave(){try{localStorage.removeItem(SKEY)}catch(e){}}
-function loadGame(){try{const d=JSON.parse(localStorage.getItem(SKEY));Object.assign(S,d);regKids();S.cur=S.cur||'home';if(S.map){Object.assign(BASE,S.map.base);Object.assign(CITY,S.map.city);Object.assign(NEST,S.map.nest)}if(typeof v28migrate==='function')v28migrate();return true}catch(e){return false}}
+function loadGame(){try{const d=JSON.parse(localStorage.getItem(SKEY));Object.assign(S,{crown:null,endorsements:{},petition:null,courtTick:null},d);regKids();S.cur=S.cur||'home';if(S.map){Object.assign(BASE,S.map.base);Object.assign(CITY,S.map.city);Object.assign(NEST,S.map.nest)}if(typeof v28migrate==='function')v28migrate();return true}catch(e){return false}}
 if(hasSave()){const b=document.createElement('button');b.className='btn ghost';b.id='contBtn';b.style.cssText='min-width:220px;margin-top:10px;display:block;margin-left:auto;margin-right:auto';b.textContent='繼續遊戲';$('#startBtn').after(b);
  b.onclick=()=>{ac();if(!loadGame())return toast('存檔讀取失敗');sfx('ok');bgm('bgmBells');go('game');updateSeen();snap();setView('map');toast(`讀取存檔：${dateStr(S.t)}`)}}
 /* ================= SUMMON ================= */
@@ -965,7 +966,15 @@ function renderPools(){
 }
 function roll(pool){const c=Object.keys(HD).filter(id=>HD[id][2]!=='在野'&&(!pool||HD[id][2]===pool)&&(!S.heroes[id]||(S.gone&&S.gone[id]&&!['exile','resign','rebel','strip'].includes(S.gone[id].k))));if(!c.length)return null;
  const sw=(T_('e2')?1.5:1)+(T_('e7a')?.25:0),w=c.map(id=>HD[id][3]==='SSR'?sw:1.8);let t=Math.random()*w.reduce((a,b)=>a+b,0);for(let i=0;i<c.length;i++){t-=w[i];if(t<=0)return c[i]}return c[c.length-1]}
-function addHero(id,aff=0){if(S.heroes[id])return;S.heroes[id]={aff,star:1,task:'idle',met:false};S.order.push(id)}
+function addHero(id,aff=0){if(S.heroes[id])return;S.heroes[id]={aff,star:1,task:'idle',met:false};S.order.push(id);
+ if(H(id).sex==='f'&&!id.startsWith('kid')){
+  const k=facOf(id),st=hs(id);let msg;
+  if(k==='wuxun'){S.soldiers+=24;msg='帶來親兵 24 人'}
+  else if(k==='shanggu'){S.wood+=8;S.stone+=8;msg='送入木石各 8'}
+  else if(k==='qingliu'){S.food+=8;S.pol=Math.max(0,S.pol-1);msg='分發口糧 8，安撫流民'}
+  else{S.food+=12;msg='將隨行糧秣 12 入庫'}
+  st.lastAction='登用當日，'+FACN2[k]+msg;st.acted=S.t;feedPush('【登用】'+H(id).n+'・'+st.lastAction)
+ }}
 function summon(pool,after){
  const id=roll(pool);if(!id){toast('卡池已空');return after&&after()}
  let revived=null;if(S.gone&&S.gone[id]){revived=S.gone[id].k;delete S.gone[id];const st=hs(id);st.mem=revived;st.task='idle';st.hst=null;st.aff=revived==='exec'?Math.max(0,st.aff-30):Math.max(0,st.aff-10);if(revived==='exec')st.ambUp=(st.ambUp||0)+15;if(st.wed)st.wed.fav=revived==='exec'?10:25;S.order.push(id);SKC[id]=null;const RS=revived==='exec'&&GD.resummon&&GD.resummon[id];const ln=(RS?(((S.dc&&S.dc[id])||1)>=2?RS.multi:RS.first):null)||(GD.revive&&GD.revive[id]&&GD.revive[id][revived==='exec'?0:1])||(revived==='exec'?'……我記得。記得那天的天色，也記得是誰下的令。可星盤又把我拉了回來——這一次，你打算怎麼待我？':'流放路上的黑霧好冷……原來死過一次，還能再睜開眼睛。');hxPush(id,ln,revived==='exec'?`帶著前世記憶歸來・曾被你賜死 ${(S.dc&&S.dc[id])||1} 次`:'帶著前世記憶歸來');if(RS){if(st.wed&&RS.initMood){st.wed.md=RS.initMood}if(RS.rumor)feedPush(RS.rumor,'rum');setGrudge(id,10)}}
@@ -1041,7 +1050,7 @@ function closeSheet(){sheetLock=false;$('#sheet').classList.remove('on')}
 $('#sheet').onclick=e=>{if(e.target.id==='sheet'&&!sheetLock)closeSheet()};
 function sheetDlg(id,line,btn,cb){const h=H(id);sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(id)}.jpg)"></div><div><h3>${h.n}</h3><p style="margin-top:6px">「${line}」</p></div></div><button class="btn" id="dOk" style="width:100%">${btn||'知道了'}</button>`);$('#dOk').onclick=()=>{closeSheet();cb&&cb()}}
 function costHtml(w,s,extra=''){return`<div class="cost">花費：<b class="${S.wood<w?'no':''}">木 ${w}</b>・<b class="${S.stone<s?'no':''}">石 ${s}</b>${extra}</div>`}
-function bindView(){({children:()=>{$$("[data-kt]").forEach(b=>b.onclick=()=>kidTeach(...b.dataset.kt.split(":")))},harem:()=>{},map:bindMap,base:bindBase,hero:bindHero,lord:bindLord})[view]()}
+function bindView(){({children:()=>{bindSuccession();$$("[data-kt]").forEach(b=>b.onclick=()=>kidTeach(...b.dataset.kt.split(":")))},harem:()=>{},map:bindMap,base:bindBase,hero:bindHero,lord:bindLord})[view]()}
 
 /* ---------- MAP ---------- */
 const HR=21,HW=Math.sqrt(3)*HR;let MW=0,MH=0;const Z={s:1.7,tx:0,ty:0,init:0};
@@ -1053,21 +1062,22 @@ let ANIM=null;function animFrom(o,x,y){if(!ANIM||!ANIM[o.id])return'';const a=AN
 function mapView(){setTimeout(()=>{ANIM=null},50);
  updateSeen();
  const W=HW*COLS+HW/2+4,Hh=HR*1.5*(ROWS-1)+HR*2+4;
- let defs=[...Object.values(TERR).map(t=>t[1]),'o_mine','o_spring','o_camp','seat_qin','seat_xiongnu','seat_huangjin','hex_camp','hex_fort','hex_city'].filter((v,i,a)=>a.indexOf(v)===i).map(k=>`<pattern id="p-${k}" patternContentUnits="objectBoundingBox" width="1" height="1"><image href="img/${k}.jpg" x="-.22" y="-.22" width="1.44" height="1.44" preserveAspectRatio="xMidYMid slice"/></pattern>`).join('');
+ let defs='<clipPath id="tileShape"><polygon points="'+hpts(0,0)+'"/></clipPath>';
  const pics=new Set([...S.enemies.map(e=>e.img),...S.units.map(u=>u.gens[0]),...(S.pois||[]).map(p=>POIIMG[p.k])]);
  defs+=[...pics].map(k=>`<pattern id="u-${k}" patternContentUnits="objectBoundingBox" width="1" height="1"><image href="img/${k}.jpg" width="1" height="1.33" y="-.05" preserveAspectRatio="xMidYMin slice"/></pattern>`).join('');
  let g='';
  for(const row of S.tiles)for(const t of row){if(t.t==='X')continue;const[x,y]=hxy(t.r,t.c);const seen=t.seen,vis=visible(t);
   const isSel=sel&&sel.r===t.r&&sel.c===t.c;if(!seen){g+=`<g class="hex ${isSel?'on':''}" data-r="${t.r}" data-c="${t.c}" data-silent="1"><polygon points="${hpts(x,y)}" fill="#0a0a0f" stroke="#15151c" stroke-width=".6"/><polygon class="sel" points="${hpts(x,y)}"/></g>`;continue}const ex=canExpand(t);
-  g+=`<g class="hex ${isSel?'on':''} ${ex?'exp':''}" data-r="${t.r}" data-c="${t.c}" data-silent="1"><polygon points="${hpts(x,y)}" fill="url(#p-${t.city?(t.city>1?'hex_city':'hex_fort'):t.t==='B'&&inWorld()?'hex_camp':t.own&&t.out&&OIMG[t.out]?OIMG[t.out]:TERR[t.t][1]})" stroke="${t.own?'#e0bf74':'#0006'}" stroke-width="${t.own?1.8:.8}"/>`;
-  {const hk=typeof hexFillKeys==='function'?hexFillKeys(t):null,hf=hk&&typeof mapHexFill==='function'?mapHexFill(x,y,hk,t.r+'_'+t.c):'';if(hf){g+=hf;g+=`<polygon points="${hpts(x,y)}" fill="none" stroke="${t.own?'#e0bf74':'#0006'}" stroke-width="${t.own?1.8:.8}"/>`}}
+  const base=t.city?(t.city>1?'hex_city':'hex_fort'):t.t==='B'&&inWorld()?'hex_camp':t.own&&OIMG[t.out]?OIMG[t.out]:TERR[t.t][1];
+  const art=t.city?'':mapHexFill(x,y,hexFillKeys(t));
+  g+=`<g class="hex ${isSel?'on':''} ${ex?'exp':''}" data-r="${t.r}" data-c="${t.c}" data-silent="1">${art||tileImage(x,y,'img/'+base+'.jpg')}<polygon points="${hpts(x,y)}" fill="none" stroke="${t.own?'#e0bf74':'#0006'}" stroke-width="${t.own?1.8:.8}"/>`;
   if(t.own)g+=`<polygon class="owntint" points="${hpts(x,y)}"/>`;if(t.fac&&FD(t.fac))g+=`<polygon points="${hpts(x,y)}" fill="${FD(t.fac).color}" fill-opacity=".22" stroke="${FD(t.fac).color}" stroke-width="1.4" stroke-opacity=".8"/>`;
   if(t.city&&seen)g+=`<rect x="${x-16}" y="${y+7}" width="32" height="11" rx="3" fill="#1a1408d0" stroke="#ffd77a" stroke-width="1"/><text x="${x}" y="${y+15.5}" text-anchor="middle" font-size="8" font-weight="900" fill="#ffd77a" font-family="Noto Serif TC">${cityName(t)}</text>`;
- if(t.t==='K'){const fz=Object.values(S.facs).find(f=>f.seat.r===t.r&&f.seat.c===t.c),fd=fz&&FD(fz.id);const SI=fd&&fd.seatImg;if(SI)g+=`<polygon points="${hpts(x,y)}" fill="url(#p-${SI})" style="opacity:${fz.alive?1:.45}"/>`;g+=SI?`<rect x="${x-8}" y="${y+5}" width="16" height="13" rx="3" fill="#120c08d0" stroke="${fz.alive?fd.color:'#666'}" stroke-width="1.5"/>${mapGlyph(x,y+15,['fac_'+fz.id,'mark_'+fd.mark],fd.mark,{fontSize:10,fill:fz.alive?fd.color:'#888',size:14,cy:y+10})}`:`<rect x="${x-12}" y="${y-11}" width="24" height="22" rx="4" fill="#120c08" stroke="${fd&&fz.alive?fd.color:'#666'}" stroke-width="2"/>${mapGlyph(x,y+5,[fz&&fz.id?'fac_'+fz.id:null,fd?'mark_'+fd.mark:null,'mark_zhai'].filter(Boolean),fd?fd.mark:'寨',{fontSize:13,fill:fd&&fz.alive?fd.color:'#888',size:18,cy:y-2})}`}
+ if(t.t==='K'){const fz=Object.values(S.facs).find(f=>f.seat.r===t.r&&f.seat.c===t.c),fd=fz&&FD(fz.id);const SI=fd&&fd.seatImg;if(SI)g+=`<g opacity="${fz.alive?1:.45}">${tileImage(x,y,"img/"+SI+".jpg")}</g>`;g+=SI?`<rect x="${x-8}" y="${y+5}" width="16" height="13" rx="3" fill="#120c08d0" stroke="${fz.alive?fd.color:'#666'}" stroke-width="1.5"/>${mapGlyph(x,y+15,['fac_'+fz.id,'mark_'+fd.mark],fd.mark,{fontSize:10,fill:fz.alive?fd.color:'#888',size:14,cy:y+10})}`:`<rect x="${x-12}" y="${y-11}" width="24" height="22" rx="4" fill="#120c08" stroke="${fd&&fz.alive?fd.color:'#666'}" stroke-width="2"/>${mapGlyph(x,y+5,[fz&&fz.id?'fac_'+fz.id:null,fd?'mark_'+fd.mark:null,'mark_zhai'].filter(Boolean),fd?fd.mark:'寨',{fontSize:13,fill:fd&&fz.alive?fd.color:'#888',size:18,cy:y-2})}`}
   if(t.own&&!t.pol&&t.t!=='B'){const yt=yText(tileYield(t));if(yt)g+=`<text class="yl" x="${x}" y="${y+15}" text-anchor="middle">${yt}</text>`}
   if('IWVDT'.includes(t.t)&&seen&&!t.out&&!(typeof mapIcoHref==='function'&&mapIcoHref(['terr_'+t.t])))g+=`<circle cx="${x}" cy="${y-2}" r="8" fill="${'DT'.includes(t.t)?'#2a0a3a':'#10242a'}" stroke="${'DT'.includes(t.t)?'#d04aff':'#7fd0bd'}" stroke-width="1.5"/>${mapGlyph(x,y+2,'terr_'+t.t,{I:'礦',W:'泉',V:'村',D:'秘',T:'秘'}[t.t],{fontSize:9,fill:'#fff',size:16,cy:y-2})}`;
   if(t.pol&&seen)g+=`<polygon class="pol ${S.newPol.includes(t.r*COLS+t.c)?'new':''}" points="${hpts(x,y)}"/>`;if(t.own&&seen&&!t.pol&&typeof polGuard==='function'&&polGuard(t)&&!(typeof hexFillKeys==='function'&&typeof mapIcoHref==='function'&&mapIcoHref(hexFillKeys(t)||[])))g+=`<circle cx="${x}" cy="${y+11}" r="5" fill="#14352ad0" stroke="#7fd0bd" stroke-width="1"/>${mapGlyph(x,y+14,['mark_bi','mark_庇'],'庇',{fontSize:7,fill:'#9fe0d0',size:12,cy:y+10})}`;if(t.rebFid&&seen)g+=`${mapGlyph(x,y-12,['mark_fan','mark_叛'],'叛',{fontSize:9,fill:'#ffb39e',size:14,cy:y-16})}`;
-  if(t.out){const mil=!!MIL[t.out];if(!(typeof mapIcoHref==='function'&&mapIcoHref(['out_'+t.out])))g+=`<circle cx="${x}" cy="${y}" r="9" fill="${mil?'#1d0d0b':'#1a1408'}" stroke="${mil?'#e07a5f':'#e0bf74'}" stroke-width="1.5"/>${mapGlyph(x,y+4,['out_'+t.out,'mark_'+OD(t.out)[1]],OD(t.out)[1],{fontSize:11,fill:mil?'#ffb39e':'#f0d79a',size:16,cy:y-2})}`;for(let i=0;i<(t.olv||1);i++)g+=`<circle cx="${x-5+i*5}" cy="${y-12}" r="1.8" fill="#ffd77a"/>`}
+  if(t.out){const mil=!!MIL[t.out];if(!mapHexFill(x,y,['out_'+t.out]))g+=`<circle cx="${x}" cy="${y}" r="9" fill="${mil?'#1d0d0b':'#1a1408'}" stroke="${mil?'#e07a5f':'#e0bf74'}" stroke-width="1.5"/>${mapGlyph(x,y+4,['out_'+t.out,'mark_'+OD(t.out)[1]],OD(t.out)[1],{fontSize:11,fill:mil?'#ffb39e':'#f0d79a',size:16,cy:y-2})}`;for(let i=0;i<(t.olv||1);i++)g+=`<circle cx="${x-5+i*5}" cy="${y-12}" r="1.8" fill="#ffd77a"/>`}
   else if(t.own&&!t.pol&&t.t!=='B'&&!(t.t==='U'&&!t.looted))g+=`${mapGlyph(x,y-6,['expand'],'＋',{fontSize:10,fill:'#7fd0bd',size:12,cy:y-10})}`;
   if(t.t==='B'){const s=S.stage;if(!(typeof mapIcoHref==='function'&&mapIcoHref((S.cur&&S.cur!=='home')?['base_camp']:['base_'+s])))g+=`<circle cx="${x}" cy="${y}" r="${12+s}" fill="#1a1408" stroke="#f0d79a" stroke-width="2.5"/>${mapGlyph(x,y+5,S.cur&&S.cur!=='home'?['mark_ying','base_camp']:['base_'+s,'mark_'+'燈哨寨城'[s]],S.cur&&S.cur!=='home'?'營':'燈哨寨城'[s],{fontSize:13,fill:'#f0d79a',size:18,cy:y-2})}`}
   if(t.t==='C'&&seen){if(!(typeof mapIcoHref==='function'&&mapIcoHref(['mark_cheng','terr_C','tile_C'])))g+=`<rect x="${x-12}" y="${y-10}" width="24" height="20" rx="3" fill="${t.own?'#1a1408':'#2a0f1a'}" stroke="${t.own?'#f0d79a':'#c7a9ff'}"/>${mapGlyph(x,y+5,['mark_cheng','terr_C'],'城',{fontSize:13,fill:'#e8d6ff',size:18,cy:y-2})}`}
@@ -1110,12 +1120,12 @@ function tileInfo(){
    else if(t.city===1)h+=`<div style="flex:1 1 100%;margin-top:4px">${costHtml(250,250,'・晶核 2・行動 1')}・分城 ${cityTiles().filter(x=>x.city>1).length}/${cityCap()}（燈塔每升一階 +1）</div><button class="btn sm" id="tCity" style="background:linear-gradient(180deg,#ffd77a,#c08a2a);color:#1a1408">建為分城（駐守 ${typeof cityGarrMax==='function'?cityGarrMax({city:2}):3} 位、每旬產兵）</button>`;
    if(t.pb){const d=pbData(t.pb);if(d)h+=`<div class="small" style="flex:1 1 100%;color:var(--pink);margin-top:4px">🏯 ${d.n}${t.pb.startsWith('pb_')?'（'+H(t.pb.slice(3)).n+'的私人地方）':'（奇觀）'}</div>`}
    if(t.city)h+=`<div class="small" style="flex:1 1 100%;color:var(--gold2);margin-top:4px">【${cityName(t)}】${t.city>1?'分城':'堡寨'}・駐守：${(t.cg||[]).map(g=>H(g).n+'（'+FACN2[facOf(g)]+'）').join('、')||'無'}・被圍時可多撐 ${cityHold(t)} 旬</div><button class="btn sm" id="tGarr">派駐英雄</button><button class="btn sm" id="tBf">分城設施</button>`}}
- if(u){h+=`<button class="btn ghost sm" id="uTgt">${u.tgt?'改變目的地':'下達目的地'}</button><button class="btn ghost sm" id="uBack">撤回燈塔</button>`;if(S.blessed!==u.id)h+=`<button class="btn ghost sm" id="uBless">天運祝福（${T_('e3')?20:30}能量・1行動）</button>`}
+ if(u){h+=`<button class="btn ghost sm" id="uTgt">${u.tgt?'改變目的地':'下達目的地'}</button><button class="btn ghost sm" id="uBack">撤回出發據點</button>`;if(S.blessed!==u.id)h+=`<button class="btn ghost sm" id="uBless">天運祝福（${T_('e3')?20:30}能量・1行動）</button>`}
  if(!t.own||e||t.pol||(t.t==='U'&&!t.looted)||'DT'.includes(t.t)){if(t.t!=='B')h+=`<button class="btn red" id="tAtk">${e?'出征討伐':'DT'.includes(t.t)?'挑戰秘境':t.pol?'出征淨化':'派兵前往'}</button>`}
  h+=`</div></div>`;return h}
 let mapFrame=0;function applyZ(){if(mapFrame)return;mapFrame=requestAnimationFrame(()=>{mapFrame=0;const g=$('#mapg');if(g)g.setAttribute('transform',`translate(${Z.tx} ${Z.ty}) scale(${Z.s})`)})}
 function zoomAt(f,px,py){const ns=clamp(Z.s*f,.9,COLS/2.5);const k=ns/Z.s;Z.tx=px-(px-Z.tx)*k;Z.ty=py-(py-Z.ty)*k;Z.s=ns;applyZ()}
-function tapHex(r,c){if(mode&&mode.kind==='target'){const u=S.units.find(u=>u.id===mode.uid);if(u){u.tgt=(r===u.r&&c===u.c)?null:{r,c};sfx('drum');vib(15)}mode=null;sel={r,c};render();return}
+function tapHex(r,c){if(mode?.kind==='townMarch'){const origin=T(mode.r,mode.c);if(origin.r===r&&origin.c===c)return toast('請選另一格');mode=null;return formArmy(T(r,c),origin)}if(mode&&mode.kind==='target'){const u=S.units.find(u=>u.id===mode.uid);if(u){u.tgt=(r===u.r&&c===u.c)?null:{r,c};sfx('drum');vib(15)}mode=null;sel={r,c};render();return}
  sel={r,c};sfx('click');vib(6);render()}
 function bindMap(){if($('#wList'))$('#wList').onclick=()=>worldSheet();if($('#wCourt'))$('#wCourt').onclick=()=>courtView();if($('#wFac'))$('#wFac').onclick=()=>{sheet(`<h3>派系總覽</h3>${facView()}`);$$('#sheetIn [data-h]').forEach(b=>b.onclick=()=>{closeSheet();openHero(b.dataset.h)})};$$('[data-uloc]').forEach(b=>b.onclick=()=>{const u=S.units.find(x=>x.id===b.dataset.uloc);if(u)locate(S.cur||'home',u)});if($('#wForm'))$('#wForm').onclick=()=>formArmy({r:BASE.r,c:BASE.c});{const pg=$('#poiGo');if(pg)pg.onclick=()=>{if(S.ap<1){sfx('deny');return toast('本旬行動力用完了')}const p=(S.pois||[]).find(x=>x.id===pg.dataset.p);if(!p)return;S.ap--;poiInteract(p,null);tileEvents(()=>render())}}
  const box=$('#mapbox'),svg=$('#hexmap');if(box){const ptr=new Map();let moved=0,pinch=null,gestureRect=null;
@@ -1140,7 +1150,7 @@ function bindMap(){if($('#wList'))$('#wList').onclick=()=>worldSheet();if($('#wC
  if($('#tFort'))$('#tFort').onclick=()=>{if(S.ap<1||S.wood<120||S.stone<120){sfx('deny');return toast('資源或行動力不足')}S.ap--;S.wood-=120;S.stone-=120;t.city=1;const used=cityTiles().map(x=>x.cname);const nm=((GD.fac26&&GD.fac26.cities)||[['北望堡']]).map(x=>x[0]).find(n=>!used.includes(n))||'無名堡';t.cname=nm;t.cg=[];sfx('build');toast(`堡寨「${nm}」落成！`);render()};if($('#tCity'))$('#tCity').onclick=()=>{if(cityTiles().filter(x=>x.city>1).length>=cityCap()){sfx('deny');return toast('分城數已達上限，先提升燈塔階段')}if(S.ap<1||S.wood<250||S.stone<250||S.core<2){sfx('deny');return toast('資源、晶核或行動力不足')}S.ap--;S.wood-=250;S.stone-=250;S.core-=2;t.city=2;sfx('fanfare');celebrate('city_view','分城落成',t.cname,'可駐守 '+(typeof cityGarrMax==='function'?cityGarrMax({city:2}):3)+' 位英雄，每旬產兵 15；駐守者的派系勢力上升');render()};if($('#tGarr'))$('#tGarr').onclick=()=>cityGarr(t);if($('#tBf'))$('#tBf').onclick=()=>bfSheet(t);
  if($('#tUpO'))$('#tUpO').onclick=()=>{const o=OD(t.out),k=(t.olv||1)+1;if(S.ap<1||S.wood<o[2][0]*k||S.stone<o[2][1]*k){sfx('deny');return toast(S.ap<1?'本旬行動力用完了':'木材或石材不足')}S.ap--;S.wood-=o[2][0]*k;S.stone-=o[2][1]*k;t.olv=k;if(t.out==='camp')t.gar=150*k;sfx('build');vib([20,30,40]);burstAt($(`.hex[data-r="${t.r}"][data-c="${t.c}"]`),'#ffd77a',40);toast(`${o[0]} 升到 Lv${k}！`);render()};
  if($('#uTgt'))$('#uTgt').onclick=()=>{mode={kind:'target',uid:u.id};render()};
- if($('#uBack'))$('#uBack').onclick=()=>{u.tgt={...BASE};toast('部隊將撤回燈塔');render()};
+ if($('#uBack'))$('#uBack').onclick=()=>{u.tgt={r:armyHome(u).r,c:armyHome(u).c};toast('部隊將撤回出發據點');render()};
  if($('#uBless'))$('#uBless').onclick=()=>{const c=T_('e3')?20:30;if(S.ap<1||S.energy<c){sfx('deny');return toast('行動力或能量不足')}S.ap--;S.energy-=c;S.blessed=u.id;sfx('ssr');burstAt($('#uBless'),'#f0d79a',40);toast(`天運加身：下一場戰鬥傷害 +${T_('e3')?40:30}%`);render()};
  if($('#tAtk'))$('#tAtk').onclick=()=>pickForce({r:t.r,c:t.c});
 }
@@ -1156,26 +1166,54 @@ function pickForce(tgt){const fu=S.units.filter(u=>!(u.r===tgt.r&&u.c===tgt.c));
  <button class="btn red" id="pfNew" style="width:100%;margin-top:4px">從${inWorld()?'營地':'燈塔'}派出新部隊</button>`);
  $$('#sheetIn [data-u]').forEach(b=>b.onclick=()=>{const u=S.units.find(x=>x.id===b.dataset.u);u.tgt={...tgt};closeSheet();sfx('drum');vib(15);toast(`${H(u.gens[0]).n}的部隊改道前往，結束本旬後行軍`);sel={...tgt};render()});
  $('#pfNew').onclick=()=>formArmy(tgt)}
-function formArmy(tgt){if(inWorld()&&S.units.length>=4){sfx('deny');return toast('這個世界最多同時派出 4 支部隊')}
+function townStores(t){
+ return t.stock??={soldiers:0,food:0,wood:0,stone:0};
+}
+function garrisonOf(id){
+ const task=hs(id)?.task||'';if(!wed(id)?.pal&&!/^(city:|gar:|build:)[0-9]+_/.test(task))return BASE;
+ const place=activePlace(id);
+ return cityTiles().find(t=>t.city>1&&place===t.r+'_'+t.c)||BASE;
+}
+function armyHome(u){
+ return (!inWorld()&&cityTiles().find(t=>t.city>1&&u.origin===t.r+'_'+t.c))||BASE;
+}
+const treasury=t=>t===BASE?S:townStores(t);
+const policyNames={waiqi:'宮中籌糧',wuxun:'募兵',wenchen:'治糧',shanggu:'通商',qingliu:'安民'};
+function factionCouncil(add){
+ if(!S.order.length||S.t%3!==0||S.councilAt===S.t)return;
+ S.councilAt=S.t;const {sh}=facPow(),groups=FACK.filter(k=>facMem(k).length);
+ let roll=Math.random(),k=groups.find(k=>(roll-=sh[k])<=0)||groups[0];
+ if(!k)return;
+ const members=facMem(k),speaker=pick(members),n=4+2*members.length;
+ let change;
+ if(k==='wuxun'){S.soldiers+=n;change='主城兵力 +'+n}
+ else if(k==='shanggu'){S.wood+=n;S.stone+=n;change='主城木石各 +'+n}
+ else if(k==='qingliu'){const before=S.pol;S.pol=Math.max(0,before-2);S.food+=n;change='污染 −'+(before-S.pol)+'、糧 +'+n}
+ else{S.food+=n;change='主城糧 +'+n}
+ const msg=H(speaker).n+'代表'+FACN2[k]+'議決'+policyNames[k]+'，'+change;
+ (S.factionMinutes??={})[k]={t:S.t,msg};feedPush(msg);add('【派系議政】'+msg,'pos')
+}
+
+function formArmy(tgt,from){if(inWorld()&&S.units.length>=4){sfx('deny');return toast('這個世界最多同時派出 4 支部隊')}
  const avail=owned().filter(h=>!busyArmy(h.id)&&!unavail(h.id));
  if(!avail.length){sfx('deny');return toast('沒有可出征的武將')}
- if(!inWorld()&&S.soldiers<80){sfx('deny');return toast('兵力不足 80，請先讓武將「徵兵」')}
+
  const e=S.enemies.find(e=>e.r===tgt.r&&e.c===tgt.c);
- let origin=BASE;let sel2=[];
- const draw=()=>{const cap=inWorld()?capOf(sel2):Math.min(S.soldiers,capOf(sel2));const p=path(origin,tgt);const cost=p.reduce((a,t)=>a+TERR[t.t][2],0);const turns=sel2.length?Math.max(1,Math.ceil(cost/moveOf(sel2))):'-';
+ let origin=from||BASE;let sel2=[];
+ const draw=()=>{const cap=inWorld()?capOf(sel2):Math.min(treasury(origin).soldiers,capOf(sel2));const p=path(origin,tgt);const cost=p.reduce((a,t)=>a+TERR[t.t][2],0);const turns=sel2.length?Math.max(1,Math.ceil(cost/moveOf(sel2))):'-';
   const odds=e&&sel2.length?simulate(sel2,cap,{...e}):null;const food=sel2.length?Math.round(cap/25)*(turns==='-'?1:turns):0;
   const bs=activeBonds(sel2);
   sheet(`<h3>出征：${TERR[T(tgt.r,tgt.c).t][0]}${e?'・'+e.n:''}</h3><p class="small" style="margin:4px 0 8px">點選武將：第一位是主將（統率決定帶兵上限，<b>兵種也由主將決定</b>），最多再帶兩位副將。</p>${e?`<div class="sysline" style="margin-bottom:6px;display:flex;align-items:center;gap:6px"><img src="img/${TCI[ecls(e)]}.jpg" style="width:30px;height:30px;border-radius:6px"><span>敵軍兵種：<b>${TCN[ecls(e)][0]}</b>・${TCHINT(ecls(e))}<br><span class="small" style="color:var(--jade)">建議主將：${Object.keys(BEATS).find(k=>BEATS[k]===ecls(e))?TCN[Object.keys(BEATS).find(k=>BEATS[k]===ecls(e))][0]:'任意'}（克制 +20% 傷害）</span></span></div>`:''}${sel2.length?`<div class="sysline" style="margin-bottom:6px;display:flex;align-items:center;gap:6px"><img src="img/${TCI[tcls(sel2[0])]}.jpg" style="width:30px;height:30px;border-radius:6px"><span>本隊兵種：<b>${TCN[tcls(sel2[0])][0]}</b>・${TCHINT(tcls(sel2[0]))}<br><span class="small">${TCN[tcls(sel2[0])][1]}</span><br><span class="small" style="color:${tfOn(sel2[0])?'var(--jade)':'var(--dim)'}">特色部隊【${H(sel2[0]).troop}】${tfOn(sel2[0])?'已編成：'+tfText(sel2[0]):'未編成（武將面板可組建，效果 '+tfText(sel2[0])+'）'}</span><br><span class="small" style="color:var(--gold2)">訓練度 ${S.train}／100：全軍傷害 +${Math.round(S.train/1.4)}%${hasFac('barracks')?`・兵營 Lv${facLv('barracks')}：特色部隊效果 ×${tfMul().toFixed(2)}`:''}</span><span>${wxNow()[0]!=='晴'?`・天氣${wxNow()[0]}：${wxNow()[2]}`:''}</span></span></div>`:''}
   ${!inWorld()&&cityTiles().some(t=>t.city>1)?`<label>出發據點 <select id="originSelect">${[BASE,...cityTiles().filter(t=>t.city>1)].map(t=>`<option value="${t.r}_${t.c}" ${t===origin?'selected':''}>${t===BASE?'主城':cityName(t)}</option>`).join('')}</select></label>`:''}
-  ${avail.map(h=>{const i=sel2.indexOf(h.id),task=hs(h.id).task;return`<button class="opt ${i>=0?'on':''}" data-h="${h.id}"><span class="pic" style="background-image:url(img/${h.id}.jpg)"></span><span class="t"><b>${i===0?'【主將】':i>0?'【副將】':''}${h.n}</b> <img src="img/${TCI[tcls(h.id)]}.jpg" style="width:16px;height:16px;border-radius:50%;vertical-align:-3px"><span class="small" style="color:${e?(BEATS[tcls(h.id)]===ecls(e)?'var(--jade)':BEATS[ecls(e)]===tcls(h.id)?'var(--blood)':'#cdbf9f'):'#cdbf9f'}">${TCN[tcls(h.id)][0]}${e?(BEATS[tcls(h.id)]===ecls(e)?'・克制敵軍':BEATS[ecls(e)]===tcls(h.id)?'・被敵軍克制':''):''}</span><div>統 ${stat(h.id,'cmd')}・武 ${stat(h.id,'str')}・智 ${stat(h.id,'int')}・${skills(h.id).inn[0]}</div><div>${task==='idle'?'':'目前：'+taskName(task)}</div></span></button>`}).join('')}
+  ${avail.filter(h=>inWorld()?garrisonOf(h.id)===BASE:garrisonOf(h.id)===origin).map(h=>{const i=sel2.indexOf(h.id),task=hs(h.id).task;return`<button class="opt ${i>=0?'on':''}" data-h="${h.id}"><span class="pic" style="background-image:url(img/${h.id}.jpg)"></span><span class="t"><b>${i===0?'【主將】':i>0?'【副將】':''}${h.n}</b> <img src="img/${TCI[tcls(h.id)]}.jpg" style="width:16px;height:16px;border-radius:50%;vertical-align:-3px"><span class="small" style="color:${e?(BEATS[tcls(h.id)]===ecls(e)?'var(--jade)':BEATS[ecls(e)]===tcls(h.id)?'var(--blood)':'#cdbf9f'):'#cdbf9f'}">${TCN[tcls(h.id)][0]}${e?(BEATS[tcls(h.id)]===ecls(e)?'・克制敵軍':BEATS[ecls(e)]===tcls(h.id)?'・被敵軍克制':''):''}</span><div>統 ${stat(h.id,'cmd')}・武 ${stat(h.id,'str')}・智 ${stat(h.id,'int')}・${skills(h.id).inn[0]}</div><div>${task==='idle'?'':'目前：'+taskName(task)}</div></span></button>`}).join('')}
   ${bs.length?`<div class="meta">${bs.map(b=>`<span class="chip p">羈絆・${b[1]}：${b[2]}</span>`).join('')}</div>`:''}
-  <div class="sum"><div><span>帶兵</span><span>${cap}${inWorld()?'（本地義軍補足，不耗燈塔士兵）':`（燈塔現有 ${S.soldiers}）`}</span></div><div><span>預計行軍</span><span>${turns} 旬</span></div><div><span>軍糧</span><span>約 ${food}</span></div></div>
+  <div class="sum"><div><span>帶兵</span><span>${cap}${inWorld()?'（本地義軍補足，不耗燈塔士兵）':`（${origin===BASE?"主城":cityName(origin)}現有 ${treasury(origin).soldiers}，至少 80 可派兵）`}</span></div><div><span>預計行軍</span><span>${turns} 旬</span></div><div><span>軍糧</span><span>約 ${food}</span></div></div>
   ${odds!==null?`<div class="odds"><span class="small">預估勝率</span><span class="meter"><i style="width:${odds*100}%"></i></span><b style="color:${odds>.7?'var(--jade)':odds>.4?'var(--gold2)':'var(--blood)'}">${Math.round(odds*100)}%</b></div>`:''}
-  <button class="btn red" id="goArmy" style="width:100%" ${sel2.length?'':'disabled'}>出陣</button>`);
+  <button class="btn red" id="goArmy" style="width:100%" ${sel2.length&&(inWorld()||cap>=80)?'':'disabled'}>出陣</button>`);
   $$('#sheetIn .opt').forEach(o=>o.onclick=()=>{const id=o.dataset.h,i=sel2.indexOf(id);if(i>=0)sel2.splice(i,1);else if(sel2.length<3)sel2.push(id);draw()});
-  if($('#originSelect'))$('#originSelect').onchange=e=>{const [r,c]=e.target.value.split('_').map(Number);origin=(r===BASE.r&&c===BASE.c)?BASE:T(r,c);draw()};
-  $('#goArmy').onclick=()=>{if(!inWorld())S.soldiers-=cap;sel2.forEach(id=>setTask(id,'army'));
-   const u={id:'u'+S.uid++,gens:[...sel2],troops:cap,max:cap,r:origin.r,c:origin.c,tgt:(tgt.r===origin.r&&tgt.c===origin.c)?null:{...tgt}};S.units.push(u);closeSheet();sfx('drum');setTimeout(()=>sfx('drum'),180);vib([20,30,20]);
+  if($('#originSelect'))$('#originSelect').onchange=e=>{const [r,c]=e.target.value.split('_').map(Number);origin=(r===BASE.r&&c===BASE.c)?BASE:T(r,c);sel2=[];draw()};
+  $('#goArmy').onclick=()=>{if(!inWorld()){if(cap<80||treasury(origin).soldiers<cap)return;treasury(origin).soldiers-=cap}sel2.forEach(id=>setTask(id,'army'));
+   const u={id:'u'+S.uid++,origin:origin===BASE?null:origin.r+"_"+origin.c,gens:[...sel2],troops:cap,max:cap,r:origin.r,c:origin.c,tgt:(tgt.r===origin.r&&tgt.c===origin.c)?null:{...tgt}};S.units.push(u);closeSheet();sfx('drum');setTimeout(()=>sfx('drum'),180);vib([20,30,20]);
    sel={...tgt};render();toast(`出陣！預計 ${turns} 旬後抵達。結束本旬後部隊會自動行軍`);if(!inWorld()&&tgt.r===CITY.r&&tgt.c===CITY.c&&!S.eve){S.eve=1;setTimeout(()=>scene('eve',()=>{go('game');render()}),600)}}};
  draw()}
 
@@ -1252,7 +1290,7 @@ function heroView(){
  const UW=unitsByWorld(),inArmy=new Set(UW.flatMap(([w,u])=>u.gens));
  const face2=id=>`<span style="width:34px;height:44px;border-radius:5px;background:url(img/${face(id)}.jpg) center 12%/cover;display:inline-block;flex:none;border:1px solid #c9a24a55"></span>`;
  const duty=id=>{const st=hs(id);return st.wed&&st.wed.duty&&DUTY[H(id).sex][st.wed.duty]?`<span class="chip p" style="margin-left:4px">${DUTY[H(id).sex][st.wed.duty][0]}</span>`:''};
- const hrow=(id,txt,col)=>`<button class="opt frame" data-h="${id}" style="margin-bottom:5px;padding:5px 8px;align-items:center">${face2(id)}<span class="t"><b>${H(id).n}</b> <span class="small">Lv${lvOf(id)}・${H(id).r}・${TCN[tcls(id)][0]}</span>${duty(id)}<div class="small" style="color:${col||'#cdbf9f'}">${txt}</div></span></button>`;
+ const hrow=(id,txt,col)=>`<button class="opt frame" data-h="${id}" style="margin-bottom:5px;padding:5px 8px;align-items:center">${face2(id)}<span class="t"><b>${H(id).n}</b> <span class="small">Lv${lvOf(id)}・${H(id).r}・${TCN[tcls(id)][0]}</span>${duty(id)}<div class="small" style="color:${col||'#cdbf9f'}">${txt}</div>${hs(id).lastAction?'<div class="small">第 '+hs(id).acted+' 旬・'+hs(id).lastAction+'</div>':''}</span></button>`;
  const armies=UW.map(([w,u])=>{const eta=u.tgt?(()=>{if(w!==(S.cur||'home'))return'';const p=path(u,u.tgt);const c=p.reduce((a,t)=>a+TERR[t.t][2],0);return`・約 ${Math.max(1,Math.ceil(c/moveOf(u.gens)))} 旬抵達`})():'';
   return`<div class="opt frame" style="margin-bottom:6px;padding:6px 8px;display:block"><div style="display:flex;gap:4px;align-items:center">${u.gens.map(face2).join('')}<span class="t" style="margin-left:4px"><b>${u.gens.map(g=>H(g).n).join('、')}</b> <img src="img/${TCI[tcls(u.gens[0])]}.jpg" style="width:16px;height:16px;border-radius:50%;vertical-align:-3px"><span class="small">${TCN[tcls(u.gens[0])][0]}</span><div class="small">兵 ${u.troops}/${u.max}・${w==='home'?'':'<span style="color:#ffb39e">遠征・'+wName(w)+'</span>・'}${tTer(w,u.r,u.c)} (${u.c},${u.r})</div><div class="small" style="color:${u.tgt?'var(--gold2)':'var(--jade)'}">${u.tgt?`行軍中 → (${u.tgt.c},${u.tgt.r})${eta}`:'原地駐守'}</div></span></div><div style="display:flex;gap:6px;margin-top:5px"><button class="btn sm" data-loc="${w}|${u.id}" style="flex:1">在地圖上定位</button>${w===(S.cur||'home')?`<button class="btn ghost sm" data-back="${u.id}" style="flex:1">撤回${w==='home'?'燈塔':'營地'}</button>`:''}</div></div>`}).join('');
  const stL=S.order.filter(id=>hst(id)),goneL=Object.entries(S.gone||{});const busyIn=S.order.filter(id=>!inArmy.has(id)&&hs(id).task!=='idle'&&!hst(id)),idleL=S.order.filter(id=>!inArmy.has(id)&&hs(id).task==='idle'&&!unavail(id));
@@ -1265,7 +1303,7 @@ function heroView(){
  ${busyIn.length?`<div class="small" style="color:var(--gold2);margin:8px 0 4px">內政・駐紮</div>${busyIn.map(id=>hrow(id,`燈塔・${taskName(hs(id).task)}`)).join('')}`:''}</div>`}
 function bindHero(){$$('.hcard,[data-h].opt').forEach(b=>b.onclick=()=>openHero(b.dataset.h));$$('[data-hv]').forEach(b=>b.onclick=()=>{S.hvMode=b.dataset.hv;sfx('tab');render()});$$('[data-rf]').forEach(b=>b.onclick=()=>{S.roleF=b.dataset.rf;sfx('tab');render()});$$('[data-recall]').forEach(b=>b.onclick=()=>recallExile(b.dataset.recall));if($('#autoAll'))$('#autoAll').onclick=()=>{S.autoAll=!S.autoAll;sfx('tab');toast(S.autoAll?'全員自治：英雄會自己主掌設施、駐守分城、做擅長的事（可在個人面板單獨關閉）':'已關閉全員自治');render()};if($('#rvCourt'))$('#rvCourt').onclick=()=>courtView();
  $$('[data-loc]').forEach(b=>b.onclick=()=>{const[w,id]=b.dataset.loc.split('|');const x=unitsByWorld().find(([w2,u])=>w2===w&&u.id===id);if(x)locate(w,x[1])});
- $$('[data-back]').forEach(b=>b.onclick=()=>{const u=S.units.find(x=>x.id===b.dataset.back);if(u){u.tgt={r:BASE.r,c:BASE.c};toast('部隊將撤回，結束本旬後行軍');render()}})}
+ $$('[data-back]').forEach(b=>b.onclick=()=>{const u=S.units.find(x=>x.id===b.dataset.back);if(u){u.tgt={r:armyHome(u).r,c:armyHome(u).c};toast('部隊將撤回，結束本旬後行軍');render()}})}
 const recruitAmt=id=>Math.round((40+(stat(id,'str')+stat(id,'cha'))/2.2)*(hasFac('barracks')?1+facVal(slotsOf('barracks')[0])/100:1));
 const gatherAmt=id=>Math.round(8+stat(id,'pol')/6);
 const popCost=n=>Math.round(n/6);
@@ -1342,7 +1380,82 @@ function lordTabs(h){const parts=h.split('<div class="sec">');const pre=parts.sh
  const badge=k=>k==='後宮'&&spouses().some(x=>wed(x).iaT!==S.t)?'<i class="dot"></i>':k==='天賦'&&S.talent>0?'<i class="dot"></i>':'';
  return`<div class="ltabs">${LTAB.map(([k])=>`<button class="${k===cur?'on':''}" data-lt="${k}">${k}${badge(k)}</button>`).join('')}</div>${pre}${secs}`}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-lt]');if(!b)return;S.lordTab=b.dataset.lt;sfx('tab');render();$('#view').scrollTop=0});
-function childrenView(){const pending=spouses().filter(id=>wed(id).preg);const pregnancies=pending.map(id=>H(id).n+'（'+Math.max(0,wed(id).preg-S.t)+' 旬後生產）').join('、');return (pregnancies?'<div class="sec">有孕：'+pregnancies+'</div>':'')+( (S.kids||[]).length?`<div class="sec"><div class="orn">子嗣</div>${S.kids.map(k=>`<div class="opt frame" style="margin-bottom:6px"><span class="pic" style="background-image:url(img/kid_${k.sex}.jpg)"></span><span class="t"><b>${k.n}</b> <span class="small">${k.sex==='m'?'公子':'千金'}・母親 ${H(k.mom).n}・${kidStage(k)}${k.adult?'（已加入麾下）':`（${24-kidAge(k)} 旬後成年）`}</span><div class="small">習文 ${k.wen||0}・習武 ${k.wu||0}</div>${k.adult?'':`<div style="display:flex;gap:6px;margin-top:4px"><button class="btn ghost sm" data-kt="${k.id}:wen">習文（1 行動）</button><button class="btn ghost sm" data-kt="${k.id}:wu">習武（1 行動）</button></div>`}</span></div>`).join('')}<p class="tip">孩子成年時會依教養方向成為內政或對外英靈，能力承襲母親。</p></div>`:'<div class="sec"><div class="orn">子嗣</div>目前尚無子嗣。</div>')}
+function successionKids(){
+ return (S.kids||[]).filter(k=>!k.adult||S.order.includes(k.id));
+}
+function courtSupport(k){
+ return S.order.filter(id=>S.endorsements?.[id]===k.id);
+}
+function eligibleTutors(k){
+ return S.order.filter(id=>id!==k.id&&!unavail(id)&&!heroWhere(id));
+}
+function successionView(){
+ const kids=successionKids();
+ if(!kids.length)return '';
+ const heir=kids.find(k=>k.id===S.crown);
+ const towns=cityTiles().filter(t=>t.city>1);
+ const files=S.petition;
+ return '<div class="sec" data-nodyn><div class="orn">東宮・太子與教養</div><p>儲位：'+(heir?(heir.sex==='m'?'太子 ':'皇太女 ')+heir.n:'虛位以待')+'</p>'+
+ (files?'<p>'+H(files.by).n+'指控'+(kids.find(k=>k.id===files.target)?.n||'候選人')+'冒領功績。</p><button class="btn sm" data-invest>調查奏章（1 行動）</button>':'')+
+ kids.map(k=>{
+ const mentors=eligibleTutors(k),isHeir=k.id===S.crown;
+ const names=courtSupport(k).map(id=>H(id).n);
+ return '<div class="frame" style="padding:10px;margin-top:8px"><b>'+k.n+'</b>・生母 '+H(k.mom).n+'<p class="small">習文 '+(k.wen||0)+'・習武 '+(k.wu||0)+'・功績 '+(k.merit||0)+'・聲望 '+(k.esteem||0)+'<br>支持者：'+(names.join('、')||'尚無表態')+'</p>'+
+ (isHeir?'已立為儲君':'<button class="btn sm" data-crown="'+k.id+'">'+(heir?'改立':'冊立')+'</button>')+
+ (!k.adult&&mentors.length?'<div>師承 <select aria-label="選擇老師" data-tutor="'+k.id+'"><option value="">尚未拜師</option>'+mentors.map(id=>'<option value="'+id+'" '+(id===k.tutor?'selected':'')+'>'+H(id).n+'・'+(H(id).pool==='對外'?'武':'文')+'</option>').join('')+'</select></div>':'')+
+ (kidAge(k)>=12&&towns.length?'<div>分城 <select aria-label="選擇分城" data-at="'+k.id+'">'+towns.map(t=>'<option value="'+t.r+'_'+t.c+'">'+cityName(t)+'</option>').join('')+'</select> '+['wen','wu'].map(track=>'<button class="btn ghost sm" data-practice="'+k.id+':'+track+'">'+(isHeir?'監國・':'歷練・')+(track==='wen'?'督糧':'巡防')+'</button>').join('')+'</div>':'')+'</div>';
+ }).join('')+'<p class="tip">老師每三旬授課一次。滿 12 旬可赴分城歷練，每旬一次，消耗 1 行動。儲君監國的收益加倍。</p></div>';
+}
+function courtRecord(msg){
+ feedPush('【東宮】'+msg);toast(msg);save();render();
+}
+function bindSuccession(){
+ $$('[data-crown]').forEach(b=>b.onclick=()=>{
+ const k=successionKids().find(k=>k.id===b.dataset.crown);
+ if(!k||S.crown===k.id)return;
+ sheet('<h3>冊立'+k.n+'為儲君？</h3><p>改立會降低原儲君支持者的好感。</p><button class="btn" id="confirmCrown">頒布詔書</button>');
+ $('#confirmCrown').onclick=()=>{const old=successionKids().find(k=>k.id===S.crown);
+ if(old)for(const id of new Set([old.mom,...courtSupport(old)])){if(S.order.includes(id)&&id!==k.mom){gainAff(id,-8);relAdd(id,k.mom,-12);setGrudge(id,5)}}
+ S.crown=k.id;if(S.order.includes(k.mom))gainAff(k.mom,5);closeSheet();courtRecord('冊立'+k.n+'為儲君。')};
+ });
+ $$('[data-tutor]').forEach(b=>b.onchange=()=>{const k=successionKids().find(k=>k.id===b.dataset.tutor);if(!k||k.adult||b.value&&!eligibleTutors(k).includes(b.value))return;k.tutor=b.value;k.lessonAt=S.t+3;courtRecord(b.value?k.n+'拜'+H(b.value).n+'為師。':k.n+'暫停師承。')});
+ $$('[data-practice]').forEach(b=>b.onclick=()=>{
+ const [id,track]=b.dataset.practice.split(':'),k=successionKids().find(k=>k.id===id),loc=$('[data-at="'+id+'"]').value;
+ const town=cityTiles().find(t=>t.city>1&&t.r+'_'+t.c===loc);
+ if(!k||!town||kidAge(k)<12)return;
+ if(k.adult&&(unavail(id)||heroWhere(id)))return toast('人在外或無法履職。');
+ if(!S.ap||k.practiced===S.t)return toast('需要 1 行動，且每人每旬只能歷練一次。');
+ const amount=(3+Math.min(9,k[track]||0))*(S.crown===id?2:1);
+ if(track==='wu'&&(town.dur??100)>=(town.durMax??100))return toast('城防已滿，可改為督糧。');
+ S.ap--;k.practiced=S.t;k.merit=(k.merit||0)+1;k.esteem=(k.esteem||0)+1;
+ let outcome;if(track==='wen'){townStores(town).food+=amount;outcome='督糧，糧食 +'+amount}else{const before=town.dur??100;town.dur=Math.min(town.durMax??100,before+amount);outcome='巡防，城防 +'+(town.dur-before)}
+ courtRecord(k.n+'赴'+cityName(town)+outcome+'，功績 +1。')
+ });
+ const investigate=$('[data-invest]');if(investigate)investigate.onclick=()=>{
+ const p=S.petition;if(!p||!S.ap)return toast('調查需要 1 行動。');S.ap--;S.petition=null;
+ const k=successionKids().find(k=>k.id===p.target);if(k){k.esteem=(k.esteem||0)+3;relAdd(p.by,k.mom,-15);if(S.order.includes(p.by))gainAff(p.by,-6);if(S.order.includes(k.mom))(S.endorsements??={})[k.mom]=k.id}
+ courtRecord('查明指控失實，撤回奏章。')};
+}
+function successionTurn(add){
+ const kids=successionKids();if(!kids.length||S.courtTick===S.t)return;S.courtTick=S.t;
+ for(const k of kids){if(k.adult||!k.tutor||S.t<k.lessonAt||!eligibleTutors(k).includes(k.tutor))continue;
+ const track=H(k.tutor).pool==='對外'?'wu':'wen';k[track]=(k[track]||0)+1;k.lessonAt=S.t+3;add('【授課】'+H(k.tutor).n+'指導'+k.n+'，'+(track==='wen'?'習文':'習武')+' +1。','pos')}
+ const women=S.order.filter(id=>H(id).sex==='f'&&!id.startsWith('kid'));
+ if(!women.length||Math.random()>(kids.length>1?.55:.25))return;
+ const by=pick(women),own=kids.filter(k=>k.mom===by),score=k=>(k.merit||0)*2+(k.esteem||0)+relG(by,k.mom)/4;
+ const k=pick(own.length?own:kids.filter(x=>score(x)===Math.max(...kids.map(score))));
+ const rivals=kids.filter(x=>x.mom!==k.mom);let msg;
+ const endorsements=S.endorsements??={};endorsements[by]=k.id;
+ if(rivals.length&&!S.petition&&(cT(by)>=45||ntagAll(by).includes('善妒'))&&Math.random()<.65){
+ const target=pick(rivals);S.petition={by,target:target.id};target.esteem=(target.esteem||0)-3;relAdd(by,target.mom,-8);msg='指控'+target.n+'冒領功績，對方聲望 −3。可在子嗣頁查案。'
+ }else if(!k.adult&&S.food>=8&&(cH(by)>=35||Math.random()<.35)){
+ S.food-=8;const track=H(by).pool==='對外'?'wu':'wen';k[track]=(k[track]||0)+1;msg='動用庫糧 8 延師，'+k.n+(track==='wen'?'習文':'習武')+' +1。'
+ }else{const allies=S.order.filter(id=>id!==by&&!id.startsWith('kid')&&endorsements[id]!==k.id&&relG(by,id)>=0);
+ if(allies.length){const ally=pick(allies);endorsements[ally]=k.id;msg='說動'+H(ally).n+'支持'+k.n+'。'}else msg='公開聲援'+k.n+'。';k.esteem=(k.esteem||0)+1}
+ const line='【爭儲】'+H(by).n+msg;feedPush(line);add(line,'');
+}
+
+function childrenView(){const pending=spouses().filter(id=>wed(id).preg);const pregnancies=pending.map(id=>H(id).n+'（'+Math.max(0,wed(id).preg-S.t)+' 旬後生產）').join('、');return successionView()+(pregnancies?'<div class="sec">有孕：'+pregnancies+'</div>':'')+( (S.kids||[]).length?`<div class="sec"><div class="orn">子嗣</div>${S.kids.map(k=>`<div class="opt frame" style="margin-bottom:6px"><span class="pic" style="background-image:url(img/kid_${k.sex}.jpg)"></span><span class="t"><b>${k.n}</b> <span class="small">${k.sex==='m'?'公子':'千金'}・母親 ${H(k.mom).n}・${kidStage(k)}${k.adult?'（已加入麾下）':`（${24-kidAge(k)} 旬後成年）`}</span><div class="small">習文 ${k.wen||0}・習武 ${k.wu||0}</div>${k.adult?'':`<div style="display:flex;gap:6px;margin-top:4px"><button class="btn ghost sm" data-kt="${k.id}:wen">習文（1 行動）</button><button class="btn ghost sm" data-kt="${k.id}:wu">習武（1 行動）</button></div>`}</span></div>`).join('')}<p class="tip">孩子成年時會依教養方向成為內政或對外英靈，能力承襲母親。</p></div>`:'<div class="sec"><div class="orn">子嗣</div>目前尚無子嗣。</div>')}
 function lordView(){
  return`<div class="sec"><div class="orn">天運者</div><p class="tip">你不上戰場。行動力用來擴張、建外部設施、談心、祝福部隊。好感越高忠誠越高；女性英靈到「誓約」可締結婚姻（需後宮殿閣），男性英靈結為生死之交。</p>${S.order.filter(canVow).length?`<div class="sysline" style="margin:6px 0">💍 可以誓約：${S.order.filter(canVow).map(id=>`<button class="btn sm" data-vow="${id}" style="margin:4px 4px 0 0">${H(id).n}・${vowLabel(id)}</button>`).join('')}${S.order.filter(canVow).some(id=>!vowReady(id))?'<div class="small">（女性英靈需先蓋後宮殿閣）</div>':''}</div>`:''}
  <div class="kpi"><div class="frame">行動力<b>${S.ap}/${maxAP()}</b></div><div class="frame">能量<b>${S.energy}</b></div><div class="frame">天賦點<b>${S.talent}</b></div><div class="frame">晶核<b>${S.core}</b></div></div>
@@ -1545,10 +1658,10 @@ const HACT={
  練兵:{w:id=>MARTIAL.includes(id)?28:0,f:(id,P,add)=>{S.soldiers+=20;S.train=Math.min(100,S.train+3);P.inf=Math.min(100,P.inf+3);return'自掏月例操練了一隊親兵（兵力 +20、訓練度 +3）'}},
  祈福:{w:(id,P)=>jt(id)==='大度'?30:10,f:(id,P,add)=>{S.order.forEach(x=>gainAff(x,1));return'在星盤前為燈塔祈福，人心稍定（全體好感 +1）'}},
  調停:{w:id=>jt(id)==='大度'?25:0,f:(id,P,add)=>{const f=spouses().filter(x=>hp(x).foe);if(!f.length)return null;const x=pick(f);hp(x).foe=null;return`替${H(x).n}化解了一場心結`}}};
-function hxAct(id,k,txt){if((S.hxN||0)>=2)return;S.hxN=(S.hxN||0)+1;const L=GD.hact&&GD.hact[id]&&GD.hact[id][k];hxPush(id,(L&&L.length?pick(L).replace(/\{b\}/g,'她')+'\n':'')+'——'+txt,'後宮動向・'+k)}
+function hxAct(id,k,txt){if((S.hxN||0)>=4)return;S.hxN=(S.hxN||0)+1;const L=GD.hact&&GD.hact[id]&&GD.hact[id][k];hxPush(id,(L&&L.length?pick(L).replace(/\{b\}/g,'她')+'\n':'')+'——'+txt,'後宮動向・'+k)}
 function harAppoint(id){const P=hp(id),fk=facOf(id);const cand=[P.patron,...facMem(fk)].filter(x=>x&&S.order.includes(x)&&!unavail(x)&&!offOf(x)&&x!==id);if(!cand.length)return null;const tgt=OFF.filter(o=>{const h0=S.off&&S.off[o[0]];return!h0||!S.order.includes(h0)||facOf(h0)!==fk}).sort(()=>Math.random()-.5)[0];if(!tgt)return null;const x=cand.sort((a,b)=>stat(b,tgt[2])-stat(a,tgt[2]))[0];const prev=S.off&&S.off[tgt[0]];setOff(tgt[0],x,true);hxAct(id,'爭權',`${H(id).n}繞過你，擅自任命${H(x).n}為${tgt[1]}${prev&&S.order.includes(prev)?`（原任${H(prev).n}被撤換）`:''}`);return`擅自任命${H(x).n}為${tgt[1]}，外戚權勢更盛`}
 function haremAI(add){const sp=spouses().filter(id=>!['jail'].includes(hst(id)));if(sp.length<2)return;
- sp.forEach(id=>{if(Math.random()>(T_('h1')?.26:.35))return;const P=hp(id);const MW0=MOODW[mood(id)]||{};const ent=Object.entries(HACT).map(([k,a])=>[k,(T_('h7a')&&(k==='進讒'||k==='收買')?0:a.w(id,P))*(MW0[k]||1)]).filter(x=>x[1]>0);let r=Math.random()*ent.reduce((a,x)=>a+x[1],0),k=ent[0][0];for(const[kk,w] of ent){r-=w;if(r<=0){k=kk;break}}
+ sp.forEach(id=>{if(Math.random()>(T_('h1')?.45:.60))return;const P=hp(id);const MW0=MOODW[mood(id)]||{};const ent=Object.entries(HACT).map(([k,a])=>[k,(T_('h7a')&&(k==='進讒'||k==='收買')?0:a.w(id,P))*(MW0[k]||1)]).filter(x=>x[1]>0);let r=Math.random()*ent.reduce((a,x)=>a+x[1],0),k=ent[0][0];for(const[kk,w] of ent){r-=w;if(r<=0){k=kk;break}}
   const L=(k==='干政'&&GD.meddle&&GD.meddle[id])||(GD.hact&&GD.hact[id]&&GD.hact[id][k]);const txt=HACT[k].f(id,P,add);const WN=GD.hwin&&GD.hwin[id]&&GD.hwin[id][k];if(txt)add(`【後宮動向・${k}】${H(id).n}${L&&L.length?`：「${PHX(pick(L).replace(/\{b\}/g,P.foe&&S.heroes[P.foe]?H(P.foe).n:'她'))}」<br>`:''}${txt}${WN?`<br>${H(id).n}：「${WN}」`:''}`,k==='進讒'||k==='收買'?'neg':'')});
  sp.forEach(id=>{const P=hp(id);if(P.inf>=80&&P.amb>=60&&mother()!==id&&!S.haremEv&&!S.pwrEv)S.pwrEv=id;if(P.foe&&spouses().includes(P.foe)&&Math.random()<.12&&!S.haremEv)S.haremEv={k:'foe',a:id,b:P.foe}})}
 function powerEvent(cb){const id=S.pwrEv;S.pwrEv=null;if(!id||!S.order.includes(id)||!wed(id))return cb();const P=hp(id),m=mother(),h=H(id);const L=GD.hpow&&GD.hpow[id];
@@ -1580,7 +1693,7 @@ const facOf=id=>{const raw=(S.facOv&&S.facOv[id])||(GD.fac26&&GD.fac26.mem[id]&&
 function facPow(){const p={};FACK.forEach(k=>p[k]=Math.max(0,(S.fp&&S.fp[k])||0));S.order.forEach(id=>{p[facOf(id)]+=10+hs(id).star*2});cityTiles().forEach(t=>(t.cg||[]).forEach(g=>{if(S.order.includes(g))p[facOf(g)]+=t.city*8}));Object.values(S.off||{}).forEach(g=>{if(S.order.includes(g))p[facOf(g)]+=12});spouses().forEach(x=>{p[facOf(x)]+=Math.round(hp(x).inf/5)});if(mother())p.waiqi+=20;const tot=FACK.reduce((a,k)=>a+(Number(p[k])||0),0)||1;const sh={};FACK.forEach(k=>sh[k]=(Number(p[k])||0)/tot);return{p,sh}}
 const facMem=k=>S.order.filter(id=>facOf(id)===k);
 function facTurn2(add){if(inWorld()||S.order.length<4)return;S.fd=S.fd||{};const{sh}=facPow();FACK.forEach(k=>{const m=facMem(k);if(!m.length){S.fd[k]=0;return}if(sh[k]<.12&&m.length>=2)S.fd[k]=(S.fd[k]||0)+3;else if(sh[k]>.3)S.fd[k]=Math.max(0,(S.fd[k]||0)-2);
-  if(S.fd[k]>=60&&!S.facEv){S.facEv={k,dis:true}}if(sh[k]>.4&&m.length>=3&&Math.random()<.18&&!S.facEv)S.facEv={k,pow:true}});if(!S.facEv&&Math.random()<.1&&GD.fac26)S.facEv={rand:true}}
+  if(S.fd[k]>=60&&!S.facEv){S.facEv={k,dis:true}}if(sh[k]>.4&&m.length>=3&&Math.random()<.32&&!S.facEv)S.facEv={k,pow:true}});if(!S.facEv&&Math.random()<.1&&GD.fac26)S.facEv={rand:true}}
 function facApply(o){if(o.fp)o.fp.forEach(([k,v])=>{S.fp=S.fp||{};S.fp[k]=(S.fp[k]||0)+v});if(o.fd)o.fd.forEach(([k,v])=>{S.fd=S.fd||{};S.fd[k]=Math.max(0,(S.fd[k]||0)+v)});if(o.affH)(Array.isArray(o.affH[0])?o.affH:[o.affH]).forEach(([x,v])=>S.heroes[x]&&gainAff(x,v));if(o.favH)o.favH.forEach(([x,v])=>wed(x)&&(wed(x).fav=clamp(wed(x).fav+v,0,100)));(o._st||[]).forEach(([x,k,n])=>S.heroes[x]&&S.order.includes(x)&&setHst(x,k,n));if(o.sol)S.soldiers=Math.max(0,S.soldiers+o.sol);evApply({food:o.food,wood:o.wood,stone:o.stone,ap:o.ap,affAll:o.affAll,gift:o.gift},{})}
 function facLab(o){return[evText({food:o.food,wood:o.wood,stone:o.stone,ap:o.ap,affAll:o.affAll,gift:o.gift},{}),o.sol?`兵力 ${o.sol>0?'+':''}${o.sol}`:'',...(o.fp||[]).map(([k,v])=>`${FACN2[k]}勢力 ${v>0?'+':''}${v}`),...(o.fd||[]).map(([k,v])=>`${FACN2[k]}不滿 ${v>0?'+':''}${v}`),...(o.affH?(Array.isArray(o.affH[0])?o.affH:[o.affH]):[]).map(([x,v])=>`${H(x).n}好感 ${v>0?'+':''}${v}`),...(o.favH||[]).map(([x,v])=>`${H(x).n}寵愛 ${v>0?'+':''}${v}`),...(o._st||[]).map(([x,k,n])=>`${H(x).n}${HST[k][0]} ${n} 旬`)].filter(Boolean).join('、')}
 function factionEvent(cb){const fe=S.facEv;S.facEv=null;if(!fe||!GD.fac26)return cb();const G=GD.fac26;
@@ -1593,12 +1706,12 @@ function factionEvent(cb){const fe=S.facEv;S.facEv=null;if(!fe||!GD.fac26)return
  sheet(`<div class="evimg" style="background-image:url(img/${img}.jpg)"></div><div class="small" style="letter-spacing:.2em;color:var(--gold2)">派系・${e.k}</div><h3>${e.t}</h3><p style="margin:6px 0 10px;font-family:Noto Serif TC,serif">${e.d}</p>${e.c.map((o,i)=>`<button class="opt frame" data-i="${i}" style="margin-bottom:8px"><span class="t"><b>${o[0]}</b><div>${facLab(o[1])}</div></span></button>`).join('')}`,true);sfx('page');
  $$('#sheetIn [data-i]').forEach(b=>b.onclick=()=>{facApply(e.c[+b.dataset.i][1]);closeSheet();sfx('ok');render();cb()})}
 function facView(){const{p,sh}=facPow();const G=GD.fac26||{intro:{}};return FACK.map(k=>{const m=facMem(k),fd=(S.fd&&S.fd[k])||0,cities=cityTiles().filter(t=>(t.cg||[]).some(g=>facOf(g)===k)).length;return`<div class="frame" style="padding:8px;margin-bottom:8px;border-color:${FACC[k]}66"><div style="display:flex;align-items:center;gap:8px"><img src="img/fc_${k}.jpg" style="width:40px;height:40px;border-radius:50%;border:1px solid ${FACC[k]}"><div style="flex:1"><b style="color:${FACC[k]}">${FACN2[k]}</b> <span class="small">勢力 ${Math.max(0,Math.min(100,Math.round(sh[k]*100)))}%・分城 ${cities}</span><div class="meter" style="margin-top:3px"><i style="width:${Math.max(0,Math.min(100,Math.round(sh[k]*100)))}%;background:${FACC[k]}"></i></div><div class="small" style="color:${fd>=60?'var(--blood)':fd>=30?'var(--gold2)':'var(--dim)'}">不滿 ${fd}${sh[k]>.4?'・<b style="color:var(--blood)">專權風險</b>':''}${sh[k]<.12&&m.length>=2?'・被冷落中':''}</div></div></div>
- ${G.intro[k]?`<div class="small" style="margin:4px 0;color:#cdbf9f">${G.intro[k][1]}</div>`:''}<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">${m.map(id=>`<button class="chip" data-h="${id}" style="display:flex;align-items:center;gap:3px;padding:1px 6px 1px 1px"><span style="width:20px;height:20px;border-radius:50%;background:url(img/${face(id)}.jpg) center 15%/cover;display:inline-block"></span>${H(id).n}${S.facOv&&S.facOv[id]?'＊':''}</button>`).join('')||'<span class="small" style="color:var(--dim)">無成員</span>'}</div></div>`}).join('')+'<p class="small" style="color:var(--dim)">＊＝被夫人拉攏而轉投。勢力由成員、駐守分城、主母決定；某派超過 40% 會專權，低於 12% 會不滿。</p>'}
+ ${m.length?'<div class="small">三旬一議・'+policyNames[k]+'・本派議決機會 '+Math.round(sh[k]*100)+'%<br>'+(S.factionMinutes?.[k]?.msg||'尚待議決')+'</div>':''}${G.intro[k]?`<div class="small" style="margin:4px 0;color:#cdbf9f">${G.intro[k][1]}</div>`:''}<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">${m.map(id=>`<button class="chip" data-h="${id}" style="display:flex;align-items:center;gap:3px;padding:1px 6px 1px 1px"><span style="width:20px;height:20px;border-radius:50%;background:url(img/${face(id)}.jpg) center 15%/cover;display:inline-block"></span>${H(id).n}${S.facOv&&S.facOv[id]?'＊':''}</button>`).join('')||'<span class="small" style="color:var(--dim)">無成員</span>'}</div></div>`}).join('')+'<p class="small" style="color:var(--dim)">＊＝被夫人拉攏而轉投。勢力由成員、駐守分城、主母決定；某派超過 40% 會專權，低於 12% 會不滿。</p>'}
 /* ---------- 分城 ---------- */
 const cityTiles=()=>renderCities||((S.cur&&S.cur!=='home'?S.ctx?.home?.tiles||S.tiles:S.tiles)||[]).flat().filter(t=>t.city&&t.own&&!t.rebFid);
 const cityCap=()=>1+(S.stage||0);
 const cityName=t=>t.cname||'分城';
-function cityTurn(add){if(inWorld())return;cityTiles().forEach(t=>{t.cg=(t.cg||[]).filter(g=>S.order.includes(g)&&hs(g).task===`city:${t.r}_${t.c}`);let sol=t.city>1?15:0,f=0,w=0;t.cg.forEach(g=>{const h=H(g);if(h.pool==='對外')sol+=6+Math.round(stat(g,'cmd')/20);else if(h.pool==='內政')f+=8+Math.round(stat(g,'pol')/8);else w+=5+Math.round(stat(g,'pol')/12)});S.soldiers+=sol;S.food+=f;S.wood+=w;S.stone+=w;if(sol+f+w)add(`【${cityName(t)}】${t.city>1?'分城':'堡寨'}產出：${sol?'兵力 +'+sol+' ':''}${f?'糧 +'+f+' ':''}${w?'木石各 +'+w:''}`,'pos')});
+function cityTurn(add){if(inWorld())return;cityTiles().forEach(t=>{t.cg=(t.cg||[]).filter(g=>S.order.includes(g)&&hs(g).task===`city:${t.r}_${t.c}`);let sol=t.city>1?15:0,f=t.city>1?8:0,w=t.city>1?3:0;t.cg.forEach(g=>{const h=H(g);if(h.pool==='對外')sol+=6+Math.round(stat(g,'cmd')/20);else if(h.pool==='內政')f+=8+Math.round(stat(g,'pol')/8);else w+=5+Math.round(stat(g,'pol')/12)});const store=t.city>1?townStores(t):S;store.soldiers+=sol;store.food+=f;store.wood+=w;store.stone+=w;if(sol+f+w)add(`【${cityName(t)}】${t.city>1?'分城':'堡寨'}產出：${sol?'兵力 +'+sol+' ':''}${f?'糧 +'+f+' ':''}${w?'木石各 +'+w:''}`,'pos')});
  if(cityTiles().length&&GD.fac26&&Math.random()<.07&&!S.cityEv){const t=pick(cityTiles().filter(t=>(t.cg||[]).length));if(t)S.cityEv={r:t.r,c:t.c}}}
 const cityHold=t=>t.city?(t.city>1?1+(t.townSlots||[]).reduce((n,s)=>n+(s?.f==='wall'?s.lv:0),0):0)+((t.bs||[]).some(s=>s&&s.f==='junying')?1:0)+(t.cg||[]).filter(g=>H(g).pool==='對外').length:0;
 function cityGarr(t){const mx=t.city>1?3:2;const c=S.order.filter(id=>!busyArmy(id)&&!unavail(id)&&!(t.cg||[]).includes(id)&&!wed(id)||(!busyArmy(id)&&!unavail(id)&&wed(id)&&!(t.cg||[]).includes(id)));
@@ -1621,7 +1734,7 @@ const OWNEV={
  私逃:{img:'ev_flee',t:'夜半私逃',d:'深夜，宮牆邊垂下一條繩梯。守衛來報：{a}帶著兩名親信，騎馬往黑霧裡去了。',c:[['親自追回她（下旬行動力 −1）',{ap:-1,_fa:10}],['派騎兵追，抓回來關押',{_st:[['a','jail',2]],_fa:-8}],['讓她走吧',{_exile:['a',10]}]]},
  背叛:{img:'ev_spy',t:'洩密',d:'密探查到：最近兩次出征的路線，都是從{a}的寢殿流出去的。收信的是外頭的勢力——也可能是朝中的某一派。',c:[['處死她',{_exec:'a'}],['流放十二旬',{_exile:['a',12]}],['將計就計，留她傳假消息',{_trait:1,sol:30}],['關押四旬審問',{_st:[['a','jail',4]]}]]},
  假死:{img:'ev_fakedeath',t:'空棺',d:'{a}「暴病而亡」，後宮掛滿白幡。可出殯前夜，你掀開棺蓋——裡面只有她的嫁衣。',c:[['全城搜捕',{ap:-1,_x:'find'}],['對外宣稱她已死，私下尋人',{affAll:-2,_exile:['a',8]}],['就當她真的死了',{affAll:-4,_exile:['a',15]}]]}};
-function ownEvRoll(){if(S.ownEvQ||inWorld())return;spouses().forEach(id=>{if(S.ownEvQ)return;const m=mood(id),am=heroAmb(id);let ch={幽怨:.06,嫉恨:.05,野心勃勃:.07,得意:.06,怨恨:.08,吃醋:.03}[m]||0;if(!ch)return;if(Math.random()<ch){const pool=m==='得意'?['傲慢','羞辱']:m==='野心勃勃'?['要挾','背叛','傲慢']:m==='幽怨'?['冷戰','私逃','欺騙']:m==='嫉恨'?['欺騙','羞辱','背叛']:m==='怨恨'?['私逃','背叛','假死','羞辱']:['冷戰','欺騙'];S.ownEvQ={id,k:pick(pool)}}})}
+function ownEvRoll(){if(S.ownEvQ||inWorld())return;spouses().forEach(id=>{if(S.ownEvQ)return;const m=mood(id),am=heroAmb(id);let ch={幽怨:.06,嫉恨:.05,野心勃勃:.07,得意:.06,怨恨:.08,吃醋:.03}[m]||0;if(!ch)return;if(Math.random()<ch*1.8){const pool=m==='得意'?['傲慢','羞辱']:m==='野心勃勃'?['要挾','背叛','傲慢']:m==='幽怨'?['冷戰','私逃','欺騙']:m==='嫉恨'?['欺騙','羞辱','背叛']:m==='怨恨'?['私逃','背叛','假死','羞辱']:['冷戰','欺騙'];S.ownEvQ={id,k:pick(pool)}}})}
 function ownEvent(cb){const q=S.ownEvQ;S.ownEvQ=null;if(!q||!S.order.includes(q.id)||!wed(q.id))return cb();const a=q.id,who={a};let e=OWNEV[q.k],qk=q.k;{const X=GD.ownx&&GD.ownx[a];if(X&&X.length){const m=X.filter(x=>x.k===q.k);const pk=m.length?pick(m):(Math.random()<.65?pick(X):null);if(pk){qk=pk.k;e={img:(OWNEV[pk.k]||e).img,t:pk.t,d:pk.d,c:pk.c,after:pk.after}}}}const fill=x=>x.replace(/\{a\}/g,H(a).n);const HS=GD.hstat&&GD.hstat[a]||{};
  const lab=o=>[evText({ap:o.ap,food:o.food,gift:o.gift,affAll:o.affAll},{}),o._fa?`${H(a).n}寵愛 ${o._fa>0?'+':''}${o._fa}`:'',o._aff?`${H(a).n}好感 ${o._aff>0?'+':''}${o._aff}`:'',o._inf?`${H(a).n}權勢 +${o._inf}`:'',o.sol?`兵力 +${o.sol}`:'',o._trait===1?'她會繼續當內奸（但你知情）':o._trait?'若她真有二心，會成為內奸':'',...stLab(o,who),o._x==='probe'?'查明真相':'',o._x==='find'?'有機會找回她':''].filter(Boolean).join('、');
  sheet(`<div class="evimg" style="background-image:url(img/${e.img}.jpg)"></div><div class="dlg" style="margin-top:-6px"><div class="pic" style="background-image:url(img/${face(a)}.jpg)"></div><div><div class="small" style="letter-spacing:.2em;color:var(--blood)">後宮對主・${qk}・情緒【${mood(a)}】</div><h3>${e.t}</h3></div></div><p style="margin:6px 0 10px;font-family:Noto Serif TC,serif">${fill(e.d)}</p>${e.c.map((o,i)=>`<button class="opt frame" data-i="${i}" style="margin-bottom:8px"><span class="t"><b>${o[0]}</b><div>${lab(o[1])}</div></span></button>`).join('')}`,true);sfx('alarm');
@@ -1681,7 +1794,7 @@ function agLog(id,k,txt){(S.agLog=S.agLog||[]).unshift({t:S.t,id,k,txt});S.agLog
 function agPick(id,g,am,ly){const W={求戰:{請戰:3,私自出擊:ly<55||am>60?3:1,爭功:2},擁兵:{私練親兵:3,結交:2,私自出擊:1},求權:{結交:3,爭功:2,貪墨:1,請戰:1},斂財:{貪墨:4,結交:1},清名:{諫言:4,爭功:1},歸隱:{怠工:3,請辭:ly<45?3:1},護人:{護主:3,諫言:1,結交:1},復仇:{結交:2,怠工:2,貪墨:1,請辭:1}}[g]||{護主:1};
  const w={...W};if(ly<30)w.請辭=(w.請辭||0)+2;const ent=Object.entries(w);let r=Math.random()*ent.reduce((x,y)=>x+y[1],0);for(const[k,v] of ent){r-=v;if(r<=0)return k}return ent[0][0]}
 function nearFoe(maxd){if(inWorld())return null;return S.enemies.filter(e=>e.troops>0&&!e.seat&&!e.boss&&!e.nest&&dist(e,BASE)<=maxd).sort((a,b)=>dist(a,BASE)-dist(b,BASE))[0]||null}
-function sortie(id,ok){const e=nearFoe(ok?9:7);if(!e||busyArmy(id)||S.soldiers<140)return false;const n=Math.min(S.soldiers-60,140+Math.round(stat(id,'cmd')*1.2));S.soldiers-=n;setTask(id,'army');S.units.push({id:'u'+S.uid++,gens:[id],troops:n,max:n,r:BASE.r,c:BASE.c,tgt:{r:e.r,c:e.c},rogue:!ok});return{e,n}}
+function sortie(id,ok){const origin=garrisonOf(id),stock=treasury(origin),e=inWorld()?null:S.enemies.filter(e=>e.troops>0&&!e.seat&&!e.boss&&!e.nest&&dist(e,origin)<=(ok?9:7)).sort((a,b)=>dist(a,origin)-dist(b,origin))[0];if(!e||unavail(id)||busyArmy(id)||stock.soldiers<140)return false;const n=Math.min(stock.soldiers-60,140+Math.round(stat(id,'cmd')*1.2));stock.soldiers-=n;setTask(id,'army');S.units.push({id:'u'+S.uid++,origin:origin===BASE?null:origin.r+'_'+origin.c,gens:[id],troops:n,max:n,r:origin.r,c:origin.c,tgt:{r:e.r,c:e.c},rogue:!ok});return{e,n}}
 const AGA={
  請戰:(id,add)=>{if(busyArmy(id)||!nearFoe(9))return false;S.agQ.push({k:'請戰',id});add(`【武將動向・請戰】${H(id).n}按劍求見，請命出戰`);},
  私自出擊:(id,add)=>{const r=sortie(id,false);if(!r)return false;add(`【武將動向・私自出擊】${H(id).n}${agLine(id,'私自出擊')?`：「${agLine(id,'私自出擊')}」<br>`:''}未經號令，率親兵 ${r.n} 人直撲 ${r.e.n}（${r.e.c},${r.e.r}）！`,'neg');hxPush(id,agLine(id,'私自出擊')||'等主公點頭，敵人早跑了。末將先走一步！','私自出擊')},
@@ -1791,10 +1904,10 @@ function loveAdd(id,v,quiet){const w=wed(id);if(!w||H(id).sex!=='f'||!v)return;c
 function loveTurn(add){const sp=spouses();sp.forEach(id=>{const w=wed(id);if(w.love==null)w.love=20;const l=loveLv(id);let d=0;if(w.fav>=80)d+=Math.round((w.fav-70)/2);if(w.fav<25)d-=Math.round((25-w.fav)/2*(1+ntEff(id,'decay')));const neg=S.t-(w.last||0)>=5&&!w.pal;if(neg)d-=Math.round([2,4,8,12,18,26,34,44][l]*(1+ntEff(id,'decay'))*(mother()===id?.85:1));if(d)loveAdd(id,d);
   if(neg&&(!w.negT||S.t-w.negT>=4)){w.negT=S.t;const N=GD.love&&GD.love.neglect&&GD.love.neglect[id];if(N){hxPush(id,(l>=6&&PS(id)&&PS(id).react&&PS(id).react.ignore)?pick(PS(id).react.ignore):N[l<=1?0:l<=3?1:2],'久未相見');if(l>=4&&Math.random()<.5){w.fav=Math.max(0,w.fav-8);add(`【情深・崩潰】${H(id).n}久候不至，情緒失控（寵愛 −8）`,'neg')}}}
   if(l>=2)w.fav=Math.min(100,w.fav+1);
-  if(l>=4&&Math.random()<.15+(l-4)*.08){const r=sp.filter(x=>x!==id);if(r.length){const x=pick(r);wed(x).fav=Math.max(0,wed(x).fav-5);add(`【情深・病態】${H(id).n}暗中排擠${H(x).n}（${H(x).n}寵愛 −5）`,'neg')}}
+  if(l>=4&&Math.random()<.25+(l-4)*.10){const r=sp.filter(x=>x!==id);if(r.length){const x=pick(r);wed(x).fav=Math.max(0,wed(x).fav-5);add(`【情深・病態】${H(id).n}暗中排擠${H(x).n}（${H(x).n}寵愛 −5）`,'neg')}}
   if(mother()===id){const P=hp(id);P.inf=Math.min(100,P.inf+1)}
   if(w.duty)S.dutyT=(S.dutyT||0)+1});
- S.agQ=S.agQ||[];if(!S.agQ.some(q=>q.k==='love')&&Math.random()<.15){const c=sp.filter(x=>!unavail(x));if(c.length){const id=pick(c),l=loveLv(id),SP=GD.love&&GD.love.special&&GD.love.special[id],w=wed(id);let e=null;if(SP&&l>=3){const cand=SP.filter(x=>LOVEN.indexOf(x.lv)<=l&&!(w.spDone||[]).includes(x.t));if(cand.length){e=cand[cand.length-1];w.spDone=[...(w.spDone||[]),e.t]}}if(!e&&GD.love&&GD.love.ev&&GD.love.ev[LOVEN[Math.min(l,5)]])e=pick(GD.love.ev[LOVEN[Math.min(l,5)]]);if(e)S.agQ.push({k:'love',id,e})}}
+ S.agQ=S.agQ||[];if(!S.agQ.some(q=>q.k==='love')&&Math.random()<.30){const c=sp.filter(x=>!unavail(x));if(c.length){const id=pick(c),l=loveLv(id),SP=GD.love&&GD.love.special&&GD.love.special[id],w=wed(id);let e=null;if(SP&&l>=3){const cand=SP.filter(x=>LOVEN.indexOf(x.lv)<=l&&!(w.spDone||[]).includes(x.t));if(cand.length){e=cand[cand.length-1];w.spDone=[...(w.spDone||[]),e.t]}}if(!e&&GD.love&&GD.love.ev&&GD.love.ev[LOVEN[Math.min(l,5)]])e=pick(GD.love.ev[LOVEN[Math.min(l,5)]]);if(e)S.agQ.push({k:'love',id,e})}}
  if(mother()&&S.ringOn!==mother())S.agQ.unshift({k:'phx',id:mother(),old:S.ringOn});
  if(GD.hpair2&&Math.random()<.12){const c=GD.hpair2.map((q,i)=>[q,i]).filter(([q,i])=>q.ids.every(x=>S.order.includes(x)&&!unavail(x))&&!(S.p2Done||[]).includes(i));if(c.length){const[q,i]=pick(c);S.p2Done=[...(S.p2Done||[]),i];S.agQ.push({k:'pair2',q})}}}
 function loveEvent(q,nx){const id=q.id;if(!wed(id)||!S.order.includes(id))return nx();const others=spouses().filter(x=>x!==id);const who={a:id,b:others.length?pick(others):null};const l=loveLv(id);const tl=Math.random()<.3?ntLine(id):null;if(tl)hxPush(id,tl,'性情');
@@ -1947,7 +2060,7 @@ function h33Event(q,nx){const e=q.e,who=q.who;if(!who.a||!S.heroes[who.a]||!wed(
    reactSheet(c[2],who,o,e.after,()=>{if(o.next){const n2=(GD.hev33||[]).find(x=>x.id===o.next);if(n2)return h33Event({e:n2,who,chain:1},nx)}nx()})})})}
 
 /* ---- 宿敵與姐妹 GD.hrival ---- */
-function rvTurn(){if(!GD.hrival||Math.random()>.08)return;if((S.agQ||[]).some(q=>q.k==='rv'))return;S.rvS=S.rvS||{};const sp=spouses().filter(hOK);
+function rvTurn(){if(!GD.hrival||Math.random()>.18)return;if((S.agQ||[]).some(q=>q.k==='rv'))return;S.rvS=S.rvS||{};const sp=spouses().filter(hOK);
  const c=GD.hrival.map((r,i)=>[r,i]).filter(([r,i])=>r.ids.every(x=>sp.includes(x))&&(S.rvS[i]||0)<3&&(!S.rvT||S.t-(S.rvT[i]||-9)>=3));if(!c.length)return;const[r,i]=pick(c);S.agQ.push({k:'rv',i})}
 function rvEvent(q,nx){const r=GD.hrival[q.i];if(!r)return nx();S.rvS=S.rvS||{};S.rvT=S.rvT||{};const st=S.rvS[q.i]||0;S.rvT[q.i]=S.t;const who={a:r.ids[0],b:r.ids[1],c:r.ids[2]||null};if(!r.ids.every(x=>S.heroes[x]&&wed(x)))return nx();
  let sc;if(st<2)sc=r.s.filter(x=>x.c)[st];else{const end=r.s.filter(x=>!x.c);const good=relG(who.a,who.b)>=0;sc=end.find(x=>good?/和解/.test(x.t):/決裂/.test(x.t))||end[0]}
@@ -1955,7 +2068,7 @@ function rvEvent(q,nx){const r=GD.hrival[q.i];if(!r)return nx();S.rvS=S.rvS||{};
  dlgScene(sc.l||[],who,'ev_rivalry',`宿敵與姐妹・${r.t}｜${sc.t}`,()=>{if(sc.c){choiceSheet(sc.t,null,r.ids,sc.c,who,(c)=>{fx33(c[1],who);reactSheet(c[2],who,c[1],null,nx)})}else{fx33(sc.eff,who);feedPush(`【${r.t}】${sc.t}`,/決裂/.test(sc.t)?'neg':'');if(/和解/.test(sc.t))S.rvPeace=(S.rvPeace||0)+1;reactSheet('',who,sc.eff,null,nx)}})}
 
 /* ---- 人格：每旬實際行為 ---- */
-function personaTurn(add){const sp=spouses().filter(hOK);let n=0;sp.sort(()=>Math.random()-.5).forEach(id=>{if(n>=3)return;const l=loveLv(id);if(Math.random()>(l>=4?.32:.22))return;const P=PS(id);const k=LOVEN[l];const A=l>=6?L67.act[k]:P&&P.act&&P.act[k];if(!A||!A.length)return;const index=R(0,A.length-1);const original=A[index];const custom=l>=6&&GD.love78?.[id]?.['persona.act']?.[k]?.[index];const it=custom?{...original,d:custom.d,say:custom.say}:original;const others=spouses().filter(x=>x!==id&&hOK(x));const who={a:id,b:others.length?pick(others):null};if(/\{b\}/.test(it.d+(it.say||'')+JSON.stringify(it.eff||{}))&&!who.b)return;n++;
+function personaTurn(add){const sp=spouses().filter(hOK);let n=0;sp.sort(()=>Math.random()-.5).forEach(id=>{if(n>=5)return;const l=loveLv(id);if(Math.random()>(l>=4?.55:.40))return;const P=PS(id);const k=LOVEN[l];const A=l>=6?L67.act[k]:P&&P.act&&P.act[k];if(!A||!A.length)return;const index=R(0,A.length-1);const original=A[index];const custom=l>=6&&GD.love78?.[id]?.['persona.act']?.[k]?.[index];const it=custom?{...original,d:custom.d,say:custom.say}:original;const others=spouses().filter(x=>x!==id&&hOK(x));const who={a:id,b:others.length?pick(others):null};if(/\{b\}/.test(it.d+(it.say||'')+JSON.stringify(it.eff||{}))&&!who.b)return;n++;
   fx33(it.eff,who);const s=`${fill30(it.d,who)}${it.say?`<br><span style="color:var(--pink)">${H(id).n}：「${fill30(it.say,who)}」</span>`:''}`;feedPush(s,l>=4?'neg':'');add(`【宮中・${H(id).n}・${k}】${s}`,l>=4?'neg':'')})}
 
 /* ---- 心境轉換 ---- */
@@ -1980,9 +2093,9 @@ function affRoom(id,add){const st=hs(id);if(st.wed||st.aff>=100)return add;if(st
 /* ---- 與天運者互動 GD.inter ---- */
 const IG=k=>GD.inter&&GD.inter[k]||{};
 function interTurn(add){const sp=spouses().filter(hOK);if(!sp.length)return;S.agQ=S.agQ||[];const Q=k=>S.agQ.some(q=>q.k===k);
- if(!Q('ask')&&Math.random()<.13){const c=sp.filter(x=>(IG('ask')[x]||[]).some((q,i)=>!(wed(x).askD||[]).includes(i)));if(c.length){const id=pick(c);const i=(IG('ask')[id]).findIndex((q,i)=>!(wed(id).askD||[]).includes(i));S.agQ.push({k:'ask',id,i})}}
- if(!Q('visit')&&Math.random()<.12){const c=sp.filter(x=>(IG('visit')[x]||[]).some((q,i)=>!(wed(x).visD||[]).includes(i)));if(c.length){const id=pick(c);const L=IG('visit')[id];const i=L.findIndex((q,i)=>!(wed(id).visD||[]).includes(i));S.agQ.push({k:'visit',id,i})}}
- const act=sp.filter(x=>wed(x).wish);if(act.length<2&&Math.random()<.1){const c=sp.filter(x=>!wed(x).wish&&(IG('wish')[x]||[]).some((q,i)=>!(wed(x).wishD||[]).includes(i)));if(c.length){const id=pick(c),w=wed(id),L=IG('wish')[id];const i=L.findIndex((q,i)=>!(w.wishD||[]).includes(i));const q=L[i];w.wish={i,u:S.t+(q.days||6),vc:w.vc||0,k:S.kills||0,tr:w.tourN||0};hxPush(id,typeof wishAsk==='function'?wishAsk(q):(q.ask||q.d||q.t||'……'),`小願望・${q.t}`);add(`【小願望】${H(id).n}想要：${q.t}（${wishTxt(id)}）`,'')}}
+ if(!Q('ask')&&Math.random()<.24){const c=sp.filter(x=>(IG('ask')[x]||[]).some((q,i)=>!(wed(x).askD||[]).includes(i)));if(c.length){const id=pick(c);const i=(IG('ask')[id]).findIndex((q,i)=>!(wed(id).askD||[]).includes(i));S.agQ.push({k:'ask',id,i})}}
+ if(!Q('visit')&&Math.random()<.24){const c=sp.filter(x=>(IG('visit')[x]||[]).some((q,i)=>!(wed(x).visD||[]).includes(i)));if(c.length){const id=pick(c);const L=IG('visit')[id];const i=L.findIndex((q,i)=>!(wed(id).visD||[]).includes(i));S.agQ.push({k:'visit',id,i})}}
+ const act=sp.filter(x=>wed(x).wish);if(act.length<2&&Math.random()<.20){const c=sp.filter(x=>!wed(x).wish&&(IG('wish')[x]||[]).some((q,i)=>!(wed(x).wishD||[]).includes(i)));if(c.length){const id=pick(c),w=wed(id),L=IG('wish')[id];const i=L.findIndex((q,i)=>!(w.wishD||[]).includes(i));const q=L[i];w.wish={i,u:S.t+(q.days||6),vc:w.vc||0,k:S.kills||0,tr:w.tourN||0};hxPush(id,typeof wishAsk==='function'?wishAsk(q):(q.ask||q.d||q.t||'……'),`小願望・${q.t}`);add(`【小願望】${H(id).n}想要：${q.t}（${wishTxt(id)}）`,'')}}
  spouses().forEach(id=>{const w=wed(id);if(w.wish){if(wishDone(id))wishFinish(id,true,add);else if(S.t>w.wish.u)wishFinish(id,false,add)}
   if(w.bd==null)w.bd=R(0,35);if(w.t0==null)w.t0=S.t;if(!away(id)&&S.t%36===w.bd&&w.bdT!==S.t){w.bdT=S.t;S.agQ.push({k:'bday',id})}
   if(S.t>w.t0&&(S.t-w.t0)%36===0&&w.anT!==S.t){w.anT=S.t;S.agQ.push({k:'anniv',id})}})}
@@ -2050,10 +2163,15 @@ function townPanel(t){
  const slots=t.townSlots??=Array(9).fill(null);
  sheet(`<h3 data-nodyn>${cityName(t)}・城務</h3>
  <div class="small">耐久 ${t.dur??100}/${t.durMax??100}・駐守 ${(t.cg||[]).map(id=>H(id).n).join('、')||'無'}</div>
+ <p class="small">本城庫存：兵 ${townStores(t).soldiers}・糧 ${t.stock.food}・木 ${t.stock.wood}・石 ${t.stock.stone}</p>
+ <button class="btn ghost" id="townLevy">物資運回主城</button> <button class="btn ghost" id="townReinforce">主城調兵 80 至此</button> <button class="btn" id="townArmy">本城集結出兵</button>
  <button class="btn ghost" id="townRepair" ${(t.dur??100)>=(t.durMax??100)?'disabled':''}>修繕（石 30・行動 1）</button>
  <button class="btn" id="townSpecial">地方設施與行宮</button>
  <div class="orn">城內建設</div>${slots.map((s,i)=>`<button class="opt" data-town="${i}"><span class="t"><b>${s?FAC[s.f][0]:'空地'}</b><div>${s?(s.p<100?'施工 '+s.p+'%':'Lv'+s.lv+'・'+facOutText(s)):'建設新設施'} ${s?.gar?H(s.gar).n:''}</div></span></button>`).join('')}
  ${slots.length<20?`<button class="btn" id="townExpand">擴建空地（木 ${40+(slots.length-9)*15}・石 ${60+(slots.length-9)*20}）</button>`:''}`);
+ $('#townLevy').onclick=()=>{for(const k of ['food','wood','stone']){S[k]+=t.stock[k];t.stock[k]=0}save();townPanel(t);hud()};
+ $('#townReinforce').onclick=()=>{if(S.soldiers<80)return toast('主城兵力不足 80');S.soldiers-=80;t.stock.soldiers+=80;save();townPanel(t);hud()};
+ $('#townArmy').onclick=()=>{if(inWorld())return toast('請回主世界集結');closeSheet();setView("map");mode={kind:"townMarch",r:t.r,c:t.c};render();toast("點選行軍目的地")};
  $('#townRepair').onclick=()=>repairTown(t);$('#townSpecial').onclick=()=>bfSheet(t,true);
  if($('#townExpand'))$('#townExpand').onclick=()=>{const w=40+(slots.length-9)*15,c=60+(slots.length-9)*20;if(S.wood<w||S.stone<c)return toast('木石不足');S.wood-=w;S.stone-=c;slots.push(null);townPanel(t);render()};
  $$('[data-town]').forEach(b=>b.onclick=()=>{const i=+b.dataset.town,k=townKey(t,i);if(slots[i])facPanel(k);else pickFac(k)})
@@ -2079,7 +2197,7 @@ function bfSheet(t,local=false){if(!t.own||t.rebFid)return;if(t.city>1&&!local)r
  $$('#sheetIn [data-ps]').forEach(b=>b.onclick=()=>{const c=spouses().filter(x=>!wed(x).cold&&!wed(x).pal&&mother()!==x);sheet(`<h3>派駐行宮</h3><p class="small">恩寵派駐：她會很高興；外放：等同貶謫。主母不能外派。</p>${c.map(x=>`<div class="frame" style="padding:6px;margin-bottom:6px;display:flex;gap:8px;align-items:center"><span class="pic" style="width:40px;height:40px;flex:none;border-radius:6px;background:url(img/${face(x)}.jpg) center 15%/cover"></span><b style="flex:1">${H(x).n}</b><button class="btn sm" data-pf="${x}">恩寵</button><button class="btn ghost sm" data-pe="${x}">外放</button></div>`).join('')||'<p class="small">沒有可派駐的夫人</p>'}`);
   $$('#sheetIn [data-pf]').forEach(b2=>b2.onclick=()=>{closeSheet();palSend(b2.dataset.pf,t,'favor')});$$('#sheetIn [data-pe]').forEach(b2=>b2.onclick=()=>{closeSheet();palSend(b2.dataset.pe,t,'exile')})})}
 function bfTurn(add){if(inWorld())return;const g={food:0,sol:0,energy:0,stone:0,pop:0,pol:0};let tal=0;cityTiles().forEach(t=>(t.bs||[]).forEach(s=>{if(!s)return;const L=s.lv;const pal=spouses().some(x=>wed(x).pal&&wed(x).pal.k===`${t.r}_${t.c}`&&wed(x).pal.mode==='favor')?1.3:1;
-  switch(s.f){case'yizhan':g.food+=6*L*pal;if(S.t%3===0)S.gifts=(S.gifts||0)+1;break;case'shangguan':g.energy+=6*L*pal;if(S.t%4===0)S.gifts=(S.gifts||0)+1;break;case'junying':g.sol+=8*L*pal;break;case'xuetang':g.pop+=3*L;tal+=.05*L;break;case'kuangchang':g.stone+=10*L*pal;if(S.t%5===0)S.core=(S.core||0)+1;break;case'fenghuotai':g.pol+=L;break;case'mistwall':g.pol+=2*L;break;case'yaopu':if(Math.random()<.25*L){const inj=S.order.filter(x=>hst(x)==='inj');if(inj.length){const x=pick(inj);hs(x).hst.u=S.t}}break}}));
+  switch(s.f){case'yizhan':(t.city>1?townStores(t):g).food+=Math.round(6*L*pal);if(S.t%3===0)S.gifts=(S.gifts||0)+1;break;case'shangguan':g.energy+=6*L*pal;if(S.t%4===0)S.gifts=(S.gifts||0)+1;break;case'junying':if(t.city>1)townStores(t).soldiers+=Math.round(8*L*pal);else g.sol+=8*L*pal;break;case'xuetang':g.pop+=3*L;tal+=.05*L;break;case'kuangchang':(t.city>1?townStores(t):g).stone+=Math.round(10*L*pal);if(S.t%5===0)S.core=(S.core||0)+1;break;case'fenghuotai':g.pol+=L;break;case'mistwall':g.pol+=2*L;break;case'yaopu':if(Math.random()<.25*L){const inj=S.order.filter(x=>hst(x)==='inj');if(inj.length){const x=pick(inj);hs(x).hst.u=S.t}}break}}));
  S.food+=Math.round(g.food);S.soldiers+=Math.round(g.sol);S.energy+=Math.round(g.energy);S.stone+=Math.round(g.stone);S.pop=typeof popN==='function'?popN((S.pop||0)+g.pop):Math.max(0,Math.round((S.pop||0)+(g.pop||0)));S.pol=Math.max(0,S.pol-g.pol);if(tal)S.talentFrac=(S.talentFrac||0)+tal;
  const parts=[g.food&&`糧 +${Math.round(g.food)}`,g.sol&&`兵 +${Math.round(g.sol)}`,g.energy&&`能量 +${Math.round(g.energy)}`,g.stone&&`石 +${Math.round(g.stone)}`,g.pop&&`流民 +${Math.round(g.pop)}`,g.pol&&`污染 −${g.pol}`].filter(Boolean);if(parts.length)add(`【分城設施】${parts.join('、')}`,'')}
 
@@ -2115,8 +2233,8 @@ function bindHarem(){$$('#view [data-pbb]').forEach(b=>b.onclick=()=>pbBuildShee
 function v21Turn(add){if(S.slots.length<9)while(S.slots.length<9)S.slots.push(null);favSync();moodTurn();personaTurn(add);interTurn(add);rvTurn();palTurn(add);bfTurn(add);
  spouses().forEach(id=>{const w=wed(id);if(w.cold){w.fav=Math.max(0,w.fav-3);w._f0=w.fav}});
  const sp=spouses().filter(hOK);if(sp.length){const R2=GD.rumor||[];const nR=sp.some(x=>md2(x)==='癲狂'||loveLv(x)>=6)?2:1;for(let i=0;i<nR;i++)if(R2.length&&Math.random()<.75){const a=pick(sp),o=sp.filter(x=>x!==a);feedPush(fill30(pick(R2),{a,b:o.length?pick(o):a}),'rum')}}
- S.agQ=S.agQ||[];if(!S.agQ.some(q=>q.k==='h33')&&sp.length){const ch=.3+Math.min(.25,(sp.length-1)*.06)+sp.filter(x=>['嫉恨','焦躁','癲狂'].includes(md2(x))).length*.05;if(Math.random()<ch*(1-Math.min(.5,offEff('calm')))){const p=h33Pick();if(p)S.agQ.push({k:'h33',e:p.e,who:p.who})}}
- sp.filter(x=>loveLv(x)>=6&&Math.random()<(loveLv(x)>=7?.3:.18)).slice(0,1).forEach(a=>{if(S.agQ.filter(q=>q.k==='h33').length>=2)return;const p=h33Pick(a,['癲狂','病態','佔有','威脅']);if(p)S.agQ.push({k:'h33',e:p.e,who:p.who})});
+ S.agQ=S.agQ||[];if(!S.agQ.some(q=>q.k==='h33')&&sp.length){const ch=.49+Math.min(.30,(sp.length-1)*.08)+sp.filter(x=>['嫉恨','焦躁','癲狂'].includes(md2(x))).length*.05;if(Math.random()<ch*(1-Math.min(.5,offEff('calm')))){const p=h33Pick();if(p)S.agQ.push({k:'h33',e:p.e,who:p.who})}}
+ sp.filter(x=>loveLv(x)>=6&&Math.random()<(loveLv(x)>=7?.48:.32)).slice(0,1).forEach(a=>{if(S.agQ.filter(q=>q.k==='h33').length>=2)return;const p=h33Pick(a,['癲狂','病態','佔有','威脅']);if(p)S.agQ.push({k:'h33',e:p.e,who:p.who})});
  if(S.apPen){S.ap=Math.max(1,S.ap-S.apPen);S.apPen=0}}
 
 {const _wv=wedVisit;wedVisit=function(id){const w=wed(id);if(w&&(w.cold||w.pal)){sfx('deny');return toast(w.cold?'她在冷宮，只能從後宮的冷宮頁探視':'她在行宮')}const b=w&&w.last;const r=_wv(id);const w2=wed(id);if(w2&&H(id).sex==='f'&&w2.last===S.t&&b!==S.t){w2.vc=(w2.vc||0)+1}return r}}
@@ -2171,15 +2289,15 @@ function dkTurn(add){const sp=spouses().filter(hOK);if(!sp.length)return;S.agQ=S
  const guard=Math.min(.7,offEff('spy')+offEff('guard')+offEff('med'));
  /* 殺嗣 */
  const preg=sp.filter(x=>wed(x).preg),killers=DKPREG.filter(x=>sp.includes(x));
- if(preg.length&&killers.length&&Math.random()<.4){if(Math.random()<guard){const k=pick(killers),v=pick(preg.filter(x=>x!==k)||preg);if(v&&v!==k){relAdd(k,v,-30);setGrudge(k,6);feedPush(`【攔截】${offEff('spy')?'錦衣衛':'宮中守衛'}截獲了${H(k).n}送往${H(v).n}宮中的「補品」，一場暗害消弭於無形。`,'rum');S.heirSaved=1;add(`【攔截】你的人截下了${H(k).n}對${H(v).n}腹中骨肉的暗害`,'pos');return}}
+ if(preg.length&&killers.length&&Math.random()<.55){if(Math.random()<guard){const k=pick(killers),v=pick(preg.filter(x=>x!==k)||preg);if(v&&v!==k){relAdd(k,v,-30);setGrudge(k,6);feedPush(`【攔截】${offEff('spy')?'錦衣衛':'宮中守衛'}截獲了${H(k).n}送往${H(v).n}宮中的「補品」，一場暗害消弭於無形。`,'rum');S.heirSaved=1;add(`【攔截】你的人截下了${H(k).n}對${H(v).n}腹中骨肉的暗害`,'pos');return}}
   const p=dkPick(['dk_preg01','dk_preg02','dk_preg04','dk_preg03'],(e,a)=>{const v=preg.filter(x=>x!==a);return v.length?{b:pick(v)}:null});if(p){S.agQ.push({k:'dk',...p});return}}
  /* 私通 */
  const ch=sp.filter(x=>DKCHEAT.includes(x)&&(S.t-(wed(x).last||0)>=3||['冷戰','焦躁'].includes(md2(x))||['liuchuyu','xiaji'].includes(x)));
- if(ch.length&&Math.random()<.18*(1-Math.min(.5,offEff('law')))*(1-(S.fear||0))){const p=dkPick(['dk_cheat01','dk_cheat02','dk_cheat03','dk_cheat04','dk_cheat05'],(e,a)=>ch.includes(a)?{}:null);if(p){S.agQ.push({k:'dk',...p});return}}
+ if(ch.length&&Math.random()<.30*(1-Math.min(.5,offEff('law')))*(1-(S.fear||0))){const p=dkPick(['dk_cheat01','dk_cheat02','dk_cheat03','dk_cheat04','dk_cheat05'],(e,a)=>ch.includes(a)?{}:null);if(p){S.agQ.push({k:'dk',...p});return}}
  /* 昏暴 */
- if(Math.random()<.1+((S.hedon||0)>=60?.15:0)){const p=dkPick(['dk_tyrant01','dk_tyrant02','dk_tyrant03','dk_tyrant04','dk_tyrant05'],(e,a)=>{if(e.n>=2){const o=sp.filter(x=>x!==a);return o.length?{b:pick(o)}:null}return loveLv(a)>=2||C>=40?{}:null});if(p){S.agQ.push({k:'dk',...p});return}}
+ if(Math.random()<.19+((S.hedon||0)>=60?.23:0)){const p=dkPick(['dk_tyrant01','dk_tyrant02','dk_tyrant03','dk_tyrant04','dk_tyrant05'],(e,a)=>{if(e.n>=2){const o=sp.filter(x=>x!==a);return o.length?{b:pick(o)}:null}return loveLv(a)>=2||C>=40?{}:null});if(p){S.agQ.push({k:'dk',...p});return}}
  /* 逼宮兵變 */
- if(Math.random()<.05+((S.tyranny||0)>=60?.12:0)){const p=dkPick(['dk_coup01','dk_coup02','dk_coup03','dk_coup04'],(e,a)=>(e.id==='dk_coup02'||e.id==='dk_coup03')?(hp(a).inf>=40||C>=60?{}:null):{});if(p){S.agQ.push({k:'dk',...p});return}}}
+ if(Math.random()<.11+((S.tyranny||0)>=60?.19:0)){const p=dkPick(['dk_coup01','dk_coup02','dk_coup03','dk_coup04'],(e,a)=>(e.id==='dk_coup02'||e.id==='dk_coup03')?(hp(a).inf>=40||C>=60?{}:null):{});if(p){S.agQ.push({k:'dk',...p});return}}}
 function corruptTurn(add){return;const C=S.corrupt||0;if(C>=60){S.pop=Math.max(0,S.pop-2);S.food=Math.max(0,S.food-Math.round(C/10));if(Math.random()<.3)feedPush(pick(['燈塔外的流民越聚越多，有人在城牆上用血寫了一個「昏」字。','清流老臣已經三旬不肯上朝了。','城中傳唱著一首新的童謠，唱的是歸墟燈塔的天運者夜夜笙歌。']),'rum')}
  if(C>=85&&!S.darkEnd){S.darkEnd=S.t;S.agQ=S.agQ||[];S.agQ.push({k:'darkend'})}}
 function darkEndEvent(q,nx){sfx('page');sheet(`<div class="evimg" style="background-image:url(img/ev_fire.jpg)"></div><div class="small" style="letter-spacing:.3em;color:#ff6a6a">朝綱崩壞・末世昏君（遊戲不會結束）</div><h3 style="font-family:Noto Serif TC,serif;margin:6px 0">燈塔不再是燈塔</h3><p style="font-family:Noto Serif TC,serif">黑霧沒有攻破城牆，是你自己打開了城門。<br>宮裡的笙歌一夜不歇，宮外的流民一夜一夜地少下去。那些曾為你擋下黑霧的英靈，有的被你賜死，有的閉門不出，有的已在城外另立旗號。<br>史書若還有人寫，會把這一頁寫成：「天運者晚年，耽於聲色，嬖幸用事，燈塔遂亡。」</p><p class="small" style="color:var(--dim)">你可以繼續沉淪下去，也可以試著把昏暴值降回來。</p><button class="btn" id="deOk" style="width:100%">繼續</button>`,true);unlock('dark_end');$('#deOk').onclick=()=>{closeSheet();nx()}}
@@ -2204,11 +2322,11 @@ fx34=function(o,who){if(!o)return;const acts=o._act||[];const punished=acts.some
 const _lab34=lab34;lab34=function(o,who){let s=_lab34(o,who);if(!o)return s;const a=[];if(o._bastard&&who[o._bastard.mother||'a'])a.push(`<span style="color:#d08fd0">${H(who[o._bastard.mother||'a']).n}懷上了外男的骨肉</span>`);if(o._leak)a.push(`洩密：能量 −${o._leak}`);if(o._embezzle)a.push(`國庫遭掏空：糧 −${o._embezzle}`);(o._act||[]).forEach(([r,k])=>{if(k==='resummon_active'&&who[r])a.push(`<b style="color:#ff9a6a">抓回${H(who[r]).n}</b>`)});return [s,...a].filter(Boolean).join('・')};
 /* 抽池：背叛類不看寵愛；廢妃復仇看 stripped；重召尋仇看 deathCount */
 function dkTurn2(add){const sp=spouses().filter(hOK);S.agQ=S.agQ||[];if(S.agQ.some(q=>q.k==='dk'))return;
- const st=stripped();if(st.length&&Math.random()<.16){const E=(GD.hev34||[]).filter(e=>e.reqStatus==='stripped'&&!(S.dkDone||[]).includes(e.id));if(E.length){const e=pick(E),a=pick(st),o=sp.filter(x=>x!==a);S.agQ.push({k:'dk',e,who:{a,b:o.length?pick(o):null}});return}}
- const dr=sp.filter(x=>deathN(x)>0);if(dr.length&&Math.random()<.14){const E=(GD.hev34||[]).filter(e=>e.reqDeadReturn&&!(S.dkDone||[]).includes(e.id));if(E.length){const e=pick(E),a=pick(dr),o=sp.filter(x=>x!==a);S.agQ.push({k:'dk',e,who:{a,b:o.length?pick(o):null}});return}}
- if(sp.length&&Math.random()<.12){const E=(GD.hev34||[]).filter(e=>/^dk_(bastard|affair|betray)/.test(e.id)&&!(S.dkDone||[]).includes(e.id));if(E.length){const e=pick(E);const w8=sp.map(x=>ntagAll(x).some(t=>['私通','心機','偽善','貪財','禍國'].includes(t))?3:1);let r=Math.random()*w8.reduce((s,v)=>s+v,0),a=sp[0];for(let i=0;i<sp.length;i++){r-=w8[i];if(r<=0){a=sp[i];break}}const o=sp.filter(x=>x!==a);S.agQ.push({k:'dk',e,who:{a,b:o.length?pick(o):null}})}}}
+ const st=stripped();if(st.length&&Math.random()<.27){const E=(GD.hev34||[]).filter(e=>e.reqStatus==='stripped'&&!(S.dkDone||[]).includes(e.id));if(E.length){const e=pick(E),a=pick(st),o=sp.filter(x=>x!==a);S.agQ.push({k:'dk',e,who:{a,b:o.length?pick(o):null}});return}}
+ const dr=sp.filter(x=>deathN(x)>0);if(dr.length&&Math.random()<.26){const E=(GD.hev34||[]).filter(e=>e.reqDeadReturn&&!(S.dkDone||[]).includes(e.id));if(E.length){const e=pick(E),a=pick(dr),o=sp.filter(x=>x!==a);S.agQ.push({k:'dk',e,who:{a,b:o.length?pick(o):null}});return}}
+ if(sp.length&&Math.random()<.21){const E=(GD.hev34||[]).filter(e=>/^dk_(bastard|affair|betray)/.test(e.id)&&!(S.dkDone||[]).includes(e.id));if(E.length){const e=pick(E);const w8=sp.map(x=>ntagAll(x).some(t=>['私通','心機','偽善','貪財','禍國'].includes(t))?3:1);let r=Math.random()*w8.reduce((s,v)=>s+v,0),a=sp[0];for(let i=0;i<sp.length;i++){r-=w8[i];if(r<=0){a=sp[i];break}}const o=sp.filter(x=>x!==a);S.agQ.push({k:'dk',e,who:{a,b:o.length?pick(o):null}})}}}
 const DATAG={私通:['私通','魅惑','享樂'],非親生:['私通','魅惑'],欺騙:['心機','偽善','貪財','虛榮','離間'],背叛:['禍國','心機','記仇','殘暴']};
-function darkActTurn(add){const A=GD.darkActs||[];const sp=spouses().filter(hOK);if(!A.length||!sp.length||Math.random()>.35)return;
+function darkActTurn(add){const A=GD.darkActs||[];const sp=spouses().filter(hOK);if(!A.length||!sp.length||Math.random()>.55)return;
  const c=[];A.forEach(x=>sp.forEach(a=>{const tg=ntagAll(a);c.push([x,a,tg.some(t=>(DATAG[x.tag]||[]).includes(t))?4:1])}));let r=Math.random()*c.reduce((s,v)=>s+v[2],0),ch=c[0];for(const v of c){r-=v[2];if(r<=0){ch=v;break}}
  const[x,a]=ch;const o=sp.filter(y=>y!==a);const who={a,b:o.length?pick(o):null};if(/\{b\}/.test(JSON.stringify(x))&&!who.b)return;
  const eff=x.eff||{};if(eff._bastard&&!eff._bastard.mother)eff._bastard.mother='a';FXCTX=x.d;fx34(eff,who);const s=fill30(x.d,who);
@@ -2371,7 +2489,7 @@ function vdPush(id,k,cont){const P=hp(id),i=P.inf||0;if(i<70||!['scold','demote'
 /* 權勢門檻台詞與極高權柄事件 */
 function powerEvTurn(add){spouses().forEach(id=>{const w=wed(id),P=hp(id),i=P.inf||0,G=GD.power&&GD.power[id];if(!G)return;const pv=w.infP==null?i:w.infP;
   if(pv<70&&i>=70&&G.rise)hxPush(id,G.rise,'權傾後宮');if(pv<90&&i>=90&&G.regent)hxPush(id,G.regent,'垂簾聽政');if(pv>=70&&i<30&&G.fall)hxPush(id,G.fall,'權勢崩落');w.infP=i});
- S.agQ=S.agQ||[];if(S.agQ.some(q=>q.k==='dk'))return;const c=spouses().filter(hOK).filter(x=>(hp(x).inf||0)>=70&&GD.power&&GD.power[x]&&GD.power[x].ev);if(!c.length||Math.random()>.1)return;
+ S.agQ=S.agQ||[];if(S.agQ.some(q=>q.k==='dk'))return;const c=spouses().filter(hOK).filter(x=>(hp(x).inf||0)>=70&&GD.power&&GD.power[x]&&GD.power[x].ev);if(!c.length||Math.random()>.2)return;
  const a=pick(c);const E=GD.power[a].ev.map((e,i)=>({...e,id:`pw_${a}_${i}`,k:'極高權柄'})).filter(e=>!(S.dkDone||[]).includes(e.id));if(!E.length)return;const o=spouses().filter(x=>x!==a);S.agQ.push({k:'dk',e:pick(E),who:{a,b:o.length?pick(o):null}})}
 /* 數值專屬事件 */
 function vOK(e,a,b){const w=wed(a),P=hp(a),lv=loveLv(a);const val={fav:w.fav,inf:P.inf||0,amb:P.amb||0,hedon:cH(a),tyranny:cT(a)};
@@ -2379,12 +2497,12 @@ function vOK(e,a,b){const w=wed(a),P=hp(a),lv=loveLv(a);const val={fav:w.fav,inf
   case'love':return(e.lv==null||lv>=LOVEN.indexOf(e.lv))&&(e.maxLv==null||lv<=LOVEN.indexOf(e.maxLv));
   case'rank':return mother()!==a&&rankOf(a)===OLD_RANK[e.rank];case'mood':return md2(a)===e.mood;case'cycle':return cyc(a)===e.phase;
   case'rel':{if(!b)return false;const r=relG(a,b);return(e.min==null||r>=e.min)&&(e.max==null||r<=e.max)}}return false}
-function valEvTurn(add){const E=GD.valEv||[];const sp=spouses().filter(hOK);if(!E.length||!sp.length)return;S.agQ=S.agQ||[];if(S.agQ.some(q=>q.k==='dk')||Math.random()>.22)return;
+function valEvTurn(add){const E=GD.valEv||[];const sp=spouses().filter(hOK);if(!E.length||!sp.length)return;S.agQ=S.agQ||[];if(S.agQ.some(q=>q.k==='dk')||Math.random()>.40)return;
  const c=[];E.forEach(e=>{if((S.dkDone||[]).includes(e.id))return;sp.forEach(a=>{if(e.v==='rel'){sp.forEach(b=>{if(b!==a&&vOK(e,a,b))c.push([e,a,b])})}else if(vOK(e,a)){const o=sp.filter(x=>x!==a);c.push([e,a,o.length?pick(o):null])}})});
  if(!c.length){if((S.dkDone||[]).filter(x=>x.startsWith('ve_')).length>=E.length*.8)S.dkDone=(S.dkDone||[]).filter(x=>!x.startsWith('ve_'));return}
  const[e,a,b]=pick(c);S.agQ.push({k:'dk',e:{...e,k:{fav:'寵愛',love:'情深',inf:'權勢',amb:'野心',rank:'位分',mood:'心境',hedon:'昏庸',tyranny:'暴虐',rel:'恩怨',cycle:'週期'}[e.v]+(e.pos?'・福':'・禍')},who:{a,b}})}
 /* 週期事件 */
-function cycEvTurn(add){S.agQ=S.agQ||[];if(S.agQ.some(q=>q.k==='dk')||Math.random()>.12)return;const c=[];spouses().filter(hOK).forEach(a=>{const C=GD.cycle&&GD.cycle[a];if(!C||!C.ev)return;C.ev.forEach((e,i)=>{const id=`cy_${a}_${i}`;if(e.phase===cyc(a)&&!(S.dkDone||[]).includes(id))c.push({...e,id,k:CYN[e.phase]})})});
+function cycEvTurn(add){S.agQ=S.agQ||[];if(S.agQ.some(q=>q.k==='dk')||Math.random()>.26)return;const c=[];spouses().filter(hOK).forEach(a=>{const C=GD.cycle&&GD.cycle[a];if(!C||!C.ev)return;C.ev.forEach((e,i)=>{const id=`cy_${a}_${i}`;if(e.phase===cyc(a)&&!(S.dkDone||[]).includes(id))c.push({...e,id,k:CYN[e.phase]})})});
  if(!c.length)return;const e=pick(c);const a=e.id.split('_')[1];S.agQ.push({k:'dk',e,who:{a,b:null}})}
 /* 數值專屬台詞 */
 function valLine(id){const V=GD.valTalk&&GD.valTalk[id];const w=wed(id);if(!V||!w||Math.random()>.35)return null;const P=hp(id);const c=[];
@@ -2426,9 +2544,9 @@ function pbTurn(add){S.agQ=S.agQ||[];S.pbSeen=S.pbSeen||{};const L=pbList();
   if(x.f.startsWith('pb_')){const id=x.f.slice(3);if(wed(id)&&d.self&&!away(id)){const s={...d.self};fx34(s,{a:id})}}
   else{if(d.hedon||d.tyranny)spouses().forEach(id=>{if(d.hedon)barAddC(id,'hedon',d.hedon);if(d.tyranny)barAddC(id,'tyranny',d.tyranny)})}});
  /* 夫人主動開口要 */
- spouses().filter(hOK).forEach(id=>{const d=GD.pbuild&&GD.pbuild[id],w=wed(id);if(!d||pbHas('pb_'+id)||pbPending('pb_'+id)||w.pbAsk||(w.pbNo&&S.t-w.pbNo<8))return;if((loveLv(id)>=2||(hp(id).inf||0)>=50)&&Math.random()<.06){w.pbAsk=S.t;hxPush(id,d.ask,`想要：${d.n}`);add(`【${H(id).n}的心願】她想要一座「${d.n}」`,'')}});
+ spouses().filter(hOK).forEach(id=>{const d=GD.pbuild&&GD.pbuild[id],w=wed(id);if(!d||pbHas('pb_'+id)||pbPending('pb_'+id)||w.pbAsk||(w.pbNo&&S.t-w.pbNo<8))return;if((loveLv(id)>=2||(hp(id).inf||0)>=50)&&Math.random()<.13){w.pbAsk=S.t;hxPush(id,d.ask,`想要：${d.n}`);add(`【${H(id).n}的心願】她想要一座「${d.n}」`,'')}});
  /* 建築事件 */
- if(!S.agQ.some(q=>q.k==='dk')&&Math.random()<.08){const c=[];L.forEach(x=>{const d=pbData(x.f);if(!d||!d.ev)return;const id=x.f.startsWith('pb_')?x.f.slice(3):null;if(id&&!hOK(id))return;d.ev.forEach((e,i)=>{const eid=`pbe_${x.f}_${i}`;if(!(S.dkDone||[]).includes(eid))c.push([{...e,id:eid,k:d.n},id])})});
+ if(!S.agQ.some(q=>q.k==='dk')&&Math.random()<.16){const c=[];L.forEach(x=>{const d=pbData(x.f);if(!d||!d.ev)return;const id=x.f.startsWith('pb_')?x.f.slice(3):null;if(id&&!hOK(id))return;d.ev.forEach((e,i)=>{const eid=`pbe_${x.f}_${i}`;if(!(S.dkDone||[]).includes(eid))c.push([{...e,id:eid,k:d.n},id])})});
   if(c.length){const[e,id]=pick(c);const sp=spouses().filter(hOK);const a=id||(sp.length?pick(sp):null);if(a){const o=sp.filter(x=>x!==a);S.agQ.push({k:'dk',e,who:{a,b:o.length?pick(o):null}})}}}}
 function pbVisit(id){const d=GD.pbuild&&GD.pbuild[id],w=wed(id);if(!d||!w)return;if(S.ap<1){sfx('deny');return toast('行動力不足')}if(w.pbvT===S.t){sfx('deny');return toast('這旬已經去過了')}S.ap--;w.pbvT=S.t;w.last=S.t;const V=d.visit||[];const L=V.length?V[(w.pbvN=(w.pbvN||0)+1)%V.length]:[['n',`你來到${d.n}。`]];
  dlgScene(L,{a:id},`pbv_${id}`,`${d.n}・相會`,()=>{fx34({love:15,_fa:5},{a:id});toast(`${H(id).n}：情深 +15、寵愛 +5`);render()})}
@@ -2693,11 +2811,15 @@ function hexFillKeys(t){
 function mapHexFill(x,y,keys,id){
   const terrain={terr_I:'iron',terr_W:'spring',terr_V:'village',terr_D:'well',terr_T:'tomb',mark_cheng:'city',base_camp:'camp'};
   const key=keys?.[0];if(!key)return '';const file=terrain[key];
-  const artwork={out_I:'o_mine',out_W:'o_spring',out_camp:'o_camp'}[key];
+  const artwork={out_I:'o_mine',out_W:'o_spring',out_V:'o_camp',out_camp:'o_camp'}[key];
   const href=artwork?'img/'+artwork+'.jpg':file?'img/hex_'+file+'.jpg':/^base_[0-3]$/.test(key)?'img/stage'+key.slice(-1)+'.jpg':mapIcoHref(keys);
   if(!href)return '';
-  const s=HR*2.7,cid='hc'+id;
-  return `<clipPath id="${cid}"><polygon points="${hpts(x,y)}"/></clipPath><image href="${href}" x="${(x-s/2).toFixed(1)}" y="${(y-s/2).toFixed(1)}" width="${s}" height="${s}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${cid})"/>`;
+  if(href.endsWith('.png'))return ''; // Small markers are drawn at badge size over terrain.
+  return tileImage(x,y,href);
+}
+function tileImage(x,y,href){
+ return `<g transform="translate(${x} ${y})" clip-path="url(#tileShape)"><image href="${href}" x="${-HW/2}" y="${-HR}" width="${HW}" height="${2*HR}" preserveAspectRatio="xMidYMid slice"/></g>`;
+
 }
 
 function activePlace(id){
@@ -2721,7 +2843,7 @@ function personalTurn(add){
    }
    delete st.seizePlan
   }
-  if(Math.random()>.38+Math.min(.24,(S.t-(st.acted??S.t))*.04))continue;
+  if(st.acted!=null&&st.acted!==S.t&&Math.random()>.62+Math.min(.30,(S.t-st.acted)*.08))continue;
   const neighbours=S.order.filter(x=>x!==id&&activePlace(x)===place);
   const rival=neighbours.filter(x=>relG(id,x)<-20||hp(id).foe===x).sort((a,b)=>relG(id,a)-relG(id,b))[0];
   const target=neighbours.find(x=>hst(x)==='jail'&&relG(id,x)<0)||rival||neighbours.find(x=>hst(x)==='jail');
@@ -2740,21 +2862,35 @@ function personalTurn(add){
    });
    if(S.food>=8&&S.pop<popCap())offer(favour/2,()=>{S.food-=8;const old=S.pop;S.pop=Math.min(popCap(),S.pop+3);return '開倉賑濟，糧 −8、流民 +'+(S.pop-old)});
   }
-  if(!confined&&place==='home'&&H(id).pool==='對外'&&favour>=65&&S.soldiers>=220&&nearFoe(5)){
-   offer(favour/4,()=>{const sent=sortie(id,true);return sent?'主動出援，率 '+sent.n+' 兵迎擊'+sent.e.n:'查閱軍情，敵軍已撤'})
+  if(!confined&&!busyArmy(id)&&(H(id).pool==='對外'||mother()===id||offOf(id))&&treasury(garrisonOf(id)).soldiers>=140&&S.enemies.some(e=>!e.seat&&dist(e,garrisonOf(id))<=9)){
+   offer(20+ambition/3,()=>{const sent=sortie(id,true);return sent?'主動出援，率 '+sent.n+' 兵迎擊'+sent.e.n:'查閱軍情，敵軍已撤'})
   }
-  if(!confined&&target&&w.tyranny>=45){
+  if(!confined&&(influence>=35||ambition>=55||mother()===id))offer(22+influence/3,()=>harAppoint(id)||'為同派請命，'+(hp(id).inf=Math.min(100,influence+2))+' 點權勢');
+  if(mother()===id&&!confined&&spouses().length>1)offer(65,()=>{
+   const other=pick(spouses().filter(x=>x!==id)),r=rankOf(other),d=msStyle(id)==='嚴厲'||relG(id,other)<0?-1:1;
+   const w=wed(other);w.rank=clamp(r+d,0,RANKN.length-1);w.rkT=S.t;w.rkD=w.rank-r;
+   relAdd(id,other,d*6);w.fav=clamp(w.fav+d*5,0,100);return '主持宮議，'+H(other).n+'現居'+RANKN[w.rank]+'，寵愛 '+(d>0?'+5':'−5')
+  });
+  if(favour>=50||wed(id)&&loveLv(id)>=3)offer(16+favour/3,()=>{
+   gainAff(id,2);if(wed(id))loveAdd(id,8);const near=place==='home'&&!confined;
+   if(near&&wed(id)&&loveLv(id)>=4&&jt(id)!=='大度'){
+    const other=spouses().filter(x=>x!==id).sort((a,b)=>wed(b).fav-wed(a).fav)[0];if(other){relAdd(id,other,-6);wed(id).fav=Math.min(100,wed(id).fav+4);return '握住你的手，央你今夜留下。她推掉了'+H(other).n+'的夜宴，寵愛 +4，兩人交情 −6。'}
+   }
+   if(near&&!S.companionAP){S.companionAP=1;return '在案邊陪你通宵批閱軍報，下一旬額外獲得 1 行動。'}
+   S.gifts=(S.gifts||0)+1;return near?'把珍藏的信物繫在你手上，贈禮 +1。':'托人送來親筆長信與信物，贈禮 +1。'
+  });
+  if(!confined&&target&&w.tyranny>=35){
    offer(w.tyranny/3,()=>{
-    const execute=w.tyranny>=90&&(hst(target)==='jail'||(hst(target)==='inj'&&relG(id,target)<=-60))&&(offOf(id)||influence>=60)&&Math.random()<.3;
+    const execute=w.tyranny>=70&&(hst(target)==='jail'||(hst(target)==='inj'&&relG(id,target)<=-60))&&(mother()===id||offOf(id)||influence>=40)&&Math.random()<.45;
     if(execute){goneHero(target,'exec');st.lastVictim=target}
-    else{setHst(target,'inj',3);relAdd(id,target,-15)}
-    barAddC(id,'tyranny',3);return execute?'擅自處死了'+H(target).n:'傷了'+H(target).n+'，對方休養三旬'
+    else{const jail=w.tyranny>=55&&hst(target)!=='jail';setHst(target,jail?'jail':'inj',3);relAdd(id,target,-15)}
+    barAddC(id,'tyranny',3);return execute?'擅自處死了'+H(target).n:(hst(target)==='jail'?'下令關押':'下令杖責')+H(target).n+'三旬'
    });
   }
   if(!confined&&city&&ambition>=60&&favour<50)offer(ambition/2,()=>{st.seizePlan=townKey(city,0);return '已令'+cityName(city)+'守軍只聽她的號令。下旬前可調離她以阻止奪城'});
   let roll=Math.random()*actions.reduce((n,a)=>n+a.weight,0);
   const chosen=actions.find(a=>(roll-=a.weight)<=0)||actions[actions.length-1];
-  const result=chosen.act();st.acted=S.t;
+  const result=chosen.act();st.lastAction=result;st.acted=S.t;feedPush('【'+H(id).n+'】'+result);
   add(result.includes('經手人待查')?'【庫房】'+result:'【'+H(id).n+'】'+result);
   for(const key of ['hedon','tyranny']){
    const tier=Math.floor(w[key]/100), mark=key+'Tier';
@@ -2767,7 +2903,7 @@ function personalTurn(add){
  }
 }
 
-function hstTurn(add){personalTurn(add);haremAI(add);ambTurn(add);S.hxN=0;desireTurn(add);facTurn2(add);cityTurn(add);agendaTurn(add);dutyMigrate();favSync();loveTurn(add);v21Turn(add);dkTurn(add);v23Turn(add);corruptTurn(add);barTurn(add);powerTurn(add);powerEvTurn(add);valEvTurn(add);cycEvTurn(add);pbTurn(add);S.clean0=S.pol===0?(S.clean0||0)+1:0;checkAch2();(T_('h3')&&Math.random()<.3?0:ownEvRoll());S.order.forEach(id=>{const st=hs(id),x=st.hst;if(!x)return;if(x.u<=S.t){add(`${H(id).n}的【${HST[x.k][0]}】狀態解除了`,'pos');st.hst=null;return}const w=wed(id);
+function hstTurn(add){personalTurn(add);haremAI(add);ambTurn(add);S.hxN=0;desireTurn(add);facTurn2(add);factionCouncil(add);cityTurn(add);agendaTurn(add);dutyMigrate();favSync();loveTurn(add);v21Turn(add);dkTurn(add);v23Turn(add);corruptTurn(add);barTurn(add);powerTurn(add);powerEvTurn(add);valEvTurn(add);cycEvTurn(add);pbTurn(add);S.clean0=S.pol===0?(S.clean0||0)+1:0;checkAch2();(T_('h3')&&Math.random()<.3?0:ownEvRoll());S.order.forEach(id=>{const st=hs(id),x=st.hst;if(!x)return;if(x.u<=S.t){add(`${H(id).n}的【${HST[x.k][0]}】狀態解除了`,'pos');st.hst=null;return}const w=wed(id);
   if(x.k==='jail'){if(w)w.fav=Math.max(0,w.fav-3);gainAff(id,-2)}if(x.k==='ban'&&w)w.fav=Math.max(0,w.fav-2);if(x.k==='spoil'){spouses().filter(y=>y!==id).forEach(y=>{wed(y).fav=Math.max(0,wed(y).fav-2)});S.food=Math.max(0,S.food-15)}});
  S.order.forEach(id=>{if(hs(id).traitor&&!unavail(id)&&Math.random()<.14){const f=Math.min(S.food,40),so=Math.min(S.soldiers,30);S.food-=f;S.soldiers-=so;S.lastRaid=-9;add(`【內奸】糧倉帳目出現缺口（糧 −${f}），巡邏路線被敵人摸清（兵力 −${so}），敵襲機率上升……`,'neg')}});
  Object.entries(S.gone||{}).forEach(([id,g])=>{if(g.k==='exile'&&g.u<=S.t){if(Math.random()<.7){delete S.gone[id];S.order.push(id);hs(id).aff=Math.min(hs(id).aff,10);if(wed(id))wed(id).fav=20;add(`${H(id).n}結束流放，風塵僕僕地回到了燈塔`,'pos');hxPush(id,(GD.hstat&&GD.hstat[id]&&GD.hstat[id].exileBack)||'……我回來了。這些日子，我把該想的都想清楚了。','流放歸來')}else{g.k='lost';add(`流放中的${H(id).n}下落不明，再也沒有回來`,'neg')}}})}
@@ -2881,9 +3017,9 @@ function endTurn(){
  autoAssign(add);
  for(const id of S.order){const h=H(id),st=hs(id),t=typeof heroJob==='function'?heroJob(st):st.task;if((st.task&&st.task!=='idle')||(st.cjob&&TASKS[st.cjob]))gainExp(id,35,add);
   if(loyal(id)<30&&Math.random()<.35){const P=GD.personal[id];add(`${h.n}忠誠低落，這一旬拒絕工作${P?'：「'+pick(P.low)+'」':''}`,'neg');continue}
-  if(t==='recruit'){const n=recruitAmt(id),pc=popCost(n);if(S.food>=10&&S.pop>=pc){S.food-=10;S.soldiers+=n;S.pop-=pc;add(`${h.n}徵兵：兵力 +${n}（流民 −${pc}）`,'pos')}else add(`${h.n}徵兵失敗：${S.pop<pc?'流民不足':'糧食不足'}`,'neg')}
-  else if(t==='gather'){const n=gatherAmt(id);S.wood+=n;S.stone+=n;add(`${h.n}採集：木、石各 +${n}`,'pos')}
-  else if(t==='search'){const roll=Math.random()*100+stat(id,'int')/4;if(roll>95){S.core+=1;const e=20*(T_('e4')?2:1);S.energy+=e;add(`${h.n}在廢墟深處找到晶核與星盤殘片（晶核 +1、能量 +${e}）`,'pos')}else if(roll>62){const p=R(15,30);S.pop+=p;add(`${h.n}帶回一批流民（流民 +${p}）`,'pos')}else if(roll>35){const f=R(25,50);S.food+=f;add(`${h.n}搜到殘存糧倉（糧 +${f}）`,'pos')}else{const e=10*(T_('e4')?2:1);S.energy+=e;add(`${h.n}只找到一點星盤碎片（能量 +${e}）`)}}
+  const depot=treasury(garrisonOf(id));if(t==='recruit'){const n=recruitAmt(id),pc=popCost(n);if(depot.food>=10&&S.pop>=pc){depot.food-=10;depot.soldiers+=n;S.pop-=pc;add(`${h.n}徵兵：兵力 +${n}（流民 −${pc}）`,'pos')}else add(`${h.n}徵兵失敗：${S.pop<pc?'流民不足':'糧食不足'}`,'neg')}
+  else if(t==='gather'){const n=gatherAmt(id);depot.wood+=n;depot.stone+=n;add(`${h.n}採集：木、石各 +${n}`,'pos')}
+  else if(t==='search'){const roll=Math.random()*100+stat(id,'int')/4;if(roll>95){S.core+=1;const e=20*(T_('e4')?2:1);S.energy+=e;add(`${h.n}在廢墟深處找到晶核與星盤殘片（晶核 +1、能量 +${e}）`,'pos')}else if(roll>62){const p=R(15,30);S.pop+=p;add(`${h.n}帶回一批流民（流民 +${p}）`,'pos')}else if(roll>35){const f=R(25,50);depot.food+=f;add(`${h.n}搜到殘存糧倉（糧 +${f}）`,'pos')}else{const e=10*(T_('e4')?2:1);S.energy+=e;add(`${h.n}只找到一點星盤碎片（能量 +${e}）`)}}
   else if(t==='train'){const n=Math.round(stat(id,'cmd')/12);S.train=Math.min(100,S.train+n);add(`${h.n}操練：訓練度 +${n}（現在 ${S.train}，全軍傷害 +${Math.round(S.train/1.4)}%）`,'pos')}
   else if(t==='purify'){const n=Math.round(stat(id,'int')/9*(1+heroEff(id,'purify')));S.pol=Math.max(0,S.pol-n);const origin=(st.task&&String(st.task).startsWith('city:')&&typeof cityOfTask==='function')?cityOfTask(st.task):null;purifyNear(add,origin||BASE);add(`${h.n}${origin?'在分城':''}淨化：污染 −${n}`,'pos')}
   else if(t.startsWith('build:')){const i=t.slice(6),s=slotAt(i);if(s&&s.p<100){s.p=Math.min(100,s.p+buildRate(id));if(s.p>=100){const ob=facOutText({...s,lv:s.lv}),olv=s.lv;s.lv++;st.task='idle';(S.upQ=S.upQ||[]).push({builder:id,f:s.f,from:olv,to:s.lv,ob,ib:s.lv>1?facOutText(s):''});if(s.f==='wall'&&s.lv===5)strengthenWalls(i,50);add(`【完工】${FAC[s.f][0]} ${s.lv>1?'升到 Lv'+s.lv:'落成'}！`,'pos');if(s.f==='wall'&&s.lv===1)strengthenWalls(i,40);if(s.f==='harem'&&s.lv===1)add('後宮殿閣落成：可以締結婚姻了','pos')}else add(`${h.n}建設${FAC[s.f][0]}（${s.p}%）`)}else st.task='idle'}
@@ -2892,7 +3028,7 @@ function endTurn(){
  let food=8,wood=0,stone=0,energy=4+(T_('e1')?5:0)+teamEff('energy'),pop=teamEff('popg')+(T_('s5')?8:0),tpol=0;
  ownTiles().forEach(t=>{const y=tileYield(t);food+=y.food;wood+=y.wood;stone+=y.stone;energy+=y.energy;pop+=y.pop;tpol+=y.pol});
  food=Math.round(food*(1+teamEff('food')*.5+(T_('s3')?.2:0)));wood+=teamEff('ws');stone+=teamEff('ws');
- slotsOf('granary').forEach(s=>food+=facVal(s));slotsOf('market').forEach(s=>{wood+=facVal(s);stone+=facVal(s)});slotsOf('altar').forEach(s=>energy+=facVal(s));slotsOf('houses').forEach(s=>pop+=facVal(s));
+ const localSlots=new Map();for(const town of cityTiles().filter(t=>t.city>1))for(const slot of town.townSlots||[])if(slot)localSlots.set(slot,townStores(town));slotsOf('granary').forEach(s=>{if(localSlots.has(s))localSlots.get(s).food+=facVal(s);else food+=facVal(s)});slotsOf('market').forEach(s=>{const n=facVal(s),local=localSlots.get(s);if(local){local.wood+=n;local.stone+=n}else{wood+=n;stone+=n}});slotsOf('altar').forEach(s=>energy+=facVal(s));slotsOf('houses').forEach(s=>pop+=facVal(s));
  slotsOf('academy').forEach(s=>S.talent+=facVal(s));S.talentFrac=(S.talentFrac||0)+Math.min(.6,teamEff('talent'))+(T_('p5')?.15:0)+bldEff('talent2');S.food+=Math.round(bldEff('food2'));if(S.talentFrac>=1){S.talent+=Math.floor(S.talentFrac);S.talentFrac%=1}
  slotsOf('drill').forEach(s=>{if(s.gar)S.train=Math.min(100,S.train+facVal(s))});if(T_('c3'))S.train=Math.min(100,S.train+3);S.train=Math.min(100,S.train+teamEff('train'));
  let clean=teamEff('clean')+(T_('s4')?3:0);slotsOf('purify').forEach(s=>{clean+=-facVal(s);purifyNear(add)});slotsOf('mistwall').forEach(s=>{clean+=2+s.lv;purifyNear(add)});S.pol=Math.max(0,S.pol-clean);
@@ -2906,7 +3042,7 @@ function endTurn(){
  const pc=typeof popN==='function'?popN(popCap()):Math.round(popCap());if(S.pop>pc){add(`流民超過上限，${Math.round((S.pop||0)-pc)} 人離去（擴張領地、蓋民居可提高上限）`,'neg');S.pop=pc}
  const creep0=(S.t%2===0?1:0)+Math.min(2,Math.floor(S.t/24)),ward=(typeof polWardLv==='function'?polWardLv():0),creep=Math.max(0,creep0-ward);S.pol=Math.min(100,S.pol+creep);
  const adj=ownTiles().filter(t=>t.pol&&!(typeof polGuard==='function'&&polGuard(t))).length+nb(BASE.r,BASE.c).filter(t=>t.pol&&!(typeof polGuard==='function'&&polGuard(t))).length;const adjN=adj?Math.min(3,Math.ceil(adj/2)):0;if(adjN)S.pol=Math.min(100,S.pol+adjN);add(`黑霧滲透：據點污染 +${creep+adjN}${ward?`（鎮霧壁壘抑制 ${creep0-creep}）`:''}${adj?`（未受庇護的污染格 ${adj}，+${adjN}）`:''}`,'neg');
- spreadPol(add);if(S.t>=3&&!away)raid(add);hstTurn(add);wedTurn(add);kidTurn(add);poiTurn(add);if(polEff('durRegen'))S.dur=Math.min(S.durMax,S.dur+polEff('durRegen'));
+ spreadPol(add);if(S.t>=3&&!away)raid(add);hstTurn(add);wedTurn(add);kidTurn(add);successionTurn(add);poiTurn(add);if(polEff('durRegen'))S.dur=Math.min(S.durMax,S.dur+polEff('durRegen'));
  if(S.pol>60){const p=R(5,12);S.pop=Math.max(0,S.pop-p);add(`污染過高，流民逃散 ${p} 人<br>${alertLine('流民離去')}`,'neg')}
  if(away){S.ctx.home=ctxOut();ctxIn(WC)}
  for(const u of S.units){if(!u.tgt)continue;let mp=moveOf(u.gens);const p=path(u,u.tgt);
@@ -2918,8 +3054,8 @@ function endTurn(){
  S.t++;
  const wasTide=S.t%tideInterval===0;if(wasTide){if(away)homeTide(add);else tide(add)}worldTick(add);
  wxRoll(add);wtxTurn(add);nmilTurn(add);facTurn(add);moveEnemies(add);milTurn(add);
- S.ap=maxAP()-(S.apDebt||0);S.apDebt=0;S.blessed=S.blessed&&S.units.some(u=>u.id===S.blessed)?S.blessed:null;
- S.units.forEach(u=>{if(!inWorld()&&u.r===BASE.r&&u.c===BASE.c&&!u.tgt){S.soldiers+=u.troops;u.gens.forEach(g=>hs(g).task='idle');u.dead=true;add(`${H(u.gens[0]).n}的部隊回到燈塔，解散歸營（武將改為待命）`)}});
+ S.ap=maxAP()-(S.apDebt||0)+(S.companionAP||0);S.companionAP=0;S.apDebt=0;S.blessed=S.blessed&&S.units.some(u=>u.id===S.blessed)?S.blessed:null;
+ S.units.forEach(u=>{const dest=armyHome(u);if(!inWorld()&&u.r===dest.r&&u.c===dest.c&&!u.tgt){treasury(dest).soldiers+=u.troops;u.gens.forEach(g=>{hs(g).task=dest===BASE?'idle':'city:'+dest.r+'_'+dest.c;if(dest!==BASE)dest.cg=[...new Set([...(dest.cg||[]),g])]});u.dead=true;add(`${H(u.gens[0]).n}的部隊返回${dest===BASE?"燈塔":cityName(dest)}歸營`)}});
  S.units=S.units.filter(u=>!u.dead);
  const finish=()=>{checkFalls(r=>report.push([r,'pos']));if(wasTide){S.tides++;if(battleQ.length===0||true){}}showReport()};
  if(wasTide)tideCutscene(()=>runBattles(finish));else runBattles(finish);
