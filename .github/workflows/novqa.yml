@@ -1,0 +1,24 @@
+name: Mobile succession and map checks
+on:
+  push:
+    branches: ['qa/nov-1123-*']
+permissions:
+  contents: read
+jobs:
+  mobile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: pip install playwright
+      - run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text()
+          i=s.rindex('}',0,s.rindex('</script>'))
+          Path('t.html').write_text(s[:i]+'window.X=c=>eval(c);\n'+s[i:])
+          PY
+          python -m http.server 8765 >/tmp/game-http.log 2>&1 &
+          python novqa.py
