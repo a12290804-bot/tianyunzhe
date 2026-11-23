@@ -382,6 +382,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 <script src="rewrite_01r_xishi.js?v=b56b2028891a"></script>
 <script src="rewrite_01s_pair.js?v=2c7263931264"></script>
 <script src="rewrite_01t_pair.js?v=72eada437bbb"></script>
+<script src="rewrite_01u_batch.js?v=8be3142e20be"></script>
 <script src="rewrite_01z_qing_terms.js"></script>
 <script>
 {
@@ -1180,6 +1181,44 @@ function armyHome(u){
 }
 const treasury=t=>t===BASE?S:townStores(t);
 const policyNames={waiqi:'宮中籌糧',wuxun:'募兵',wenchen:'治糧',shanggu:'通商',qingliu:'安民'};
+function factionContest(add){
+ if(inWorld()||S.lastContest===S.t)return;
+ const groups=FACK.filter(k=>facMem(k).length);
+ if(groups.length<2)return;
+ const {p,sh}=facPow();
+ const anger=k=>Math.max(0,S.fd?.[k]||0);
+ const pressure=k=>Math.round(12+45*sh[k]+Math.min(60,anger(k)));
+ S.contestPressure=(S.contestPressure||0)+Math.max(...groups.map(pressure));
+ S.lastContest=S.t;
+ if(S.contestPressure<100)return;
+ S.contestPressure-=100;
+ function draw(pool,weight){
+  let roll=Math.random()*pool.reduce((sum,k)=>sum+weight(k),0);
+  return pool.find(k=>(roll-=weight(k))<0)||pool[pool.length-1];
+ }
+ const challenger=draw(groups,pressure);
+ const rival=draw(groups.filter(k=>k!==challenger),k=>1+p[k]);
+ const strength=k=>Math.max(1,p[k]+Math.min(60,anger(k))/2);
+ const win=draw([challenger,rival],strength),lose=win===rival?challenger:rival;
+ const posts=Object.entries(S.off||{}).filter(([,id])=>id&&S.order.includes(id)&&facOf(id)===lose);
+ const candidates=facMem(win).filter(id=>audienceOK(id)&&!Object.values(S.off||{}).includes(id));
+ let outcome;
+ if(posts.length&&candidates.length){
+  const [post,old]=pick(posts),next=pick(candidates);
+  S.off[post]=next;
+  outcome=H(old).n+'被撤換，'+H(next).n+'接任'+(OFF.find(o=>o[0]===post)?.[1]||post);
+ }else{
+  const grain=Math.min(Math.max(0,S.food),Math.ceil(6+12*sh[win]));
+  S.food-=grain;
+  outcome='勝方取得軍糧調度權，動用庫糧 '+grain;
+ }
+ S.fp??={};S.fd??={};
+ S.fp[win]=(S.fp[win]||0)+5;
+ S.fd[lose]=anger(lose)+8;S.fd[win]=Math.max(0,anger(win)-8);
+ const msg=FACN2[challenger]+'向'+FACN2[rival]+'發難（勢力 '+p[challenger]+' 對 '+p[rival]+'），'+FACN2[win]+'勝出。'+outcome+'。勝方勢力 +5，敗方不滿 +8。';
+ (S.contests??=[]).unshift({t:S.t,msg});S.contests.length=Math.min(8,S.contests.length);
+ feedPush('【派系鬥爭】'+msg);add('【派系鬥爭】'+msg,'neg');
+}
 function factionCouncil(add){
  if(!S.order.length||S.t%3!==0||S.councilAt===S.t)return;
  S.councilAt=S.t;const {sh}=facPow(),groups=FACK.filter(k=>facMem(k).length);
@@ -1408,7 +1447,16 @@ function eligibleTutors(k){
 }
 function successionView(){
  const kids=successionKids();
- if(!kids.length)return '';
+ if(!kids.length){
+  const wives=spouses().filter(id=>activePlace(id)==='home');
+  const progress=wives.map(id=>{
+   const w=wed(id);
+   const status=w.preg?'有孕':w.recovery>S.t?'產後或失胎休養中':!audienceOK(id)?'目前無法探望':'';
+   return '<div class="frame" style="padding:8px">'+H(id).n+'・寵愛 '+w.fav+'/80・已探望 '+(w.visits||0)+'/3 次 '+status+
+    (audienceOK(id)?' <button class="btn sm" data-family-visit="'+id+'">探望（1 行動）</button>':'')+'</div>';
+  }).join('');
+  return '<div class="sec"><div class="orn">東宮・太子與教養</div><p>儲位虛懸。孩子出生後，可在此冊立儲君、拜師和教養。</p><p class="small">與紅顏締結誓約後，寵愛達 80 且探望至少 3 次，每旬有機會懷孕。孕期為 6 旬。</p>'+progress+'<button class="btn sm" data-family-home>前往後宮</button> <button class="btn ghost sm" data-family-heroes>查看武將與好感</button></div>';
+ }
  const heir=kids.find(k=>k.id===S.crown);
  const towns=cityTiles().filter(t=>t.city>1);
  const files=S.petition;
@@ -1427,6 +1475,10 @@ function courtRecord(msg){
  feedPush('【東宮】'+msg);toast(msg);save();render();
 }
 function bindSuccession(){
+ const home=$('[data-family-home]'),heroes=$('[data-family-heroes]');
+ if(home)home.onclick=()=>{S.hTab='誓約結義';setView('harem')};
+ if(heroes)heroes.onclick=()=>{S.hvMode='card';setView('hero')};
+ $$('[data-family-visit]').forEach(b=>b.onclick=()=>{const id=b.dataset.familyVisit;if(audienceOK(id)&&wed(id))wedVisit(id)});
  $$('[data-crown]').forEach(b=>b.onclick=()=>{
  const k=successionKids().find(k=>k.id===b.dataset.crown);
  if(!k||S.crown===k.id)return;
@@ -1721,7 +1773,9 @@ function factionEvent(cb){const fe=S.facEv;S.facEv=null;if(!fe||!GD.fac26)return
  const img={彈劾:'ev_court',黨爭:'ev_court',聯名上書:'ev_petition',清君側:'ev_mutiny',倒戈:'ev_mutiny',和解宴:'ev_banquet'}[e.k]||'ev_court';
  sheet(`<div class="evimg" style="background-image:url(img/${img}.jpg)"></div><div class="small" style="letter-spacing:.2em;color:var(--gold2)">派系・${e.k}</div><h3>${e.t}</h3><p style="margin:6px 0 10px;font-family:Noto Serif TC,serif">${e.d}</p>${e.c.map((o,i)=>`<button class="opt frame" data-i="${i}" style="margin-bottom:8px"><span class="t"><b>${o[0]}</b><div>${facLab(o[1])}</div></span></button>`).join('')}`,true);sfx('page');
  $$('#sheetIn [data-i]').forEach(b=>b.onclick=()=>{facApply(e.c[+b.dataset.i][1]);closeSheet();sfx('ok');render();cb()})}
-function facView(){const{p,sh}=facPow();const G=GD.fac26||{intro:{}};return FACK.map(k=>{const m=facMem(k),fd=(S.fd&&S.fd[k])||0,cities=cityTiles().filter(t=>(t.cg||[]).some(g=>facOf(g)===k)).length;return`<div class="frame" style="padding:8px;margin-bottom:8px;border-color:${FACC[k]}66"><div style="display:flex;align-items:center;gap:8px"><img src="img/fc_${k}.jpg" style="width:40px;height:40px;border-radius:50%;border:1px solid ${FACC[k]}"><div style="flex:1"><b style="color:${FACC[k]}">${FACN2[k]}</b> <span class="small">勢力 ${Math.max(0,Math.min(100,Math.round(sh[k]*100)))}%・分城 ${cities}</span><div class="meter" style="margin-top:3px"><i style="width:${Math.max(0,Math.min(100,Math.round(sh[k]*100)))}%;background:${FACC[k]}"></i></div><div class="small" style="color:${fd>=60?'var(--blood)':fd>=30?'var(--gold2)':'var(--dim)'}">不滿 ${fd}${sh[k]>.4?'・<b style="color:var(--blood)">專權風險</b>':''}${sh[k]<.12&&m.length>=2?'・被冷落中':''}</div></div></div>
+function facView(){const{p,sh}=facPow();const G=GD.fac26||{intro:{}};
+ const history=(S.contests||[]).map(e=>'<p class="small">第 '+e.t+' 旬・'+e.msg+'</p>').join('');
+ return '<div class="frame" style="padding:8px;margin-bottom:8px"><b>派系鬥爭</b><p class="small">'+(FACK.filter(k=>facMem(k).length).length<2?'至少兩派有人，才會交鋒。':'朝局緊張 '+(S.contestPressure||0)+'/100。勢力與不滿推升緊張，達 100 便交鋒。')+'</p>'+history+'</div>'+FACK.map(k=>{const m=facMem(k),fd=(S.fd&&S.fd[k])||0,cities=cityTiles().filter(t=>(t.cg||[]).some(g=>facOf(g)===k)).length;return`<div class="frame" style="padding:8px;margin-bottom:8px;border-color:${FACC[k]}66"><div style="display:flex;align-items:center;gap:8px"><img src="img/fc_${k}.jpg" style="width:40px;height:40px;border-radius:50%;border:1px solid ${FACC[k]}"><div style="flex:1"><b style="color:${FACC[k]}">${FACN2[k]}</b> <span class="small">勢力 ${Math.max(0,Math.min(100,Math.round(sh[k]*100)))}%・分城 ${cities}</span><div class="meter" style="margin-top:3px"><i style="width:${Math.max(0,Math.min(100,Math.round(sh[k]*100)))}%;background:${FACC[k]}"></i></div><div class="small" style="color:${fd>=60?'var(--blood)':fd>=30?'var(--gold2)':'var(--dim)'}">不滿 ${fd}${sh[k]>.4?'・<b style="color:var(--blood)">專權風險</b>':''}${sh[k]<.12&&m.length>=2?'・被冷落中':''}</div></div></div>
  ${m.length?'<div class="small">三旬一議・'+policyNames[k]+'・本派議決機會 '+Math.round(sh[k]*100)+'%<br>'+(S.factionMinutes?.[k]?.msg||'尚待議決')+'</div>':''}${G.intro[k]?`<div class="small" style="margin:4px 0;color:#cdbf9f">${G.intro[k][1]}</div>`:''}<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">${m.map(id=>`<button class="chip" data-h="${id}" style="display:flex;align-items:center;gap:3px;padding:1px 6px 1px 1px"><span style="width:20px;height:20px;border-radius:50%;background:url(img/${face(id)}.jpg) center 15%/cover;display:inline-block"></span>${H(id).n}${S.facOv&&S.facOv[id]?'＊':''}</button>`).join('')||'<span class="small" style="color:var(--dim)">無成員</span>'}</div></div>`}).join('')+'<p class="small" style="color:var(--dim)">＊＝被夫人拉攏而轉投。勢力由成員、駐守分城、主母決定；某派超過 40% 會專權，低於 12% 會不滿。</p>'}
 /* ---------- 分城 ---------- */
 const cityTiles=()=>renderCities||((S.cur&&S.cur!=='home'?S.ctx?.home?.tiles||S.tiles:S.tiles)||[]).flat().filter(t=>t.city&&t.own&&!t.rebFid);
@@ -2984,7 +3038,7 @@ function personalTurn(add,ids=[...S.order]){
  }
 }
 
-function hstTurn(add){localRise(add);personalTurn(add);haremAI(add);ambTurn(add);S.hxN=0;desireTurn(add);facTurn2(add);factionCouncil(add);cityTurn(add);agendaTurn(add);dutyMigrate();favSync();loveTurn(add);v21Turn(add);dkTurn(add);v23Turn(add);corruptTurn(add);barTurn(add);powerTurn(add);powerEvTurn(add);valEvTurn(add);cycEvTurn(add);pbTurn(add);S.clean0=S.pol===0?(S.clean0||0)+1:0;checkAch2();(T_('h3')&&Math.random()<.3?0:ownEvRoll());S.order.forEach(id=>{const st=hs(id),x=st.hst;if(!x)return;if(x.u<=S.t){add(`${H(id).n}的【${HST[x.k][0]}】狀態解除了`,'pos');st.hst=null;return}const w=wed(id);
+function hstTurn(add){localRise(add);personalTurn(add);haremAI(add);ambTurn(add);S.hxN=0;desireTurn(add);facTurn2(add);factionContest(add);factionCouncil(add);cityTurn(add);agendaTurn(add);dutyMigrate();favSync();loveTurn(add);v21Turn(add);dkTurn(add);v23Turn(add);corruptTurn(add);barTurn(add);powerTurn(add);powerEvTurn(add);valEvTurn(add);cycEvTurn(add);pbTurn(add);S.clean0=S.pol===0?(S.clean0||0)+1:0;checkAch2();(T_('h3')&&Math.random()<.3?0:ownEvRoll());S.order.forEach(id=>{const st=hs(id),x=st.hst;if(!x)return;if(x.u<=S.t){add(`${H(id).n}的【${HST[x.k][0]}】狀態解除了`,'pos');st.hst=null;return}const w=wed(id);
   if(x.k==='jail'){if(w)w.fav=Math.max(0,w.fav-3);gainAff(id,-2)}if(x.k==='ban'&&w)w.fav=Math.max(0,w.fav-2);if(x.k==='spoil'){spouses().filter(y=>y!==id).forEach(y=>{wed(y).fav=Math.max(0,wed(y).fav-2)});S.food=Math.max(0,S.food-15)}});
  S.order.forEach(id=>{if(hs(id).traitor&&!unavail(id)&&Math.random()<.14){const f=Math.min(S.food,40),so=Math.min(S.soldiers,30);S.food-=f;S.soldiers-=so;S.lastRaid=-9;add(`【內奸】糧倉帳目出現缺口（糧 −${f}），巡邏路線被敵人摸清（兵力 −${so}），敵襲機率上升……`,'neg')}});
  Object.entries(S.gone||{}).forEach(([id,g])=>{if(g.k==='exile'&&g.u<=S.t){if(Math.random()<.7){delete S.gone[id];S.order.push(id);hs(id).aff=Math.min(hs(id).aff,10);if(wed(id))wed(id).fav=20;add(`${H(id).n}結束流放，風塵僕僕地回到了燈塔`,'pos');hxPush(id,(GD.hstat&&GD.hstat[id]&&GD.hstat[id].exileBack)||'……我回來了。這些日子，我把該想的都想清楚了。','流放歸來')}else{g.k='lost';add(`流放中的${H(id).n}下落不明，再也沒有回來`,'neg')}}})}
