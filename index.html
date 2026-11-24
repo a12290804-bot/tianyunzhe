@@ -3610,7 +3610,8 @@ const CRAVE={
  immortal:['求仙','#7ad0ff',['求仙','長生','清冷','淡泊','孤寂','虔誠','渴求永生'],['好道','求仙','癡迷長生','服丹成癮','捨身求道'],['build','pray','nun','leave'],'丹藥、能量、永生，吃多少都不夠'],
  vanity:['虛榮','#ff9ad0',['嬌貴','嬌憨','驕縱','端麗','虛榮','爭寵'],['愛美','好妝飾','爭奇鬥豔','揮霍無度','窮奢極侈'],['compete','grantT','build','party'],'珍寶、賞賜、排場，永遠要比別人多一件']};
 const CRAVE_T=[0,15,40,80,140],CRAVE_TN=['微露','漸深','熾烈','成癮','無底'];
-function craveOf(id){const st=hs(id);if(st.crave&&CRAVE[st.crave])return st.crave;const tags=(ntagAll(id)||[]).concat(PTAG[id]||[]).join(' ');
+const craveTxt=(id,k,tr)=>{try{const g=globalThis,c=g.CRAVE_CHAR&&g.CRAVE_CHAR[id];if(c&&c.tiers&&c.tiers[tr]&&(!c.crave||c.crave===k))return c.tiers[tr];return g.CRAVE_TEXT&&g.CRAVE_TEXT[k]&&g.CRAVE_TEXT[k][tr]||null}catch(e){return null}};
+function craveOf(id){const st=hs(id);if(st.crave&&CRAVE[st.crave])return st.crave;{const c=globalThis.CRAVE_CHAR&&globalThis.CRAVE_CHAR[id];if(c&&CRAVE[c.crave])return st.crave=c.crave}const tags=(ntagAll(id)||[]).concat(PTAG[id]||[]).join(' ');
  let best=null,bs=-1;Object.entries(CRAVE).forEach(([k,c],i)=>{const s=c[2].filter(x=>tags.includes(x)).length*10+((id.charCodeAt(0)+id.length*7+i*13)%9)/10;if(s>bs){bs=s;best=k}});return st.crave=best}
 const craveApp=id=>(hs(id)&&hs(id).app)||0;
 const craveTier=id=>{const a=craveApp(id);let t=0;CRAVE_T.forEach((v,i)=>{if(a>=v)t=i});return t};
@@ -3619,8 +3620,9 @@ function craveTurn(add){spouses().forEach(id=>{if(!S.order.includes(id))return;c
  const fed=vis||items||wn;if(fed)st.craveFed=S.t;const starve=S.t-(st.craveFed??S.t);
  st.app=(st.app||0)+.6+eraE()*.8+(fed?2:0)+(starve>6?1:0)+(st.pv&&st.pv.fotang?-.5:0);const tr=craveTier(id),m=1+tr;
  // 標籤：本性的層級標籤取代上一級
- const d=st.dtag||(st.dtag={});C[3].forEach((n,i)=>{if(i!==tr&&d[n]&&!(k==='lust'&&n==='縱慾'&&st.pv&&st.pv.mianshou))delete d[n]});if(!d[C[3][tr]])d[C[3][tr]]=S.t;
- if(tr>t0)add(`【本性】${H(id).n}的${C[0]}又深了一層：如今「${C[3][tr]}」（${CRAVE_TN[tr]}）`,'neg');
+ const TN=i=>{const x=craveTxt(id,k,i);return x&&x.name||C[3][i]};const d=st.dtag||(st.dtag={});C[3].map((_,i)=>TN(i)).forEach((n,i)=>{if(i!==tr&&d[n]&&!(k==='lust'&&n==='縱慾'&&st.pv&&st.pv.mianshou))delete d[n]});if(!d[TN(tr)])d[TN(tr)]=S.t;const X=craveTxt(id,k,tr);
+ if(tr>t0){add(`【本性】${H(id).n}的${C[0]}又深了一層：如今「${TN(tr)}」（${CRAVE_TN[tr]}）`,'neg');if(X&&X.up&&X.up.length&&typeof hxPush==='function')hxPush(id,pick(X.up),`本性・${TN(tr)}`)}
+ else if(X&&typeof hxPush==='function'&&Math.random()<.12){const L=fed?X.fed:(S.t-(st.craveFed??S.t))>4?X.hungry:null;if(L&&L.length)hxPush(id,pick(L),`本性・${TN(tr)}`)}
  // 污染：只會越來越深
  mistAdd(id,tr+(k==='blood'?tr:0)+(starve>4?tr:0));
  // 胃口：越餓越難熬，寵愛流失加快
@@ -3638,8 +3640,9 @@ function craveTurn(add){spouses().forEach(id=>{if(!S.order.includes(id))return;c
 {const _acv=actCtx;actCtx=function(id){const c=_acv(id);c.crave=craveOf(id);c.ct=craveTier(id);return c}}
 AUTOACT.forEach(a=>{const f=a[3];a[3]=c=>{let w=f(c);if(c.crave&&CRAVE[c.crave][4].includes(a[0])&&w>0)w*=1+c.ct*.5;else if(c.crave&&CRAVE[c.crave][4].includes(a[0])&&c.ct>=2)w+=c.ct*.4;return w}});
 setTimeout(()=>{Object.values(CRAVE).forEach(c=>c[3].forEach((n,i)=>{if(!DKTAGD[n])DKTAGD[n]=`${c[0]}・${CRAVE_TN[i]}：${c[5]}`}))},0);
+setTimeout(()=>{const g=globalThis;[g.CRAVE_TEXT||{},...Object.values(g.CRAVE_CHAR||{}).map(c=>({x:c.tiers||[]}))].forEach(o=>Object.values(o).forEach(L=>(L||[]).forEach(x=>{if(x&&x.name&&x.desc)DKTAGD[x.name]=x.desc})))},50);
 function craveHtml(id){const k=craveOf(id),C=CRAVE[k],tr=craveTier(id),a=craveApp(id),nx=CRAVE_T[tr+1];
- return`<div class="small" style="margin:5px 0 3px"><b style="color:${C[1]}">本性・${C[0]}</b>　<b style="color:${C[1]}">「${C[3][tr]}」</b><span style="color:var(--dim)">（${CRAVE_TN[tr]}）</span></div><div class="meter" style="margin:2px 0"><i style="width:${nx?Math.round((a-CRAVE_T[tr])/(nx-CRAVE_T[tr])*100):100}%;background:${C[1]}"></i></div><div class="small" style="color:var(--dim)">${C[5]}・${nx?'胃口再長 '+Math.ceil(nx-a)+' 就更深一層':'已經沒有底了'}・越滿足她、胃口長得越快</div>`}
+ return`<div class="small" style="margin:5px 0 3px"><b style="color:${C[1]}">本性・${C[0]}</b>　<b style="color:${C[1]}">「${(craveTxt(id,k,tr)||{}).name||C[3][tr]}」</b><span style="color:var(--dim)">（${CRAVE_TN[tr]}）</span></div><div class="meter" style="margin:2px 0"><i style="width:${nx?Math.round((a-CRAVE_T[tr])/(nx-CRAVE_T[tr])*100):100}%;background:${C[1]}"></i></div><div class="small" style="color:var(--dim)">${C[5]}・${nx?'胃口再長 '+Math.ceil(nx-a)+' 就更深一層':'已經沒有底了'}・越滿足她、胃口長得越快</div>`}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
