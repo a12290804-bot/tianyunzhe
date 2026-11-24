@@ -405,6 +405,8 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 <script src="events/xiaoqiao_events.js"></script>
 <script src="events/wuzetian_events.js"></script>
 <script src="events/zhenmi_events.js"></script>
+<script src="events/lianghongyu_events.js"></script>
+<script src="events/yuji_events.js"></script>
 <script src="events/engine.js"></script>
 <script src="rewrite_01z_qing_terms.js"></script>
 <script>
@@ -1291,7 +1293,7 @@ let packRuntime;
 function charEvents(){
  return packRuntime??=window.makeCharacterEvents({S,H,hs,wed,hp,mistState,rankOf,relG,relAdd,activePlace,barAdd,sheet,closeSheet,save,feedPush,$,goneHero,setHst});
 }
-function addHero(id,aff=0){if(S.heroes[id])return;S.heroes[id]={aff,star:1,task:'idle',met:false};S.order.push(id);charEvents().enqueue(id,'firstRecruit');
+function addHero(id,aff=0){if(S.heroes[id])return;S.heroes[id]={aff,star:1,task:'idle',met:false};S.order.push(id);hs(id).packRecruitAt=S.t;charEvents().enqueue(id,'firstRecruit');
  if(H(id).sex==='f'&&!id.startsWith('kid')){
   const k=facOf(id),st=hs(id);let msg;
   if(k==='wuxun'){S.soldiers+=24;msg='帶來親兵 24 人'}
@@ -2380,7 +2382,7 @@ const majorArt={...defeatStories,
  escaped:['自行逃歸','黎明時，哨兵把水囊遞給從敵境逃回的人。','ev_exile']
 };
 function majorNotice(id,k,r,add){
- charEvents().notice(id,k);
+ charEvents().notice(id,k,r);
  const e={id,k,t:S.t,enemy:r.enemy,city:r.city,effect:r.effect};(S.majorQueue??=[]).push(e);(S.majorNews??=[]).unshift(e);if(S.majorNews.length>60)S.majorNews.pop();
  add((defeatStories[k]?'【戰敗大事件】':'【大事件】')+H(id).n+'・'+majorArt[k][0]+'・'+r.enemy,'neg');
 }
@@ -3271,7 +3273,7 @@ function mistStrain(id){
 function cbMini(id){
  const st=hs(id),m=mistState(id),needs=mistNeedsOf(id,m);
  const thought=m.sealed?'霧聲暫歇，我又能聽清自己的想法。':m.band?(PS(id)?.desire||m.thought):m.thought;
- return '<div class="small" style="margin:5px 0">個人污染 '+m.value+'・'+m.name+(hs(id).packFlags?.permanentFall?'・永久惡墮印記':'')+'<br>'+mistStatus(id)+'<br>心聲・'+thought+'<br>惡墮慾望（各項滿值 100）・'+needs.map(n=>n.name+' '+n.value).join('・')+'<br>身心負荷 '+mistStrain(id)+'/10（每點使統御、武力、智略、政治 −1，魅力 +1；婚後職司效率 −2.5%）'+(st.lastMistEvent?'<br>'+st.lastMistEvent:'')+'</div>';
+ return '<div class="small" style="margin:5px 0">個人污染 '+m.value+'・'+m.name+(hs(id).packFlags?.permanentFall?'・永久惡墮印記':'')+(hs(id).packStates?'・'+Object.keys(hs(id).packStates).join('、'):'')+'<br>'+mistStatus(id)+'<br>心聲・'+thought+'<br>惡墮慾望（各項滿值 100）・'+needs.map(n=>n.name+' '+n.value).join('・')+'<br>身心負荷 '+mistStrain(id)+'/10（每點使統御、武力、智略、政治 −1，魅力 +1；婚後職司效率 −2.5%）'+(st.lastMistEvent?'<br>'+st.lastMistEvent:'')+'</div>';
 }
 function mistTurn(add){
  const gain=BigInt(1+Math.floor(Math.max(0,S.pol||0)/20));
