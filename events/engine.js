@@ -48,10 +48,24 @@ window.makeCharacterEvents = function (game) {
  function enqueue(id,key,variant='',peer=null) {
   if(!entries[id]?.[key])return false;
   const event=entries[id][key];
-  const st=hs(id), stamp=JSON.stringify(event.trigger?.once?[key,'',null]:[key,variant,peer]);
+  const narrative=typeof event.trigger==='string';
+  const st=hs(id), stamp=JSON.stringify(event.trigger?.once||narrative&&!event.stages?[key,'',null]:[key,variant,peer]);
   if(st.packSeen?.[stamp])return false;
   const cast=roles(id);if(peer)cast.peer=peer;
-  if(!eligible(id,entries[id][key].trigger,cast))return false;
+  if(narrative||typeof event[variant]?.trigger==='string'){
+   // 這批劇本以 g 表示宮中盟友、c 表示朝臣。只為本場有戲份的角色配對。
+   const rolesText=event.roles||event[variant]?.roles||'';
+   const ally=cast.c, courtier=cast.g;
+   cast.g=rolesText.includes('{g}')?ally:undefined;
+   cast.c=rolesText.includes('{c}')?courtier:undefined;
+   if(!rolesText.includes('{b}'))cast.b=undefined;
+  }
+  if(narrative&&key==='heirAndFamily'){
+   const child=(S.kids||[]).find(k=>k.mom!==id&&S.order.includes(k.mom)&&wed(k.mom)&&(id==='jiananfeng'||!k.adult));
+   if(!child)return false;
+   cast.b=child.mom;cast.heir=child.id;
+  }
+  if(!eligible(id,event.trigger,cast))return false;
   const e={id,key,variant,cast,high:!mistState(id).sealed&&mistState(id).value>=70n,favored:(wed(id)?.fav??st.aff)>=60,opener:(S.tyranny||0)>=60?'tyrannyHigh':(S.hedon||0)>=60?'hedonHigh':'normal'};
   if(entries[id][key].dynamicOpeners?.lowCorruption){const m=mistState(id);e.corruptionBand=e.high?'highCorruption':!m.sealed&&m.value>=35n?'midCorruption':'lowCorruption'}
   const payload=textOf(e),raw=JSON.stringify(payload);
@@ -180,14 +194,14 @@ window.makeCharacterEvents = function (game) {
    else if(/^\d+_\d+$/.test(loc))candidates.push(['branchCityLetters'],['remoteFaction']);
    else if(loc==='home'&&!w.cold&&!st.hst){
     candidates.push(['firstPowerMove']);
-    if(entries[id].firstRecruit.trigger){
+    if(typeof entries[id].firstRecruit.trigger==='object'&&entries[id].firstRecruit.trigger){
      candidates.push(...Object.keys(packs[id].ch2_intrigue).concat(Object.keys(packs[id].ch3_desirePower)).map(key=>[key]));
     }
     if(value>=70n)candidates.push(['corruptionAndFall']);
     if(value>=70n&&(hp(id).inf>=60||S.tyranny>=60))candidates.push(['coupAndAftermath']);
     if(rival<=-20||S.tyranny>=50)candidates.push(['humiliationAbuseRevolt'],['rumorFrameReversal']);
     if(value>=35n||S.hedon>=50)candidates.push(['doubleLoyaltyBetrayal']);
-    if(cast.heir)candidates.push(['heirAndFamily']);
+    if(cast.heir||typeof entries[id].heirAndFamily?.trigger==='string')candidates.push(['heirAndFamily']);
     if(w.fav>=60||w.fav<=35)candidates.push(['intimacyJealousy']);
     if(st.packSeen?.[JSON.stringify(['rumorFrameReversal','',null])]&&rival>=0)candidates.push(['cooperateAfterRift']);
     candidates.push(['bondAndDrift'],['factionRecruit'],['threeContextsAndConflict','private'],['threeContextsAndConflict','public']);
