@@ -931,11 +931,12 @@ function courtHabit(id,tag){return hs(id)?.courtHabits?.[tag]||0}
 function courtDrive(id){
  const st=hs(id),p=hp(id),tags=ntagAll(id),allies=courtLinks(id);
  const has=rx=>tags.some(t=>rx.test(t));
+ const pressure=mistState(id).band*8;
  const foes=S.order.filter(b=>b!==id&&activePlace(b)===activePlace(id)&&relG(id,b)<-20);
  return {
-  power:clamp(Math.round(heroAmb(id)*.55+(S.hedon||0)*.16+courtHabit(id,'兩面下注')*3+courtHabit(id,'背盟奪權')*3+(100-p.inf)*.22+(has(/野心|專權|好強|弄權|背盟奪權|兩面下注/)?18:0)),0,100),
-  shelter:clamp(65+courtHabit(id,'護持盟友')*3-Math.round((st.aff||0)/3)-allies.length*15+foes.length*10+(has(/謹慎|多疑|善妒|護持盟友/)?12:0),0,100),
-  revenge:clamp(Math.round((S.tyranny||0)*.38)+courtHabit(id,'構陷對手')*3+(foes.length?18:0)+(p.foe?18:0)+(has(/狠|殘|記仇|報復|構陷對手/)?15:0)+(st.grievance||0),0,100)
+  power:clamp(Math.round(pressure+heroAmb(id)*.55+(S.hedon||0)*.16+courtHabit(id,'兩面下注')*3+courtHabit(id,'背盟奪權')*3+(100-p.inf)*.22+(has(/野心|專權|好強|弄權|背盟奪權|兩面下注/)?18:0)),0,100),
+  shelter:clamp(pressure+65+courtHabit(id,'護持盟友')*3-Math.round((st.aff||0)/3)-allies.length*15+foes.length*10+(has(/謹慎|多疑|善妒|護持盟友/)?12:0),0,100),
+  revenge:clamp(pressure+Math.round((S.tyranny||0)*.38)+courtHabit(id,'構陷對手')*3+(foes.length?18:0)+(p.foe?18:0)+(has(/狠|殘|記仇|報復|構陷對手/)?15:0)+(st.grievance||0),0,100)
  }
 }
 function courtProfile(id){if(!wed(id))return '尚未入宮・暗中觀望'+(hs(id).courtContact&&S.order.includes(hs(id).courtContact)?'・常與'+H(hs(id).courtContact).n+'往來':'');const clients=S.order.filter(x=>hs(x).courtPatron===id);const d=courtDrive(id);return '奪權 '+d.power+'　自保 '+d.shelter+'　復仇 '+d.revenge+(clients.length?'・黨羽：'+clients.map(x=>H(x).n).join('、'):'')}
@@ -1202,7 +1203,7 @@ const bNeed=b=>b[4]||2;
 function bondEff(key,ids){let v=0;const m=T_('m5')?1.5:1;BONDS.forEach(b=>{if(b[0].filter(x=>ids.includes(x)).length>=bNeed(b)&&b[3][key])v+=b[3][key]*m});return v}
 const activeBonds=ids=>[...BONDS.filter(b=>b[0].filter(x=>ids.includes(x)).length>=bNeed(b)),...teamTies(ids)];
 const bonus=id=>S.heroes[id]?(S.heroes[id].star-1)*5+(S.heroes[id].aff>=100&&T_('m4')?3:0):0;
-const stat=(id,k)=>H(id)[k]+(hs(id)?.trained?.[k]||0)+bonus(id)+Math.round((lvOf(id)-1)*((GROW[H(id).pool]||GROW.對外)[k]||0));
+const stat=(id,k)=>H(id)[k]+mistStrain(id)*({cmd:-1,str:-1,int:-1,pol:-1,cha:1}[k]||0)+(hs(id)?.trained?.[k]||0)+bonus(id)+Math.round((lvOf(id)-1)*((GROW[H(id).pool]||GROW.對外)[k]||0));
 const maxAP=()=>3+(hasFac('office')?1:0)+(T_('c6')?1:0)+perkEff('ap');
 const AMBM={qinshihuang:95,liubang:80,hanwudi:85,caocao:90,tangtaizong:88,zhaokuangyin:75,zhuyuanzhang:90,lubu:92,lvbuwei:88,hanxin:72,xiangyu:70,baiqi:55,shenwansan:60,fanli:30,zhangliang:20,xiaohe:25,zhugeliang:35,guanyu:40,yuefei:15,huatuo:10,libing:15,gaoshun:20,chenqingzhi:35,hanshizhong:30,weiqing:25,huoqubing:50,sunwu:30,limu:25,zhangqian:30};
 Object.assign(AMBM,GD.ambx||{});const heroAmb=id=>{const b=(typeof AMB!=='undefined'&&AMB[id])||AMBM[id]||(H(id).pool==='對外'?45:35);return clamp(b+((S.hp&&S.hp[id]&&S.hp[id].amb!=null)?S.hp[id].amb-b:0)+((S.heroes[id]&&S.heroes[id].ambUp)||0),0,100)};
@@ -1738,7 +1739,7 @@ function openHero(id){
   <div>野心 ${heroAmb(id)}<div class="meter"><i style="width:${heroAmb(id)}%;background:${heroAmb(id)>=70?'var(--blood)':'#8a7ab8'}"></i></div></div>
   <div>目前指令<br><b style="color:${st.task==='idle'?'var(--blood)':'var(--jade)'};font-size:15px">${taskName(st.task)}</b></div></div></div>
  <div style="display:flex;gap:6px;margin-top:8px"><button class="btn ${isAuto(id)?'jade':'ghost'} sm" id="hpAuto" style="flex:1">${isAuto(id)?'✔ 自治中：自己找擅長的事做':'自治：關'}</button>${offOf(id)?`<span class="chip r" style="align-self:center">${OFF.find(o=>o[0]===offOf(id))[1]}</span>`:''}</div>
- ${attrPanel(id)}${h.sex==='f'?cbMini(id):''}
+ ${attrPanel(id)}${h.sex==='f'?cbMini(id)+mistControls(id):''}
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn" id="hpTask">下達指令</button>${garrisonOf(id)!==BASE&&!busyArmy(id)?'<button class="btn ghost" id="hpRecallTown">調回主城</button>':''}<button class="btn ghost" id="hpMeet">${st.wed?(h.sex==='f'?'夜訪・談心':'夜談・談心'):'拜訪談心'}</button></div>
  ${canVow(id)?`<button class="btn" id="hpVow" style="width:100%;margin-top:8px;background:linear-gradient(180deg,#f3c1d3,#b8607f);color:#1b0d14;font-weight:700;${vowReady(id)?'':'opacity:.55'}">💍 ${vowLabel(id)}${vowReady(id)?'':'（需先在據點蓋「後宮殿閣」）'}</button>`:''}
  <div class="orn" style="margin-top:14px">技能</div>
@@ -1770,6 +1771,9 @@ function openHero(id){
  ${loveBlock(id)}<button class="btn ghost sm" id="hpDuty">更換${h.sex==='f'?'職司':'職責'}</button>`:''}
  <div style="height:30px"></div></div>`;
  P.classList.add('on');P.scrollTop=0;sfx('page');
+ if(h.sex==='f')for(const [button,kind] of [['#mistPurge','purge'],['#mistSeal','seal']]){
+  $(button).onclick=()=>{if(treatMist(id,kind)){render();openHero(id)}};
+ }
  $('#hpX').onclick=()=>{P.classList.remove('on');render()};
  if($('#hpRecallTown'))$('#hpRecallTown').onclick=()=>{if(unavail(id))return toast('目前無法調動');setTask(id,'idle');const t=garrisonOf(id);if(t!==BASE)t.cg=(t.cg||[]).filter(x=>x!==id);hs(id).task='idle';delete hs(id).station;save();openHero(id);render()};
  $('#hpTask').onclick=()=>pickTask(id);$$('[data-ia]').forEach(b=>b.onclick=()=>doIA(id,b.dataset.ia));
@@ -2280,7 +2284,7 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
 /* 私情 */
 const affOf=f=>{const k=Object.keys(S.aff2||{}).find(k=>k.startsWith(f+'|')&&S.aff2[k].v>=40&&S.aff2[k].k!==9);if(!k)return null;const m=k.split('|')[1];return S.order.includes(m)?m:null};
 function affairTurn(add){S.aff2=S.aff2||{};const sp=spouses().filter(f=>!wed(f).cold&&!f.startsWith('kid')&&!unavail(f)&&!hst(f)&&!busyArmy(f));const men=S.order.filter(m=>H(m).sex==='m'&&!wed(m)&&!unavail(m)&&!m.startsWith('kid'));if(!sp.length||!men.length)return;
- sp.forEach(f=>{if(!S.order.includes(f))return;const w=wed(f)||{fav:hs(f).aff},P=hp(f);const md=wed(f)?mood(f):'';let base=.18+(ntagAll(f).includes('私通')?.38:0)+(w.fav<40?.5:w.fav<60?.2:0)+(md==='幽怨'||md==='怨恨'?.3:md==='吃醋'?.15:0)+((PTAG[f]||[]).some(t=>/風流|多情|叛逆|不羈|艷|魅/.test(t))?.3:0);
+ sp.forEach(f=>{if(!S.order.includes(f))return;const w=wed(f)||{fav:hs(f).aff},P=hp(f);const md=wed(f)?mood(f):'';let base=.18+mistState(f).band*.13+(ntagAll(f).includes('私通')?.38:0)+(w.fav<40?.5:w.fav<60?.2:0)+(md==='幽怨'||md==='怨恨'?.3:md==='吃醋'?.15:0)+((PTAG[f]||[]).some(t=>/風流|多情|叛逆|不羈|艷|魅/.test(t))?.3:0);
   let key=Object.keys(S.aff2).find(k=>k.startsWith(f+'|')&&S.aff2[k].k!==9&&S.order.includes(k.split('|')[1]));if(!key&&base<=0)return;
   if(!key){if(Math.random()>base*.25)return;const c=men.filter(m=>S.order.includes(m)&&!hst(m)&&activePlace(m)===activePlace(f)).sort((a,b)=>(stat(b,'cha')+(facOf(b)===facOf(f)?20:0)+(P.patron===b?40:0))-(stat(a,'cha')+(facOf(a)===facOf(f)?20:0)+(P.patron===a?40:0)));if(!c.length)return;key=f+'|'+pick(c.slice(0,3));S.aff2[key]={v:0,k:0}}
   const A=S.aff2[key],m=key.split('|')[1];if(activePlace(m)!==activePlace(f)||hst(m))return;if(base<=0&&!A.forgiven){A.v=Math.max(0,A.v-3);return}
@@ -3059,18 +3063,121 @@ function mistState(id){
  const value=BigInt(hs(id)?.mist||'0');
  const level=value<10n?0n:value<30n?1n:value<60n?2n:value<100n?3n:value<160n?4n:value<240n?5n:6n+(value-240n)/100n;
  const band=Number(level>6n?6n:level), [name,thought]=mistStages[band];
- return {value,level,band,name:band===6?name+'・第'+(level-5n)+'層':name,thought};
+ const sealed=(hs(id)?.mistUntil??-1)>=S.t;
+ return {value,level,sealed,band:sealed?0:band,name:band===6?name+'・第'+(level-5n)+'層':name,thought};
+}
+const mistNeeds=[
+ ['奪權',/權|攝政|稱制|掌印|奪位|募兵/],
+ ['佔有',/獨寵|佔有|嫉|痴情|成對|孤寂/],
+ ['報復',/記仇|猜忌|狠|殘|報復|陰毒/],
+ ['享樂',/珍寶|貪|虛榮|奢|宴|珠/],
+ ['情慾',/私通|淫|多情|風流|肉身|歡愛|魅惑/],
+ ['自保',/隱忍|謹慎|護|清名|忠義|恤民/]
+];
+function mistNeedsOf(id,m){
+ const st=hs(id),w=wed(id),p=PS(id)||{},har=hp(id);
+ const traits=[...(PTAG[id]||[]),...ntagAll(id),...(deedTags[H(id).n]||[]),p.desire,p.scheme,p.back,...Object.keys(st.courtHabits||{})].join(' ');
+ const cycle=w?cyc(id):-1;
+ const body=(w?.preg||w?.recovery>S.t||st.warPreg)?10:0;
+ const base=[heroAmb(id)/3+har.inf/6+stat(id,'cmd')/12,
+  Math.max(0,loveLv(id))*5+(md2(id)==='嫉恨'?12:0)+(w?Math.max(0,60-w.fav)/4:0),
+  (st.grievance||0)/2+(har.foe?14:0)+(st.warDoubt?8:0)+(S.tyranny||0)/6+stat(id,'str')/15,
+  (S.hedon||0)/5+stat(id,'pol')/10,
+  stat(id,'cha')/8+(cycle===1?12:0)+Math.max(0,loveLv(id))*2,
+  (100-loyal(id))/4+stat(id,'int')/12+(hst(id)?18:0)+body+(st.warMemory?.length||0)];
+ return mistNeeds.map(([name,rx],i)=>{
+  const bias=Math.round((Number.isFinite(base[i])?base[i]:0)+Math.min(32,(traits.match(new RegExp(rx.source,'g'))||[]).length*5));
+  return {name,bias,value:m.band?Math.min(100,Math.round(bias/2)+m.band*20):0};
+ });
+}
+function mistLimit(m){return m.band>=3?Math.max(1,7-m.band):0}
+function mistStatus(id){
+ const st=hs(id),m=mistState(id),limit=mistLimit(m);
+ if(m.sealed)return '鎮霧中，至第 '+st.mistUntil+' 旬結算完畢';
+ return limit?'持續惡墮，至多再 '+Math.max(1,limit-(st.mistClock||0))+' 旬爆發大事件':'個人污染達 60 起，大事件開始倒數';
+}
+function mistControls(id){
+ const m=mistState(id);
+ return '<div class="frame" style="padding:8px"><div class="small">現有能量 '+S.energy+'・'+mistStatus(id)+'</div><button class="btn sm" id="mistPurge" '+(S.energy<30||!m.value?'disabled':'')+'>淨化 −40 污染（30 能量）</button> <button class="btn ghost sm" id="mistSeal" '+(S.energy<20||m.sealed?'disabled':'')+'>壓制 3 旬（20 能量）</button></div>';
+}
+function treatMist(id,kind){
+ if(!S.order.includes(id)||H(id).sex!=='f'||!['purge','seal'].includes(kind))return false;
+ const st=hs(id),m=mistState(id),purge=kind==='purge',cost=purge?30:20;
+ if(S.energy<cost||(purge?!m.value:m.sealed))return false;
+ S.energy-=cost;
+ if(purge){st.mist=String(m.value>40n?m.value-40n:0n);if(BigInt(st.mist)<60n)st.mistClock=0}
+ else st.mistUntil=S.t+3;
+ recordCourt('【'+(purge?'淨化':'鎮霧')+'】'+H(id).n+'・'+(purge?'個人污染 '+m.value+' → '+st.mist:'壓制至第 '+st.mistUntil+' 旬')+'，能量 −'+cost);
+ save();return true;
+}
+const fallSignatures={
+ nvwa:'她命人把補天祠前的五色石逐一點數。最後一塊握在她自己手裡，求她重新開祠的人已在門外站了一夜。',
+ huhou:'佛前的供簿與昨夜的席次竟是同一張紙。胡太后慢慢撥著念珠，等第一個認出自己名字的人開口。',
+ mibazi:'她把秦印擱在兩封互相牴觸的令書之間，讓外戚和舊臣輪流讀給滿堂的人聽。',
+ pingyang:'她仍照舊親點娘子軍的名冊。點到當年同她散財募兵的人，她停了好一會兒，才把那一頁翻過去。',
+ liurushi:'她親手謄了兩本名錄，一本留在絳雲樓，一本送至渡口。兩本只差一個名字，全城都在等她落款。',
+ zhangsun:'她照舊將奏章封還。近臣以為是皇后又替人求情，拆開封皮，才發現諫疏裡還夾著一張親筆問罪書。'
+};
+function mistMajor(id,m,needs,add){
+ const st=hs(id),w=wed(id),loc=activePlace(id),restricted=!!hst(id)||!!w?.cold;
+ const peers=S.order.filter(x=>x!==id&&activePlace(x)===loc&&!hst(x)&&!wed(x)?.cold);
+ const friend=peers.slice().sort((a,b)=>relG(id,b)-relG(id,a))[0];
+ const rival=peers.slice().sort((a,b)=>relG(id,a)-relG(id,b))[0];
+ const lover=peers.filter(x=>H(x).sex==='m'&&!wed(x)&&!x.startsWith('kid')&&S.aff2?.[id+'|'+x]?.k!==9).sort((a,b)=>relG(id,b)-relG(id,a))[0];
+ const choices=needs.filter(n=>n.name!=='情慾'||(!restricted&&w&&lover&&!id.startsWith('kid')));
+ const weight=n=>Math.max(1,n.bias+n.value/4)*(st.mistLastKind===n.name ? .18 : 1);
+ let roll=Math.random()*choices.reduce((sum,n)=>sum+weight(n),0);
+ const {name}=choices.find(n=>(roll-=weight(n))<=0)||choices[0];
+ const method=storyMethods[id]?.[0]||('以'+H(id).troop+'的名義召集舊識');
+ const lead=restricted?'在居所寫下親筆密函，借「'+method+'」為名':('借「'+method+'」的機會');
+ let scene;
+ if(name==='情慾'){
+  const key=id+'|'+lover,A=(S.aff2??={})[key]??={v:0,k:0};A.v=Math.max(45,A.v+35);relAdd(id,lover,12);
+  scene='暗約'+H(lover).n+'私會。兩人一再推遲散席，清晨一起走出內室時被侍從撞見。私情升至 '+A.v+'，交情 +12。';
+ }else if(name==='奪權'&&w&&!restricted){
+  const p=hp(id);p.inf=clamp(p.inf+10,0,100);if(rival)relAdd(id,rival,-12);
+  scene='撤回原先的聯署，逼人重選領頭者。她的權勢升至 '+p.inf+'。'+(rival?H(rival).n+'當眾拒署，交情 −12。':'');
+ }else if(name==='享樂'){
+  const spent=Math.min(S.energy,12);S.energy-=spent;st.grievance=(st.grievance||0)+4;
+  scene='把原本答應捐出的私藏全數收回，又索取祭禮供奉。庫中能量 −'+spent+'，怨氣 +4。';
+ }else if(name==='佔有'&&friend){
+  relAdd(id,friend,15);if(rival&&rival!==friend)relAdd(friend,rival,-12);
+  scene='把舊信攤在'+H(friend).n+'面前，要求對方當眾選邊。兩人交情 +15。'+(rival!==friend?'消息傳到'+H(rival).n+'耳中，與對方的交情 −12。':'');
+ }else if(name==='報復'&&rival){
+  relAdd(id,rival,-22);st.grievance=(st.grievance||0)+5;
+  scene='公開了'+H(rival).n+'託她保密的舊信。兩人交情 −22，她仍記著席上替對方說話的人。';
+ }else{
+  st.ambUp=(st.ambUp||0)+4;st.grievance=(st.grievance||0)+8;
+  if(friend)relAdd(id,friend,-10);
+  scene='發出絕交書，宣告往後獨自行事。野心 +4、怨氣 +8。'+(friend?H(friend).n+'收到退回的信物，交情 −10。':'她封存所有舊日往來的書信。');
+ }
+ if(w)setMd(id,name==='報復'?'嫉恨':name==='情慾'?'甜蜜':'焦躁');
+ st.mistLastKind=name;st.mistMajorCount=(st.mistMajorCount||0)+1;
+ const msg='【惡墮大事件・'+(name==='情慾'?'淫亂私情':name)+'】'+H(id).n+'在'+intriguePlace(id)+lead+'，'+scene;
+ const motive=PS(id)?.desire;
+ st.lastMistEvent=msg+(!restricted&&!loc.includes(':army:')&&fallSignatures[id]?fallSignatures[id]:'')+(motive?'【此念所繫】'+motive:'');feedPush(msg,'neg');add(st.lastMistEvent,'neg');
+}
+
+function mistStrain(id){
+ const st=hs(id);if(!st?.mist||H(id).sex!=='f')return 0;
+ const m=mistState(id),w=wed(id);
+ return m.band?Math.min(10,m.band+(w&&(cyc(id)===0||w.preg||w.recovery>S.t)?2:0)):0;
 }
 function cbMini(id){
- const m=mistState(id);
- return '<div class="small" style="margin:5px 0">個人污染 '+m.value+'・'+m.name+'<br>心聲「'+m.thought+'」</div>';
+ const st=hs(id),m=mistState(id),needs=mistNeedsOf(id,m);
+ const thought=m.sealed?'霧聲暫歇，我又能聽清自己的想法。':m.band?(PS(id)?.desire||m.thought):m.thought;
+ return '<div class="small" style="margin:5px 0">個人污染 '+m.value+'・'+m.name+'<br>'+mistStatus(id)+'<br>心聲・'+thought+'<br>惡墮慾望（各項滿值 100）・'+needs.map(n=>n.name+' '+n.value).join('・')+'<br>身心負荷 '+mistStrain(id)+'/10（每點使統御、武力、智略、政治 −1，魅力 +1；婚後職司效率 −2.5%）'+(st.lastMistEvent?'<br>'+st.lastMistEvent:'')+'</div>';
 }
 function mistTurn(add){
  const gain=BigInt(1+Math.floor(Math.max(0,S.pol||0)/20));
  for(const id of S.order){
   const st=hs(id);if(H(id).sex!=='f'||st.mistAt===S.t)continue;
-  const old=mistState(id);st.mist=String(old.value+gain);st.mistAt=S.t;
+  const old=mistState(id);st.mistAt=S.t;if(old.sealed)continue;st.mist=String(old.value+gain);
   const now=mistState(id);if(old.level!==now.level)add('【污染轉變】'+H(id).n+'・'+now.name+'（'+now.value+'）「'+now.thought+'」','neg');
+  const limit=mistLimit(now);
+  if(!limit){st.mistClock=0;continue}
+  st.mistClock=(st.mistClock||0)+1;
+  if(st.mistClock>=limit){st.mistClock=0;mistMajor(id,now,mistNeedsOf(id,now),add)}
  }
 }
 function mistOffer(id,peers,offer){
@@ -3107,7 +3214,7 @@ const INFT=[[0,'無權'],[30,'有聲'],[50,'掌權'],[70,'權傾後宮'],[90,'�
 const MDM={平靜:1,歡喜:1.1,甜蜜:1.15,委屈:.9,嫉恨:.8,焦躁:.85,冷戰:.7,癲狂:.6};
 const CYN=['經期','排卵期','經前'],CYI=['🩸','🌸','🌙'],CYM=[.85,1.1,.95];
 const cyc=id=>{const w=wed(id);if(!w)return 0;if(w.cyo==null)w.cyo=R(0,2);return(S.t+w.cyo)%3};
-function cMult(id){const w=wed(id);if(!w)return 1;const P=hp(id);return(1+.06*Math.max(0,loveLv(id)))*(1+rankOf(id)*.05)*(MDM[md2(id)]||1)*CYM[cyc(id)]*(1+(P.inf||0)/200)}
+function cMult(id){const w=wed(id);if(!w)return 1;const P=hp(id);return(1-mistStrain(id)*.025)*(1+.06*Math.max(0,loveLv(id)))*(1+rankOf(id)*.05)*(MDM[md2(id)]||1)*CYM[cyc(id)]*(1+(P.inf||0)/200)}
 {const _w=wedEff;wedEff=function(id,key){const v=_w(id,key);if(!v||H(id).sex!=='f')return v;return v*cMult(id)}}
 function effLine(id){const w=wed(id),P=hp(id),i=P.inf||0,a=P.amb||0,h=(S.hedon||0),t=(S.tyranny||0),c=cyc(id),r=rankOf(id),m=md2(id);const out=[];
  out.push(`職司效果 ×${cMult(id).toFixed(2)}`);
