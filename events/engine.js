@@ -1,6 +1,9 @@
 // The save holds event references and cast IDs. Story text stays in the packs.
 window.makeCharacterEvents = function (game) {
  const {S, H, hs, wed, hp, mistState, rankOf, relG, relAdd, activePlace, barAdd, sheet, closeSheet, save, feedPush, $} = game;
+ const kill=x=>{(S.gone??={})[x]={k:'exec',u:1e9};(S.dc??={})[x]=(S.dc[x]||0)+1;const st=hs(x);st.task='idle';st.hst=null;delete st.station;if(st.wed)st.wed.duty=null;if(S.mainWife===x)S.mainWife=null;if(S.ringOn===x)S.ringOn=null};
+ const exile=(x,n)=>{(S.gone??={})[x]={k:'exile',u:S.t+n};hs(x).task='idle';delete hs(x).station};
+ const PER_TURN=1, SHOW_MAX=2, GAP=3, CHANCE=.3;
  const packs = window.characterPacks;
  const tragedy = {captured:'戰敗被俘', public_shame:'公開羞辱', body_return:'遺體送還', wounded_return:'重傷歸來', survivor_return:'倖存者歸來', pregnancy_return:'懷孕歸來', forced_marriage:'強迫婚籍', private_captive:'私人囚禁', rescued:'營救獲釋', escaped:'自行逃脫'};
  const entries = Object.fromEntries(Object.entries(packs).map(([id,p])=>[id,Object.assign({},p.ch1_entry,p.ch2_intrigue,p.ch3_desirePower,p.ch4_citiesBonds,p.ch5_warAndTragedy)]));
@@ -11,14 +14,14 @@ window.makeCharacterEvents = function (game) {
   const b=women.slice().sort((x,y)=>rankOf(y)-rankOf(x)||relG(id,x)-relG(id,y)||x.localeCompare(y))[0];
   const c=women.filter(x=>x!==b).sort((x,y)=>Math.abs(relG(id,x))-Math.abs(relG(id,y))||x.localeCompare(y))[0];
   const g=S.order.filter(x=>H(x).sex==='m'&&!x.startsWith('kid')).sort((x,y)=>Number(activePlace(y)===activePlace(id))-Number(activePlace(x)===activePlace(id))||relG(id,y)-relG(id,x)||x.localeCompare(y))[0];
-  return {b,c,g,heir:(S.kids||[]).find(k=>k.mom===id)?.id};
+  return {b,c,g,heir:(S.kids||[]).find(k=>k.mom===id&&k.adult)?.id};
  }
  function textOf(e) {
   const d=entries[e.id][e.key], v=e.variant;
   if(e.key==='tragedies'){const t=d[v];return {title:t.title,body:lines([t.scene,Object.values(t.variants||{})[Number(e.high)],t.dialogue,t.aftermath]).map(s=>s.replace(/侵蝕度直接鎖定(?:深淵| 95\+)/g,'永久留下惡墮印記'))}}
   if(e.key==='battlefieldEncounters')return {title:d.title,body:lines(d[v])};
   if(d.stages)return {title:d.title,body:lines(d.stages[v]).map(s=>s.replaceAll('{b}／{g}','{peer}'))};
-  if(d.contexts)return {title:d.title,body:lines([d.contexts[v],d.dutyConflict.dilemma]),choices:[{text:'以職責為先',outcome:d.dutyConflict.choiceDuty,effects:{inf:3}},{text:'以羈絆為先',outcome:d.dutyConflict.choiceBond,effects:{aff:3}}]};
+  if(d.contexts)return {title:d.title,body:lines([d.contexts[v],d.dutyConflict.dilemma]),choices:[{text:'以職責為先',outcome:d.dutyConflict.choiceDuty,effects:{inf:8,corruption:35}},{text:'以羈絆為先',outcome:d.dutyConflict.choiceBond,effects:{aff:-10}}]};
   const dynamic=d.dynamicVariants;
   const branch=dynamic&&(dynamic[e.high?'highCorruption':'lowCorruption']??Object.entries(dynamic).find(([k])=>k.startsWith(e.favored?'highAffection':'alienated'))?.[1]);
   return {title:d.title,body:lines([d.dynamicOpeners?.[e.opener],d.howSheLearns,d.rumorChain,d.scene,branch,d.aftermathDialogues]),choices:d.choices,follow:d.followUp?.default};
@@ -38,6 +41,7 @@ window.makeCharacterEvents = function (game) {
   for(const [key,n] of Object.entries(fx||{})){
    if(key==='flag'){(st.packFlags??={})[n]=true;continue}
    if(key==='aff'||key==='inf'){
+    if(!w&&key==='aff'){st.aff=Math.max(0,Math.min(100,(st.aff||0)+n));continue}
     if(!w){const pending=st.packPending??={};pending[key]=(pending[key]||0)+n;continue}
     const dest=key==='aff'?w:hp(id),field=key==='aff'?'fav':'inf';
     dest[field]=Math.max(0,Math.min(100,(dest[field]||0)+n));
@@ -46,22 +50,31 @@ window.makeCharacterEvents = function (game) {
    else if(key.startsWith('rel_'))relAdd(id,cast[key.slice(4)],n);
   }
  }
+ // 劇情結果落到遊戲狀態
+ function consequence(e,i){const {b,g}=e.cast||{},alive=x=>x&&S.heroes[x]&&!(S.gone&&S.gone[x]);
+  if(e.key==='coupAndAftermath'&&alive(b)&&wed(b)){kill(b);feedPush('【兵變】'+H(b).n+'死於'+H(e.id).n+'刀下','neg')}
+  else if(e.key==='humiliationAbuseRevolt'&&alive(b)&&wed(b)){const w=wed(b);w.cold=true;w.fav=Math.max(0,(w.fav||0)-20);hs(b).hst={k:'inj',u:S.t+4};feedPush('【私刑】'+H(b).n+'毀容致殘，被丟進冷宮','neg')}
+  else if(e.key==='threeContextsAndConflict'&&e.variant!=='battle'&&alive(g)){
+   if(i===0){kill(g);feedPush('【斬友】'+H(g).n+'被'+H(e.id).n+'斬於西門水閘','neg')}
+   else{exile(g,12);feedPush('【放走】'+H(g).n+'被'+H(e.id).n+'私放出城，十二旬內不會回來','neg')}}
+ }
  function married(id){const pending=hs(id).packPending;if(pending){apply(id,pending,{});delete hs(id).packPending}enqueue(id,'firstPowerMove')}
- function show(next) {
-  const e=S.packQueue?.[0];if(!e)return next();
+ function show(next,n=0) {
+  if(S.packQueue)S.packQueue=S.packQueue.filter(x=>entries[x.id]?.[x.key]&&S.heroes[x.id]&&!(S.gone&&S.gone[x.id])&&['b','c','g'].every(k=>!x.cast?.[k]||!(S.gone&&S.gone[x.cast[k]])));
+  const e=S.packQueue?.[0];if(!e||n>=SHOW_MAX)return next();
   const d=textOf(e), names=k=>k==='heir'?(S.kids||[]).find(x=>x.id===e.cast[k])?.n:H(e.cast[k])?.n;
   const fill=s=>String(s||'').replace(/\{(\w+)\}/g,(_,k)=>names(k)||'故人');
   const choices=d.choices||[{text:'知道了'}];
   sheet('<h3>'+esc(fill(d.title))+'</h3>'+d.body.map(s=>'<p>'+esc(fill(s))+'</p>').join('')+choices.map((c,i)=>'<button class="btn" id="packChoice'+i+'">'+esc(fill(c.text))+'</button>').join(''),true);
   choices.forEach((c,i)=>$('#packChoice'+i).onclick=()=>{
    if(S.packQueue[0]!==e)return;
-   S.packQueue.shift();apply(e.id,c.effects,e.cast);
+   S.packQueue.shift();apply(e.id,c.effects,e.cast);consequence(e,i);
    if(e.key==='tragedies'&&e.variant==='公開羞辱')(hs(e.id).packFlags??={}).permanentFall=true;
    const result=lines([c.outcome,d.follow]).map(fill).join(' ');
    feedPush('【'+H(e.id).n+'】'+fill(d.title)+(result?'・'+result:''));save();closeSheet();
-   if(!result)return show(next);
+   if(!result)return show(next,n+1);
    sheet('<p>'+esc(result)+'</p><button id="packContinue" class="btn">繼續</button>',true);
-   $('#packContinue').onclick=()=>{closeSheet();show(next)};
+   $('#packContinue').onclick=()=>{closeSheet();show(next,n+1)};
   });
  }
  function bond(a,b,old,value){
@@ -69,7 +82,11 @@ window.makeCharacterEvents = function (game) {
   if(stage){enqueue(a,'bondFiveStages',stage,b);enqueue(b,'bondFiveStages',stage,a)}
  }
  function turn(){
-  for(const id of S.order.filter(x=>entries[x])){
+  if((S.packQueue||[]).length>=SHOW_MAX)return;let made=0;
+  const ids=S.order.filter(x=>entries[x]&&!(S.gone&&S.gone[x])).sort(()=>Math.random()-.5);
+  for(const id of ids){
+   if(made>=PER_TURN)break;
+   if((hs(id).packT??-99)+GAP>S.t||Math.random()>CHANCE)continue;
    const st=hs(id),w=wed(id),loc=activePlace(id),m=mistState(id);
    const value=m.sealed?0n:m.value, cast=roles(id), rival=cast.b?relG(id,cast.b):0;
    const candidates=[];
@@ -86,7 +103,7 @@ window.makeCharacterEvents = function (game) {
     if(st.packSeen?.[JSON.stringify(['rumorFrameReversal','',null])]&&rival>=0)candidates.push(['cooperateAfterRift']);
     candidates.push(['bondAndDrift'],['factionRecruit'],['threeContextsAndConflict','private'],['threeContextsAndConflict','public']);
    }
-   candidates.some(args=>enqueue(id,...args));
+   if(candidates.some(args=>enqueue(id,...args))){st.packT=S.t;made++}
   }
  }
  function notice(id,key){if(tragedy[key])enqueue(id,'tragedies',tragedy[key]);if(key==='rescued')enqueue(id,'battlefieldEncounters','rescue')}
