@@ -3346,7 +3346,7 @@ function dtagTurn(add){spouses().forEach(id=>{const st=hs(id),cur=st.dtag||(st.d
 {const _sh=setHst;setHst=function(id,k,n){if(S.heroes[id]&&['ban','jail','inj'].includes(k))hs(id).punT=S.t;return _sh(id,k,n)}}
 /* ===== 心願：不斷更換、越養越大 ===== */
 const WISH={
- visit:[0,'想要你多來看她','探望 2 次',2,id=>(S.vh||[]).filter(x=>x===id).length],
+ visit:[0,'想要你多來看她','探望 2 次',2,id=>(S.vLog||[]).filter(x=>x.id===id).length+(hs(id).vOld||0)],
  gift:[0,'想要你的賞賜','收到賞賜 2 次',2,id=>0],
  together:[0,'想要你陪她做些事','相處 2 次',2,id=>hs(id).tgN||0],
  treasure:[1,'想要一件珍寶','佩戴珍寶',1,id=>treOf(id).length],
@@ -3362,9 +3362,10 @@ function wishPick(id){const n=hs(id).wishN||0,tier=Math.min(3,Math.max(Math.floo
  if(amb>=60)L=L.concat(L.filter(([k])=>['power','rank','mother'].includes(k)));if(/妒|佔有|恃寵/.test(tags))L=L.concat(L.filter(([k])=>['solo','kill','visit'].includes(k)));if(m>=3)L=L.concat(L.filter(([k])=>['kill','hedon'].includes(k)));
  if(mother()===id)L=L.filter(([k])=>k!=='mother');const [k,w]=pick(L);const o={k,since:S.t,base:w[4](id),p:0};if(k==='kill'){const f=spouses().filter(x=>x!==id).sort((a,b)=>relG(id,a)-relG(id,b))[0];if(!f)return wishPick2(id);o.foe=f}return o}
 function wishPick2(id){return{k:'visit',since:S.t,base:WISH.visit[4](id),p:0}}
-function wishProg(id){const o=hs(id).wish2;if(!o)return[0,1];const w=WISH[o.k];const cur=o.k==='gift'?(o.p||0):w[4](id)-(['solo','pb','mother','kill'].includes(o.k)?0:o.base);return[Math.max(0,cur),w[3]]}
-function wishTurn(){spouses().forEach(id=>{const st=hs(id),w=wed(id);if(!st.wish2){if((st.wishNext??0)<=S.t)st.wish2=wishPick(id);return}const o=st.wish2,W=WISH[o.k],[c,need]=wishProg(id),label=W[1]+(o.foe?'：'+H(o.foe).n:'');
- if(c>=need){st.wishN=(st.wishN||0)+1;w.fav=Math.min(100,w.fav+10);loveAdd(id,60*(1+W[0]),true);st.ambUp=(st.ambUp||0)+(W[0]>=2?3:1);if(W[0]>=2)barAdd('hedon',1);const L=GD.wishLine&&GD.wishLine[id]&&GD.wishLine[id].done;feedPush(`【如願】${H(id).n}「${label}」實現了（寵愛 +10，她的胃口也更大了）`);if(L)hxPush(id,L,'如願');st.wish2=null;st.wishNext=S.t+R(1,3);return}
+function wishProg(id){const o=hs(id).wish2;if(!o)return[0,1];if(o.k==='visit'&&!o.v2){o.v2=1;o.base=WISH.visit[4](id)}const w=WISH[o.k];const cur=o.k==='gift'?(o.p||0):w[4](id)-(['solo','pb','mother','kill'].includes(o.k)?0:o.base);return[Math.max(0,cur),w[3]]}
+function wishDone(id){const st=hs(id),w=wed(id);if(!st||!w||!st.wish2||!WISH[st.wish2.k])return false;const o=st.wish2,W=WISH[o.k],[c,need]=wishProg(id),label=W[1]+(o.foe?'：'+H(o.foe).n:'');if(c<need)return false;
+ st.wishN=(st.wishN||0)+1;w.fav=Math.min(100,w.fav+10);loveAdd(id,60*(1+W[0]),true);st.ambUp=(st.ambUp||0)+(W[0]>=2?3:1);if(W[0]>=2)barAdd('hedon',1);const L=GD.wishLine&&GD.wishLine[id]&&GD.wishLine[id].done;feedPush(`【如願】${H(id).n}「${label}」實現了（寵愛 +10，她的胃口也更大了）`);if(L)hxPush(id,L,'如願');st.wish2=null;st.wishNext=S.t+R(1,3);toast(`${H(id).n}如願了：${label}`);return true}
+function wishTurn(){spouses().forEach(id=>{const st=hs(id),w=wed(id);if(!st.wish2){if((st.wishNext??0)<=S.t)st.wish2=wishPick(id);return}if(wishDone(id))return;const o=st.wish2,W=WISH[o.k],[c,need]=wishProg(id),label=W[1]+(o.foe?'：'+H(o.foe).n:'');
  if(S.t-o.since>=12){st.wishFail=(st.wishFail||0)+1;w.fav=Math.max(0,w.fav-5);st.grievance=(st.grievance||0)+5;feedPush(`【心願落空】${H(id).n}盼了十二旬的「${label}」沒有著落，寵愛 −5`,'neg');const L=GD.wishLine&&GD.wishLine[id]&&GD.wishLine[id].fail;if(L)hxPush(id,L,'心願落空');st.wish2=null;st.wishNext=S.t+R(1,3)}})}
 function wishView(){const sp=spouses();if(!sp.length)return'<p class="small" style="margin:12px">後宮尚無夫人。</p>';
  return`<div class="small" style="color:var(--dim);margin:4px 2px 8px">慾望永遠不夠：每次如願，下一個心願就更大。期限十二旬，落空會記恨；接連落空會心死。</div>${sp.map(id=>{const st=hs(id),o=st.wish2;if(!o)return`<div class="frame small" style="padding:8px;margin-bottom:6px" data-gc="${id}"><b>${H(id).n}</b>・剛如願，正在想下一件想要的東西……（已如願 ${st.wishN||0} 次）</div>`;
@@ -3397,7 +3398,7 @@ function evOK(hi){if(!S.evB||S.evB.t!==S.t)S.evB={t:S.t,n:0};if(hi)return true;i
 hxShow=function(cb){const q=(S.hxQ||[]).filter(it=>audienceOK(it.id));S.hxQ=[];if(!q.length)return cb&&cb();S.hxSeen=S.hxSeen||{};const L=q.filter(it=>{const k=it.id+'|'+it.line;if((S.hxSeen[k]??-99)>S.t-10)return false;S.hxSeen[k]=S.t;return true});if(!L.length)return cb&&cb();sfx('page');
  sheet(`<h3>宮中心聲</h3>${L.map(it=>`<div class="frame" style="padding:7px;margin-bottom:6px;display:flex;gap:8px"><span class="pic" style="width:40px;height:48px;flex:none;border-radius:6px;background:url(img/${face(it.id)}.jpg) center 15%/cover"></span><div><div class="small" style="color:var(--pink)">${H(it.id).n}・${it.tag||'心聲'}</div><div class="small" style="margin-top:2px">「${it.line}」</div></div></div>`).join('')}<button class="btn" id="hxOk" style="width:100%">知道了</button>`,true);$('#hxOk').onclick=()=>{closeSheet();cb&&cb()}};
 /* 探望紀錄（給動態標籤用） */
-{const _wv=wedVisit;wedVisit=function(id){const r=_wv(id);(S.vT??={})[id]=S.t;(S.vLog??=[]).push({id,t:S.t});if(S.vLog.length>200)S.vLog.shift();return r}}
+{const _wv=wedVisit;wedVisit=function(id){const r=_wv(id);(S.vT??={})[id]=S.t;(S.vLog??=[]).push({id,t:S.t});if(S.vLog.length>200)S.vLog.shift();setTimeout(()=>{try{wishDone(id);if(document.querySelector('#sheetIn [data-ga=visit]')&&typeof gridSheet==='function')gridSheet(id)}catch(e){}},0);return r}}
 DTAG.恃寵=id=>(S.vLog||[]).filter(x=>x.id===id&&S.t-x.t<=6).length>=3;
 DTAG.冷心=id=>S.t>=10&&S.t-((S.vT||{})[id]??(wed(id).since??0))>=10;
 /* ===== 標籤說明 ===== */
@@ -3646,6 +3647,7 @@ setTimeout(()=>{Object.values(CRAVE).forEach(c=>c[3].forEach((n,i)=>{if(!DKTAGD[
 setTimeout(()=>{const g=globalThis;[g.CRAVE_TEXT||{},...Object.values(g.CRAVE_CHAR||{}).map(c=>({x:c.tiers||[]}))].forEach(o=>Object.values(o).forEach(L=>(L||[]).forEach(x=>{if(x&&x.name&&x.desc)DKTAGD[x.name]=x.desc})))},50);
 function craveHtml(id){const k=craveOf(id),C=CRAVE[k],tr=craveTier(id),a=craveApp(id),nx=CRAVE_T[tr+1];
  return`<div class="small" style="margin:5px 0 3px"><b style="color:${C[1]}">本性・${C[0]}</b>　<b style="color:${C[1]}">「${(craveTxt(id,k,tr)||{}).name||C[3][tr]}」</b><span style="color:var(--dim)">（${CRAVE_TN[tr]}）</span></div><div class="meter" style="margin:2px 0"><i style="width:${nx?Math.round((a-CRAVE_T[tr])/(nx-CRAVE_T[tr])*100):100}%;background:${C[1]}"></i></div><div class="small" style="color:var(--dim)">${C[5]}・${nx?'胃口再長 '+Math.ceil(nx-a)+' 就更深一層':'已經沒有底了'}・越滿足她、胃口長得越快</div>`}
+{const _rw=render;render=function(...a){try{if(S&&S.heroes&&typeof spouses==='function')spouses().forEach(id=>wishDone(id))}catch(e){}return _rw.apply(this,a)}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
