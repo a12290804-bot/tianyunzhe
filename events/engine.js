@@ -15,7 +15,7 @@ window.makeCharacterEvents = function (game) {
  }
  function textOf(e) {
   const d=entries[e.id][e.key], v=e.variant;
-  if(e.key==='tragedies'){const t=d[v];return {title:t.title,body:lines([t.scene,Object.values(t.variants||{})[Number(e.high)],t.dialogue,t.aftermath])}}
+  if(e.key==='tragedies'){const t=d[v];return {title:t.title,body:lines([t.scene,Object.values(t.variants||{})[Number(e.high)],t.dialogue,t.aftermath]).map(s=>s.replace(/侵蝕度直接鎖定(?:深淵| 95\+)/g,'永久留下惡墮印記'))}}
   if(e.key==='battlefieldEncounters')return {title:d.title,body:lines(d[v])};
   if(d.stages)return {title:d.title,body:lines(d.stages[v]).map(s=>s.replaceAll('{b}／{g}','{peer}'))};
   if(d.contexts)return {title:d.title,body:lines([d.contexts[v],d.dutyConflict.dilemma]),choices:[{text:'以職責為先',outcome:d.dutyConflict.choiceDuty,effects:{inf:3}},{text:'以羈絆為先',outcome:d.dutyConflict.choiceBond,effects:{aff:3}}]};
@@ -56,7 +56,7 @@ window.makeCharacterEvents = function (game) {
   choices.forEach((c,i)=>$('#packChoice'+i).onclick=()=>{
    if(S.packQueue[0]!==e)return;
    S.packQueue.shift();apply(e.id,c.effects,e.cast);
-   if(e.key==='corruptionAndFall')(hs(e.id).packFlags??={}).permanentFall=true;
+   if(e.key==='tragedies'&&e.variant==='公開羞辱')(hs(e.id).packFlags??={}).permanentFall=true;
    const result=lines([c.outcome,d.follow]).map(fill).join(' ');
    feedPush('【'+H(e.id).n+'】'+fill(d.title)+(result?'・'+result:''));save();closeSheet();
    if(!result)return show(next);

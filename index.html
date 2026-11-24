@@ -3271,7 +3271,7 @@ function mistStrain(id){
 function cbMini(id){
  const st=hs(id),m=mistState(id),needs=mistNeedsOf(id,m);
  const thought=m.sealed?'霧聲暫歇，我又能聽清自己的想法。':m.band?(PS(id)?.desire||m.thought):m.thought;
- return '<div class="small" style="margin:5px 0">個人污染 '+m.value+'・'+m.name+'<br>'+mistStatus(id)+'<br>心聲・'+thought+'<br>惡墮慾望（各項滿值 100）・'+needs.map(n=>n.name+' '+n.value).join('・')+'<br>身心負荷 '+mistStrain(id)+'/10（每點使統御、武力、智略、政治 −1，魅力 +1；婚後職司效率 −2.5%）'+(st.lastMistEvent?'<br>'+st.lastMistEvent:'')+'</div>';
+ return '<div class="small" style="margin:5px 0">個人污染 '+m.value+'・'+m.name+(hs(id).packFlags?.permanentFall?'・永久惡墮印記':'')+'<br>'+mistStatus(id)+'<br>心聲・'+thought+'<br>惡墮慾望（各項滿值 100）・'+needs.map(n=>n.name+' '+n.value).join('・')+'<br>身心負荷 '+mistStrain(id)+'/10（每點使統御、武力、智略、政治 −1，魅力 +1；婚後職司效率 −2.5%）'+(st.lastMistEvent?'<br>'+st.lastMistEvent:'')+'</div>';
 }
 function mistTurn(add){
  const gain=BigInt(1+Math.floor(Math.max(0,S.pol||0)/20));
