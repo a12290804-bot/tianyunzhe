@@ -1561,7 +1561,7 @@ function formArmy(tgt,from){if(inWorld()&&S.units.length>=4){sfx('deny');return 
   sheet(`<h3>出征：${TERR[T(tgt.r,tgt.c).t][0]}${e?'・'+e.n:''}</h3><p class="small" style="margin:4px 0 8px">點選武將：第一位是主將（統率決定帶兵上限，<b>兵種也由主將決定</b>），最多再帶兩位副將。</p>${e?`<div class="sysline" style="margin-bottom:6px;display:flex;align-items:center;gap:6px"><img src="img/${TCI[ecls(e)]}.jpg" style="width:30px;height:30px;border-radius:6px"><span>${enemyDoctrine(e).label}${enemyDoctrine(e).power>1&&e.troops>=e.max*.8&&e.troops>=4?'・預備隊第二輪反擊':''}・敵軍兵種：<b>${TCN[ecls(e)][0]}</b>・${TCHINT(ecls(e))}<br><span class="small" style="color:var(--jade)">建議主將：${Object.keys(BEATS).find(k=>BEATS[k]===ecls(e))?TCN[Object.keys(BEATS).find(k=>BEATS[k]===ecls(e))][0]:'任意'}（克制 +20% 傷害）</span></span></div>`:''}${sel2.length?`<div class="sysline" style="margin-bottom:6px;display:flex;align-items:center;gap:6px"><img src="img/${TCI[tcls(sel2[0])]}.jpg" style="width:30px;height:30px;border-radius:6px"><span>本隊兵種：<b>${TCN[tcls(sel2[0])][0]}</b>・${TCHINT(tcls(sel2[0]))}<br><span class="small">${TCN[tcls(sel2[0])][1]}</span><br><span class="small" style="color:${tfOn(sel2[0])?'var(--jade)':'var(--dim)'}">特色部隊【${H(sel2[0]).troop}】${tfOn(sel2[0])?'已編成：'+tfText(sel2[0]):'未編成（武將面板可組建，效果 '+tfText(sel2[0])+'）'}</span><br><span class="small" style="color:var(--gold2)">訓練度 ${S.train}／100：全軍傷害 +${Math.round(S.train/1.4)}%${hasFac('barracks')?`・兵營 Lv${facLv('barracks')}：特色部隊效果 ×${tfMul(sel2[0]).toFixed(2)}`:''}</span><span>${wxNow()[0]!=='晴'?`・天氣${wxNow()[0]}：${wxNow()[2]}`:''}</span></span></div>`:''}
   ${!inWorld()&&cityTiles().some(t=>t.city>1)?`<label>出發據點 <select id="originSelect">${[BASE,...cityTiles().filter(t=>t.city>1)].map(t=>`<option value="${t.r}_${t.c}" ${t===origin?'selected':''}>${t===BASE?'主城':cityName(t)}</option>`).join('')}</select></label>`:''}
   ${avail.filter(h=>inWorld()?garrisonOf(h.id)===BASE:garrisonOf(h.id)===origin).map(h=>{const i=sel2.indexOf(h.id),task=hs(h.id).task;return`<button class="opt ${i>=0?'on':''}" data-h="${h.id}"><span class="pic" style="background-image:url(img/${h.id}.jpg)"></span><span class="t"><b>${i===0?'【主將】':i>0?'【副將】':''}${h.n}</b> <img src="img/${TCI[tcls(h.id)]}.jpg" style="width:16px;height:16px;border-radius:50%;vertical-align:-3px"><span class="small" style="color:${e?(BEATS[tcls(h.id)]===ecls(e)?'var(--jade)':BEATS[ecls(e)]===tcls(h.id)?'var(--blood)':'#cdbf9f'):'#cdbf9f'}">${TCN[tcls(h.id)][0]}${e?(BEATS[tcls(h.id)]===ecls(e)?'・克制敵軍':BEATS[ecls(e)]===tcls(h.id)?'・被敵軍克制':''):''}</span><div>統 ${stat(h.id,'cmd')}・武 ${stat(h.id,'str')}・智 ${stat(h.id,'int')}・${skills(h.id).inn[0]}</div><div>${task==='idle'?'':'目前：'+taskName(task)}</div></span></button>`}).join('')}
-  ${bs.length?`<div class="meta">${bs.map(b=>`<span class="chip p">羈絆・${b[1]}：${b[2]}</span>`).join('')}</div>`:''}
+  ${bs.length?`<div class="meta">${bs.map(b=>`<span class="chip p">羈絆・${bondStatus(b,sel2)}</span>`).join('')}</div>`:''}
   ${limit>=minimum?`<label>出兵數 <input id="armyCount" type="number" inputmode="numeric" min="${minimum}" max="${limit}" value="${cap}"></label><input id="armyRange" aria-label="調整出兵數" type="range" style="width:100%" min="${minimum}" max="${limit}" value="${cap}">`:''}
   <div class="sum"><div><span>帶兵</span><span><b id="armyTotal">${cap}</b>${inWorld()?'（本地義軍補足，不耗燈塔士兵）':`（${origin===BASE?"主城":cityName(origin)}現有 ${treasury(origin).soldiers}，至少 80 可派兵）`}</span></div><div><span>預計行軍</span><span>${turns} 旬</span></div><div><span>軍糧</span><span>約 <b id="armyFood">${food}</b></span></div></div>
   ${odds!==null?`<div class="odds"><span class="small">預估勝率</span><span class="meter"><i style="width:${odds*100}%"></i></span><b style="color:${odds>.7?'var(--jade)':odds>.4?'var(--gold2)':'var(--blood)'}">${Math.round(odds*100)}%</b></div>`:''}
@@ -1586,6 +1586,50 @@ function checkStage(){const land=(inWorld()?S.ctx?.home?.tiles||[]:S.tiles).flat
  let st=0;if(land>=11&&fac>=3)st=1;if(land>=16&&fac>=5&&wall)st=2;if(land>=22&&fac>=7&&facLv('wall')>=2)st=3;
  if(st>S.stage){S.stage=st;unlock('stage'+(st+1));queueScene('stage'+st);celebrate(STAGES[st][1],'燈塔升級',STAGES[st][0],`${STAGES[st][2]}。勢力評價：${rank(score())}`)}}
 function stageNeed(){const s=S.stage;return['領地 11 格、設施 3 座','領地 16 格、設施 5 座、城牆','領地 22 格、設施 7 座、城牆 Lv2','已達最高階段'][s]}
+let baseRosterPlace='home', relationFocus='';
+function rosterLocation(id){
+ const key=activePlace(id);
+ if(key!=='home')return key;
+ const t=cityTiles().find(t=>(t.cg||[]).includes(id));
+ return t?t.r+'_'+t.c:'home'
+}
+function rosterName(key){
+ if(key==='home')return '主城';
+ if(key.includes(':army:'))return '出征中';
+ const t=cityTiles().find(t=>t.r+'_'+t.c===key);
+ return t?cityName(t):'外地 '+key
+}
+function residentsView(){
+ const residents=new Map([['home',[]],...cityTiles().map(t=>[t.r+'_'+t.c,[]])]);
+ for(const id of S.order){
+  const loc=rosterLocation(id),key=loc.includes(':army:')?'field':loc;
+  if(!residents.has(key))residents.set(key,[]);
+  residents.get(key).push(id)
+ }
+ if(!residents.has(baseRosterPlace))baseRosterPlace='home';
+ const tabs=[...residents].map(([key,ids])=>'<option value="'+key+'" '+(key===baseRosterPlace?'selected':'')+'>'+(key==='field'?'出征中':rosterName(key))+'（'+ids.length+'）</option>');
+ const rows=residents.get(baseRosterPlace).map(id=>'<button class="btn ghost sm" data-resident="'+id+'">'+H(id).n+(wed(id)?.pal?'・行宮':wed(id)?.cold?'・冷宮':'')+'</button>');
+ return '<div class="sec"><div class="orn">城內人物</div><label>所在據點 <select id="residentPlace">'+tabs.join('')+'</select></label><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">'+(rows.join('')||'此地暫無人物')+'</div></div>'
+}
+function bondState(b,ids){
+ const count=b[0].filter(x=>ids.includes(x)).length;
+ return count>=bNeed(b)?'已生效':'未生效，同隊 '+count+'/'+bNeed(b)+' 人'
+}
+function bondStatus(b,ids){
+ const mult=(b[5]?tieStrength(b):1)*(T_('m5')?1.5:1);
+ return b[1]+'｜'+bondState(b,ids)+'・'+b[2]+(mult!==1?'（效果 ×'+mult+'）':'')
+}
+function relationsView(){
+ if(!S.order.length)return '<p>尚未登用人物。</p>';
+ const a=S.order.includes(relationFocus)?relationFocus:S.order[0],party=heroWhere(a)?.u.gens||[];
+ const rows=S.order.filter(b=>b!==a).map(b=>{
+  const v=relG(a,b),tie=getTie(a,b),classic=BONDS.filter(t=>t[0].includes(a)&&t[0].includes(b));
+  const bonds=[...(tie?[tie]:[]),...classic];
+  const links=[S.sworn?.[rk(a,b)]&&wed(a)&&wed(b)?'盟友':'',S.hp?.[a]?.foe===b?'視對方為仇敵':'',hs(b).courtPatron===a?'門下武將':'',hs(a).courtPatron===b?'效力對象':''].filter(Boolean);
+  return '<div class="frame" style="padding:8px;margin-top:5px"><b>'+H(b).n+'</b>・'+rosterName(rosterLocation(b))+'｜交情 '+(v>0?'+':'')+v+(links.length?'・'+links.join('、'):'')+'<div class="small">'+(bonds.map(t=>bondStatus(t,party)).join('<br>')||'無共同出征羈絆')+'</div></div>'
+ });
+ return '<div class="sec"><div class="orn">人物交情與出征羈絆</div><label>查看人物 <select id="relationFocus">'+S.order.map(id=>'<option value="'+id+'" '+(id===a?'selected':'')+'>'+H(id).n+'</option>').join('')+'</select></label><p class="small">以下依'+H(a).n+'目前的出征隊伍判定。兩人同城仍須編入同隊，才會取得雙人出征效果。</p>'+rows.join('')+'</div>'
+}
 function baseView(){
  const land=ownTiles().length,fac=S.slots.filter(s=>s&&s.lv).length,sc=score();
  return`<div class="basehero" style="background-image:url(img/${STAGES[S.stage][1]}.jpg);"><div class="cap"><h2>星盤燈塔・${STAGES[S.stage][0]}</h2><div class="stage">${STAGES.map((s,i)=>`<span class="${i<=S.stage?'on':''}">${s[0]}</span>`).join('')}</div><div class="small" style="margin-top:4px">自動升階條件：${stageNeed()}</div></div></div>
@@ -1594,6 +1638,7 @@ function baseView(){
  <div class="small" style="margin-top:6px">訓練度 ${S.train}/100</div><div class="meter" style="margin-top:3px"><i style="width:${S.train}%;background:var(--gold)"></i></div>
  ${S.policy&&S.policy.until>S.t?`<div class="sysline" style="margin-top:8px">本月政令：<b>${POLICY[S.policy.k][0]}</b>（${POLICY[S.policy.k][1]}・剩 ${S.policy.until-S.t} 旬）</div>`:''}
  <button class="btn ghost sm" id="repair" style="width:100%;margin-top:8px" ${S.dur>=S.durMax?'disabled':''}>修繕燈塔（石 30・行動 1）：耐久 +20</button></div>
+ ${residentsView()}
  ${inWorld()?'':cityTiles().filter(t=>t.city>1).map(t=>`<button class="btn ghost" data-gotown="${t.r}_${t.c}">${cityName(t)}・進入城務</button>`).join('')}
  <div class="sec"><div class="orn">領地產出</div>${(()=>{const t0={food:0,wood:0,stone:0,energy:0,pop:0,pol:0};let n=0,f=0;ownTiles().forEach(t=>{const y=tileYield(t);for(const k in t0)t0[k]+=y[k];if(t.out)f++;n++});const cp=capRes();
   return`<div class="kpi"><div class="frame">糧<b>+${t0.food}</b>上限 ${cp.food}</div><div class="frame">木<b>+${t0.wood}</b>上限 ${cp.wood}</div><div class="frame">石<b>+${t0.stone}</b>上限 ${cp.stone}</div><div class="frame">流民<b>+${t0.pop}</b>上限 ${popCap()}</div></div><p class="tip" style="margin-top:6px">領地 ${n} 格、外部設施 ${f} 座。領地越大，倉儲上限、流民上限越高；被污染的領地不會產出。超過倉儲上限的資源會損失。</p>`})()}</div>
@@ -1608,6 +1653,8 @@ function facVal(s,gid){const f=FAC[s.f],m=facMul(s,gid);
  switch(s.f){case'granary':return Math.round(f[5]*m*(1+teamEff('food')+(T_('s3')?.2:0)));case'market':return Math.round(f[5]*m*(1+teamEff('market')));case'academy':return Math.max(1,Math.floor(m));case'office':return 1;case'observatory':return 1;default:return Math.round(f[5]*m)}}
 function facOutText(s,gid){const v=facVal(s,gid);return({granary:`糧 +${v}`,houses:`流民 +${v}`,market:`木石各 +${v}`,barracks:`徵兵 +${v}%`,drill:`訓練 +${v}`,academy:`天賦 +${v}`,medic:`回復 ${v}%`,office:'行動 +1',purify:`污染 ${v}`,altar:`能量 +${v}`,observatory:'視野 +1',zhenyao:`對污染 +${v}%`,wall:`守城減傷 ${v}%`,harem:`好感 +${v}%`}[s.f]||NFTXT(s,v))+'／旬'}
 function bindBase(){
+ const select=$('#residentPlace');if(select)select.onchange=()=>{baseRosterPlace=select.value;render()};
+ $$('[data-resident]').forEach(b=>b.onclick=()=>openHero(b.dataset.resident));
  $$('[data-gotown]').forEach(b=>b.onclick=()=>{const [r,c]=b.dataset.gotown.split('_').map(Number);townPanel(T(r,c))});
 
  $$('.slot[data-i]').forEach(b=>b.onclick=()=>{const i=+b.dataset.i,s=S.slots[i];if(!s)pickFac(i);else facPanel(i)});
@@ -1715,7 +1762,7 @@ function openHero(id){
  ${tfOn(id)?`<button class="btn sm" id="drillField">強化 Lv${1+(st.troopDrills||0)} → ${2+(st.troopDrills||0)}（能量 ${40+10*(st.troopDrills||0)}）</button>`:''}
  ${tfOn(id)?'<div class="small">兵營等級越高，特色部隊越強（每級 +15%）。由${h.sex==="f"?"她":"他"}帶隊出征時生效。</div>':`<div class="small">需要先蓋「兵營」。組建後，由${h.sex==="f"?"她":"他"}出征時特色部隊就會生效，兵營等級越高越強。</div><button class="btn sm" id="hpTroop" style="margin-top:6px" ${hasFac('barracks')?'':'disabled'}>組建特色部隊（木 60・石 60・能量 40・行動 1）</button>`}
  <div class="orn" style="margin-top:14px">羈絆</div>
- ${bl.length?bl.map(b=>{const have=b[0].filter(x=>S.order.includes(x)).length;return`<div class="skl frame"><span class="k bo">羈絆</span><b>${b[1]}</b> <span class="small">${b[0].map(x=>`<span style="color:${S.order.includes(x)?'var(--pink)':'var(--dim)'}">${HD[x][0]}</span>`).join('・')}</span><div class="d">${b[2]}・同部隊出征時生效${have>=bNeed(b)?'':'（尚未集齊）'}${b[5]?'<br>交情 '+relG(...b[0])+'・羈絆效力 ×'+tieStrength(b)+'（交情達 60 強化，降至 −60 減弱）':''}</div></div>`}).join(''):'<p class="small">尚無已知羈絆</p>'}
+ ${bl.length?bl.map(b=>{const have=b[0].filter(x=>S.order.includes(x)).length;return`<div class="skl frame"><span class="k bo">羈絆</span><b>${b[1]}</b> <span class="small">${b[0].map(x=>`<span style="color:${S.order.includes(x)?'var(--pink)':'var(--dim)'}">${HD[x][0]}</span>`).join('・')}</span><div class="d">${b[2]}・${bondState(b,heroWhere(id)?.u.gens||[])}${have>=bNeed(b)?'':'（尚未集齊）'}${b[5]?'<br>交情 '+relG(...b[0])+'・羈絆效力 ×'+tieStrength(b)+'（交情達 60 強化，降至 −60 減弱）':''}</div></div>`}).join(''):'<p class="small">尚無已知羈絆</p>'}
  <div class="orn" style="margin-top:14px">個人劇情</div>
  <p class="small">好感每升一階（熟識・信賴・親密・誓約）會播放專屬事件。目前：${TIER(st.aff)}${GD.personal[id]?'':'（此英靈的個人劇情尚未交付）'}</p>
  ${st.wed?'':`<div class="small" style="margin-top:4px">誓約進度：好感 ${st.aff}/100・${h.sex==='f'?`到 100 並蓋好後宮殿閣（${hasFac('harem')?'<span style="color:var(--jade)">已建</span>':'<span style="color:var(--blood)">未建</span>'}）即可締結婚姻`:'到 100 即可結為生死之交'}</div><div class="meter" style="margin:4px 0"><i style="width:${st.aff}%;background:linear-gradient(90deg,#c76b8f,#f3b1c4)"></i></div>`}
@@ -2817,20 +2864,24 @@ function oathPage(){
  const brothers=sworn().filter(id=>activePlace(id)==='home');
  return brothers.length?brothers.map(id=>`<button class="opt frame" data-w="${id}"><span class="pic" style="background-image:url(img/${face(id)}.jpg)"></span><span class="t"><b>${H(id).n}</b><div>義氣 ${wed(id).fav}・把酒夜談（1 行動）</div></span></button>`).join(''):'主城尚無結義兄弟。';
 }
-function haremView(){const sp=spouses().filter(id=>activePlace(id)==='home');if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'一覽';const tabs=['一覽','往來紀事','動態','關係','建築','冷宮行宮','結義兄弟'];
+function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'一覽';const tabs=['一覽','往來紀事','動態','關係','建築','冷宮行宮','結義兄弟'];
  let h=`<div class="ltabs">${tabs.map(t=>`<button class="${S.hTab===t?'on':''}" data-ht="${t}">${t}</button>`).join('')}</div>`;
  if(S.hTab==='往來紀事')return h+intrigueView();
  if(S.hTab==='結義兄弟')return h+oathPage();
  if(S.hTab==='一覽'){
-  const candidates=S.order.filter(id=>H(id).sex==='f'&&!wed(id)&&audienceOK(id)&&!id.startsWith('kid'));
-  h+=candidates.map(id=>'<div class="frame" style="padding:8px">'+H(id).n+'・好感 '+hs(id).aff+'/99 '+(canVow(id)?'<button class="btn sm" data-hmarry="'+id+'">締結婚姻</button>':'<button class="btn sm" data-courtmeet="'+id+'">談心</button>')+'</div>').join('');
+  const candidates=S.order.filter(id=>H(id).sex==='f'&&!wed(id)&&!id.startsWith('kid'));
+  h+=candidates.length?'<div class="orn">尚未入宮</div>':'';
+  h+=candidates.map(id=>{
+   const loc=rosterLocation(id),here=loc==='home'&&audienceOK(id);
+   const action=here?(canVow(id)?'<button class="btn sm" data-hmarry="'+id+'">締結婚姻</button>':'<button class="btn sm" data-courtmeet="'+id+'">談心</button>'):'<button class="btn ghost sm" data-ho="'+id+'">查看人物</button>';
+   return '<div class="frame" style="padding:8px">'+H(id).n+'・'+rosterName(loc)+'・好感 '+hs(id).aff+'/99 '+action+'</div>'
+  }).join('');
  }
  if(S.hTab==='建築')return h+pbTab();
- if(!sp.length&&S.hTab!=='動態')return h+`<div class="frame" style="padding:14px;margin:10px 0;text-align:center"><b>後宮尚無夫人</b><p class="small" style="margin-top:6px">與女英靈好感達到誓約後即可成婚。後宮的一舉一動、爭寵與陰謀都會在這裡呈現。</p></div>`;
- if(S.hTab==='一覽'){const m0=mother();h+=`<div class="small" style="color:var(--dim);margin:4px 2px 8px">情深隨寵愛起落；心境會影響她會掀起什麼樣的風波。${false&&S.corrupt?`<br><span style="color:${S.corrupt>=60?'#ff6a6a':'#d0a070'}">昏庸 ${S.hedon||0}・暴虐 ${S.tyranny||0}${S.corrupt>=60?'・朝野離心，逼宮與暴政事件增加':''}</span>`:''}</div>`+sp.filter(x=>!away(x)).sort((a,b)=>(b===m0)-(a===m0)||loveLv(b)-loveLv(a)).map(id=>hCard(id)).join('');const aw=sp.filter(away);if(aw.length)h+=`<div class="small" style="margin:6px 2px">另有 ${aw.length} 位在冷宮或行宮</div>`}
+ if(!sp.length&&!['動態','關係','冷宮行宮'].includes(S.hTab))return h+`<div class="frame" style="padding:14px;margin:10px 0;text-align:center"><b>後宮尚無夫人</b><p class="small" style="margin-top:6px">與女英靈好感達到誓約後即可成婚。後宮的一舉一動、爭寵與陰謀都會在這裡呈現。</p></div>`;
+ if(S.hTab==='一覽'){const m0=mother();h+=`<div class="small" style="color:var(--dim);margin:4px 2px 8px">情深隨寵愛起落；心境會影響她會掀起什麼樣的風波。${false&&S.corrupt?`<br><span style="color:${S.corrupt>=60?'#ff6a6a':'#d0a070'}">昏庸 ${S.hedon||0}・暴虐 ${S.tyranny||0}${S.corrupt>=60?'・朝野離心，逼宮與暴政事件增加':''}</span>`:''}</div>`+[...new Set(sp.map(rosterLocation))].map(loc=>'<div class="orn">'+rosterName(loc)+'</div>'+sp.filter(id=>rosterLocation(id)===loc).sort((a,b)=>(b===m0)-(a===m0)||loveLv(b)-loveLv(a)).map(id=>loc==='home'&&!away(id)?hCard(id):'<button class="btn ghost" style="margin:4px" data-ho="'+id+'">'+H(id).n+'・'+RANKN[rankOf(id)]+(wed(id).pal?'・行宮':wed(id).cold?'・冷宮':'')+'</button>').join('')).join('')}
  if(S.hTab==='動態'){const F=S.hfeed||[];h+=F.length?F.map(f=>`<div class="frame" style="padding:7px 9px;margin-bottom:5px;border-color:${f.c==='neg'?'#8a3a4a':f.c==='rum'?'#6a5a8a':'var(--line)'}"><span class="small" style="color:var(--dim)">第 ${f.t} 旬${f.c==='rum'?'・傳聞':''}</span><div class="small" style="margin-top:2px;color:var(--ink,#ddd)">${f.s}</div></div>`).join(''):'<p class="small">宮中暫時風平浪靜。</p>'}
- if(S.hTab==='關係'){const pr=[];for(let i=0;i<sp.length;i++)for(let j=i+1;j<sp.length;j++){const v=relG(sp[i],sp[j]);if(Math.abs(v)>=10)pr.push([sp[i],sp[j],v])}pr.sort((a,b)=>Math.abs(b[2])-Math.abs(a[2]));
-  h+=`<div class="orn">夫人之間</div>`+(pr.length?pr.map(([a,b,v])=>{const t=relTag(v)||[v<0?'有隙':'和氣','#aaa'];return`<div class="frame" style="padding:6px 8px;margin-bottom:5px;display:flex;align-items:center;gap:6px"><span class="pic" style="width:32px;height:32px;border-radius:50%;background:url(img/${face(a)}.jpg) center 15%/cover;flex:none"></span><b class="small">${H(a).n}</b><span class="chip" style="border-color:${t[1]};color:${t[1]};margin:0 auto">${t[0]} ${v>0?'+':''}${v}</span><b class="small">${H(b).n}</b><span class="pic" style="width:32px;height:32px;border-radius:50%;background:url(img/${face(b)}.jpg) center 15%/cover;flex:none"></span></div>`}).join(''):'<p class="small">她們之間還沒有明顯的恩怨或情誼。</p>');
+ if(S.hTab==='關係'){h+=relationsView();
   const rv=(GD.hrival||[]).map((r,i)=>[r,i]).filter(([r])=>r.ids.every(x=>sp.includes(x)));if(rv.length)h+=`<div class="orn">宿命恩怨</div>`+rv.map(([r,i])=>{const s=(S.rvS||{})[i]||0;return`<div class="frame" style="padding:6px 8px;margin-bottom:5px"><b class="small">${r.t}</b><span class="small" style="float:right;color:var(--dim)">${s>=3?'已了結':`第 ${s}/3 幕`}</span><div class="small" style="color:var(--dim)">${r.ids.map(x=>H(x).n).join(' × ')}</div></div>`}).join('')}
  if(S.hTab==='建築')h+=pbTab();
  if(S.hTab==='冷宮行宮'){const cd=sp.filter(x=>wed(x).cold),pl=sp.filter(x=>wed(x).pal),sd=stripped();if(sd.length)h+=`<div class="orn">廢妃（城外）</div>`+sd.map(id=>`<div class="frame" style="padding:7px;margin-bottom:6px;display:flex;gap:8px;align-items:center"><span class="pic" style="width:46px;height:46px;flex:none;border-radius:8px;filter:grayscale(1) brightness(.7);background:url(img/${id}.jpg) center 15%/cover"></span><div style="flex:1"><b>${H(id).n}</b><div class="small" style="color:#d08080">已廢為庶人・${S.stripped&&S.stripped[id]!=null?`第 ${S.stripped[id]} 旬`:''}逐出，隨時可能回來報復</div></div></div>`).join('');h+=`<div class="orn">冷宮</div>`+(cd.length?cd.map(id=>`<div class="frame" style="padding:7px;margin-bottom:6px;display:flex;gap:8px;align-items:center"><span class="pic" style="width:46px;height:46px;flex:none;border-radius:8px;filter:grayscale(.7);background:url(img/${face(id)}.jpg) center 15%/cover"></span><div style="flex:1"><b>${H(id).n}</b><div class="small">入冷宮 ${S.t-wed(id).cold.t} 旬・${MDI[md2(id)]}${md2(id)}</div></div><button class="btn ghost sm" data-cv="${id}" ${wed(id).cvT===S.t?'disabled':''}>探視</button><button class="btn sm" data-vd2="${id}">處置</button></div>`).join(''):'<p class="small">冷宮空著。</p>')+`<div class="orn">行宮</div>`+(pl.length?pl.map(id=>`<div class="frame" style="padding:7px;margin-bottom:6px;display:flex;gap:8px;align-items:center"><span class="pic" style="width:46px;height:46px;flex:none;border-radius:8px;background:url(img/${face(id)}.jpg) center 15%/cover"></span><div style="flex:1"><b>${H(id).n}</b><div class="small">${(GD.palace2&&GD.palace2[id]&&GD.palace2[id].name)||'行宮'}・${wed(id).pal.mode==='favor'?'恩寵':'外放'}</div></div><button class="btn ghost sm" data-pb2="${id}">召回</button></div>`).join(''):'<p class="small">分城蓋了「分城行宮」後，可以從分城設施派駐夫人。</p>')}
@@ -2843,7 +2894,7 @@ function hCard(id){const w=wed(id),h=H(id),l=loveLv(id),m=md2(id),tg=ntagAll(id)
   ${GD.pbuild&&GD.pbuild[id]?(pbHas('pb_'+id)?`<div class="small" style="margin:4px 2px">🏯 ${GD.pbuild[id].n}已落成 <button class="btn sm" data-pbv="${id}" ${w.pbvT===S.t?'disabled':''}>前往相會</button></div>`:w.pbAsk&&!pbPending('pb_'+id)?`<div class="small" style="margin:4px 2px;color:var(--pink)">🏯 她想要「${GD.pbuild[id].n}」 <button class="btn sm" data-pbb="pb_${id}">建造</button> <button class="btn ghost sm" data-pbn="${id}">婉拒</button></div>`:''):''}
   ${wi?`<div class="frame" style="padding:5px 7px;margin:5px 0;border-color:#c9a45c66"><span class="small" style="color:var(--gold2)">🎐 小願望・${wi.t}</span><div class="small">${wishTxt(id)}</div>${(['food','gift','energy'].includes(wi.cond)||!wi.cond||wi.cond==='grant')?`<button class="btn sm" data-wp="${id}" style="margin-top:4px">${['food','gift','energy'].includes(wi.cond)?'交付':'應允'}</button>`:''}</div>`:''}
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:6px"><button class="btn sm" data-hv="${id}" ${w.last===S.t||S.ap<1?'disabled':''}>探望</button><button class="btn ghost sm" data-vd2="${id}" ${w.vdT===S.t?'disabled':''}>處置</button><button class="btn ghost sm" data-ho="${id}">詳情</button></div></div>`}
-function bindHarem(){document.querySelectorAll('[data-courtmeet]').forEach(b=>b.onclick=()=>meet(b.dataset.courtmeet));document.querySelectorAll('[data-hmarry]').forEach(b=>b.onclick=()=>startVow(b.dataset.hmarry));$$("[data-mw]").forEach(b=>b.onclick=()=>{setMainWife(b.dataset.mw);render()});$$("[data-w]").forEach(b=>b.onclick=()=>wedVisit(b.dataset.w));$$('#view [data-pbb]').forEach(b=>b.onclick=()=>pbBuildSheet(b.dataset.pbb));$$('#view [data-pbv]').forEach(b=>b.onclick=()=>pbVisit(b.dataset.pbv));$$('#view [data-pbn]').forEach(b=>b.onclick=()=>pbRefuse(b.dataset.pbn));$$('#view [data-ht]').forEach(b=>b.onclick=()=>{S.hTab=b.dataset.ht;render()});$$('#view [data-ho]').forEach(b=>b.onclick=()=>openHero(b.dataset.ho));$$('#view [data-vd2]').forEach(b=>b.onclick=()=>vdSheet(b.dataset.vd2));$$('#view [data-wp]').forEach(b=>b.onclick=()=>wishPay(b.dataset.wp));
+function bindHarem(){const focus=$('#relationFocus');if(focus)focus.onchange=()=>{relationFocus=focus.value;render()};document.querySelectorAll('[data-courtmeet]').forEach(b=>b.onclick=()=>meet(b.dataset.courtmeet));document.querySelectorAll('[data-hmarry]').forEach(b=>b.onclick=()=>startVow(b.dataset.hmarry));$$("[data-mw]").forEach(b=>b.onclick=()=>{setMainWife(b.dataset.mw);render()});$$("[data-w]").forEach(b=>b.onclick=()=>wedVisit(b.dataset.w));$$('#view [data-pbb]').forEach(b=>b.onclick=()=>pbBuildSheet(b.dataset.pbb));$$('#view [data-pbv]').forEach(b=>b.onclick=()=>pbVisit(b.dataset.pbv));$$('#view [data-pbn]').forEach(b=>b.onclick=()=>pbRefuse(b.dataset.pbn));$$('#view [data-ht]').forEach(b=>b.onclick=()=>{S.hTab=b.dataset.ht;render()});$$('#view [data-ho]').forEach(b=>b.onclick=()=>openHero(b.dataset.ho));$$('#view [data-vd2]').forEach(b=>b.onclick=()=>vdSheet(b.dataset.vd2));$$('#view [data-wp]').forEach(b=>b.onclick=()=>wishPay(b.dataset.wp));
  $$('#view [data-hv]').forEach(b=>b.onclick=()=>wedVisit(b.dataset.hv));$$('#view [data-pb2]').forEach(b=>b.onclick=()=>palBack(b.dataset.pb2));
  $$('#view [data-cv]').forEach(b=>b.onclick=()=>{const id=b.dataset.cv,w=wed(id);if(S.ap<1){sfx('deny');return toast('行動力不足')}S.ap--;w.cvT=S.t;loveAdd(id,10,true);setMd(id,'委屈');sheetDlg(id,(GD.cold&&GD.cold[id]&&GD.cold[id].visit)||'……','好',()=>render())})}
 
