@@ -315,6 +315,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
  .tcol{scroll-snap-align:start}#sheetIn{overscroll-behavior:contain}.frame .small,.tip{line-height:1.55}
  }button:focus-visible{outline:2px solid #efcc79;outline-offset:2px}.pathgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:12px}.pathgrid section{padding:9px;border:1px solid #625337;border-radius:8px}.pathgrid h3{margin:0 0 6px}.pathpair{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pathpair>div{display:grid;gap:5px}.pathpair>div>b{color:var(--gold2);text-align:center}.pathpair .tn{width:100%;min-height:48px;border-radius:6px}.pathpair .tn b{font-size:14px}.talTree h3,.treeTier{text-align:center}.treeTier{display:grid;grid-template-columns:1fr 1fr;gap:6px;color:var(--gold2)}.treeTier .tn{width:100%;margin:0}.talTree svg{display:block;width:100%;height:16px;stroke:#a38b5b;stroke-width:1;fill:none}.treeTier>b{padding:6px}
 .sideTier{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;padding-top:6px;border-top:1px dashed rgba(240,215,154,.25)}.sideTier i{width:100%;font-size:11px;color:var(--gold2);font-style:normal}.sideTier .tn{flex:1 1 45%}.tn.side{border-style:dashed}
+.htWrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:8px}.htab{border-collapse:collapse;font-size:12px;white-space:nowrap;min-width:100%}.htab th,.htab td{padding:6px 5px;border-bottom:1px solid rgba(255,255,255,.06);text-align:center}.htab thead th{position:sticky;top:0;background:#1a1620;color:var(--gold2);font-weight:600;cursor:pointer}.htab thead th.on{color:#fff}.htab tbody th{position:sticky;left:0;background:#15121a;text-align:left;font-weight:600;color:#eee}.htab tbody th i{font-style:normal;font-size:10px;color:var(--gold2);margin-left:2px}.htab td.bad{color:#ff7a7a;font-weight:600}.htab tbody tr:active{background:rgba(240,215,154,.08)}.hpic{display:inline-block;width:22px;height:22px;border-radius:50%;background:center 15%/cover;vertical-align:middle;margin-right:4px}.res.lord{color:#e0a070}.res.alert{color:#ff8a8a;border:1px solid #8a3a4a;border-radius:10px;padding:0 6px}
 </style>
 </head>
 <body>
@@ -1335,7 +1336,7 @@ function hud(){const pc=S.pol>60?'var(--blood)':S.pol>30?'var(--void)':'var(--ja
  const cls=k=>lastRes[k]===undefined||lastRes[k]===cur[k]?'':cur[k]>lastRes[k]?'up':'dn';
  ['food','wood','stone','energy','pop','soldiers'].forEach(k=>S[k]=Math.round(S[k]||0));$('#hud').innerHTML=`<div class="row"><span class="date">${dateStr(S.t)}</span><span class="res" id="wxChip" style="margin-left:8px;cursor:pointer">${wxNow()[1]}${wxNow()[0]}</span><span class="res" style="margin-left:auto;color:var(--gold2)">行動 ${S.ap}/${maxAP()}</span></div>
  <div class="row" style="margin-top:3px"><span class="res ${cls('food')}"><img src="img/ic_food.jpg" alt="糧">${S.food}<small style="color:var(--dim)">/${capRes().food}</small></span><span class="res ${cls('wood')}"><img src="img/ic_wood.jpg" alt="木">${S.wood}</span><span class="res ${cls('stone')}"><img src="img/ic_stone.jpg" alt="石">${S.stone}</span>
- <span class="res ${cls('energy')}"><img src="img/ic_energy.jpg" alt="能量">${S.energy}</span><span class="res ${cls('pop')}"><img src="img/ic_pop.jpg" alt="流民">${(S.pop=typeof popN==='function'?popN(S.pop):Math.max(0,Math.round(S.pop||0)))}<small style="color:var(--dim)">/${popCap()}</small></span><span class="res ${cls('soldiers')}">兵 ${S.soldiers}</span><span class="res"><i style="width:10px;height:10px;border-radius:50%;display:inline-block;background:${pc};box-shadow:0 0 6px ${pc}"></i>污 ${S.pol}</span></div>
+ <span class="res ${cls('energy')}"><img src="img/ic_energy.jpg" alt="能量">${S.energy}</span><span class="res ${cls('pop')}"><img src="img/ic_pop.jpg" alt="流民">${(S.pop=typeof popN==='function'?popN(S.pop):Math.max(0,Math.round(S.pop||0)))}<small style="color:var(--dim)">/${popCap()}</small></span><span class="res ${cls('soldiers')}">兵 ${S.soldiers}</span><span class="res"><i style="width:10px;height:10px;border-radius:50%;display:inline-block;background:${pc};box-shadow:0 0 6px ${pc}"></i>污 ${S.pol}</span><span class="res lord">昏${S.hedon||0}・暴${S.tyranny||0}</span>${spouses().length&&hAlerts().length?`<span class="res alert" data-hjump="1">宮⚠${hAlerts().length}</span>`:''}</div>
  <div class="tidebar ${warn?'warn':''}"><span>黑霧潮 第${S.tides+1}波</span><span class="meter"><i style="width:${(tideInterval-ti+1)/tideInterval*100}%;background:${warn?'':'#6a4a9a'}"></i></span><span>${warn?'下旬來襲！':ti+' 旬後'}</span></div>`;
  lastRes=cur;setDanger(warn);
  const idle=S.order.some(id=>hs(id).task==='idle');const hb=$('#nav [data-v=hero]');hb.querySelector('.dot')?.remove();if(idle)hb.insertAdjacentHTML('beforeend','<i class="dot"></i>')}
@@ -2862,8 +2863,39 @@ function oathPage(){
  const brothers=sworn().filter(id=>activePlace(id)==='home');
  return brothers.length?brothers.map(id=>`<button class="opt frame" data-w="${id}"><span class="pic" style="background-image:url(img/${face(id)}.jpg)"></span><span class="t"><b>${H(id).n}</b><div>義氣 ${wed(id).fav}・把酒夜談（1 行動）</div></span></button>`).join(''):'主城尚無結義兄弟。';
 }
-function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'一覽';const tabs=['一覽','往來紀事','動態','關係','建築','冷宮行宮','結義兄弟'];
+/* ===== 後宮總表：一頁看完所有夫人數值，可排序 ===== */
+const HCOL=[
+ ['名','n',id=>H(id).n],
+ ['位','rk',id=>rankOf(id)],
+ ['寵','fav',id=>wed(id).fav|0],
+ ['情','love',id=>wed(id).love||0],
+ ['心','md',id=>md2(id)],
+ ['權','inf',id=>hp(id).inf|0],
+ ['野','amb',id=>heroAmb(id)],
+ ['污','mist',id=>Number(mistState(id).value)],
+ ['荷','str',id=>mistStrain(id)],
+ ['期','cy',id=>cyc(id)],
+ ['孕','preg',id=>wed(id).preg?Math.max(0,wed(id).preg-S.t):99],
+ ['地','loc',id=>activePlace(id)]];
+const HBAD=['幽怨','嫉恨','委屈','焦躁','冷戰','癲狂','怨恨'];
+function hAlerts(){return spouses().filter(id=>{const w=wed(id);return w.fav<25||HBAD.includes(md2(id))||mistState(id).band>=3||mistStrain(id)>=5||grudge(id)})}
+function haremTable(){const sp=[...spouses(),...S.order.filter(id=>H(id).sex==='f'&&!wed(id)&&!id.startsWith('kid')&&hs(id).aff>=50)];
+ if(!sp.length)return'<p class="small" style="margin:12px">後宮尚無夫人。</p>';
+ const k=S.hSort||'fav',dir=S.hDir||-1,col=HCOL.find(c=>c[1]===k)||HCOL[2];
+ const rows=sp.filter(id=>wed(id)).sort((a,b)=>{const x=col[2](a),y=col[2](b);return(x>y?1:x<y?-1:0)*dir});
+ const red=(v,c)=>c?`<td class="bad">${v}</td>`:`<td>${v}</td>`;
+ const tr=id=>{const w=wed(id),l=loveLv(id),m=md2(id),ms=mistState(id),s=mistStrain(id),mo=mother()===id;
+  return`<tr data-ho="${id}"><th><span class="hpic" style="background-image:url(img/${face(id)}.jpg)"></span>${H(id).n}${mo?'<i>主</i>':''}${w.cold?'<i>冷</i>':w.pal?'<i>行</i>':''}</th>
+  <td>${mo?'主母':RANKN[rankOf(id)]}</td>${red(w.fav,w.fav<25)}<td style="color:${LOVEC[Math.max(0,l)]}">${LOVEN[Math.max(0,l)]}</td>${red(m,HBAD.includes(m))}${red(hp(id).inf|0,(hp(id).inf|0)>=70)}${red(heroAmb(id),heroAmb(id)>=75)}${red(ms.band?ms.name:'—',ms.band>=3)}${red(s?s+'/10':'—',s>=5)}<td>${CYI[cyc(id)]}${CYN[cyc(id)]}</td><td>${w.preg?Math.max(0,w.preg-S.t)+'旬':'—'}</td><td>${rosterName(activePlace(id))}</td></tr>`};
+ const pend=sp.filter(id=>!wed(id));
+ const al=hAlerts();
+ return`<div class="small" style="color:var(--dim);margin:4px 2px 6px">點欄名排序、再點一次反向；點一列看詳情。紅字＝需要留意。${al.length?`<br><b style="color:#ff8a8a">⚠ 需留意：${al.map(x=>H(x).n).join('、')}</b>`:''}</div>
+ <div class="htWrap"><table class="htab"><thead><tr>${HCOL.map(c=>`<th data-hs="${c[1]}" class="${c[1]===k?'on':''}">${c[0]}${c[1]===k?(dir>0?'▲':'▼'):''}</th>`).join('')}</tr></thead><tbody>${rows.map(tr).join('')}</tbody></table></div>
+ ${pend.length?`<div class="small" style="margin-top:8px;color:var(--dim)">尚未入宮、好感 50 以上：${pend.map(id=>`<button class="btn ghost sm" data-ho="${id}" style="margin:2px">${H(id).n}・${hs(id).aff}</button>`).join('')}</div>`:''}`}
+document.addEventListener('click',e=>{const j=e.target.closest&&e.target.closest('[data-hjump]');if(!j)return;S.hTab='總表';const n=document.querySelector('[data-v=harem]');if(n)n.click();else render()});
+function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'總表';const tabs=['總表','一覽','往來紀事','動態','關係','建築','冷宮行宮','結義兄弟'];
  let h=`<div class="ltabs">${tabs.map(t=>`<button class="${S.hTab===t?'on':''}" data-ht="${t}">${t}</button>`).join('')}</div>`;
+ if(S.hTab==='總表')return h+haremTable();
  if(S.hTab==='往來紀事')return h+intrigueView();
  if(S.hTab==='結義兄弟')return h+oathPage();
  if(S.hTab==='一覽'){
@@ -2892,7 +2924,7 @@ function hCard(id){const w=wed(id),h=H(id),l=loveLv(id),m=md2(id),tg=ntagAll(id)
   ${GD.pbuild&&GD.pbuild[id]?(pbHas('pb_'+id)?`<div class="small" style="margin:4px 2px">🏯 ${GD.pbuild[id].n}已落成 <button class="btn sm" data-pbv="${id}" ${w.pbvT===S.t?'disabled':''}>前往相會</button></div>`:w.pbAsk&&!pbPending('pb_'+id)?`<div class="small" style="margin:4px 2px;color:var(--pink)">🏯 她想要「${GD.pbuild[id].n}」 <button class="btn sm" data-pbb="pb_${id}">建造</button> <button class="btn ghost sm" data-pbn="${id}">婉拒</button></div>`:''):''}
   ${wi?`<div class="frame" style="padding:5px 7px;margin:5px 0;border-color:#c9a45c66"><span class="small" style="color:var(--gold2)">🎐 小願望・${wi.t}</span><div class="small">${wishTxt(id)}</div>${(['food','gift','energy'].includes(wi.cond)||!wi.cond||wi.cond==='grant')?`<button class="btn sm" data-wp="${id}" style="margin-top:4px">${['food','gift','energy'].includes(wi.cond)?'交付':'應允'}</button>`:''}</div>`:''}
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:6px"><button class="btn sm" data-hv="${id}" ${w.last===S.t||S.ap<1?'disabled':''}>探望</button><button class="btn ghost sm" data-vd2="${id}" ${w.vdT===S.t?'disabled':''}>處置</button><button class="btn ghost sm" data-ho="${id}">詳情</button></div></div>`}
-function bindHarem(){const focus=$('#relationFocus');if(focus)focus.onchange=()=>{relationFocus=focus.value;render()};document.querySelectorAll('[data-courtmeet]').forEach(b=>b.onclick=()=>meet(b.dataset.courtmeet));document.querySelectorAll('[data-hmarry]').forEach(b=>b.onclick=()=>startVow(b.dataset.hmarry));$$("[data-mw]").forEach(b=>b.onclick=()=>{setMainWife(b.dataset.mw);render()});$$("[data-w]").forEach(b=>b.onclick=()=>wedVisit(b.dataset.w));$$('#view [data-pbb]').forEach(b=>b.onclick=()=>pbBuildSheet(b.dataset.pbb));$$('#view [data-pbv]').forEach(b=>b.onclick=()=>pbVisit(b.dataset.pbv));$$('#view [data-pbn]').forEach(b=>b.onclick=()=>pbRefuse(b.dataset.pbn));$$('#view [data-ht]').forEach(b=>b.onclick=()=>{S.hTab=b.dataset.ht;render()});$$('#view [data-ho]').forEach(b=>b.onclick=()=>openHero(b.dataset.ho));$$('#view [data-vd2]').forEach(b=>b.onclick=()=>vdSheet(b.dataset.vd2));$$('#view [data-wp]').forEach(b=>b.onclick=()=>wishPay(b.dataset.wp));
+function bindHarem(){const focus=$('#relationFocus');if(focus)focus.onchange=()=>{relationFocus=focus.value;render()};document.querySelectorAll('[data-courtmeet]').forEach(b=>b.onclick=()=>meet(b.dataset.courtmeet));document.querySelectorAll('[data-hmarry]').forEach(b=>b.onclick=()=>startVow(b.dataset.hmarry));$$("[data-mw]").forEach(b=>b.onclick=()=>{setMainWife(b.dataset.mw);render()});$$("[data-w]").forEach(b=>b.onclick=()=>wedVisit(b.dataset.w));$$('#view [data-pbb]').forEach(b=>b.onclick=()=>pbBuildSheet(b.dataset.pbb));$$('#view [data-pbv]').forEach(b=>b.onclick=()=>pbVisit(b.dataset.pbv));$$('#view [data-pbn]').forEach(b=>b.onclick=()=>pbRefuse(b.dataset.pbn));$$('#view [data-ht]').forEach(b=>b.onclick=()=>{S.hTab=b.dataset.ht;render()});$$('#view [data-hs]').forEach(b=>b.onclick=e=>{e.stopPropagation();const k=b.dataset.hs;S.hDir=S.hSort===k?-(S.hDir||-1):-1;S.hSort=k;render()});$$('#view [data-ho]').forEach(b=>b.onclick=()=>openHero(b.dataset.ho));$$('#view [data-vd2]').forEach(b=>b.onclick=()=>vdSheet(b.dataset.vd2));$$('#view [data-wp]').forEach(b=>b.onclick=()=>wishPay(b.dataset.wp));
  $$('#view [data-hv]').forEach(b=>b.onclick=()=>wedVisit(b.dataset.hv));$$('#view [data-pb2]').forEach(b=>b.onclick=()=>palBack(b.dataset.pb2));
  $$('#view [data-cv]').forEach(b=>b.onclick=()=>{const id=b.dataset.cv,w=wed(id);if(S.ap<1){sfx('deny');return toast('行動力不足')}S.ap--;w.cvT=S.t;loveAdd(id,10,true);setMd(id,'委屈');sheetDlg(id,(GD.cold&&GD.cold[id]&&GD.cold[id].visit)||'……','好',()=>render())})}
 
