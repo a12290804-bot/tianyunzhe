@@ -1,7 +1,7 @@
 // The save holds event references and cast IDs. Story text stays in the packs.
 window.makeCharacterEvents = function (game) {
  const {S, H, hs, wed, hp, mistState, rankOf, relG, relAdd, activePlace, barAdd, sheet, closeSheet, save, feedPush, $, goneHero, setHst} = game;
- const PER_TURN=2, SHOW_MAX=3, GAP=2, CHANCE=.45;
+ const PER_TURN=1, SHOW_MAX=2, GAP=3, CHANCE=.3;
  const packs = window.characterPacks;
  const tragedy = {captured:'戰敗被俘', public_shame:'公開羞辱', body_return:'遺體送還', wounded_return:'重傷歸來', survivor_return:'倖存者歸來', pregnancy_return:'懷孕歸來', forced_marriage:'強迫婚籍', private_captive:'私人囚禁', rescued:'營救獲釋', escaped:'自行逃脫'};
  const entries = Object.fromEntries(Object.entries(packs).map(([id,p])=>[id,Object.assign({},p.ch1_entry,p.ch2_intrigue,p.ch3_desirePower,p.ch4_citiesBonds,p.ch5_warAndTragedy)]));
@@ -18,17 +18,22 @@ window.makeCharacterEvents = function (game) {
  function textOf0(e) {
   const d=entries[e.id][e.key], v=e.variant;
   if(e.key==='tragedies'){const t=d[v];return {title:t.title,choices:t.choices,body:lines([t.scene,Object.values(t.variants||{})[Number(e.high)],t.dialogue,t.aftermath]).map(s=>s.replace(/侵蝕度直接鎖定(?:深淵| 95\+)/g,'永久留下惡墮印記'))}}
-  if(e.key==='battlefieldEncounters')return {title:d.title,choices:d.choices,body:lines(d[v])};
+  if(e.key==='battlefieldEncounters')return {title:d.title,choices:d.choices,body:lines(d[v]??d.scene)};
   if(d.stages)return {title:d.title,choices:d.choices,body:lines(d.stages[v]).map(s=>s.replaceAll('{b}／{g}','{peer}'))};
-  if(d.contexts)return {title:d.title,body:lines([d.contexts[v],d.dutyConflict.dilemma]),react:d.choices,choices:[{text:'密令她依軍法處置{g}',path:'duty',outcome:d.dutyConflict.choiceDuty,effects:{corruption:20}},{text:'暗中示意：{g}的去留由她發落',path:'bond',outcome:d.dutyConflict.choiceBond}]};
+  if(d.contexts)return {title:d.title,body:lines([d.contexts[v],d.dutyConflict.dilemma]),react:d.choices,choices:[{text:'密令她依軍法處置{g}',path:'duty',outcome:d.dutyConflict.choiceDuty,effects:{inf:8,corruption:35}},{text:'暗中示意：{g}的去留由她發落',path:'bond',outcome:d.dutyConflict.choiceBond,effects:{aff:-10}}]};
   const dynamic=d.dynamicVariants;
   const branch=dynamic&&(dynamic[e.high?'highCorruption':'lowCorruption']??Object.entries(dynamic).find(([k])=>k.startsWith(e.favored?'highAffection':'alienated'))?.[1]);
-  return {title:d.title,body:lines([d.dynamicOpeners?.[e.opener],d.howSheLearns,d.rumorChain,d.scene,branch,d.aftermathDialogues]),choices:d.choices,follow:d.followUp?.default};
+  return {title:d.title,body:lines([d.dynamicOpeners?.[e.opener]??d.dynamicOpeners?.[e.corruptionBand],d.howSheLearns,d.rumorChain,d.scene,branch,d.aftermathDialogues]),choices:d.choices,follow:d.followUp?.default};
  }
  // Field and captivity outcomes are supplied by the corresponding game hooks.
  function eligible(id,t,cast){
   if(!t)return true;
   const st=hs(id),w=wed(id),m=mistState(id),aff=w?w.fav:st.aff;
+  if(t.stage==='recruit'||t.stage==='pre_palace'){if(w)return false}
+  if(t.stage==='early_harem'&&!w)return false;
+  if(t.hasHeir&&!cast.heir||t.stationedAtBranchCity&&!/^\d+_\d+$/.test(activePlace(id)))return false;
+  if(t.minCorruption&&(m.sealed||m.value<BigInt(t.minCorruption)))return false;
+  if(aff<(t.minAff??0)||(hp(id).inf||0)<(t.minInf??0)||(S.hedon||0)<(t.minHedon??0))return false;
   if(t.inPalace!=null&&!!w!==t.inPalace)return false;
   if(t.recruited&&!S.order.includes(id)||t.hasAdultHeir&&!cast.heir)return false;
   if(t.inBranchCity&&!/^\d+_\d+$/.test(activePlace(id)))return false;
@@ -42,11 +47,13 @@ window.makeCharacterEvents = function (game) {
  }
  function enqueue(id,key,variant='',peer=null) {
   if(!entries[id]?.[key])return false;
-  const st=hs(id), stamp=JSON.stringify([key,variant,peer]);
+  const event=entries[id][key];
+  const st=hs(id), stamp=JSON.stringify(event.trigger?.once?[key,'',null]:[key,variant,peer]);
   if(st.packSeen?.[stamp])return false;
   const cast=roles(id);if(peer)cast.peer=peer;
   if(!eligible(id,entries[id][key].trigger,cast))return false;
   const e={id,key,variant,cast,high:!mistState(id).sealed&&mistState(id).value>=70n,favored:(wed(id)?.fav??st.aff)>=60,opener:(S.tyranny||0)>=60?'tyrannyHigh':(S.hedon||0)>=60?'hedonHigh':'normal'};
+  if(entries[id][key].dynamicOpeners?.lowCorruption){const m=mistState(id);e.corruptionBand=e.high?'highCorruption':!m.sealed&&m.value>=35n?'midCorruption':'lowCorruption'}
   const payload=textOf(e),raw=JSON.stringify(payload);
   if([...raw.matchAll(/\{(\w+)\}/g)].some(m=>!cast[m[1]])||[...raw.matchAll(/"rel_([bgc])"/g)].some(m=>!cast[m[1]]))return false;
   (S.packQueue??=[]).push(e);(st.packSeen??={})[stamp]=true;return true;
@@ -123,7 +130,7 @@ window.makeCharacterEvents = function (game) {
   if(P==='absorb'&&alive(g)){hs(g).aff=Math.min(100,(hs(g).aff||0)+10)}
   if(e.key==='coupAndAftermath'&&alive(b)&&wed(b)){goneHero(b,'exec');(S.dc??={})[b]=(S.dc[b]||0)+1;feedPush('【兵變】'+H(b).n+'死於'+H(e.id).n+'刀下','neg')}
   else if(e.key==='humiliationAbuseRevolt'&&alive(b)&&wed(b)&&!(c&&c.path==='stop')){const w=wed(b);w.cold={t:S.t};w.duty=null;w.fav=Math.max(0,(w.fav||0)-20);setHst(b,'inj',4);feedPush('【私刑】'+H(b).n+'毀容致殘，被丟進冷宮','neg')}
-  else if(e.key==='threeContextsAndConflict'&&c&&c.path&&alive(g)){
+  else if(e.key==='threeContextsAndConflict'&&e.variant!=='battle'&&c&&c.path&&alive(g)){
    if(i===0){goneHero(g,'exec');feedPush('【斬友】'+H(g).n+'被'+H(e.id).n+'斬於西門水閘','neg')}
    else{goneHero(g,'exile',12);feedPush('【放走】'+H(g).n+'被'+H(e.id).n+'私放出城，十二旬內不會回來','neg')}}
  }
