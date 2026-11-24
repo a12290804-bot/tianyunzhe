@@ -400,6 +400,12 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 <script src="court_mibazi.js"></script>
 <script src="court_liurushi.js"></script>
 <script src="court_nvwa_huhou.js"></script>
+<script src="events/mulan_events.js"></script>
+<script src="events/change_events.js"></script>
+<script src="events/xiaoqiao_events.js"></script>
+<script src="events/wuzetian_events.js"></script>
+<script src="events/zhenmi_events.js"></script>
+<script src="events/engine.js"></script>
 <script src="rewrite_01z_qing_terms.js"></script>
 <script>
 {
@@ -1113,7 +1119,7 @@ function facArrive(e,add){if(campHold(T(e.r,e.c),e,add))return;const t0=T(e.r,e.
  if(!t0.own){if(t0.city){releaseTownStaff(t0);(t0.cg||[]).forEach(id=>{if(hs(id))hs(id).task='idle'});t0.cg=[]}t0.fac=e.fac;if(f.kind==='cult')t0.pol=true}
  if(prev&&prev!=='me'&&prev!==e.fac)add(`${f.n}從${FD(prev).n}手中奪下一格`);
  e.tgt=Math.random()<.65?facPickTarget(e.fac,t0):null}
-function siegeHold(e,add){const t0=T(e.r,e.c);if(!t0.own||t0.t==='B'||inWorld())return false;if(!e.sg||e.sg.r!==t0.r||e.sg.c!==t0.c)e.sg={r:t0.r,c:t0.c,n:0};e.sg.n++;if(e.sg.n>=2+cityHold(t0)){if(t0.city){if(t0.city>1){const store=townStores(t0),defenders=Math.min(store.soldiers,Math.ceil(e.troops/3));if(defenders){store.soldiers-=defenders;e.troops=Math.max(0,e.troops-defenders*2);add('【守城】'+cityName(t0)+'動用本城 '+defenders+' 兵還擊');if(!e.troops){e.sg=null;return true}}t0.dur=Math.max(0,(t0.dur??100)-35);if(t0.dur>0){add('【攻城】'+cityName(t0)+'耐久剩 '+t0.dur,'neg');e.sg=null;return true}releaseTownStaff(t0)}t0.city--;(t0.cg||[]).forEach(g=>H(g).pool==='對外'&&setHst(g,'inj',2));if(!t0.city){(t0.cg||[]).forEach(g=>hs(g).task='idle');t0.cg=[]}add(`【陷落】${cityName(t0)}被${e.n}攻破，降為${t0.city?'堡寨':'廢墟'}！`,'neg');e.troops=Math.round(e.troops*.6);e.sg=null;return true}return false}
+function siegeHold(e,add){const t0=T(e.r,e.c);if(!t0.own||t0.t==='B'||inWorld())return false;if(!e.sg||e.sg.r!==t0.r||e.sg.c!==t0.c)e.sg={r:t0.r,c:t0.c,n:0};e.sg.n++;if(e.sg.n>=2+cityHold(t0)){if(t0.city){if(t0.city>1){const store=townStores(t0),defenders=Math.min(store.soldiers,Math.ceil(e.troops/3));if(defenders){store.soldiers-=defenders;e.troops=Math.max(0,e.troops-defenders*2);add('【守城】'+cityName(t0)+'動用本城 '+defenders+' 兵還擊');if(!e.troops){e.sg=null;return true}}t0.dur=Math.max(0,(t0.dur??100)-35);if(t0.dur>0){add('【攻城】'+cityName(t0)+'耐久剩 '+t0.dur,'neg');e.sg=null;return true}releaseTownStaff(t0)}for(const id of t0.cg||[])charEvents().enqueue(id,'battlefieldEncounters','cityLost');t0.city--;(t0.cg||[]).forEach(g=>H(g).pool==='對外'&&setHst(g,'inj',2));if(!t0.city){(t0.cg||[]).forEach(g=>hs(g).task='idle');t0.cg=[]}add(`【陷落】${cityName(t0)}被${e.n}攻破，降為${t0.city?'堡寨':'廢墟'}！`,'neg');e.troops=Math.round(e.troops*.6);e.sg=null;return true}return false}
  add(`【圍攻】${e.n}（${e.troops}）正在圍攻你的${t0.out?OD(t0.out)[0]:'領地'} (${t0.c},${t0.r})！下一旬就會被攻破——快派部隊去解圍`,'neg');setTimeout(()=>sfx('siren'),600);return true}
 function moveEnemies(add){
  for(const e of S.enemies){if(e.fac&&e.tgt&&allied(e.fac,T(e.tgt.r,e.tgt.c)?.fac))e.tgt=facPickTarget(e.fac,e);if(e.haltUntil>=S.t)continue;if(e.front&&e.still&&(S.units.some(u=>dist(u,e)<=3)||Math.random()<.2)){e.still=false;e.tgt={r:BASE.r,c:BASE.c}}if(e.still||e.troops<=0)continue;
@@ -1281,7 +1287,11 @@ function renderPools(){
 }
 function roll(pool){const c=Object.keys(HD).filter(id=>(HD[id][2]!=='在野'||['elope','exec'].includes(S.gone?.[id]?.k))&&(!pool||HD[id][2]===pool)&&(!S.heroes[id]||(S.gone&&S.gone[id]&&!['exile','resign','rebel','strip','captive'].includes(S.gone[id].k))));if(!c.length)return null;
  const sw=(T_('e2')?1.5:1)+(T_('e7a')?.25:0),w=c.map(id=>HD[id][3]==='SSR'?sw:1.8);let t=Math.random()*w.reduce((a,b)=>a+b,0);for(let i=0;i<c.length;i++){t-=w[i];if(t<=0)return c[i]}return c[c.length-1]}
-function addHero(id,aff=0){if(S.heroes[id])return;S.heroes[id]={aff,star:1,task:'idle',met:false};S.order.push(id);
+let packRuntime;
+function charEvents(){
+ return packRuntime??=window.makeCharacterEvents({S,H,hs,wed,hp,mistState,rankOf,relG,relAdd,activePlace,barAdd,sheet,closeSheet,save,feedPush,$});
+}
+function addHero(id,aff=0){if(S.heroes[id])return;S.heroes[id]={aff,star:1,task:'idle',met:false};S.order.push(id);charEvents().enqueue(id,'firstRecruit');
  if(H(id).sex==='f'&&!id.startsWith('kid')){
   const k=facOf(id),st=hs(id);let msg;
   if(k==='wuxun'){S.soldiers+=24;msg='帶來親兵 24 人'}
@@ -1580,7 +1590,7 @@ function formArmy(tgt,from){if(inWorld()&&S.units.length>=4){sfx('deny');return 
   $$('#sheetIn .opt').forEach(o=>o.onclick=()=>{const id=o.dataset.h,i=sel2.indexOf(id);if(i>=0)sel2.splice(i,1);else if(sel2.length<3)sel2.push(id);draw()});
   if($('#originSelect'))$('#originSelect').onchange=e=>{const [r,c]=e.target.value.split('_').map(Number);origin=(r===BASE.r&&c===BASE.c)?BASE:T(r,c);sel2=[];requested=null;draw()};
   $('#goArmy').onclick=()=>{if(!sel2.length||cap<minimum||sel2.some(busyArmy))return;if(!inWorld()){if(cap<80||treasury(origin).soldiers<cap)return;treasury(origin).soldiers-=cap}sel2.forEach(id=>setTask(id,'army'));
-   const u={id:'u'+S.uid++,origin:origin===BASE?null:origin.r+"_"+origin.c,gens:[...sel2],troops:cap,max:cap,r:origin.r,c:origin.c,tgt:(tgt.r===origin.r&&tgt.c===origin.c)?null:{...tgt}};S.units.push(u);closeSheet();sfx('drum');setTimeout(()=>sfx('drum'),180);vib([20,30,20]);
+   const u={id:'u'+S.uid++,origin:origin===BASE?null:origin.r+"_"+origin.c,gens:[...sel2],troops:cap,max:cap,r:origin.r,c:origin.c,tgt:(tgt.r===origin.r&&tgt.c===origin.c)?null:{...tgt}};S.units.push(u);u.gens.forEach(id=>charEvents().enqueue(id,'preWarDebate'));closeSheet();sfx('drum');setTimeout(()=>sfx('drum'),180);vib([20,30,20]);
    sel={...tgt};render();toast(`出陣！預計 ${turns} 旬後抵達。結束本旬後部隊會自動行軍`);if(!inWorld()&&tgt.r===CITY.r&&tgt.c===CITY.c&&!S.eve){S.eve=1;setTimeout(()=>scene('eve',()=>{go('game');render()}),600)}}};
  draw()}
 
@@ -1969,7 +1979,7 @@ function upCel(cb){const q=S.upQ||[];S.upQ=[];if(!q.length)return cb();
   celebrate(f[1],u.from===0?'設施落成':'設施升級',`${f[0]}　Lv${u.from} → Lv${u.to}`,`${u.builder&&HD[u.builder]?'建設者：'+H(u.builder).n+'<br>':''}${u.from>0?`產出：${u.ob.replace('／旬','')} → <b style="color:var(--gold2)">${u.ib.replace('／旬','')}</b><br>`:`${GD.build&&GD.build[BK(u.f)]?GD.build[BK(u.f)].done+'<br>':''}開始產出：${f[4]}<br>`}${u.to===5&&GD.build&&GD.build[BK(u.f)]?GD.build[BK(u.f)].max+'<br>':''}${'★'.repeat(u.to)}${'☆'.repeat(5-u.to)}${pk?`<br><span style="color:var(--jade)">解鎖特性【${pk[0]}】${pk[1]}</span>`:u.to<3?`<br><span class="small">Lv3 解鎖【${FPERK[u.f]?FPERK[u.f][0][0]:''}】</span>`:u.to<5?`<br><span class="small">Lv5 解鎖【${FPERK[u.f]?FPERK[u.f][1][0]:''}】</span>`:''}`)});
  sfx('fanfare');afterCel=cb}
 const WEDART=new Set(['zhangsun','liurushi','huhou','pingyang','mibazi','nvwa','jiananfeng','liuchuyu','xuzhaopei','wanzhener','xiaji','fengxiaolian','liji','change','wuzetian','mulan','xiaoqiao','zhenmi','yuji','lianghongyu','fuhao','qinliangyu','diaochan','shangguan','liqingzhao','xishi','yangguifei','zhuowenjun','wangzhaojun','daji','lvzhi','sunshangxiang','caiwenji','zhaofeiyan','huangyueying']);
-function vow(id){if(wed(id))return;const h=H(id);if(h.sex==='f')onNewSpouse(id);hs(id).star+=1;hs(id).wed={rank:0,rkMap:"v32",meritTurns:0,fav:70,duty:null,grace:S.t+2,last:S.t,visits:0};if(h.sex==='f')hp(id).inf=10;SKC[id]=null;afterCel=()=>hxShow(()=>chooseDuty(id));unlock(h.sex==='f'?'marry':'sworn');go('game');
+function vow(id){if(wed(id))return;const h=H(id);if(h.sex==='f')onNewSpouse(id);hs(id).star+=1;hs(id).wed={rank:0,rkMap:"v32",meritTurns:0,fav:70,duty:null,grace:S.t+2,last:S.t,visits:0};if(h.sex==='f'){hp(id).inf=10;charEvents().married(id)}SKC[id]=null;afterCel=()=>hxShow(()=>chooseDuty(id));unlock(h.sex==='f'?'marry':'sworn');go('game');
  celebrate(null,h.sex==='f'?'締結婚姻':'結為生死之交',h.n,`「${h.sex==='f'?'從今往後，我的心只屬於你一人。':'從今往後，你的敵人，就是我的敵人。'}」<br>忠誠固定、星級 +1、全能力 +5<br>解鎖：${h.sex==='f'?'夫人職司・夜訪後宮・婚後劇情':'結義職責・把酒夜談'}・專屬被動「${WBASE[h.sex][0]}」`,h.sex==='f'&&WEDART.has(id)?'wd_'+id:id)}
 
 
@@ -2168,8 +2178,8 @@ function cityGarr(t){const mx=t.city>1?3:2;const c=S.order.filter(id=>!busyArmy(
  sheet(`<div class="evimg" style="background-image:url(img/city_view.jpg)"></div><h3>${cityName(t)}・駐守</h3><p class="small" style="margin:4px 0 8px">駐守 ${(t.cg||[]).length}/${mx}。對外英雄加兵力與守城、內政加糧、經營加木石；駐守者的派系會因此坐大。</p>
  ${(t.cg||[]).map(g=>`<button class="opt frame" data-out="${g}" style="margin-bottom:6px"><span class="pic" style="background-image:url(img/${face(g)}.jpg)"></span><span class="t"><b>${H(g).n}</b>（${FACN2[facOf(g)]}）<div>點擊撤回</div></span></button>`).join('')}
  ${(t.cg||[]).length<mx?c.map(g=>`<button class="opt frame" data-in="${g}" style="margin-bottom:6px"><span class="pic" style="background-image:url(img/${face(g)}.jpg)"></span><span class="t"><b>${H(g).n}</b> <img src="img/fc_${facOf(g)}.jpg" style="width:14px;height:14px;border-radius:50%;vertical-align:-2px"> ${FACN2[facOf(g)]}<div>${H(g).pool}・${taskName(hs(g).task)}</div></span></button>`).join(''):''}`);
- $$('#sheetIn [data-in]').forEach(b=>b.onclick=()=>{const g=b.dataset.in;setTask(g,`city:${t.r}_${t.c}`);if(hs(g).task!==`city:${t.r}_${t.c}`)return;t.cg=[...(t.cg||[]),g];const L=GD.fac26&&GD.fac26.garr[g];sfx('ok');closeSheet();if(L){sheetDlg(g,L,'好',()=>cityGarr(t))}else cityGarr(t);render()});
- $$('#sheetIn [data-out]').forEach(b=>b.onclick=()=>{const g=b.dataset.out;t.cg=t.cg.filter(x=>x!==g);hs(g).task='idle';delete hs(g).station;closeSheet();cityGarr(t);render()})}
+ $$('#sheetIn [data-in]').forEach(b=>b.onclick=()=>{const g=b.dataset.in;setTask(g,`city:${t.r}_${t.c}`);if(hs(g).task!==`city:${t.r}_${t.c}`)return;t.cg=[...(t.cg||[]),g];charEvents().enqueue(g,'branchCityLetters');const L=GD.fac26&&GD.fac26.garr[g];sfx('ok');closeSheet();if(L){sheetDlg(g,L,'好',()=>cityGarr(t))}else cityGarr(t);render()});
+ $$('#sheetIn [data-out]').forEach(b=>b.onclick=()=>{const g=b.dataset.out;t.cg=t.cg.filter(x=>x!==g);hs(g).task='idle';delete hs(g).station;charEvents().enqueue(g,'threeContextsAndConflict','public');closeSheet();cityGarr(t);render()})}
 function cityEvent(cb){const ce=S.cityEv;S.cityEv=null;if(!ce||!GD.fac26)return cb();const t=T(ce.r,ce.c);if(!t||!t.city||!(t.cg||[]).length)return cb();const present=t.cg.filter(x=>S.order.includes(x)&&!unavail(x)&&hst(x)!=='ban'&&activePlace(x)===t.r+'_'+t.c);if(!present.length)return cb();const a=pick(present),e=pick(GD.fac26.cev);const fill=x=>x.replace(/\{a\}/g,H(a).n).replace(/鎮星關|照夜城|天樞堡|長明塢|星津渡|燃藜鎮|望舒亭|破霧塞|璇璣府/g,cityName(t));
  const conv=o=>{const o2={...o};if(o2._st)o2._st=o2._st.map(([x,k,n])=>[x==='a'?a:x,k,n]);if(o2._aff){o2.affH=[[a,o2._aff]]}return o2};
  sheet(`<div class="evimg" style="background-image:url(img/city_view.jpg)"></div><div class="small" style="letter-spacing:.2em;color:var(--gold2)">分城・${cityName(t)}</div><h3>${e.t}</h3><p style="margin:6px 0 10px;font-family:Noto Serif TC,serif">${fill(e.d)}</p>${e.c.map((o,i)=>`<button class="opt frame" data-i="${i}" style="margin-bottom:8px"><span class="t"><b>${fill(o[0])}</b><div>${facLab(conv(o[1]))}</div></span></button>`).join('')}`,true);
@@ -2370,6 +2380,7 @@ const majorArt={...defeatStories,
  escaped:['自行逃歸','黎明時，哨兵把水囊遞給從敵境逃回的人。','ev_exile']
 };
 function majorNotice(id,k,r,add){
+ charEvents().notice(id,k);
  const e={id,k,t:S.t,enemy:r.enemy,city:r.city,effect:r.effect};(S.majorQueue??=[]).push(e);(S.majorNews??=[]).unshift(e);if(S.majorNews.length>60)S.majorNews.pop();
  add((defeatStories[k]?'【戰敗大事件】':'【大事件】')+H(id).n+'・'+majorArt[k][0]+'・'+r.enemy,'neg');
 }
@@ -2660,7 +2671,7 @@ function heartLine(id){const m=mistState(id);if(m.band&&S.t%3<m.band/2)return m.
 function feedPush(s,c){recordCourt(s);S.hfeed=S.hfeed||[];S.hfeed.unshift({t:S.t,s,c:c||''});if(S.hfeed.length>60)S.hfeed.length=60}
 const rk=(a,b)=>[a,b].sort().join('|');
 const relG=(a,b)=>(S.rel&&S.rel[rk(a,b)])||0;
-function relAdd(a,b,v){if(!a||!b||a===b)return;S.rel=S.rel||{};const k=rk(a,b);S.rel[k]=clamp((S.rel[k]||0)+v,-100,100)}
+function relAdd(a,b,v){if(!a||!b||a===b)return;S.rel=S.rel||{};const k=rk(a,b),old=S.rel[k]||0;S.rel[k]=clamp(old+v,-100,100);charEvents().bond(a,b,old,S.rel[k])}
 const relTag=v=>v<=-60?['宿敵','#e05060']:v<=-25?['不睦','#d08060']:v>=60?['姐妹','#f0a0c0']:v>=25?['交好','#9fd0a0']:null;
 const away=id=>{const w=wed(id);return !!(w&&(w.cold||w.pal))};
 const hOK=id=>S.order.includes(id)&&activePlace(id)==='home'&&!unavail(id)&&!away(id)&&!['ban'].includes(hst(id));
@@ -3831,7 +3842,7 @@ function personalTurn(add,ids=[...S.order]){
  }
 }
 
-function hstTurn(report){const add=(msg,c)=>{recordCourt(msg);report(msg,c)};mistTurn(add);courtOfficerTurn(add);captiveTurn(add);intrigueTurn(add);rivalTurn(add);schemeTurn(add);localRise(add);personalTurn(add);haremAI(add);ambTurn(add);S.hxN=0;desireTurn(add);facTurn2(add);factionContest(add);factionCouncil(add);cityTurn(add);agendaTurn(add);dutyMigrate();favSync();loveTurn(add);v21Turn(add);dkTurn(add);v23Turn(add);corruptTurn(add);barTurn(add);powerTurn(add);powerEvTurn(add);valEvTurn(add);cycEvTurn(add);pbTurn(add);S.clean0=S.pol===0?(S.clean0||0)+1:0;checkAch2();(T_('h3')&&Math.random()<.3?0:ownEvRoll());S.order.forEach(id=>{const st=hs(id),x=st.hst;if(!x)return;if(x.u<=S.t){add(`${H(id).n}的【${HST[x.k][0]}】狀態解除了`,'pos');st.hst=null;return}const w=wed(id);
+function hstTurn(report){const add=(msg,c)=>{recordCourt(msg);report(msg,c)};mistTurn(add);charEvents().turn();courtOfficerTurn(add);captiveTurn(add);intrigueTurn(add);rivalTurn(add);schemeTurn(add);localRise(add);personalTurn(add);haremAI(add);ambTurn(add);S.hxN=0;desireTurn(add);facTurn2(add);factionContest(add);factionCouncil(add);cityTurn(add);agendaTurn(add);dutyMigrate();favSync();loveTurn(add);v21Turn(add);dkTurn(add);v23Turn(add);corruptTurn(add);barTurn(add);powerTurn(add);powerEvTurn(add);valEvTurn(add);cycEvTurn(add);pbTurn(add);S.clean0=S.pol===0?(S.clean0||0)+1:0;checkAch2();(T_('h3')&&Math.random()<.3?0:ownEvRoll());S.order.forEach(id=>{const st=hs(id),x=st.hst;if(!x)return;if(x.u<=S.t){add(`${H(id).n}的【${HST[x.k][0]}】狀態解除了`,'pos');st.hst=null;return}const w=wed(id);
   if(x.k==='jail'){if(w)w.fav=Math.max(0,w.fav-3);gainAff(id,-2)}if(x.k==='ban'&&w)w.fav=Math.max(0,w.fav-2);if(x.k==='spoil'){spouses().filter(y=>y!==id).forEach(y=>{wed(y).fav=Math.max(0,wed(y).fav-2)});S.food=Math.max(0,S.food-15)}});
  S.order.forEach(id=>{if(hs(id).traitor&&!unavail(id)&&Math.random()<.14){const f=Math.min(S.food,40),so=Math.min(S.soldiers,30);S.food-=f;S.soldiers-=so;S.lastRaid=-9;add(`【內奸】糧倉帳目出現缺口（糧 −${f}），巡邏路線被敵人摸清（兵力 −${so}），敵襲機率上升……`,'neg')}});
  Object.entries(S.gone||{}).forEach(([id,g])=>{if(g.k==='exile'&&g.u<=S.t){if(Math.random()<.7){delete S.gone[id];S.order.push(id);hs(id).aff=Math.min(hs(id).aff,10);if(wed(id))wed(id).fav=20;add(`${H(id).n}結束流放，風塵僕僕地回到了燈塔`,'pos');hxPush(id,(GD.hstat&&GD.hstat[id]&&GD.hstat[id].exileBack)||'……我回來了。這些日子，我把該想的都想清楚了。','流放歸來')}else{g.k='lost';add(`流放中的${H(id).n}下落不明，再也沒有回來`,'neg')}}})}
@@ -4123,6 +4134,10 @@ function battleVoices(ids,win){
  return html;
 }
 function battle(our,en,cb,title){
+ for(const id of our.gens){
+  if(en.fac)charEvents().enqueue(id,'battlefieldEncounters','enemyNegotiation');
+  charEvents().enqueue(id,'threeContextsAndConflict','battle');
+ }
  go('battle');const el=$('#battle');const gens=our.gens.map(H);const bs=activeBonds(our.gens);
  const tmB=troopMatch(our,en),bgB=inWorld()?WD(S.cur).bg:our.siege?'bg_tower2':en.eld?'cg_battle':(S.wx==='xue'||S.wx==='wu'||S.wx==='yu')?'bg_night':'bg_day';
  el.innerHTML=`<div class="bgimg" style="background-image:url(img/${bgB}.jpg)"></div><div class="wxfx wx-${S.wx||'qing'}"></div><div class="mbanner ${tmB.adv>0?'good':tmB.adv<0?'bad':''}"><img src="img/${TCI[tmB.oc]}.jpg"><b>${TCN[tmB.oc][0]}</b><span>${tmB.adv>0?'克制':tmB.adv<0?'被克制':'對峙'}</span><b>${TCN[tmB.ec][0]}</b><img src="img/${TCI[tmB.ec]}.jpg"><small>${wxNow()[1]}${wxNow()[0]}</small></div>
@@ -4160,7 +4175,7 @@ function battle(our,en,cb,title){
   sheet(`<h2>${win?'勝利':'敗北'}</h2><p class="small" style="margin:4px 0 0">${res.round} 回合・我軍剩餘 ${res.left}・敵軍剩餘 ${res.eleft}</p>
   ${battleVoices(our.gens,win)}
   <button class="btn" id="bOk" style="width:100%">繼續</button>`);
-  $('#bOk').onclick=()=>{$('#bOk').onclick=null;for(const t of teamTies(our.gens)){const [a,b]=t[0],v=t[5]==='rival'&&!win?-5:win?4:2;relAdd(a,b,v);feedPush('【'+t[1]+'】'+H(a).n+'與'+H(b).n+'同赴'+en.n+'一戰，'+(win?'凱旋':'敗退')+'後交情 '+(v>0?'+':'')+v+'。')}closeSheet();go('game');if(!our.siege)S.atkNext=0;let left=res.left;if(!win){const rt=our.gens.reduce((a,id)=>a+heroEff(id,'retreat'),0);if(rt)left=Math.round(left+(our.troops-left)*Math.min(.6,rt))}if(win){const lt=our.gens.reduce((a,id)=>a+heroEff(id,'loot'),0);if(lt){const e=Math.round(20*lt*5);S.energy+=e}}cb({win,left})}}
+  $('#bOk').onclick=()=>{$('#bOk').onclick=null;for(const t of teamTies(our.gens)){const [a,b]=t[0],v=t[5]==='rival'&&!win?-5:win?4:2;relAdd(a,b,v);feedPush('【'+t[1]+'】'+H(a).n+'與'+H(b).n+'同赴'+en.n+'一戰，'+(win?'凱旋':'敗退')+'後交情 '+(v>0?'+':'')+v+'。')}closeSheet();go('game');if(!our.siege)S.atkNext=0;let left=res.left;if(!win){const rt=our.gens.reduce((a,id)=>a+heroEff(id,'retreat'),0);if(rt)left=Math.round(left+(our.troops-left)*Math.min(.6,rt))}if(win){const lt=our.gens.reduce((a,id)=>a+heroEff(id,'loot'),0);if(lt){const e=Math.round(20*lt*5);S.energy+=e}}for(const id of our.gens)charEvents().enqueue(id,"battlefieldEncounters",win?(res.left<our.troops/2?"hardFight":"victory"):"retreat");cb({win,left})}}
  const loop=()=>{if(k>=evs.length)return finish();stepEv();timer=setTimeout(loop,evs[k]&&evs[k][0]==='round'?spd*1.3:spd)};timer=setTimeout(loop,700);
  $('#bFast').onclick=()=>{spd=160};$('#bSkip').onclick=finish;
  sfx('drum');setTimeout(()=>sfx('drum'),200);
@@ -4188,7 +4203,7 @@ function showReport(){
  if(S.pop>S.prev.pop)S.popIn=(S.popIn||0)+(S.pop-S.prev.pop);
  const p=S.prev,d=(k,v)=>{const x=v-p[k];return x===0?'':`<span class="${x>0?'pos':'neg'}">${x>0?'+':''}${x}</span>`};
  const go2=()=>{checkStage();if(celQ.length){afterCel=go2b;return}go2b()};
- const go2b=()=>majorShow(afterMajor);const afterMajor=()=>{if(pendingCapture)return capture();if(pendingVariant)return variant();if(S.won)return ending(true);
+ const go2b=()=>majorShow(()=>charEvents().show(afterMajor));const afterMajor=()=>{if(pendingCapture)return capture();if(pendingVariant)return variant();if(S.won)return ending(true);
   updateSeen();if(T(CITY.r,CITY.c).seen&&!S.cityScene){S.cityScene=1;queueScene('city')}const lb=S.enemies.find(e=>e.officer==='lubu');if(lb&&visible(T(lb.r,lb.c))&&!S.lubuScene){S.lubuScene=1;queueScene('lubu1')}
   if(tideIn()===2&&S.t>1)queueScene('tide2');if(tideIn()===1){sfx('alarm');queueScene('tide1')}
   runQueue(()=>{go('game');upCel(()=>tileEvents(()=>jealousEvent(()=>histEvent(()=>ambEvent(()=>bloodEvent(()=>ownEvent(()=>agEvent(()=>factionEvent(()=>cityEvent(()=>powerEvent(()=>haremEvent(()=>kidEvent(()=>brEvent(()=>worldEvent(()=>council(()=>petition(()=>maybeEvent(()=>{save();ANIM=window.__anim;render()}))))))))))))))))))})};
