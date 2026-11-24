@@ -394,6 +394,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 <script src="court_pingyang.js"></script>
 <script src="court_zhangsun.js"></script>
 <script src="court_mibazi.js"></script>
+<script src="court_liurushi.js"></script>
 <script src="rewrite_01z_qing_terms.js"></script>
 <script>
 {
@@ -582,7 +583,70 @@ const BONDS=[
  [['yuefei','hanshizhong'],'中興名將','受傷 −10%、傷害 +10%',{def:.1,atk:.1}]
 ];
 BONDS.splice(3,1);GD.bonds.forEach(b=>BONDS.push(b));
-const bondsOf=id=>BONDS.filter(b=>b[0].includes(id));
+// 歸墟相逢後的關係。每一對只有一種新羈絆；舊有典故另行保留。
+const tieKinds={
+ confidant:['知己','每輪回復 1% 兵力',{regen:.01}],
+ shield:['袍澤','受傷降低 5%',{def:.05}],
+ rival:['競鋒','首輪傷害增加 9%',{first:.09}],
+ plot:['同謀','戰法發動率增加 3 個百分點',{rate:.03}],
+ tutor:['切磋','第二輪起每輪累加 3.5% 傷害',{ramp:.035}],
+ kin:['家學','受傷降低 4%',{def:.04}]
+};
+const tiePairs=new Map(),tieRoster=new Map();
+const tieKey=(a,b)=>[a,b].sort().join('|');
+function newTie(a,b,title,kind){
+ const [name,desc,eff]=tieKinds[kind];
+ return [[a,b],title+'・'+name,desc,eff,2,kind]
+}
+function tieCircle(title,kind,line){
+ const ids=line.split(' ');
+ for(let i=0;i<ids.length;i++)for(const b of ids.slice(i+1)){
+  const a=ids[i],key=tieKey(a,b);if(tiePairs.has(key))continue;
+  const bond=newTie(a,b,title,kind);tiePairs.set(key,bond);
+  for(const id of [a,b]){if(!tieRoster.has(id))tieRoster.set(id,[]);tieRoster.get(id).push(bond)}
+ }
+}
+[
+ ['絳雲夜讀','confidant','liurushi liqingzhao caiwenji zhuowenjun'],
+ ['兩朝鳳印','rival','mibazi lvzhi wuzetian jiananfeng huhou'],
+ ['同袍擂鼓','shield','fuhao pingyang mulan lianghongyu qinliangyu sunshangxiang'],
+ ['宮門密約','plot','daji liji xiaji diaochan liuchuyu'],
+ ['孤月照影','confidant','change zhenmi yuji wangzhaojun xishi'],
+ ['金殿爭寵','rival','zhaofeiyan yangguifei fengxiaolian wanzhener xuzhaopei'],
+ ['案前論政','tutor','zhangsun shangguan liurushi huangyueying'],
+ ['補天濟世','shield','nvwa huatuo libing huangyueying'],
+ ['顧曲知音','confidant','xiaoqiao yangguifei caiwenji fengxiaolian'],
+ ['借勢執印','plot','mibazi wanzhener liji lvbuwei xuzhaopei'],
+ ['諫書與兵符','rival','liurushi daji jiananfeng shangguan'],
+ ['星下守誓','shield','nvwa change zhangsun wangzhaojun'],
+ ['深宮觀局','plot','huhou xiaji zhaofeiyan zhenmi'],
+ ['營前論劍','tutor','yuji sunshangxiang xiaoqiao mulan'],
+ ['帷幄授策','tutor','sunwu zhugeliang hanxin zhangliang chenqingzhi'],
+ ['百戰爭先','rival','baiqi xiangyu huoqubing lubu guanyu'],
+ ['孤城託背','shield','yuefei hanshizhong gaoshun limu weiqing'],
+ ['中原逐鹿','rival','qinshihuang hanwudi tangtaizong zhaokuangyin zhuyuanzhang liubang caocao'],
+ ['糧道通天下','confidant','zhangqian fanli shenwansan xiaohe libing'],
+ ['千金易勢','plot','lvbuwei shenwansan fanli zhuowenjun xishi'],
+ ['青史對答','tutor','zhangliang shangguan wuzetian liqingzhao'],
+ ['關山守望','shield','pingyang yuefei wangzhaojun guanyu'],
+ ['戰鼓與祭歌','confidant','fuhao nvwa lianghongyu caiwenji'],
+ ['帳中拆招','tutor','huangyueying lianghongyu pingyang fuhao'],
+ ['一曲換局','plot','diaochan zhuowenjun xishi xiaoqiao'],
+ ['故國難書','confidant','xishi liqingzhao liurushi diaochan'],
+ ['宮牆內外','rival','liuchuyu zhangsun lvzhi qinliangyu']
+].forEach(args=>tieCircle(...args));
+function familyTies(){
+ const result=[];for(const k of S.kids||[]){if(!k.adult||!HD[k.id])continue;
+  result.push(newTie(k.id,k.mom,'母子同心','kin'));
+  if(k.tutor&&HD[k.tutor]&&k.tutor!==k.mom)result.push(newTie(k.id,k.tutor,'師門同行','tutor'));
+  for(const sibling of S.kids){if(sibling.adult&&HD[sibling.id]&&sibling.id<k.id&&sibling.mom===k.mom)result.push(newTie(k.id,sibling.id,'同胞並肩','shield'))}
+ }return result
+}
+function getTie(a,b){return tiePairs.get(tieKey(a,b))||((a.startsWith('kid')||b.startsWith('kid'))&&familyTies().find(t=>t[0].includes(a)&&t[0].includes(b)))}
+function teamTies(ids){const ties=[];for(let i=0;i<ids.length;i++)for(const b of ids.slice(i+1)){const t=getTie(ids[i],b);if(t)ties.push(t)}return ties}
+function tieStrength(t){const [a,b]=t[0],r=relG(a,b);return r<=-60?.5:r>=60?1.5:1}
+
+const bondsOf=id=>[...BONDS.filter(b=>b[0].includes(id)),...(tieRoster.get(id)||[]),...familyTies().filter(b=>b[0].includes(id))];
 
 /* ================= WORLD DATA ================= */
 // 設施：名,圖,花費[木,石],依據能力,基礎說明,基礎值
@@ -889,12 +953,40 @@ function intrigueAction(a,others,add){
   const patron=courtLinks(b).find(c=>c!==a&&others.includes(c));
   if(patron)offer(d.power*.45,()=>{delete S.sworn[rk(b,patron)];pact(a,b);relAdd(patron,a,-20);hp(patron).foe=a;return ['挖角',b,'奪權',H(b).n+'交還'+H(patron).n+'的盟印，轉入她麾下。舊主將她列為仇敵。']});
   if((friend<0||p.foe===b||d.revenge>=45)&&!hst(b)){
-   offer(12+d.revenge*.7,()=>{const loss=-sway(b,-10);setHst(b,'ban',2);relAdd(a,b,-18);v.foe=a;hs(b).grievance=Math.min(35,(hs(b).grievance||0)+12);learn('構陷對手');return ['陷害',b,'復仇','將偽造的帳頁夾進'+H(b).n+'的交割簿。對方禁見兩旬，失去 '+loss+' 權勢，記下了指控者。']});
+   offer(12+d.revenge*.7,()=>{const guard=hs(b).bondGuard;if(guard?.until>S.t&&guard.id!==a&&others.includes(guard.id)&&!hst(guard.id)){
+    delete hs(b).bondGuard;relAdd(a,guard.id,-12);sway(a,-5);return ['翻案',b,'擔保生效',H(guard.id).n+'核對簽押，替'+H(b).n+'當場洗清罪名，造假者威信受損。']
+   }const loss=-sway(b,-10);setHst(b,'ban',2);relAdd(a,b,-18);v.foe=a;hs(b).grievance=Math.min(35,(hs(b).grievance||0)+12);learn('構陷對手');return ['陷害',b,'復仇','將偽造的帳頁夾進'+H(b).n+'的交割簿。對方禁見兩旬，失去 '+loss+' 權勢，記下了指控者。']});
   }
  }
  for(const b of partners){
   offer(20+d.shelter*.2,()=>{const gain=sway(b,5);relAdd(a,b,6);learn('護持盟友');return ['保舉',b,'自保','以自己的印信替'+H(b).n+'作保。盟友權勢 +'+gain+'，兩人交情加深。']});
   if(partners.length>1||hp(b).inf>p.inf||p.foe===b)offer(10+d.power*.4+d.revenge*.35,()=>{delete S.sworn[rk(a,b)];const stolen=Math.min(12,hp(b).inf,100-p.inf);sway(b,-stolen);sway(a,stolen);relAdd(a,b,-38);hp(b).foe=a;hs(b).grievance=Math.min(35,(hs(b).grievance||0)+20);learn('背盟奪權');return ['背叛',b,'奪權','當眾交出盟友'+H(b).n+'的密信。盟約破裂，'+stolen+' 點權勢易手，對方將她列為仇敵。']});
+ }
+ for(const b of others){
+  const bond=getTie(a,b);if(!bond)continue;
+  const kind=bond[5],name=H(b).n,r=relG(a,b);
+  if(kind==='rival'&&hp(b).inf>0&&p.inf<100)offer(24+d.power*.45,()=>{
+   const n=Math.min(6,hp(b).inf,100-p.inf);sway(b,-n);sway(a,n);relAdd(a,b,-8);hp(b).foe=a;
+   return ['當庭爭功',b,bond[1],'拿出戰報與'+name+'當面對質，從對方手中奪走 '+n+' 權勢。']
+  });
+  if(kind==='tutor')offer(25+(r>0?12:0),()=>{
+   gainExp(b,24,add);gainExp(a,8,add);relAdd(a,b,4);
+   return ['授業',b,bond[1],'與'+name+'拆解一份舊戰報。對方獲得 24 經驗，授業者獲得 8 經驗。']
+  });
+  if(kind==='confidant'&&r>-40)offer(25+d.shelter*.3,()=>{
+   const v=hs(b);v.grievance=Math.max(0,(v.grievance||0)-8);relAdd(a,b,9);sway(b,2);
+   return ['私下交心',b,bond[1],'陪'+name+'讀完家書，平息怨氣，增進交情。']
+  });
+  if((kind==='shield'||kind==='kin')&&r>-40&&!(hs(b).bondGuard?.until>S.t))offer(32+d.shelter*.3,()=>{
+   hs(b).bondGuard={id:a,until:S.t+3};relAdd(a,b,5);
+   return ['作證擔保',b,bond[1],'留下簽押護住'+name+'。三旬內若有人用假帳構陷，她可出面作證一次。']
+  });
+  if(kind==='plot'&&r>-25){const c=others.filter(c=>c!==b&&!ally(c)&&hp(c).inf>0).sort((x,y)=>hp(y).inf-hp(x).inf)[0];
+   if(c&&p.inf<100&&hp(b).inf<100)offer(18+d.power*.4,()=>{const n=Math.min(8,hp(c).inf,2*(100-p.inf),2*(100-hp(b).inf)),half=Math.floor(n/2);
+    sway(c,-n);sway(a,n-half);sway(b,half);relAdd(a,b,6);relAdd(b,c,-8);hp(c).foe=a;
+    return ['聯手奪勢',b,bond[1],'與'+name+'交換密信，從'+H(c).n+'手中奪取 '+n+' 權勢，兩人分得 '+(n-half)+' 與 '+half+'。']
+   })
+  }
  }
  if(!options.length)return;
  let roll=Math.random()*options.reduce((n,x)=>n+x.w,0);
@@ -917,7 +1009,7 @@ function recordCourt(s){
 function intrigueView(){
  const women=S.order.filter(id=>H(id).sex==='f'),log=S.courtLedger||S.hfeed||[];
  const row=x=>'<p><small>第 '+x.t+' 旬</small><br>'+x.s+'</p>';
- return '<div class="sec"><div class="orn">往來紀事</div>'+ (log.length?log.slice(0,16).map(row).join('')+(log.length>16?'<details><summary>較早的紀錄</summary>'+log.slice(16).map(row).join('')+'</details>':''):'尚無往來紀錄。兩名紅顏同處一地，過旬後就能看見她們的行動。')+'</div><div class="sec"><div class="orn">查閱人物</div>'+women.map(id=>'<details><summary>'+H(id).n+'・'+intriguePlace(id)+'</summary><p>'+courtProfile(id)+'<br>'+ntagAll(id).join('、')+'<br>盟友：'+(courtLinks(id).map(b=>H(b).n).join('、')||'無')+'</p>'+log.filter(x=>x.s.includes(H(id).n)).map(row).join('')+'</details>').join('')+'</div>'
+ return '<div class="sec"><div class="orn">往來紀事</div>'+ (log.length?log.slice(0,16).map(row).join('')+(log.length>16?'<details><summary>較早的紀錄</summary>'+log.slice(16).map(row).join('')+'</details>':''):'尚無往來紀錄。兩名紅顏同處一地，過旬後就能看見她們的行動。')+'</div><div class="sec"><div class="orn">查閱人物</div>'+women.map(id=>'<details><summary>'+H(id).n+'・'+intriguePlace(id)+'</summary><p>'+courtProfile(id)+'<br>'+ntagAll(id).join('、')+'<br>已登用的羈絆人物：'+((tieRoster.get(id)||[]).concat(familyTies().filter(t=>t[0].includes(id))).map(t=>[t,t[0].find(b=>b!==id)]).filter(([,b])=>S.order.includes(b)).map(([t,b])=>H(b).n+'（'+tieKinds[t[5]][0]+'）').join('、')||'無')+'<br>盟友：'+(courtLinks(id).map(b=>H(b).n).join('、')||'無')+'</p>'+log.filter(x=>x.s.includes(H(id).n)).map(row).join('')+'</details>').join('')+'</div>'
 }
 
 function schemeTurn(add){
@@ -1100,7 +1192,7 @@ function courtView(){sheet(`<div class="evimg" style="background-image:url(img/e
 function teamEff(key,ids){const glob=!ids;ids=ids||S.order;let v=0;ids.forEach(id=>v+=heroEff(id,key));if(glob)v+=perkEff(key)+polEff(key)+msEff(key);return v}
 const bNeed=b=>b[4]||2;
 function bondEff(key,ids){let v=0;const m=T_('m5')?1.5:1;BONDS.forEach(b=>{if(b[0].filter(x=>ids.includes(x)).length>=bNeed(b)&&b[3][key])v+=b[3][key]*m});return v}
-const activeBonds=ids=>BONDS.filter(b=>b[0].filter(x=>ids.includes(x)).length>=bNeed(b));
+const activeBonds=ids=>[...BONDS.filter(b=>b[0].filter(x=>ids.includes(x)).length>=bNeed(b)),...teamTies(ids)];
 const bonus=id=>S.heroes[id]?(S.heroes[id].star-1)*5+(S.heroes[id].aff>=100&&T_('m4')?3:0):0;
 const stat=(id,k)=>H(id)[k]+(hs(id)?.trained?.[k]||0)+bonus(id)+Math.round((lvOf(id)-1)*((GROW[H(id).pool]||GROW.對外)[k]||0));
 const maxAP=()=>3+(hasFac('office')?1:0)+(T_('c6')?1:0)+perkEff('ap');
@@ -1616,7 +1708,7 @@ function openHero(id){
  ${tfOn(id)?`<button class="btn sm" id="drillField">強化 Lv${1+(st.troopDrills||0)} → ${2+(st.troopDrills||0)}（能量 ${40+10*(st.troopDrills||0)}）</button>`:''}
  ${tfOn(id)?'<div class="small">兵營等級越高，特色部隊越強（每級 +15%）。由${h.sex==="f"?"她":"他"}帶隊出征時生效。</div>':`<div class="small">需要先蓋「兵營」。組建後，由${h.sex==="f"?"她":"他"}出征時特色部隊就會生效，兵營等級越高越強。</div><button class="btn sm" id="hpTroop" style="margin-top:6px" ${hasFac('barracks')?'':'disabled'}>組建特色部隊（木 60・石 60・能量 40・行動 1）</button>`}
  <div class="orn" style="margin-top:14px">羈絆</div>
- ${bl.length?bl.map(b=>{const have=b[0].filter(x=>S.heroes[x]).length;return`<div class="skl frame"><span class="k bo">羈絆</span><b>${b[1]}</b> <span class="small">${b[0].map(x=>`<span style="color:${S.heroes[x]?'var(--pink)':'var(--dim)'}">${HD[x][0]}</span>`).join('・')}</span><div class="d">${b[2]}・同部隊出征時生效${have>=2?'':'（尚未集齊）'}</div></div>`}).join(''):'<p class="small">尚無已知羈絆</p>'}
+ ${bl.length?bl.map(b=>{const have=b[0].filter(x=>S.order.includes(x)).length;return`<div class="skl frame"><span class="k bo">羈絆</span><b>${b[1]}</b> <span class="small">${b[0].map(x=>`<span style="color:${S.order.includes(x)?'var(--pink)':'var(--dim)'}">${HD[x][0]}</span>`).join('・')}</span><div class="d">${b[2]}・同部隊出征時生效${have>=bNeed(b)?'':'（尚未集齊）'}${b[5]?'<br>交情 '+relG(...b[0])+'・羈絆效力 ×'+tieStrength(b)+'（交情達 60 強化，降至 −60 減弱）':''}</div></div>`}).join(''):'<p class="small">尚無已知羈絆</p>'}
  <div class="orn" style="margin-top:14px">個人劇情</div>
  <p class="small">好感每升一階（熟識・信賴・親密・誓約）會播放專屬事件。目前：${TIER(st.aff)}${GD.personal[id]?'':'（此英靈的個人劇情尚未交付）'}</p>
  ${st.wed?'':`<div class="small" style="margin-top:4px">誓約進度：好感 ${st.aff}/100・${h.sex==='f'?`到 100 並蓋好後宮殿閣（${hasFac('harem')?'<span style="color:var(--jade)">已建</span>':'<span style="color:var(--blood)">未建</span>'}）即可締結婚姻`:'到 100 即可結為生死之交'}</div><div class="meter" style="margin:4px 0"><i style="width:${st.aff}%;background:linear-gradient(90deg,#c76b8f,#f3b1c4)"></i></div>`}
@@ -3665,7 +3757,7 @@ const WX={qing:['晴','☀️','無特殊影響',{}],yu:['雨','🌧️','弓弩
 const wxNow=()=>WX[S.wx||'qing'];function mods0(our,en,M0){const w=wxNow()[3],oc=our.gens&&our.gens[0]?tcls(our.gens[0]):'步';if(w.gong&&oc==='弓')M0.atk+=w.gong;if(w.qi&&oc==='騎')M0.atk+=w.qi;if(w.xie&&oc==='器')M0.atk+=w.xie;if(w.first)M0.first+=w.first;if(w.mou&&oc==='謀')M0.rate+=w.mou;if(w.budef&&oc==='步')M0.def=Math.min(.7,M0.def+w.budef);if(w.heat)M0.regen-=w.heat;return M0}
 function wxRoll(add){const pool=inWorld()?{mobei:['qing','feng','re','re','feng'],gaixia:['xue','xue','wu','feng'],chibi:['feng','feng','wu','yu'],wuyue:['yu','wu','qing','yu'],mawei:['yu','yu','wu'],fengbo:['xue','yu','wu'],wugu:['qing','feng','wu'],danggu:['xue','qing','feng'],ganlu:['xue','wu','qing'],muye:['re','qing','feng'],changping:['qing','feng','wu']}[S.cur]:null;const mo=Math.floor(S.t/3)%12;const base=mo<3||mo>=11?['qing','xue','xue','feng','wu']:mo<5?['qing','yu','wu','feng']:mo<8?['qing','re','yu','yu']:['qing','feng','wu','qing'];const old=S.wx;S.wx=pick(pool||base);if(S.wx!==old&&S.wx!=='qing')add(`【天氣】${wxNow()[1]} ${wxNow()[0]}：${wxNow()[2]}`)}
 function mods(our,en){return mods0(our,en,mods1(our,en))}
-function mods1(our,en){const ids=our.gens;const sum=k=>ids.reduce((a,id)=>a+heroEff(id,k),0)+bondEff(k,ids)+(['atk','def','rate','regen','eld','siege'].includes(k)?perkEff(k)+polEff(k):0);
+function mods1(our,en){const ids=our.gens,ties=teamTies(ids),tieBonus=k=>ties.reduce((v,t)=>v+(t[3][k]||0)*tieStrength(t),0)*(T_('m5')?1.5:1);const sum=k=>ids.reduce((a,id)=>a+heroEff(id,k),0)+bondEff(k,ids)+tieBonus(k)+(['atk','def','rate','regen','eld','siege'].includes(k)?perkEff(k)+polEff(k):0);
  return{atk:1+sum('atk')+(our.siege?0:sum('atkOff')+(S.atkNext||0))+ids.reduce((a,id)=>a+(hs(id)&&hs(id).aff>=80?heroEff(id,'affAtk'):0),0)+(T_('c6')?.1:0)+(ids.some(id=>hs(id)&&hs(id).aff>=100)&&T_('m6')?.2:0),def:clamp(sum('def')+(our.siege?(sum('siege')+(hasFac('wall')?facVal(slotsOf('wall')[0])/100:0)+(T_('s6')?.3:0)+ownTiles().filter(t=>t.out==='U').length*.05):0),0,.7),
   eld:en.eld?sum('eld')+(hasFac('zhenyao')?facVal(slotsOf('zhenyao')[0])/100:0):0,first:sum('first'),exec:sum('exec'),desp:sum('desp'),under:sum('under'),regen:sum('regen'),rate:bondEff('rate',ids)+sum('rate'),last:sum('last'),ramp:sum('ramp'),halfdef:Math.min(.5,sum('halfdef')),earlydef:Math.min(.5,sum('earlydef')),counter:Math.min(.5,sum('counter')),stunUp:sum('stunUp')}}
 
@@ -3752,7 +3844,7 @@ function battle(our,en,cb,title){
   sheet(`<h2>${win?'勝利':'敗北'}</h2><p class="small" style="margin:4px 0 0">${res.round} 回合・我軍剩餘 ${res.left}・敵軍剩餘 ${res.eleft}</p>
   ${battleVoices(our.gens,win)}
   <button class="btn" id="bOk" style="width:100%">繼續</button>`);
-  $('#bOk').onclick=()=>{closeSheet();go('game');if(!our.siege)S.atkNext=0;let left=res.left;if(!win){const rt=our.gens.reduce((a,id)=>a+heroEff(id,'retreat'),0);if(rt)left=Math.round(left+(our.troops-left)*Math.min(.6,rt))}if(win){const lt=our.gens.reduce((a,id)=>a+heroEff(id,'loot'),0);if(lt){const e=Math.round(20*lt*5);S.energy+=e}}cb({win,left})}}
+  $('#bOk').onclick=()=>{$('#bOk').onclick=null;for(const t of teamTies(our.gens)){const [a,b]=t[0],v=t[5]==='rival'&&!win?-5:win?4:2;relAdd(a,b,v);feedPush('【'+t[1]+'】'+H(a).n+'與'+H(b).n+'同赴'+en.n+'一戰，'+(win?'凱旋':'敗退')+'後交情 '+(v>0?'+':'')+v+'。')}closeSheet();go('game');if(!our.siege)S.atkNext=0;let left=res.left;if(!win){const rt=our.gens.reduce((a,id)=>a+heroEff(id,'retreat'),0);if(rt)left=Math.round(left+(our.troops-left)*Math.min(.6,rt))}if(win){const lt=our.gens.reduce((a,id)=>a+heroEff(id,'loot'),0);if(lt){const e=Math.round(20*lt*5);S.energy+=e}}cb({win,left})}}
  const loop=()=>{if(k>=evs.length)return finish();stepEv();timer=setTimeout(loop,evs[k]&&evs[k][0]==='round'?spd*1.3:spd)};timer=setTimeout(loop,700);
  $('#bFast').onclick=()=>{spd=160};$('#bSkip').onclick=finish;
  sfx('drum');setTimeout(()=>sfx('drum'),200);
