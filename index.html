@@ -314,6 +314,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
  .ttree{display:grid;grid-template-columns:repeat(6,minmax(125px,1fr));overflow-x:auto;scroll-snap-type:x proximity}
  .tcol{scroll-snap-align:start}#sheetIn{overscroll-behavior:contain}.frame .small,.tip{line-height:1.55}
  }button:focus-visible{outline:2px solid #efcc79;outline-offset:2px}.pathgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:12px}.pathgrid section{padding:9px;border:1px solid #625337;border-radius:8px}.pathgrid h3{margin:0 0 6px}.pathpair{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pathpair>div{display:grid;gap:5px}.pathpair>div>b{color:var(--gold2);text-align:center}.pathpair .tn{width:100%;min-height:48px;border-radius:6px}.pathpair .tn b{font-size:14px}.talTree h3,.treeTier{text-align:center}.treeTier{display:grid;grid-template-columns:1fr 1fr;gap:6px;color:var(--gold2)}.treeTier .tn{width:100%;margin:0}.talTree svg{display:block;width:100%;height:16px;stroke:#a38b5b;stroke-width:1;fill:none}.treeTier>b{padding:6px}
+.sideTier{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;padding-top:6px;border-top:1px dashed rgba(240,215,154,.25)}.sideTier i{width:100%;font-size:11px;color:var(--gold2);font-style:normal}.sideTier .tn{flex:1 1 45%}.tn.side{border-style:dashed}
 </style>
 </head>
 <body>
@@ -702,7 +703,7 @@ TAL.天運.push(['e7a','天命所歸','召喚再 −10 能量、SSR 機率再 +2
 TAL.統御.push(['c7a','鐵血','全軍傷害 +8%',5,'x'],['c7b','仁師','全軍受傷 −8%',5,'x']);
 TAL.魅力.push(['m7a','知己','好感倍率上限 ×1.6→×2、第一道瓶頸只需 2 場出征或 3 次談心',5,'x'],['m7b','眾望','好感未滿 50 的英靈每旬好感 +1',5,'x']);
 TAL.生存.push(['s7a','金湯','燈塔耐久上限與現值 +50',5,'x'],['s7b','拓土','糧食產出 +15%',5,'x']);
-TAL.內政=[['p1','勸農','糧食產出 +10%',1],['p2','工巧','建設速度 +15%',1],['p3','通商','市集收入 +20%',2],['p4','輕徭','每旬維持費 −4',2],['p5','勸學','每旬額外天賦進度 +0.15（不受英靈上限限制）',3],['p6','天下歸心','招攬成功率 +15%、全體忠誠 +5',3],['p7a','變法','建設 +20%、市集 +10%',5,'x'],['p7b','黃老','維持費再 −6、糧食 +5%',5,'x']];
+TAL.內政=[['p1','勸農','糧食產出 +10%',1],['p2','工巧','設施升級費用 −15%',1],['p3','通商','市集收入 +20%',2],['p4','輕徭','每旬維持費 −4',2],['p5','勸學','每旬額外天賦進度 +0.15（不受英靈上限限制）',3],['p6','天下歸心','招攬成功率 +15%、全體忠誠 +5',3],['p7a','變法','設施升級費用再 −20%、市集 +10%',5,'x'],['p7b','黃老','維持費再 −6、糧食 +5%',5,'x']];
 TAL.後宮=[['h1','雨露均沾','夫人們自主行動的頻率 −25%',1],['h2','母儀','主母風格效果 +30%',1],['h3','宮規','後宮對你的事件（欺瞞、羞辱等）機率 −30%',2],['h4','枕邊溫存','每旬所有夫人寵愛 +1',2],['h5','綿延','懷孕機率 +50%',3],['h6','明察','私情與貪墨更容易被察覺',3],['h7a','金屋','夫人們不再「進讒」「收買」',5,'x'],['h7b','鳳儀','私情發展速度 −50%、權勢過高的夫人每旬權勢 −1',5,'x']];
 const TALX={c7a:{atk:.08},c7b:{def:.08},s7b:{food:.15},p1:{food:.1},p2:{build:.15},p3:{market:.2},p4:{thrift:4},p6:{hire:.15},p7a:{build:.2,market:.1},p7b:{thrift:6,food:.05}};
 function talEff(k){let v=0;for(const id in TALX)if(S.talents[id]&&TALX[id][k])v+=TALX[id][k];return v}
@@ -741,18 +742,15 @@ const paths={
  ['seal','主母定議','主母親自結援時，受保者取得六點晉位資歷並解除與主母的宿怨。'],['counterplot','借刀反制','對手搶功時，若受害者在當地有關係達 30 的盟友，盟友出面反擊，使搶功者失去六點權勢。']]]
 };
 const rules=[];
-for(const [branch,[,,nodes]] of Object.entries(paths)){
- TAL[branch]=nodes.map(([key,name,description],i)=>{
-  const id='path_'+key;rules.push({id});return [id,name,description,[1,1,2,2,3,3,5,5][i],i>=6?'x':null];
- });
-}
+const pathCost={};for(const [,[,,nodes]] of Object.entries(paths))nodes.forEach(([k],i)=>pathCost['path_'+k]=[1,1,2,2,3,3,5,5][i]);
+// 旁支：保留 GPT 版路線中與原樹不重複、玩起來有感的節點，掛在原六樹之下。
+const SIDE={天運:['escape','ward','echo','stars'],統御:['pursuit','flank','charge','rearguard'],魅力:['ransom','escort','mediation','parley'],生存:['tower','triage','reserve','lastwall'],內政:['crop','agenda4','convoy','school'],後宮:['seal','counterplot','audit','promote']};
+for(const br in SIDE){const nodes=paths[br][2];SIDE[br].forEach((k,i)=>{const n=nodes.find(x=>x[0]===k);TAL[br].push(['path_'+k,n[1],n[2],[2,2,3,3][i],'s'])})}
 const knows=k=>!!S.talents['path_'+k];
 function convertTalents(){
- const obsolete=Object.keys(S.talents).filter(k=>S.talents[k]&&!k.startsWith('path_'));
- if(!obsolete.length)return;
- const refund=obsolete.reduce((sum,k,i)=>sum+(oldTrees.find(n=>n[0]===k)?.[3]??[1,1,2,2,3,4,5,5][Number(k.slice(-1))]??1)+Math.floor(i/10),0);
- S.talent+=S.talSpent??refund;
- for(const k of obsolete){talOn(k,-1);delete S.talents[k]}S.talSpent=0;
+ const valid=new Set(Object.values(TAL).flat().map(n=>n[0]));let ref=0;
+ for(const k of Object.keys(S.talents)){if(!S.talents[k]||valid.has(k))continue;ref+=(oldTrees.find(n=>n[0]===k)||[])[3]||pathCost[k]||1;talOn(k,-1);delete S.talents[k]}
+ if(ref){S.talent+=ref;S.talSpent=null;S.talNote=ref}
 }
 function convoy(){
  const depots=[S,...cityTiles().filter(t=>t.own&&t.city>1).map(townStores)].sort((a,b)=>a.food-b.food);
@@ -762,11 +760,12 @@ function convoy(){
 const talOwned=()=>Object.keys(S.talents).filter(k=>S.talents[k]).length;
 const talCost=n=>n[3]+Math.floor(talOwned()/10);
 function talParents(i){return i<2?[]:i===4||i===5?[2,3]:[i-2]}
-function talCan(br,i){const ns=TAL[br],n=ns[i];if(S.talents[n[0]])return false;if(n[4]==='x'&&ns.some(x=>x[4]==='x'&&S.talents[x[0]]))return false;return i<2||talParents(i).some(j=>S.talents[ns[j][0]])}
+const sideOK=br=>TAL[br].slice(0,6).filter(n=>S.talents[n[0]]).length>=2;
+function talCan(br,i){const ns=TAL[br],n=ns[i];if(S.talents[n[0]])return false;if(n[4]==='s')return sideOK(br);if(n[4]==='x'&&ns.some(x=>x[4]==='x'&&S.talents[x[0]]))return false;return i<2||talParents(i).some(j=>S.talents[ns[j][0]])}
 function talOn(k,sg){if(k==='s1'){S.durMax+=30*sg;S.dur=Math.max(1,S.dur+30*sg)}if(k==='s7a'){S.durMax+=50*sg;S.dur=Math.max(1,S.dur+50*sg)}if(k==='c6')S.ap=Math.max(0,S.ap+sg)}
 function talSpentNow(){if(S.talSpent!=null)return S.talSpent;let v=0;Object.values(TAL).forEach(ns=>ns.forEach(n=>{if(S.talents[n[0]])v+=n[3]}));return v}
 const talResetCost=()=>3+2*(S.talRes||0);
-function tnBtn(br,ns,i){const n=ns[i],has=S.talents[n[0]],can=talCan(br,i),x=n[4]==='x',lock=x&&!has&&ns.some(y=>y[4]==='x'&&S.talents[y[0]]);return`<button class="tn ${x?'tx2':i===5?'cap':''} ${has?'has':can?'can':''} ${lock?'lock':''}" data-tl="${n[0]}" data-br="${br}" data-i="${i}"><b>${n[1]}</b><span>${has?'已習得':lock?'未選':talCost(n)+'點'}</span></button>`}
+function tnBtn(br,ns,i){const n=ns[i],has=S.talents[n[0]],can=talCan(br,i),x=n[4]==='x',lock=x&&!has&&ns.some(y=>y[4]==='x'&&S.talents[y[0]]);return`<button class="tn ${x?'tx2':n[4]==='s'?'side':''} ${has?'has':can?'can':''} ${lock?'lock':''}" data-tl="${n[0]}" data-br="${br}" data-i="${i}"><b>${n[1]}</b><span>${has?'已習得':lock?'未選':talCost(n)+'點'}</span></button>`}
 const ACH=GD.ach;
 
 /* ================= STATE ================= */
@@ -1184,7 +1183,7 @@ function heroEff0(id,key){const sk=skills(id);let v=wedEff(id,key);[sk.inn[2],..
 
 /* ---------- 設施升級特性 ---------- */
 const FPERK={granary:[['屯糧','糧食產出 +10%',{food:.1}],['常平倉','糧食產出再 +15%',{food:.15}]],houses:[['里坊','流民每旬 +4',{popg:4}],['萬家燈火','流民每旬 +8、好感成長 +10%',{popg:8,affAll:.1}]],market:[['互市','能量每旬 +4',{energy:4}],['萬商雲集','木石每旬 +8',{ws:8}]],barracks:[['精兵','全軍受傷 −5%',{def:.05}],['虎賁之士','全軍傷害 +8%',{atk:.08}]],drill:[['操典','訓練度每旬 +3',{train:3}],['百戰之師','全軍戰法發動率 +5%',{rate:.05}]],academy:[['藏書閣','天賦點每旬 +0.2',{talent:.2}],['太學','天賦點每旬再 +0.4',{talent:.4}]],medic:[['金瘡藥','戰鬥中每回合回復 1% 兵力',{regen:.01}],['神醫堂','戰鬥中每回合再回復 2%',{regen:.02}]],office:[['六曹','木石每旬 +4、糧食 +5%',{ws:4,food:.05}],['尚書台','行動力 +1',{ap:1}]],purify:[['淨火','據點污染每旬 −2',{clean:2}],['鎮魂鐘','據點污染每旬再 −4',{clean:4}]],altar:[['星輝','能量每旬 +6',{energy:6}],['天命台','能量每旬再 +10',{energy:10}]],observatory:[['觀天','視野 +1',{vis:1}],['占星','黑霧潮兵力 −10%',{tideCut:.1}]],zhenyao:[['鎮妖符','對污染體傷害 +10%',{eld:.1}],['斬妖台','對污染體傷害再 +20%',{eld:.2}]],wall:[['甕城','守城戰受傷 −10%',{siege:.1}],['金城湯池','燈塔耐久上限 +50',{durMax:50}]],harem:[['椒房','夫人寵愛下降減半',{haremCalm:1}],['長樂宮','夫人職司效果 +50%',{dutyUp:.5}]]};
-function perkEff(key){let v=0;settlementSlots().forEach(s=>{if(!s||!FPERK[s.f])return;if(s.lv>=3)v+=FPERK[s.f][0][2][key]||0;if(s.lv>=5)v+=FPERK[s.f][1][2][key]||0});return v}
+function perkEff(key){let v=0;settlementSlots().forEach(s=>{if(!s||!FPERK[s.f])return;if(s.lv>=3)v+=FPERK[s.f][0][2][key]||0;if(s.lv>=5)v+=FPERK[s.f][1][2][key]||0});return v+talEff(key)}
 
 const POLICY={tun:['屯田令','糧食產出 +20%',{food:.2},'經營','屯田乃立國之本，先把肚子填飽。'],qing:['輕徭薄賦','流民每旬 +8、好感成長 +10%',{popg:8,affAll:.1},'內政','民心如水，寬一分，便多一分人肯留下。'],qiang:['強兵令','訓練度每旬 +5、全軍傷害 +8%',{train:5,atk:.08},'對外','亂世之中，刀快才有話語權。'],kuang:['開山令','木石每旬 +10',{ws:10},'經營','城要修、塔要高，木石一日都不能斷。'],ji:['祭天令','能量每旬 +8、據點污染每旬 −2',{energy:8,clean:2},'內政','星盤需要供奉，黑霧也需要鎮壓。'],shou:['堅壁令','守城戰受傷 −15%、耐久每旬 +3',{siege:.15,durRegen:3},'對外','四面皆敵，先守住根本再說。']};
 function polEff0(key){return msEff(key)}
@@ -1262,7 +1261,7 @@ const SKEY='tianyun_save_v7';
 function save(){try{localStorage.setItem(SKEY,JSON.stringify(S))}catch(e){}}
 function hasSave(){try{return !!localStorage.getItem(SKEY)}catch(e){return false}}
 function clearSave(){try{localStorage.removeItem(SKEY)}catch(e){}}
-function loadGame(){try{const d=JSON.parse(localStorage.getItem(SKEY));Object.assign(S,{crown:null,endorsements:{},petition:null,courtTick:null},d);for(const st of Object.values(S.heroes||{})){for(const item of [st,st.wed])if(item&&typeof item==="object"){delete item.hedon;delete item.tyranny}}barMigrate();convertTalents();regKids();S.cur=S.cur||'home';if(S.map){Object.assign(BASE,S.map.base);Object.assign(CITY,S.map.city);Object.assign(NEST,S.map.nest)}if(typeof v28migrate==='function')v28migrate();migrateReleasedPairs();repairTownRosters();return true}catch(e){return false}}
+function loadGame(){try{const d=JSON.parse(localStorage.getItem(SKEY));Object.assign(S,{crown:null,endorsements:{},petition:null,courtTick:null},d);for(const st of Object.values(S.heroes||{})){for(const item of [st,st.wed])if(item&&typeof item==="object"){delete item.hedon;delete item.tyranny}}barMigrate();convertTalents();if(S.talNote){setTimeout(()=>toast('天賦樹已還原為六系原版，返還 '+S.talNote+' 點，請重新配點'),800);delete S.talNote}regKids();S.cur=S.cur||'home';if(S.map){Object.assign(BASE,S.map.base);Object.assign(CITY,S.map.city);Object.assign(NEST,S.map.nest)}if(typeof v28migrate==='function')v28migrate();migrateReleasedPairs();repairTownRosters();return true}catch(e){return false}}
 if(hasSave()){const b=document.createElement('button');b.className='btn ghost';b.id='contBtn';b.style.cssText='min-width:220px;margin-top:10px;display:block;margin-left:auto;margin-right:auto';b.textContent='繼續遊戲';$('#startBtn').after(b);
  b.onclick=()=>{ac();if(!loadGame())return toast('存檔讀取失敗');sfx('ok');bgm('bgmBells');go('game');updateSeen();snap();setView('map');toast(`讀取存檔：${dateStr(S.t)}`)}}
 /* ================= SUMMON ================= */
@@ -1663,7 +1662,7 @@ function pickFac(i){
   S.wood-=f[2][0];S.stone-=f[2][1];const [bank,idx]=slotBank(i);bank[idx]={f:k,lv:0,p:0,gar:null};sfx('build');closeSheet();pickBuilder(i)});
 }
 const buildRate=id=>Math.round((25+stat(id,'pol')*.45)*(hasFac('office')?1.3:1)*(1+heroEff(id,'build')));
-const upCost=s=>[30*s.lv+20,40*s.lv+20];
+const upCost=s=>{const m=1-Math.min(.5,talEff('build'));return[Math.round((30*s.lv+20)*m),Math.round((40*s.lv+20)*m)]};
 function slotPlace(i){return String(i).includes('_')?String(i).split('_').slice(0,2).join('_'):'home'}
 function facPanel(i){
  const s=slotAt(i),f=FAC[s.f];
@@ -1777,7 +1776,7 @@ function openHero(id){
  $('#hpX').onclick=()=>{P.classList.remove('on');render()};
  if($('#hpRecallTown'))$('#hpRecallTown').onclick=()=>{if(unavail(id))return toast('目前無法調動');setTask(id,'idle');const t=garrisonOf(id);if(t!==BASE)t.cg=(t.cg||[]).filter(x=>x!==id);hs(id).task='idle';delete hs(id).station;save();openHero(id);render()};
  $('#hpTask').onclick=()=>pickTask(id);$$('[data-ia]').forEach(b=>b.onclick=()=>doIA(id,b.dataset.ia));
- const quote=()=>{const k=$('#trainKey').value,n=+$('#trainN').value,exp=k==='exp',cost=n*(knows('study')?(exp?6:18):(exp?10:30));
+ const quote=()=>{const k=$('#trainKey').value,n=+$('#trainN').value,exp=k==='exp',cost=n*((knows('study')||T_('e7b'))?(exp?6:18):(exp?10:30));
  let lv=lvOf(id),xp=st.exp||0;if(exp){xp+=n*50;while(lv<lvCap(id)&&xp>=expNeed(lv)){xp-=expNeed(lv);lv++}}
  $('#trainQuote').textContent='能量 '+cost+'・'+(exp?'經驗 +'+n*50+'，Lv'+lvOf(id)+' → '+lv:STAT[k]+' '+stat(id,k)+' → '+(stat(id,k)+n));
  $('#buyTrain').disabled=S.energy<cost||(exp&&lvOf(id)>=lvCap(id));return {k,n,exp,cost}};
@@ -1906,8 +1905,8 @@ function lordView(){
  <div class="kpi"><div class="frame">行動力<b>${S.ap}/${maxAP()}</b></div><div class="frame">能量<b>${S.energy}</b></div><div class="frame">天賦點<b>${S.talent}</b></div><div class="frame">晶核<b>${S.core}</b></div></div>
  <div style="display:grid;gap:8px;margin-top:8px"><button class="btn" id="lSum" ${S.energy<sumCost()?'disabled':''}>星盤召喚（${sumCost()} 能量）</button>
  <button class="btn ghost" id="lFeast">設宴（2 行動・糧 ${T_('m2')?20:40}）：全體好感 +${(5+(T_('m2')?3:0))*(teamEff('feast')?2:1)}</button></div></div>
- <div class="sec"><div class="orn">戰敗紀事</div><details><summary>最近戰敗大事件</summary>${(S.majorNews||[]).filter(e=>defeatStories[e.k]).slice(0,12).map(e=>'<p><b>第 '+e.t+' 旬・'+majorArt[e.k][0]+'・'+H(e.id).n+'</b><br>'+e.enemy+'／'+e.city+'<br>'+e.effect+'</p>').join('')||'尚未接獲戰敗大事件。'}</details></div><div class="sec"><div class="orn">主世界盟約</div><div class="meta">${Object.keys(S.treaties||{}).map(k=>k.split('|')).filter(([a,b])=>FD(a)&&FD(b)).map(([a,b])=>'<span class="chip">'+FD(a).n+' × '+FD(b).n+'</span>').join('')||'目前尚無勢力締盟。'}</div></div><div class="sec"><div class="orn">天賦樹</div><p class="tip">書院產出天賦點。每系兩條路線都可從第一格學起。第二層學成任一路線即可轉修第三層。第四層沿線專精，每系只能選一個終極天賦。英靈提供的天賦進度每旬最多 +0.6。</p>
- <div class="pathgrid">${Object.entries(TAL).map(([br,ns])=>`<section class="talTree"><h3>${br}</h3><div class="treeTier">${paths[br].slice(0,2).map(n=>'<b>'+n+'</b>').join('')}</div>${[0,2,4,6].map(i=>`<div class="treeTier">${[i,i+1].map(j=>tnBtn(br,ns,j)).join('')}</div>${i<6?`<svg viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path d="M25 0V12 M75 0V12 ${i===2?'M25 0L75 12 M75 0L25 12':''}"/></svg>`:''}`).join('')}</section>`).join('')}</div>
+ <div class="sec"><div class="orn">戰敗紀事</div><details><summary>最近戰敗大事件</summary>${(S.majorNews||[]).filter(e=>defeatStories[e.k]).slice(0,12).map(e=>'<p><b>第 '+e.t+' 旬・'+majorArt[e.k][0]+'・'+H(e.id).n+'</b><br>'+e.enemy+'／'+e.city+'<br>'+e.effect+'</p>').join('')||'尚未接獲戰敗大事件。'}</details></div><div class="sec"><div class="orn">主世界盟約</div><div class="meta">${Object.keys(S.treaties||{}).map(k=>k.split('|')).filter(([a,b])=>FD(a)&&FD(b)).map(([a,b])=>'<span class="chip">'+FD(a).n+' × '+FD(b).n+'</span>').join('')||'目前尚無勢力締盟。'}</div></div><div class="sec"><div class="orn">天賦樹</div><p class="tip">書院產出天賦點。六系各自由上而下修習，第一層兩格皆可直接學；中段需前置；最底兩個紫框終極天賦只能擇一。每系學滿兩項後，可另修下方四個旁支。英靈提供的天賦進度每旬最多 +0.6。</p>
+ <div class="pathgrid">${Object.entries(TAL).map(([br,ns])=>`<section class="talTree"><h3>${br}</h3>${[0,2,4,6].map(i=>`<div class="treeTier">${[i,i+1].map(j=>tnBtn(br,ns,j)).join('')}</div>${i<6?`<svg viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path d="M25 0V12 M75 0V12 ${i===2?'M25 0L75 12 M75 0L25 12':''}"/></svg>`:''}`).join('')}<div class="sideTier"><i>旁支・同系學滿兩項後可修</i>${ns.map((n,j)=>n[4]==='s'?tnBtn(br,ns,j):'').join('')}</div></section>`).join('')}</div>
  <div class="small" style="margin:4px 0 8px">已習得 ${talOwned()} 項・每多 10 項，之後所有天賦 +1 點。底部紫框為終極天賦，兩個只能擇一。</div><button class="btn ghost sm" id="tlReset" style="width:100%" ${talOwned()?'':'disabled'}>重置天賦（晶核 ${talResetCost()}）・全數返還已花費點數</button></div>
 
 
@@ -1918,7 +1917,7 @@ function bindLord(){$$('[data-mw]').forEach(b=>b.onclick=e=>{e.stopPropagation()
  $('#lFeast').onclick=()=>{const fc=T_('m2')?20:40;if(S.ap<2||S.food<fc){sfx('deny');return toast('行動力或糧食不足')}S.ap-=2;S.food-=fc;const v=(5+(T_('m2')?3:0))*(teamEff('feast')?2:1);S.order.forEach(id=>gainAff(id,v));if(knows('mediation')){const pairs=S.order.filter(audienceOK).flatMap((a,i,ids)=>ids.slice(i+1).map(b=>[a,b,relG(a,b)]));const tie=pairs.sort((a,b)=>a[2]-b[2])[0];if(tie&&tie[2]<0){relAdd(tie[0],tie[1],-tie[2]);feedPush('【席間釋怨】'+H(tie[0]).n+'與'+H(tie[1]).n+'同席和解。')}}sfx('heart');burstAt($('#lFeast'),'#f3b1c4',40);toast('宴席熱鬧，眾英靈好感上升');render()};
  $$('.hcard[data-m]').forEach(b=>b.onclick=()=>meet(b.dataset.m));
  $$('[data-tl]').forEach(b=>b.onclick=()=>{const br=b.dataset.br,i=+b.dataset.i,ns=TAL[br],n=ns[i];const has=S.talents[n[0]],can=talCan(br,i),cost=talCost(n),x=n[4]==='x',xo=x?ns.find(y=>y[4]==='x'&&y!==n):null,lock=x&&!has&&ns.some(y=>y[4]==='x'&&S.talents[y[0]]);
-  sheet(`<h3>${br}・${n[1]}${x?'（終極・二選一）':''}</h3>${GD.talLore&&GD.talLore[n[1]]?`<div class="small" style="color:var(--gold2);font-style:italic">「${GD.talLore[n[1]]}」</div>`:''}<p style="margin:8px 0">${n[2]}</p><div class="small">需要 ${cost} 天賦點（現有 ${S.talent}）${x?`・前置：${ns[i-2][1]}・與「${xo[1]}」只能擇一`:i>=2?`・前置：${talParents(i).map(j=>ns[j][1]).join(' 或 ')}`:''}</div>
+  sheet(`<h3>${br}・${n[1]}${x?'（終極・二選一）':''}</h3>${GD.talLore&&GD.talLore[n[1]]?`<div class="small" style="color:var(--gold2);font-style:italic">「${GD.talLore[n[1]]}」</div>`:''}<p style="margin:8px 0">${n[2]}</p><div class="small">需要 ${cost} 天賦點（現有 ${S.talent}）${n[4]==='s'?'・前置：本系任兩項天賦':x?`・前置：${ns[i-2][1]}・與「${xo[1]}」只能擇一`:i>=2?`・前置：${talParents(i).map(j=>ns[j][1]).join(' 或 ')}`:''}</div>
   <button class="btn" id="tlOk" style="width:100%;margin-top:12px" ${has||!can?'disabled':''}>${has?'已習得':can?'習得':lock?'已選擇另一個終極天賦（重置才能改）':'需先習得前置天賦'}</button>`);
   $('#tlOk').onclick=()=>{if(!talCan(br,i)||S.talent<cost){sfx('deny');return toast('天賦點不足（書院可產出）')}S.talent-=cost;S.talSpent=talSpentNow()+cost;S.talents[n[0]]=1;talOn(n[0],1);closeSheet();sfx('ssr');render();burstAt($(`[data-tl="${n[0]}"]`),'#f0d79a',40);if(talOwned()>=3)unlock('talent3')}});
  if($('#tlReset'))$('#tlReset').onclick=()=>{const c=talResetCost(),sp=talSpentNow();sheet(`<h3>重置天賦</h3><p style="margin:8px 0">清空所有已習得的天賦，返還 <b>${sp}</b> 天賦點，可重新規劃路線。</p><div class="small">花費晶核 ${c}（現有 ${S.core}），每次重置費用 +2</div><button class="btn red" id="trOk" style="width:100%;margin-top:12px" ${S.core<c?'disabled':''}>確定重置</button>`);
