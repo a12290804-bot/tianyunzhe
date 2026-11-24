@@ -60,8 +60,9 @@ window.makeCharacterEvents = function (game) {
    cast.c=rolesText.includes('{c}')?courtier:undefined;
    if(!rolesText.includes('{b}'))cast.b=undefined;
   }
-  if(narrative&&key==='heirAndFamily'){
-   const child=(S.kids||[]).find(k=>k.mom!==id&&S.order.includes(k.mom)&&wed(k.mom)&&(id==='jiananfeng'||!k.adult));
+  if(narrative&&(key==='heirAndFamily'||id==='liji'&&key==='firstPowerMove')){
+   const olderHeir=['liji','xiaji','mibazi'].includes(id);
+   const child=(S.kids||[]).find(k=>k.mom!==id&&S.order.includes(k.mom)&&wed(k.mom)&&(id==='jiananfeng'||(olderHeir?!!k.adult:!k.adult)));
    if(!child)return false;
    cast.b=child.mom;cast.heir=child.id;
   }
