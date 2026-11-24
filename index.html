@@ -2898,7 +2898,9 @@ const HCOL=[
  ['荷','str',id=>mistStrain(id)],
  ['期','cy',id=>cyc(id)],
  ['孕','preg',id=>wed(id).preg?Math.max(0,wed(id).preg-S.t):99],
- ['地','loc',id=>activePlace(id)]];
+ ['地','loc',id=>activePlace(id)],
+ ['狀態','st',id=>nowOf(id)],
+ ['珍寶','tre',id=>treOf(id).length]];
 const HBAD=['幽怨','嫉恨','委屈','焦躁','冷戰','癲狂','怨恨'];
 function hAlerts(){return spouses().filter(id=>{const w=wed(id);return w.fav<25||HBAD.includes(md2(id))||mistState(id).band>=3||mistStrain(id)>=5||grudge(id)})}
 function haremTable(){const sp=[...spouses(),...S.order.filter(id=>H(id).sex==='f'&&!wed(id)&&!id.startsWith('kid')&&hs(id).aff>=50)];
@@ -2908,7 +2910,7 @@ function haremTable(){const sp=[...spouses(),...S.order.filter(id=>H(id).sex==='
  const red=(v,c)=>c?`<td class="bad">${v}</td>`:`<td>${v}</td>`;
  const tr=id=>{const w=wed(id),l=loveLv(id),m=md2(id),ms=mistState(id),s=mistStrain(id),mo=mother()===id;
   return`<tr data-ho="${id}"><th><span class="hpic" style="background-image:url(img/${face(id)}.jpg)"></span>${H(id).n}${mo?'<i>主</i>':''}${w.cold?'<i>冷</i>':w.pal?'<i>行</i>':''}</th>
-  <td>${mo?'主母':RANKN[rankOf(id)]}</td>${red(w.fav,w.fav<25)}<td style="color:${LOVEC[Math.max(0,l)]}">${LOVEN[Math.max(0,l)]}</td>${red(m,HBAD.includes(m))}${red(hp(id).inf|0,(hp(id).inf|0)>=70)}${red(heroAmb(id),heroAmb(id)>=75)}${red(ms.band?ms.name:'—',ms.band>=3)}${red(s?s+'/10':'—',s>=5)}<td>${CYI[cyc(id)]}${CYN[cyc(id)]}</td><td>${w.preg?Math.max(0,w.preg-S.t)+'旬':'—'}</td><td>${rosterName(activePlace(id))}</td></tr>`};
+  <td>${mo?'主母':RANKN[rankOf(id)]}</td>${red(w.fav,w.fav<25)}<td style="color:${LOVEC[Math.max(0,l)]}">${LOVEN[Math.max(0,l)]}</td>${red(m,HBAD.includes(m))}${red(hp(id).inf|0,(hp(id).inf|0)>=70)}${red(heroAmb(id),heroAmb(id)>=75)}${red(ms.band?ms.name:'—',ms.band>=3)}${red(s?s+'/10':'—',s>=5)}<td>${CYI[cyc(id)]}${CYN[cyc(id)]}</td><td>${w.preg?Math.max(0,w.preg-S.t)+'旬':'—'}</td><td>${rosterName(activePlace(id))}</td><td style="white-space:nowrap">${nowOf(id)}${w.preg?' 🤰':''}</td><td>${treOf(id).map(k=>TRE[k][0]).join('、')||'—'}</td></tr>`};
  const pend=sp.filter(id=>!wed(id));
  const al=hAlerts();
  return`<div class="small" style="color:var(--dim);margin:4px 2px 6px">點欄名排序、再點一次反向；點一列看詳情。紅字＝需要留意。${al.length?`<br><b style="color:#ff8a8a">⚠ 需留意：${al.map(x=>H(x).n).join('、')}</b>`:''}</div>
@@ -2964,9 +2966,9 @@ function festival(cb){const sp=spouses().filter(id=>activePlace(id)==='home'&&au
  <div class="small" style="color:var(--gold2)">親點魁首</div><div>${sp.map(id=>`<button class="btn ghost sm" style="margin:3px" data-fw="${id}">${H(id).n}</button>`).join('')}</div>
  <button class="btn" id="fvAll" style="width:100%;margin-top:10px">讓她們各憑本事爭艷</button><button class="btn ghost" id="fvNo" style="width:100%;margin-top:6px">大典從簡（全員寵愛 −2）</button>`);
  $$('[data-fw]').forEach(b=>b.onclick=()=>win(b.dataset.fw,'你親自點名'));
- $('#fvAll').onclick=()=>win(sp.slice().sort((a,b)=>score(b)-score(a))[0],'眾夫人各展才藝');
+ $('#fvAll').onclick=()=>{const nc=(S.tre||{}).nichang;const w0=nc&&nc.who&&sp.includes(nc.who)?nc.who:sp.slice().sort((a,b)=>score(b)-score(a))[0];win(w0,nc&&nc.who===w0?'她披上霓裳羽衣':'眾夫人各展才藝')};
  $('#fvNo').onclick=()=>{sp.forEach(x=>wed(x).fav=Math.max(0,wed(x).fav-2));feedPush(`【春秋大典】${yr}大典從簡，宮中頗有微詞`,'neg');closeSheet();render();cb()}}
-{const _he=haremEvent;haremEvent=function(cb){if(S.t>0&&S.t%18===0&&S.festT!==S.t)return festival(()=>_he(cb));return _he(cb)}}
+{const _he=haremEvent;haremEvent=function(cb){if(S.t>=9&&(S.t-9)%18===0&&S.festT!==S.t)return festival(()=>_he(cb));return _he(cb)}}
 
 /* ===== 史冊 ===== */
 const CHRX=/成婚|入宮|冊立|主母|晉位|晉封|賜死|處死|斬|叛|私情|有喜|誕生|出生|大典|廢|冷宮|自盡|戰死|被俘|俘|攻破|陷落|稱帝|復活|重召|小產|失去胎兒|奪權|兵變|逼宮|垂簾/;
@@ -3019,8 +3021,8 @@ function gridSheet(id){const h=H(id),w=wed(id),sp=w&&h.sex==='f',m=mistState(id)
  sheet(`<div style="display:flex;gap:10px;align-items:center"><span class="pic" style="width:64px;height:80px;flex:none;border-radius:8px;background:url(img/${face(id)}.jpg) center 15%/cover"></span><div><h3 style="margin:0">${h.n}</h3><div class="small" style="color:var(--gold2)">${mother()===id?'主母':sp?RANKN[rankOf(id)]:role(id)}・${rosterName(activePlace(id))}${busyArmy(id)?'・出征中':''}</div></div></div>
  <div class="gstat">${sp?row('寵愛',w.fav)+row('情深',LOVEN[Math.max(0,loveLv(id))])+row('心境',md2(id))+row('權勢',hp(id).inf|0)+row('野心',heroAmb(id))+row('週期',CYI[cyc(id)]+CYN[cyc(id)]):row('好感',hs(id).aff)+row('忠誠',typeof loyal==='function'?loyal(id):'?')+row('任務',hs(id).task||'idle')}${row('污染',m.band?m.name:'清明')}${row('負荷',mistStrain(id)+'/10')}</div>
  <div class="frame small" style="padding:6px 8px;margin-bottom:8px;line-height:1.6"><b style="color:var(--gold2)">此刻</b>　${nowOf(id)}${(()=>{const d=typeof desire==='function'&&sp?desire(id):null;return d?`<br><b style="color:var(--gold2)">心之所向</b>　${d[1]}${d[2]()?'（已如願）':''}`:''})()}${recentOf(id).length?`<br><b style="color:var(--gold2)">近況</b><br>${recentOf(id).map(s=>'・'+s).join('<br>')}`:''}</div>
- <div class="gacts">${sp&&home?`<button class="btn" data-ga="visit">探望</button><button class="btn ghost" data-ga="gift" ${S.gifts?'':'disabled'}>賞賜（禮物 ${S.gifts||0}）</button><button class="btn ghost" data-ga="spy">密報・挑撥</button>`:''}${!sp&&home?`<button class="btn" data-ga="meet">召見談心</button>`:''}<button class="btn ghost" data-ga="detail">詳情・處置</button></div>`);
- $$('[data-ga]').forEach(b=>b.onclick=()=>{const k=b.dataset.ga;closeSheet();if(k==='visit')wedVisit(id);else if(k==='gift'){personaAct(id,'gift');render()}else if(k==='spy')pmSheet(id);else if(k==='meet')meet(id);else openHero(id)})}
+ <div class="gacts">${sp&&home?`<button class="btn" data-ga="visit">探望</button><button class="btn ghost" data-ga="gift" ${S.gifts?'':'disabled'}>賞賜（禮物 ${S.gifts||0}）</button><button class="btn ghost" data-ga="spy">密報・挑撥</button>`:''}${!sp&&home?`<button class="btn" data-ga="meet">召見談心</button>`:''}${home?`<button class="btn" data-ga="spend">相處（宮務）</button>`:''}<button class="btn ghost" data-ga="detail">詳情・處置</button></div>`);
+ $$('[data-ga]').forEach(b=>b.onclick=()=>{const k=b.dataset.ga;closeSheet();if(k==='visit')wedVisit(id);else if(k==='gift'){personaAct(id,'gift');render()}else if(k==='spy')pmSheet(id);else if(k==='meet')meet(id);else if(k==='spend')spendSheet(id);else openHero(id)})}
 document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest('[data-gc]');if(c){gridSheet(c.dataset.gc);return}const f=e.target.closest&&e.target.closest('[data-gf]');if(f){const[k,v]=f.dataset.gf.split('|');S[k]=v;render()}});
 
 /* ===== 宮中暗流：依現有數值觸發的互動事件 ===== */
@@ -3202,11 +3204,68 @@ function nemJudge(k,cb){S.nemDone[k]=S.t;const N=NEM[k],her=N.who.find(x=>S.orde
   else{S.soldiers+=150;fv(-8);r=`你收編了殘部，兵力 +150。${H(her).n}不敢相信你竟饒了他，寵愛 −8`}
   (hs(her).titles??=[]).push(`斬${N.mark}`);feedPush(`【審判】${r}`);if(typeof chronAdd==='function')chronAdd(`【審判】${r}`);closeSheet();toast(r);render();cb()})}
 {const _he4=haremEvent;haremEvent=function(cb){return _he4(()=>nemTurn(cb))}}
-function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'群像';const tabs=['群像','總表','心願','勢力圖','一覽','往來紀事','動態','關係','建築','冷宮行宮','結義兄弟'];
+
+/* ===== 對話即時顯示：旬末事件鏈結束前把累積的心聲播完 ===== */
+{const _me=maybeEvent;maybeEvent=function(cb){return _me(()=>hxShow(cb))}}
+/* ===== 節慶與大典提早 ===== */
+const FEST={1:['上元燈會','滿城花燈，夫人們提著燈籠在宮道上等你。'],18:['七夕乞巧','鵲橋夜，宮中女子對月穿針，偷偷許願。'],22:['中秋賞月','月滿燈塔，夫人們備好月餅與桂花酒。'],35:['除夕守歲','黑霧外的年關，宮裡仍要守歲迎新。']};
+function festival2(cb){const f=FEST[S.t%36];if(!f||S.festT2===S.t)return cb();S.festT2=S.t;const sp=spouses().filter(id=>activePlace(id)==='home'&&audienceOK(id)&&!wed(id).cold);if(!sp.length)return cb();
+ sheet(`<h2>${f[0]}</h2><p style="margin:8px 0">${f[1]}</p><button class="btn" style="width:100%;margin-top:6px" data-fs="all">與眾同樂（糧 40：全員寵愛 +5）</button><div class="small" style="color:var(--gold2);margin-top:8px">只陪一人（她寵愛 +15、情深大增；其他人 −4）</div><div>${sp.map(id=>`<button class="btn ghost sm" style="margin:3px" data-fs="${id}">${H(id).n}</button>`).join('')}</div><button class="btn ghost" style="width:100%;margin-top:6px" data-fs="no">照常理政（能量 +20，全員寵愛 −2）</button>`,true);
+ $$('[data-fs]').forEach(b=>b.onclick=()=>{const k=b.dataset.fs;let r;if(k==='all'){S.food=Math.max(0,S.food-40);sp.forEach(x=>wed(x).fav=Math.min(100,wed(x).fav+5));r=`${f[0]}・與眾同樂，全員寵愛 +5`}
+  else if(k==='no'){S.energy+=20;sp.forEach(x=>wed(x).fav=Math.max(0,wed(x).fav-2));r=`${f[0]}・你在書房度過，全員寵愛 −2`}
+  else{sp.forEach(x=>{if(x===k){wed(x).fav=Math.min(100,wed(x).fav+15);loveAdd(x,120,true)}else{wed(x).fav=Math.max(0,wed(x).fav-4);relAdd(x,k,-5)}});r=`${f[0]}・你只陪著${H(k).n}，其他人寵愛 −4`}
+  feedPush('【節慶】'+r);if(typeof chronAdd==='function')chronAdd('【節慶】'+r);closeSheet();toast(r);render();cb()})}
+{const _he5=haremEvent;haremEvent=function(cb){return _he5(()=>festival2(cb))}}
+/* ===== 珍寶閣 ===== */
+const TRE={huangjie:['凰戒','主母信物。戴著的人每旬權勢 +2；若她不是主母，主母會記恨她',{core:3,energy:100}],fengyin:['鳳印','掌管後宮之印。每旬權勢 +3',{core:2,energy:80}],buyao:['金步搖','寵愛每旬 +1，不易失寵',{food:120,energy:40}],mingzhu:['夜明珠','每旬污染 −5',{core:2}],nichang:['霓裳羽衣','春秋大典讓眾人爭艷時必定奪魁',{energy:120}],yubi:['九龍玉璧','她與交好的姐妹每旬權勢 +1',{core:3}],yupei:['鴛鴦玉珮','送給兩人，兩人交情每旬 +2',{energy:60,food:60}]};
+const treOwn=k=>(S.tre||{})[k];const treOf=id=>Object.keys(TRE).filter(k=>{const o=treOwn(k);return o&&o.who&&(o.who===id||(o.who2===id))});
+function treTurn(add){S.tre=S.tre||{};Object.entries(S.tre).forEach(([k,o])=>{if(!o||!o.who)return;const id=o.who,ok=x=>x&&S.heroes[x]&&wed(x)&&!(S.gone&&S.gone[x]);
+ if(!ok(id)||wed(id).cold||['jail'].includes(hst(id))){const rv=spouses().filter(x=>x!==id&&!wed(x).cold&&heroAmb(x)>=60).sort((a,b)=>heroAmb(b)-heroAmb(a))[0];if(rv&&Math.random()<.5){o.who=rv;add(`【奪寶】${H(rv).n}趁${S.heroes[id]?H(id).n:'舊主'}失勢，把${TRE[k][0]}據為己有`,'neg')}else{o.who=null;o.who2=null;add(`【珍寶】${TRE[k][0]}收回珍寶閣`)}return}
+ const P=hp(id);if(k==='huangjie'){P.inf=Math.min(100,(P.inf|0)+2);const m=mother();if(m&&m!==id)relAdd(m,id,-3)}if(k==='fengyin')P.inf=Math.min(100,(P.inf|0)+3);if(k==='buyao')wed(id).fav=Math.min(100,wed(id).fav+1);if(k==='mingzhu'){const v=BigInt(hs(id).mist||0)-5n;hs(id).mist=String(v<0n?0n:v)}
+ if(k==='yubi')spouses().filter(x=>x===id||relG(id,x)>=25).forEach(x=>hp(x).inf=Math.min(100,(hp(x).inf|0)+1));if(k==='yupei'&&ok(o.who2))relAdd(id,o.who2,2)})}
+function treCraft(k){const c=TRE[k][2];const lack=Object.entries(c).find(([r,v])=>(S[r]||0)<v);if(lack){sfx('deny');return toast('資源不足')}Object.entries(c).forEach(([r,v])=>S[r]-=v);(S.tre=S.tre||{})[k]={who:null};sfx('ssr');toast(TRE[k][0]+'打造完成');feedPush(`【珍寶】${TRE[k][0]}入庫`)}
+function treGive(k,id,id2){const o=S.tre[k],old=o.who;o.who=id;if(id2)o.who2=id2;const w=wed(id);w.fav=Math.min(100,w.fav+10);loveAdd(id,60,true);if(id2){wed(id2).fav=Math.min(100,wed(id2).fav+10)}
+ if(old&&old!==id&&wed(old)){wed(old).fav=Math.max(0,wed(old).fav-15);setGrudge(old,8);relAdd(old,id,-20)}
+ spouses().filter(x=>x!==id&&x!==id2&&(heroAmb(x)>=60||['佔有','嫉妒'].includes(jt(x)))).forEach(x=>{wed(x).fav=Math.max(0,wed(x).fav-4);relAdd(x,id,-10)});
+ const s=`【賜寶】你把${TRE[k][0]}賜給${H(id).n}${id2?'與'+H(id2).n:''}${old&&old!==id?`（自${H(old).n}處收回）`:''}`;feedPush(s);if(typeof chronAdd==='function')chronAdd(s)}
+function treView(){S.tre=S.tre||{};return`<div class="small" style="color:var(--dim);margin:4px 2px 8px">每件珍寶獨一無二。賜給誰，誰就得到效果，沒拿到的人會嫉妒、討要，甚至趁她失勢奪走。</div>${Object.entries(TRE).map(([k,[n,d,c]])=>{const o=S.tre[k];const who=o&&o.who?H(o.who).n+(o.who2?'、'+H(o.who2).n:''):'';return`<div class="frame" style="padding:8px;margin-bottom:6px"><b style="color:var(--gold2)">${n}</b> <span class="small">${o?(who?'・'+who+' 佩戴中':'・在庫'):'・尚未打造'}</span><div class="small">${d}</div><div style="margin-top:4px">${o?`<button class="btn sm" data-trg="${k}">${who?'轉賜':'賜予'}</button>`:`<button class="btn ghost sm" data-trc="${k}">打造（${Object.entries(c).map(([r,v])=>({core:'晶核',energy:'能量',food:'糧'}[r])+' '+v).join('、')}）</button>`}</div></div>`}).join('')}`}
+function treGiveSheet(k){const sp=spouses().filter(x=>!wed(x).cold);const pair=k==='yupei';let first=null;
+ const draw=()=>{sheet(`<h3>賜予${TRE[k][0]}</h3><div class="small">${pair?(first?`已選 ${H(first).n}，再選第二人`:'請選第一人'):'選一位夫人'}</div>${sp.filter(x=>x!==first).map(id=>`<button class="opt frame" data-tgw="${id}" style="margin-bottom:5px"><span class="pic" style="background-image:url(img/${face(id)}.jpg)"></span><span class="t"><b>${H(id).n}</b><div class="small">寵愛 ${wed(id).fav}・野心 ${heroAmb(id)}${treOf(id).length?'・已有 '+treOf(id).map(x=>TRE[x][0]).join('、'):''}</div></span></button>`).join('')}`);
+  $$('[data-tgw]').forEach(b=>b.onclick=()=>{const id=b.dataset.tgw;if(pair&&!first){first=id;return draw()}treGive(k,pair?first:id,pair?id:null);closeSheet();render()})};draw()}
+document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest('[data-trc]');if(c){treCraft(c.dataset.trc);render();return}const g=e.target.closest&&e.target.closest('[data-trg]');if(g)treGiveSheet(g.dataset.trg)});
+function treFight(cb){if(Math.random()>.15)return cb();const owned=Object.entries(S.tre||{}).filter(([k,o])=>o&&o.who&&wed(o.who));if(!owned.length)return cb();const [k,o]=pick(owned);const rv=spouses().filter(x=>x!==o.who&&x!==o.who2&&!wed(x).cold&&audienceOK(x)&&heroAmb(x)>=55).sort((a,b)=>heroAmb(b)-heroAmb(a))[0];if(!rv)return cb();const id=o.who;
+ sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(rv)}.jpg)"></div><div><b style="color:var(--gold2)">爭寶・${TRE[k][0]}</b><p style="margin:6px 0">${H(rv).n}在請安時盯著${H(id).n}身上的${TRE[k][0]}，笑著說：「這東西，妹妹戴著真是委屈它了。」</p></div></div>
+ <button class="btn" style="width:100%;margin-top:6px" data-tf="0">轉賜給${H(rv).n}</button><button class="btn ghost" style="width:100%;margin-top:6px" data-tf="1">斥退${H(rv).n}</button><button class="btn ghost" style="width:100%;margin-top:6px" data-tf="2">讓兩人比試，勝者得之</button>`,true);
+ $$('[data-tf]').forEach(b=>b.onclick=()=>{const i=+b.dataset.tf;let r;if(i===0){treGive(k,rv);r=`${TRE[k][0]}歸了${H(rv).n}`}else if(i===1){wed(rv).fav=Math.max(0,wed(rv).fav-6);relAdd(rv,id,-10);r=`${H(rv).n}討了個沒趣，寵愛 −6`}else{const s=x=>stat(x,'cha')+(hp(x).inf|0)+R(0,40);const w=s(rv)>s(id)?rv:id;if(w===rv)treGive(k,rv);relAdd(rv,id,-15);r=`兩人鬥了一場，${H(w).n}贏得${TRE[k][0]}`}feedPush('【爭寶】'+r);closeSheet();toast(r);render();cb()})}
+{const _he6=haremEvent;haremEvent=function(cb){treTurn(feedPush);return _he6(()=>treFight(cb))}}
+/* ===== 相處 ===== */
+function spendSheet(id){const sp=wed(id)&&H(id).sex==='f',w=wed(id),c=sp?cyc(id):-1,N=H(id).n;const fv=v=>{if(sp)w.fav=clamp((w.fav|0)+v,0,100);else gainAff(id,v)};
+ const A=sp?[
+  ['對弈',()=>{const win=stat(id,'int')>R(40,100);fv(win?6:4);return win?`${N}贏了你一局，笑得很得意。寵愛 +6`:`${N}輸了棋，嘟著嘴要再來一局。寵愛 +4`}],
+  ['賞花',()=>{fv(5);loveAdd(id,30,true);return`你們在園子裡走了很久。寵愛 +5`}],
+  ['聽她撫琴',()=>{fv(4);const v=BigInt(hs(id).mist||0)-8n;hs(id).mist=String(v<0n?0n:v);return`琴聲讓她平靜了些。寵愛 +4、污染 −8`}],
+  ['教她騎射',()=>{fv(5);hs(id).exp=(hs(id).exp||0)+20;return`${N}在馬背上驚叫著抱住你的腰。寵愛 +5`}],
+  ['陪她夜話',()=>{fv(6);const d=typeof desire==='function'?desire(id):null;if(Math.random()<.4){(S.spy??={})[id]=S.t+3;return`${N}靠在你懷裡，說出了心裡藏著的事（密報 3 旬）`}return`${N}說了許多小時候的事${d?'，還提到她'+d[1]:''}。寵愛 +6`}],
+  ['微服出巡',()=>{fv(8);S.food+=10;return`你們換了便服混進市集，${N}玩得像個孩子。寵愛 +8`}]]:[
+  ['切磋武藝',()=>{fv(5);hs(id).exp=(hs(id).exp||0)+30;return`${N}和你過了幾招，好感 +5`}],['賜酒',()=>{S.food=Math.max(0,S.food-10);fv(7);return`${N}一飲而盡，好感 +7`}],['論兵',()=>{S.train=Math.min(100,(S.train||0)+3);fv(3);return`你們談到深夜，訓練度 +3、好感 +3`}],['巡營',()=>{fv(4);S.soldiers+=10;return`${N}帶你巡了一圈營帳，兵 +10、好感 +4`}]];
+ const CY=sp?(c===0?[['🩸 熬紅糖薑湯',()=>{fv(8);setMd(id,'平靜');return`${N}捧著湯碗，難得對你撒了嬌。寵愛 +8、心境平靜`}],['🩸 讓她好好休息',()=>{fv(4);const v=BigInt(hs(id).mist||0)-5n;hs(id).mist=String(v<0n?0n:v);return`你沒打擾她，只讓人送去暖爐。寵愛 +4、污染 −5`}]]
+  :c===1?[['🌸 共度良宵',()=>{fv(8);(S.vh=S.vh||[]).push(id);w.visits=(w.visits||0)+1;loveAdd(id,60,true);if(!w.preg&&w.fav>=60&&Math.random()<.18){w.preg=S.t+6;return`${N}有喜了！寵愛 +8`}return`那一夜燭火很晚才熄。寵愛 +8`}],['🌸 陪她看星',()=>{fv(6);return`她說今夜的星特別亮。寵愛 +6`}]]
+  :[['🌙 哄她開心',()=>{setMd(id,'平靜');fv(4);return`${N}的脾氣慢慢消了。心境平靜、寵愛 +4`}],['🌙 任她撒氣',()=>{fv(10);loveAdd(id,40,true);return`她摔了兩個杯子，最後哭著撲進你懷裡。寵愛 +10`}]]):[];
+ const L=[...CY,...A];
+ sheet(`<h3>與${N}相處</h3><div class="small" style="color:var(--dim)">每次 1 宮務${sp?'・'+CYI[c]+CYN[c]+'有專屬選項':''}・剩 ${gwLeft()} 宮務</div>${L.map((a,i)=>`<button class="btn ${i<CY.length?'':'ghost'}" style="width:100%;margin-top:6px" data-sp="${i}">${a[0]}</button>`).join('')}${sp?`<button class="btn ghost" style="width:100%;margin-top:6px" id="spFeast">設宴邀數位夫人同席</button>`:''}`);
+ $$('[data-sp]').forEach(b=>b.onclick=()=>{if(!gwPay())return;const r=L[+b.dataset.sp][1]();feedPush(`【相處】${r}`);closeSheet();toast(r);render()});
+ if($('#spFeast'))$('#spFeast').onclick=()=>feastSheet()}
+function feastSheet(){const sp=spouses().filter(x=>activePlace(x)==='home'&&audienceOK(x)&&!wed(x).cold);let pickL=[];
+ const draw=()=>{sheet(`<h3>設宴</h3><div class="small">依序點選入席，最多 4 位；第一位坐在你身邊。（1 宮務、糧 30）</div>${sp.map(id=>`<button class="btn ${pickL.includes(id)?'':'ghost'} sm" style="margin:3px" data-fp="${id}">${pickL.includes(id)?(pickL.indexOf(id)+1)+'・':''}${H(id).n}</button>`).join('')}<button class="btn" id="fpOk" style="width:100%;margin-top:8px" ${pickL.length>=2?'':'disabled'}>開席</button>`);
+  $$('[data-fp]').forEach(b=>b.onclick=()=>{const id=b.dataset.fp;pickL=pickL.includes(id)?pickL.filter(x=>x!==id):pickL.length<4?[...pickL,id]:pickL;draw()});
+  $('#fpOk').onclick=()=>{if(S.food<30){sfx('deny');return toast('糧不足')}if(!gwPay())return;S.food-=30;const [a,...rest]=pickL;wed(a).fav=Math.min(100,wed(a).fav+8);rest.forEach(x=>{wed(x).fav=Math.min(100,wed(x).fav+3);relAdd(x,a,-5)});let extra='';const pr=rest.length>=2?[rest[0],rest[1]]:null;if(pr&&relG(pr[0],pr[1])>=10&&Math.random()<.4){relAdd(pr[0],pr[1],10);extra=`；席間${H(pr[0]).n}與${H(pr[1]).n}越聊越投機`}
+   const r=`宴席上${H(a).n}坐在你身邊（寵愛 +8），其他人寵愛 +3，卻都暗暗看她不順眼${extra}`;feedPush('【設宴】'+r);closeSheet();toast('宴席結束');render()}};draw()}
+function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'群像';const tabs=['群像','總表','心願','珍寶','勢力圖','一覽','往來紀事','動態','關係','建築','冷宮行宮','結義兄弟'];
  let h=`<div class="ltabs">${tabs.map(t=>`<button class="${S.hTab===t?'on':''}" data-ht="${t}">${t}</button>`).join('')}</div>`;
  if(S.hTab==='群像'){S.gridFH=S.gridFH||'夫人';return h+gridView('gridFH')}
  if(S.hTab==='總表')return h+haremTable();
  if(S.hTab==='心願')return h+wishView();
+ if(S.hTab==='珍寶')return h+treView();
  if(S.hTab==='勢力圖')return h+powerMap();
  if(S.hTab==='往來紀事')return h+intrigueView();
  if(S.hTab==='結義兄弟')return h+oathPage();
