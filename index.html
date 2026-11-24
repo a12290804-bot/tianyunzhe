@@ -2419,13 +2419,13 @@ function majorNotice(id,k,r,add){
 }
 function majorShow(next){
  const e=S.majorQueue?.shift();if(!e)return next();const [title,body,bg]=majorArt[e.k];const defeat=!!defeatStories[e.k];
- sheet('<img id="majorArt" alt="" style="width:100%;max-height:34vh;object-fit:cover"><h3>'+(defeat?'戰敗大事件・':'')+title+'・'+H(e.id).n+'</h3><p>'+e.enemy+'・'+e.city+'・第 '+e.t+' 旬</p><p>'+body+'</p>'+(e.effect?'<p class="sysline">'+e.effect+'</p>':'')+'<button class="btn" id="majorOK">收下軍報</button>',true);
+ sheet('<img id="majorArt" alt="" style="width:100%;max-height:34vh;object-fit:cover"><h3>'+(defeat?'戰敗大事件・':'')+title+'・'+H(e.id).n+'</h3><p>'+e.enemy+'・'+e.city+'・'+ago(e.t)+'</p><p>'+body+'</p>'+(e.effect?'<p class="sysline">'+e.effect+'</p>':'')+'<button class="btn" id="majorOK">收下軍報</button>',true);
  const img=$('#majorArt');img.onerror=()=>{img.onerror=null;img.src='img/'+bg+'.jpg'};img.src=defeat?'img/'+bg+'.jpg':'img/events/'+e.k+'.jpg';
  $('#majorOK').onclick=()=>{closeSheet();majorShow(next)};
 }
 function defeatCapture(ids,en,origin,add){
- const group=ids.filter(id=>S.order.includes(id));if(!group.length||!en.fac||!FD(en.fac)||Math.random()>(knows("escape")?.24:.42))return;
- const id=pick(group),st=hs(id);const r={enemy:FD(en.fac).n,fid:en.fac,city:origin===BASE?'燈塔':cityName(origin),origin:origin===BASE?'home':origin.r+'_'+origin.c,world:S.cur||'home',state:'captured',t:S.t,next:S.t+2};
+ const group=ids.filter(id=>S.order.includes(id));const isF=!!(en.fac&&FD(en.fac));if(!group.length||Math.random()>(isF?(knows("escape")?.3:.55):(knows("escape")?.2:.35)))return;
+ const id=pick(group),st=hs(id);const r={enemy:isF?FD(en.fac).n:(String(en.n||'黑霧中的東西').split('・')[0]),fid:isF?en.fac:null,city:origin===BASE?'燈塔':cityName(origin),origin:origin===BASE?'home':origin.r+'_'+origin.c,world:S.cur||'home',state:'captured',t:S.t,next:S.t+2};
  releaseDuties(id);pullArmy(id);for(const [k,x] of Object.entries(S.off||{}))if(x===id)delete S.off[k];
  S.order=S.order.filter(x=>x!==id);if(S.mainWife===id)S.mainWife=null;if(S.ringOn===id)S.ringOn=null;
  st.task='idle';st.hst=null;delete st.station;if(st.wed){delete st.wed.pal;st.wed.duty=null}
@@ -3649,7 +3649,7 @@ function craveHtml(id){const k=craveOf(id),C=CRAVE[k],tr=craveTier(id),a=craveAp
  return`<div class="small" style="margin:5px 0 3px"><b style="color:${C[1]}">本性・${C[0]}</b>　<b style="color:${C[1]}">「${(craveTxt(id,k,tr)||{}).name||C[3][tr]}」</b><span style="color:var(--dim)">（${CRAVE_TN[tr]}）</span></div><div class="meter" style="margin:2px 0"><i style="width:${nx?Math.round((a-CRAVE_T[tr])/(nx-CRAVE_T[tr])*100):100}%;background:${C[1]}"></i></div><div class="small" style="color:var(--dim)">${C[5]}・${nx?'胃口再長 '+Math.ceil(nx-a)+' 就更深一層':'已經沒有底了'}・越滿足她、胃口長得越快</div>`}
 {const _rw=render;render=function(...a){try{if(S&&S.heroes&&typeof spouses==='function')spouses().forEach(id=>wishDone(id))}catch(e){}return _rw.apply(this,a)}}
 /* ===== 紅顏私宅：佔用城中格子、帶給全城能力 ===== */
-const PVCITY={mianshou:{affAll:.02,hedon:1,fear:-.02},sibing:{def:.01,sol:-4,food:-.03},xingfang:{atk:.01,affAll:-.04,tyranny:1},fotang:{clean:1,food:-.03},liandan:{energy:3,clean:-1},jinwu:{market:-.06,food:-.04},mishi:{rate:.01,affAll:-.03},jiuchi:{affAll:.03,food:-.06,hedon:1},dujiao:{eld:.02,popg:-1,clean:-1},jitan:{atk:.03,clean:-2},xiulou:{def:.01,affAll:-.02},jiaochang:{train:1,food:-.03},yuying:{popg:1,food:-.03},shishe:{talent:.03,market:-.03}};
+const PVCITY={mianshou:{affAll:.02,hedon:1,food:-.02},sibing:{def:.01,sol:-4,food:-.03},xingfang:{atk:.01,affAll:-.04,tyranny:1},fotang:{clean:1,food:-.03},liandan:{energy:3,clean:-1},jinwu:{market:-.06,food:-.04},mishi:{rate:.01,affAll:-.03},jiuchi:{affAll:.03,food:-.06,hedon:1},dujiao:{eld:.02,popg:-1,clean:-1},jitan:{atk:.03,clean:-2},xiulou:{def:.01,affAll:-.02},jiaochang:{train:1,food:-.03},yuying:{popg:1,food:-.03},shishe:{talent:.03,market:-.03}};
 const PVKN={affAll:'好感成長',hedon:'昏庸',tyranny:'暴政',fear:'威懾',def:'我軍減傷',sol:'士兵',food:'糧食產出',atk:'我軍傷害',clean:'淨化',energy:'能量',market:'市集收入',rate:'戰法發動',eld:'對污染體傷害',popg:'流民',train:'訓練度',talent:'天賦點'};
 const PVFLAT=['hedon','tyranny','sol','clean','energy','popg','train','talent'];
 const PVIMG={mianshou:'b_harem',sibing:'b_barracks',xingfang:'b_altar',fotang:'b_temple',liandan:'b_alchemy',jinwu:'b_market',mishi:'b_library',jiuchi:'b_tavern',dujiao:'b_herb',jitan:'b_altar',xiulou:'b_harem',jiaochang:'b_drill',yuying:'b_medic',shishe:'b_academy'};
@@ -3676,6 +3676,35 @@ function deEng(s){if(typeof s!=='string'||!/[a-z]/.test(s))return s;return s.rep
  try{new MutationObserver(ms=>{for(const m of ms){if(m.type==='characterData')fixNode(m.target);else m.addedNodes.forEach(fixNode)}}).observe(document.documentElement,{childList:true,subtree:true,characterData:true})}catch(e){}}
 {const _fp=feedPush;feedPush=function(s,...a){return _fp(deEng(s),...a)}}
 {const _hxp=hxPush;hxPush=function(id,s,...a){return _hxp(id,deEng(s),...a)}}
+/* ===== 昏庸・暴虐：分層下場、甜頭、回頭路 ===== */
+const LORDT={昏庸:['失德','昏暴','亡國之象'],暴虐:['流民不至','將領離心','人人自危']};
+const lordTier=v=>v>=85?3:v>=60?2:v>=30?1:0;
+function lordEff(key){const H0=S.hedon||0,T0=S.tyranny||0;let v=0;
+ if(key==='affAll')v+=H0/500;if(key==='atk')v+=T0/1000;
+ if(H0>=60&&(key==='food'||key==='market'))v-=(H0-50)/200;
+ if(T0>=30&&key==='popg')v-=Math.round((T0-20)/10);
+ return v}
+{const _ple=polEff;polEff=function(key){return _ple(key)+lordEff(key)}}
+function lordTurn(add){const H0=S.hedon||0,T0=S.tyranny||0;
+ if(H0>=30&&Math.random()<(H0-20)/120){S.apPen=(S.apPen||0)+1;add('【失德】你沉溺聲色，下旬少了一點行動力','neg')}
+ if(H0>=60)spouses().forEach(id=>{const st=hs(id);st.app=(st.app||0)+.5});
+ if(H0>=85){if(!S.extort&&Math.random()<.25){const F=(typeof curFacs==='function'?curFacs():[]).filter(d=>FS(d.id)&&FS(d.id).alive);if(F.length){S.extort={fid:pick(F).id};add('【亡國之象】外頭都在傳你荒淫無道，有人趁機上門了','neg')}}
+  const sp=spouses().filter(x=>S.order.includes(x)).sort((a,b)=>(hp(b).inf|0)-(hp(a).inf|0));if(sp[0]&&Math.random()<.3){const id=sp[0];hp(id).inf=Math.min(100,(hp(id).inf|0)+5);const k=pick(Object.keys(POLICY));S.policy={k,until:S.t+4};add(`【亡國之象】你醉臥不起，${H(id).n}替你頒布了「${POLICY[k][0]}」`,'neg')}}
+ if(T0>=60)S.order.filter(x=>!wed(x)&&!x.startsWith('kid')&&H(x)).forEach(x=>{const st=hs(x);if(Math.random()<.3)st.aff=Math.max(0,(st.aff|0)-1);if(T0>=85&&(st.aff|0)<45&&Math.random()<.05&&!busyArmy(x)){goneHero(x,'exile',8);add(`【人人自危】${H(x).n}怕成為下一個刀下鬼，連夜逃走了`,'neg')}});
+}
+{const _hlt=haremEvent;haremEvent=function(cb){try{lordTurn(feedPush)}catch(e){}return _hlt(cb)}}
+AUTOACT.forEach(a=>{if(a[0]!=='rebel'&&a[0]!=='edict'&&a[0]!=='party')return;const f=a[3];a[3]=c=>{const w=f(c);const T0=S.tyranny||0,H0=S.hedon||0;return w+(a[0]==='rebel'?(T0>=85?1.5:T0>=60?.6:0):(H0>=85?1:H0>=60?.4:0))}});
+const LREM=[['zuiji','下罪己詔','行動 1、能量 30','昏庸 −8、暴虐 −8；全宮寵愛 −2（她們覺得你示弱）',6,()=>S.ap>=1&&S.energy>=30,()=>{S.ap--;S.energy-=30;barAdd('hedon',-8);barAdd('tyranny',-8);spouses().forEach(x=>{const w=wed(x);w.fav=Math.max(0,w.fav-2)})}],
+ ['dashe','大赦天下','糧 80','暴虐 −15；流民 +10；被你處置過的人會記得',8,()=>S.food>=80,()=>{S.food-=80;barAdd('tyranny',-15);S.pop=(S.pop||0)+10}],
+ ['jinjiu','禁酒罷宴','行動 1','昏庸 −15；色慾、虛榮本性的夫人寵愛 −8',8,()=>S.ap>=1,()=>{S.ap--;barAdd('hedon',-15);spouses().forEach(x=>{if(['lust','vanity'].includes(craveOf(x))){const w=wed(x);w.fav=Math.max(0,w.fav-8)}})}]];
+function lordSheet(){const H0=S.hedon||0,T0=S.tyranny||0,cd=S.lremCD||{};
+ const row=(n,v,L)=>`<div class="frame" style="padding:8px;margin-bottom:6px"><b>${n} ${v}</b>${lordTier(v)?` <b style="color:#ff8a8a">「${LORDT[n][lordTier(v)-1]}」</b>`:''}<div class="meter" style="margin:4px 0"><i style="width:${v}%;background:${v>=85?'#ff4a4a':v>=60?'#ff8a5a':v>=30?'#e8b86a':'#9aa'}"></i></div>${L.map(([th,s])=>`<div class="small" style="color:${v>=th?'#ffb0b0':'var(--dim)'}">${v>=th?'●':'○'} ${th}：${s}</div>`).join('')}</div>`;
+ sheet(`<h3>天運者的德行</h3><p class="small" style="color:var(--dim)">昏庸與暴虐只會累積，不會自己消退。不會讓你輸掉遊戲，但會讓這座城一步步爛下去。</p>
+ ${row('昏庸',H0,[[0,`甜頭：好感成長 +${Math.round(H0/5)}%`],[30,'失德：常常睡過頭，下旬可能少一點行動力'],[60,'昏暴：國庫被掏空，糧食與市集收入打折；紅顏胃口長得更快；昏暴事件大增'],[85,'亡國之象：外部勢力頻頻上門勒索；權勢最高的紅顏會替你頒布政令']])}
+ ${row('暴虐',T0,[[0,`甜頭：我軍傷害 +${Math.round(T0/10)}%`],[30,'流民不敢來：流民增長下降'],[60,'將領離心：非後宮英靈好感慢慢下滑；逼宮兵變事件大增'],[85,'人人自危：好感低的英靈會連夜出逃；紅顏更容易自立門戶']])}
+ <div class="orn">回頭路</div>${LREM.map(r=>{const c=(cd[r[0]]||0)-S.t;return`<button class="opt frame" data-lrem="${r[0]}" ${c>0?'style="opacity:.5"':''}><span class="t"><b>${r[1]}</b> <span class="small">${r[2]}</span><div class="small">${r[3]}${c>0?`・還要 ${c} 旬`:''}</div></span></button>`}).join('')}`,true);
+ $$('[data-lrem]').forEach(b=>b.onclick=()=>{const r=LREM.find(x=>x[0]===b.dataset.lrem);if(((S.lremCD||{})[r[0]]||0)>S.t||!r[5]()){sfx('deny');return toast('現在做不到')}r[6]();(S.lremCD??={})[r[0]]=S.t+r[4];feedPush(`【${r[1]}】${r[3]}`);toast(r[1]);render();lordSheet()})}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.res.lord');if(!b)return;e.stopPropagation();lordSheet()},true);
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
