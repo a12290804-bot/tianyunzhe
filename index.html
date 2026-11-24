@@ -2997,6 +2997,49 @@ function gridSheet(id){const h=H(id),w=wed(id),sp=w&&h.sex==='f',m=mistState(id)
  <div class="gacts">${sp&&home?`<button class="btn" data-ga="visit">探望</button><button class="btn ghost" data-ga="gift" ${S.gifts?'':'disabled'}>賞賜（禮物 ${S.gifts||0}）</button><button class="btn ghost" data-ga="spy">密報・挑撥</button>`:''}${!sp&&home?`<button class="btn" data-ga="meet">召見談心</button>`:''}<button class="btn ghost" data-ga="detail">詳情・處置</button></div>`);
  $$('[data-ga]').forEach(b=>b.onclick=()=>{const k=b.dataset.ga;closeSheet();if(k==='visit')wedVisit(id);else if(k==='gift'){personaAct(id,'gift');render()}else if(k==='spy')pmSheet(id);else if(k==='meet')meet(id);else openHero(id)})}
 document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest('[data-gc]');if(c){gridSheet(c.dataset.gc);return}const f=e.target.closest&&e.target.closest('[data-gf]');if(f){const[k,v]=f.dataset.gf.split('|');S[k]=v;render()}});
+
+/* ===== 宮中暗流：依現有數值觸發的互動事件 ===== */
+function stirPick(){const sp=spouses().filter(id=>activePlace(id)==='home'&&audienceOK(id)&&!wed(id).cold&&!hst(id));if(sp.length<1)return null;
+ const N=id=>H(id).n,fv=id=>wed(id).fav|0,c=[];
+ const pairs=sp.flatMap((a,i)=>sp.slice(i+1).map(b=>[a,b]));
+ const men=S.order.filter(x=>H(x).sex==='m'&&!x.startsWith('kid')&&activePlace(x)==='home'&&!busyArmy(x)&&!(S.gone&&S.gone[x]));
+ // 送禮
+ pairs.filter(([a,b])=>relG(a,b)>=25).forEach(([a,b])=>c.push({w:2,t:'送禮',img:a,txt:`${N(a)}差人捧著一匣新製的香料與絲帕送到${N(b)}宮中，說是姐妹間的心意。宮人們都在看你的反應。`,o:[['當眾讚許兩人和睦',()=>{relAdd(a,b,10);wed(a).fav=Math.min(100,fv(a)+3);wed(b).fav=Math.min(100,fv(b)+3);return`${N(a)}與${N(b)}交情 +10，兩人寵愛 +3`}],['不置可否',()=>{relAdd(a,b,4);return`兩人交情 +4`}]]}));
+ // 告密
+ sp.forEach(b=>{const af=Object.entries(S.aff2||{}).find(([k,v])=>k.startsWith(b+'|')&&v.k!==9&&H(k.split('|')[1])),gr=hs(b).graft;if(!af&&!gr)return;
+  const a=sp.filter(x=>x!==b).sort((x,y)=>relG(x,b)-relG(y,b))[0];if(!a||relG(a,b)>10)return;
+  const what=af?`與${N(af[0].split('|')[1])}私下往來`:`私吞了糧 ${gr}`;
+  c.push({w:3,t:'告密',img:a,txt:`${N(a)}趁四下無人時跪在你面前，壓低聲音說：${N(b)}${what}。她手裡還握著一張字條，說是證據。`,o:[
+   ['嚴查到底',()=>{wed(b).fav=Math.max(0,fv(b)-15);setHst(b,'ban',2);hp(a).inf=Math.min(100,(hp(a).inf|0)+6);relAdd(a,b,-25);if(af)af[1].v=Math.max(0,(af[1].v||0)-30);return`${N(b)}禁足兩旬、寵愛 −15；${N(a)}權勢 +6，兩人結下深仇`}],
+   ['暗中壓下',()=>{wed(a).fav=Math.max(0,fv(a)-6);(S.spy??={})[b]=S.t+6;return`你不動聲色，卻暗中派人盯上了${N(b)}（密報 6 旬）；${N(a)}覺得白跑一趟，寵愛 −6`}],
+   ['反罰告密的人',()=>{wed(a).fav=Math.max(0,fv(a)-12);relAdd(a,b,-10);setMd(a,'委屈');return`你斥責${N(a)}搬弄是非，寵愛 −12`}]]})});
+ // 爭寵
+ if((S.vh||[]).length)sp.filter(a=>['佔有','嫉妒'].includes(jt(a))||md2(a)==='吃醋'||md2(a)==='嫉恨').forEach(a=>{const b=(S.vh||[]).slice(-1)[0];if(!b||b===a||!sp.includes(b))return;
+  c.push({w:3,t:'爭寵',img:a,txt:`你正要往${N(b)}宮裡去，${N(a)}的宮女卻在半路攔下，說娘娘心口疼，請你務必去看一眼。轉角處，${N(b)}的燈還亮著。`,o:[
+   [`改去${N(a)}那裡`,()=>{wed(a).fav=Math.min(100,fv(a)+10);wed(b).fav=Math.max(0,fv(b)-6);relAdd(a,b,-12);return`${N(a)}寵愛 +10；${N(b)}空等一夜，寵愛 −6，兩人交情 −12`}],
+   [`照樣去${N(b)}那裡`,()=>{wed(a).fav=Math.max(0,fv(a)-8);setMd(a,'嫉恨');relAdd(a,b,-6);return`${N(a)}寵愛 −8，心生嫉恨`}],
+   ['今晚誰也不見',()=>{wed(a).fav=Math.max(0,fv(a)-3);wed(b).fav=Math.max(0,fv(b)-3);return`兩人寵愛各 −3`}]]})});
+ // 結盟
+ pairs.filter(([a,b])=>relG(a,b)>=40&&(hp(a).inf|0)>=25&&(hp(b).inf|0)>=25).forEach(([a,b])=>c.push({w:2,t:'結盟',img:a,txt:`${N(a)}與${N(b)}近來形影不離，連請安都一起來。宮裡開始有人私下稱她們「一黨」，其他人見了都要讓三分。`,o:[
+   ['默許她們結盟',()=>{relAdd(a,b,15);hp(a).inf=Math.min(100,(hp(a).inf|0)+5);hp(b).inf=Math.min(100,(hp(b).inf|0)+5);return`兩人交情 +15、權勢各 +5`}],
+   ['設法拆散',()=>{relAdd(a,b,-25);wed(a).fav=Math.max(0,fv(a)-5);wed(b).fav=Math.max(0,fv(b)-5);return`兩人交情 −25、寵愛各 −5`}]]}));
+ // 污染失控
+ sp.filter(a=>mistState(a).band>=3).forEach(a=>{const m=mistState(a),foe=sp.filter(x=>x!==a).sort((x,y)=>relG(a,x)-relG(a,y))[0];
+  c.push({w:3+m.band,t:'失控',img:a,txt:`${N(a)}身上的黑霧又翻湧起來。她把殿裡的燭台全砸了，${foe?`赤著腳闖到${N(foe)}門前，`:''}誰勸都不聽，眼睛裡只剩一片暗紫。`,o:[
+   [`以能量淨化（30）`,()=>{if(S.energy<30)return'能量不足，什麼也沒能做';S.energy-=30;hs(a).mist=String(BigInt(hs(a).mist||0)>40n?BigInt(hs(a).mist)-40n:0n);return`污染 −40，${N(a)}昏睡了一整天`}],
+   ['縱容她發洩',()=>{hs(a).mist=String(BigInt(hs(a).mist||0)+20n);wed(a).fav=Math.min(100,fv(a)+5);if(foe){relAdd(a,foe,-15);wed(foe).fav=Math.max(0,fv(foe)-5)}barAdd('hedon',2);return`${N(a)}污染 +20、寵愛 +5${foe?`；${N(foe)}受驚，交情 −15`:''}；昏庸 +2`}],
+   ['禁足兩旬',()=>{setHst(a,'ban',2);wed(a).fav=Math.max(0,fv(a)-10);return`${N(a)}禁足、寵愛 −10`}]]})});
+ // 拉攏武將
+ if(men.length)sp.filter(a=>heroAmb(a)>=60&&(hp(a).inf|0)>=35&&!hp(a).patron).forEach(a=>{const g=men.sort((x,y)=>stat(y,'cmd')-stat(x,'cmd'))[0];
+  c.push({w:2,t:'拉攏',img:a,txt:`有人看見${N(a)}的心腹宮女三番兩次出入${N(g)}的營帳，送去的不只是酒菜，還有一封封沒署名的信。`,o:[
+   ['睜一隻眼閉一隻眼',()=>{hp(a).patron=g;relAdd(a,g,20);hp(a).inf=Math.min(100,(hp(a).inf|0)+8);return`${N(a)}拉攏了${N(g)}，權勢 +8`}],
+   ['敲打她',()=>{hp(a).inf=Math.max(0,(hp(a).inf|0)-10);wed(a).fav=Math.max(0,fv(a)-5);return`${N(a)}權勢 −10、寵愛 −5`}],
+   [`警告${N(g)}`,()=>{relAdd(a,g,-20);hs(g).aff=Math.max(0,(hs(g).aff|0)-5);return`${N(g)}收斂了，與${N(a)}交情 −20`}]]})});
+ if(!c.length)return null;let r=Math.random()*c.reduce((s,x)=>s+x.w,0);return c.find(x=>(r-=x.w)<0)||c[0]}
+function courtStir(cb){if(S.stirT===S.t||Math.random()>.5)return cb();const e=stirPick();if(!e)return cb();S.stirT=S.t;
+ sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(e.img)}.jpg)"></div><div><b style="color:var(--gold2)">宮中暗流・${e.t}</b><p style="margin:6px 0">${e.txt}</p></div></div>${e.o.map((o,i)=>`<button class="btn ${i?'ghost':''}" style="width:100%;margin-top:6px" data-st="${i}">${o[0]}</button>`).join('')}`,true);
+ $$('[data-st]').forEach(b=>b.onclick=()=>{const r=e.o[+b.dataset.st][1]();const s=`【${e.t}】${r}`;feedPush(s,'');closeSheet();toast(r);render();cb()})}
+{const _he2=haremEvent;haremEvent=function(cb){return _he2(()=>courtStir(cb))}}
 function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'群像';const tabs=['群像','總表','勢力圖','一覽','往來紀事','動態','關係','建築','冷宮行宮','結義兄弟'];
  let h=`<div class="ltabs">${tabs.map(t=>`<button class="${S.hTab===t?'on':''}" data-ht="${t}">${t}</button>`).join('')}</div>`;
  if(S.hTab==='群像'){S.gridFH=S.gridFH||'夫人';return h+gridView('gridFH')}

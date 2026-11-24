@@ -1,7 +1,7 @@
 // The save holds event references and cast IDs. Story text stays in the packs.
 window.makeCharacterEvents = function (game) {
  const {S, H, hs, wed, hp, mistState, rankOf, relG, relAdd, activePlace, barAdd, sheet, closeSheet, save, feedPush, $, goneHero, setHst} = game;
- const PER_TURN=1, SHOW_MAX=2, GAP=3, CHANCE=.3;
+ const PER_TURN=2, SHOW_MAX=3, GAP=2, CHANCE=.45;
  const packs = window.characterPacks;
  const tragedy = {captured:'戰敗被俘', public_shame:'公開羞辱', body_return:'遺體送還', wounded_return:'重傷歸來', survivor_return:'倖存者歸來', pregnancy_return:'懷孕歸來', forced_marriage:'強迫婚籍', private_captive:'私人囚禁', rescued:'營救獲釋', escaped:'自行逃脫'};
  const entries = Object.fromEntries(Object.entries(packs).map(([id,p])=>[id,Object.assign({},p.ch1_entry,p.ch2_intrigue,p.ch3_desirePower,p.ch4_citiesBonds,p.ch5_warAndTragedy)]));
