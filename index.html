@@ -1194,7 +1194,7 @@ function elv(e){if(e.lv)return e.lv;let b=S.cur&&S.cur!=='home'&&WD(S.cur)?wLvNo
 const TFX={baiqi:{ignoreDef:1,atk:.1},huoqubing:{move:2,first:.3},yuefei:{def:.15,counter:.15},weiqing:{atk:.1,first:.2},xiangyu:{desp:.3,atk:.1},yuji:{desp:.25,last:.2},lianghongyu:{terrain:1,rate:.08},fuhao:{eld:.25},gaoshun:{firstGuard:1,atk:.1},chenqingzhi:{under:.3},qinliangyu:{antiCav:1,def:.1},hanshizhong:{terrain:1,def:.1},xiaohe:{regen:.02,def:.05},zhugeliang:{terrain:1,eld:.15},diaochan:{stunUp:.25,rate:.08},shangguan:{siege:.2},huatuo:{regen:.04},libing:{terrain:1,siege:.1},liqingzhao:{rate:.1},fanli:{loot:.3,regen:.01},xishi:{eld:.15,regen:.02},yangguifei:{rate:.1,stunUp:.1},zhuowenjun:{loot:.3,def:.05},lvbuwei:{rate:.08,counter:.1},shenwansan:{def:.12,loot:.2},wangzhaojun:{regen:.03},lubu:{first:.35,move:1},hanxin:{desp:.3,under:.15},zhangliang:{stunR1:1,rate:.05},guanyu:{first:.25,atk:.1},sunwu:{volley:.04,rate:.05},limu:{antiCav:1,first:.15},zhangqian:{move:1,terrain:1},daji:{stunR1:1,stunUp:.15},lvzhi:{def:.15,siege:.1},sunshangxiang:{volley:.04,first:.1},caiwenji:{regen:.02,rate:.06},zhaofeiyan:{counter:.2},huangyueying:{siege:.2,terrain:1}};
 const TFL={ignoreDef:'破甲：無視敵軍「甲殼」',firstGuard:'陷陣：首回合敵軍無法反擊',antiCav:'拒馬：對騎兵傷害 +30%，且不受騎兵克制',terrain:'飛軍：山地、河流不減行軍',stunR1:'奇襲：開戰時敵軍陷入混亂一回合',volley:'齊射：每回合再削減敵軍兵力',move:'行軍',first:'首回合傷害',atk:'傷害',def:'受傷減免',counter:'敵軍反擊無效率',desp:'兵力過半折損後傷害',last:'兵力低於三成時受傷減免',rate:'戰法發動率',eld:'對污染體傷害',under:'以寡擊眾傷害',regen:'每回合回復兵力',stunUp:'擾亂成功率',siege:'守城戰受傷減免',loot:'戰利品'};
 const FLAGS=['ignoreDef','firstGuard','antiCav','terrain','stunR1'];
-const tfOn=id=>!!(hs(id)&&hs(id).troopOn);const tfMul=id=>1+facLv('barracks')*.15+(hs(id)?.troopDrills||0)*.1;
+const tfOn=id=>!!(hs(id)&&hs(id).troopOn);const tfMul=id=>1+facLv('barracks')*.15+(hs(id)?.troopDrills||0)*.1+Math.max(0,(hs(id)?.troopOn?(hs(id).tlv||1):1)-1)*.15;
 const tfText=id=>{const fx=TFX[id]||{},k=tfMul(id);return Object.entries(fx).map(([key,v])=>FLAGS.includes(key)?TFL[key]:key==='move'?`行軍 +${Math.floor(v*k)} 格`:key==='volley'?`${TFL.volley} ${Math.round(v*k*100)}%`:`${TFL[key]} +${Math.round(v*k*100)}%`).join('；')};
 const tfFlag=(gens,f)=>gens.some(g=>tfOn(g)&&TFX[g]&&TFX[g][f]);
 const tfCost=()=>[60,60,40];
@@ -3020,7 +3020,7 @@ function gridCard(id){const h=H(id),st=hs(id),w=wed(id),sp=w&&h.sex==='f',mo=mot
  const bar=(v,c,lab)=>`<i class="gb" title="${lab}"><b style="width:${Math.max(0,Math.min(100,v))}%;background:${c}"></b></i>`;
  return`<button class="gcard ${warn?'warn':''} ${m.band>=5?'dark':''}" data-gc="${id}" style="border-color:${bc}">
   <span class="gimg" style="background-image:url(img/${face(id)}.jpg)"></span>${(()=>{const n=bondList().filter(({b})=>b[0].includes(id)&&b[0].filter(x=>S.order.includes(x)&&activePlace(x)===activePlace(id)).length>=bNeed(b)).length;if(n)ic.push('🔗'+n);return ic.length?`<span class="gic">${ic.join('')}</span>`:''})()}${m.band?`<span class="gmist" style="opacity:${Math.min(.75,m.band*.12)}"></span>`:''}
-  <span class="gname">${h.n}</span><span class="gsub">${mo?'主母':sp?RANKN[rankOf(id)]:role(id)}${sp?'・'+md2(id):''}</span>
+  <span class="gname">${h.n}</span><span class="gsub">${mo?'主母':sp?RANKN[rankOf(id)]:role(id)}${sp?'・'+md2(id):''}${tfOn(id)?'・'+TROLEI[TROLE(id)]+'Lv'+tlv(id):''}</span>
   <span class="gnow">${nowOf(id)}</span><span class="gnum"><em style="color:#f0a0c0">♥${fav}</em><em style="color:#b07ad0">污${m.band}</em><em style="color:#f0d79a">${sp?'權':'忠'}${third}</em></span>${bar(fav,'linear-gradient(90deg,#c76b8f,#f0a0c0)',sp?'寵愛':'好感')}${bar(m.band?Math.min(100,m.band*17):0,'linear-gradient(90deg,#6a3a8a,#2a0a3a)','污染')}${bar(third,'linear-gradient(90deg,#9a7a2a,#f0d79a)',sp?'權勢':'忠誠')}</button>`}
 function gridView(key){key=key||'gridF';const f=S[key]||'全部',L=gridPeople(f);
  return`${orderBoard()}<div class="gfil">${GRIDF.map(x=>`<button class="chip ${x===f?'on':''}" data-gf="${key}|${x}">${x} ${gridPeople(x).length}</button>`).join('')}</div>
@@ -3031,7 +3031,7 @@ function gridSheet(id){const h=H(id),w=wed(id),sp=w&&h.sex==='f',m=mistState(id)
  sheet(`<div style="display:flex;gap:10px;align-items:center"><span class="pic" style="width:64px;height:80px;flex:none;border-radius:8px;background:url(img/${face(id)}.jpg) center 15%/cover"></span><div><h3 style="margin:0">${h.n}</h3><div class="small" style="color:var(--gold2)">${mother()===id?'主母':sp?RANKN[rankOf(id)]:role(id)}・${rosterName(activePlace(id))}${busyArmy(id)?'・出征中':''}</div></div></div>
  <div class="gstat">${sp?row('寵愛',w.fav)+row('情深',LOVEN[Math.max(0,loveLv(id))])+row('心境',md2(id))+row('權勢',hp(id).inf|0)+row('野心',heroAmb(id))+row('週期',CYI[cyc(id)]+CYN[cyc(id)]):row('好感',hs(id).aff)+row('忠誠',typeof loyal==='function'?loyal(id):'?')+row('任務',hs(id).task||'idle')}${row('污染',m.band?m.name:'清明')}${row('負荷',mistStrain(id)+'/10')}</div>
  <div class="frame small" style="padding:6px 8px;margin-bottom:8px;line-height:1.6"><b style="color:var(--gold2)">此刻</b>　${nowOf(id)}${(()=>{const o=sp&&hs(id).wish2;if(!o)return'';const [c,n]=wishProg(id);return`<br><b style="color:var(--gold2)">心之所向</b>　${WISH[o.k][1]}${o.foe?'：'+H(o.foe).n:''}（${Math.min(c,n)}/${n}）`})()}${sp&&dtagList(id).length?`<br><b style="color:var(--gold2)">性情</b>　${dtagList(id).join('、')}`:''}${recentOf(id).length?`<br><b style="color:var(--gold2)">近況</b><br>${recentOf(id).map(s=>'・'+s).join('<br>')}`:''}</div>
- ${sp?invHtml(id):''}
+ ${sp?invHtml(id):''}${troopHtml(id)}
  <div class="gacts">${sp&&home?`<button class="btn" data-ga="visit">探望</button><button class="btn ghost" data-ga="gift">賞賜</button><button class="btn ghost" data-ga="spy">密報・挑撥</button>`:''}${!sp&&home?`<button class="btn" data-ga="meet">召見談心</button>`:''}${home?`<button class="btn" data-ga="spend">相處（宮務）</button>`:''}<button class="btn ghost" data-ga="detail">詳情・處置</button></div>`);
  $$('[data-ga]').forEach(b=>b.onclick=()=>{const k=b.dataset.ga;closeSheet();if(k==='visit')wedVisit(id);else if(k==='gift'){giftSheet(id)}else if(k==='spy')pmSheet(id);else if(k==='meet')meet(id);else if(k==='spend')spendSheet(id);else openHero(id)})}
 document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest('[data-gc]');if(c){gridSheet(c.dataset.gc);return}const f=e.target.closest&&e.target.closest('[data-gf]');if(f){const[k,v]=f.dataset.gf.split('|');S[k]=v;render()}});
@@ -3431,6 +3431,49 @@ function caughtEvent(cb){const q=S.caught||[];const it=q.shift();if(!it||!S.orde
  $$('[data-cg]').forEach(b=>b.onclick=()=>{const i=+b.dataset.cg,w=wed(id);let r;if(i===0){setHst(id,'inj',2);w.fav=Math.max(0,w.fav-8);barAdd('tyranny',1);r=`${N}當眾受杖，負傷兩旬`}else if(i===1){setHst(id,'ban',3);w.fav=Math.max(0,w.fav-5);r=`${N}禁足三旬`}else if(i===2){w.cold={t:S.t};w.fav=Math.max(0,w.fav-15);r=`${N}被打入冷宮`}else if(i===3){w.fav=Math.min(100,w.fav+5);(hs(id).dtag??={})['感恩']=S.t;r=`你寬恕了${N}，她跪著哭了很久`}else{(S.spy??={})[id]=S.t+8;r=`你按下不表，派人盯著${N}`}
   feedPush('【處置】'+r);closeSheet();toast(r);render();cb()})}
 {const _hea=haremEvent;haremEvent=function(cb){autoTurn(feedPush);return _hea(()=>caughtEvent(cb))}}
+
+/* ===== 特色部隊改造：專長、等級、絕技 ===== */
+Object.assign(TFX.yuefei||{},{retreat:.5});if(TFX.zhugeliang)TFX.zhugeliang.def=.1;if(TFX.baiqi)TFX.baiqi.loot=.2;
+const TROLE=id=>{const f=TFX[id]||{};return f.siege?'攻城':f.eld?'斬妖':(f.stunR1||f.stunUp)?'奇襲':(f.move||f.terrain)?'機動':(f.def||f.regen||f.last||f.antiCav)&&!f.atk&&!f.first?'守禦':'破陣'};
+const TROLEI={攻城:'🏯',斬妖:'🔥',奇襲:'⚡',機動:'🐎',守禦:'🛡',破陣:'⚔'};
+const TLV3={破陣:['陷鋒',{first:.2}],攻城:['衝車',{siegeAtk:.2}],斬妖:['淨火',{eld:.2}],奇襲:['亂陣',{first:.15,rate:.05}],機動:['疾風',{move:1}],守禦:['鐵壁',{def:.1}]};
+const tlv=id=>tfOn(id)?(hs(id).tlv||1):0;
+const tlvNeed=l=>[0,2,4,7,10][l]||99;const tlvCost=l=>[0,80,140,220,320][l]||999;
+
+function troopFx(gens,en){const F={atk:0,first:0,def:0,rate:0,eld:0,notes:[]};const on=gens.filter(tfOn);const roles=new Set(on.map(TROLE));
+ on.forEach(g=>{const l=tlv(g),r=TROLE(g);if(l>=3){const [n,o]=TLV3[r];Object.entries(o).forEach(([k,v])=>{if(k==='siegeAtk'){if(en&&en.seat)F.atk+=v}else if(F[k]!=null)F[k]+=v});F.notes.push(`${H(g).n}【${HD[g]?.[11]||'特色部隊'}・${n}】`)}if(l>=5){F.first+=.5;F.notes.push(`${H(g).n}【終極絕技】首輪傷害 +50%`)}});
+ if(en){const need=en.seat?'攻城':en.eld||en.nest?'斬妖':(en.boss||en.wboss)?'奇襲':null;if(need){if(roles.has(need)){F.atk+=.2;F.notes.push(`${TROLEI[need]}${need}部隊克制此敵 +20%`)}else{F.atk-=.1;F.notes.push(`缺少${need}部隊 −10%`)}}}
+ return F}
+{const _m0=mods0;mods0=function(our,en,M0){M0=_m0(our,en,M0);if(our&&our.gens){const F=troopFx(our.gens,en);M0.atk+=F.atk;M0.first=(M0.first||0)+F.first;M0.def=Math.min(.7,(M0.def||0)+F.def);M0.rate=(M0.rate||0)+F.rate;if(F.eld&&en&&(en.eld||en.nest))M0.atk+=F.eld;window.__bt={gens:our.gens.slice(),en,notes:F.notes}}return M0}}
+{const _bv=battleVoices;battleVoices=function(ids,win){let h=_bv(ids,win);const B=window.__bt;if(!B||!B.gens.every(x=>ids.includes(x)))return h;window.__bt=null;const N=B.notes.slice();
+ if(win){ids.forEach(g=>{if(S.heroes[g])hs(g).wm=(hs(g).wm||0)+1});if(ids.includes('baiqi')&&tfOn('baiqi')&&B.en){const n=Math.round((B.en.max||200)*.1);S.soldiers+=n;N.push(`白起【秦銳士・坑殺】降卒 ${n} 人編入我軍`)}}
+ else if(ids.includes('yuefei')&&tfOn('yuefei'))N.push('岳飛【岳家軍・撼山】全軍有序撤退，損兵減半');
+ if(ids.some(x=>tfOn(x)&&(TFX[x]||{}).desp)&&!win)N.push('【破釜】殘兵越戰越勇');
+ return h+(N.length?`<div class="small" style="margin:6px 0;padding:6px 8px;border:1px solid #c9a24a55;border-radius:8px;color:#f0d79a">${N.map(x=>'✦ '+x).join('<br>')}</div>`:'')}}
+function troopOff(add){if(inWorld())return;const on=id=>S.order.includes(id)&&tfOn(id);
+ if(on('libing')){S.wood+=12;S.stone+=12}if(on('huatuo')){const x=S.order.find(x=>hst(x)==='inj');if(x){hs(x).hst.u=S.t;add(`【華佗醫隊】${H(x).n}傷癒`)}}
+ if(on('zhangqian')&&S.t%3===0){const e=pick(S.enemies.filter(e=>!T(e.r,e.c)?.seen));if(e){S.tiles.flat().filter(t=>dist(t,e)<=2).forEach(t=>t.seen=true);add('【張騫使團】探明了一處敵營')}}
+ ['fanli','shenwansan','zhuowenjun'].forEach(x=>{if(on(x))S.food+=15});if(on('xiaohe'))S.food+=10}
+{const _het=haremEvent;haremEvent=function(cb){troopOff(feedPush);return _het(cb)}}
+function troopUp(id){const l=tlv(id);if(!l||l>=5)return;const need=tlvNeed(l),c=tlvCost(l),wm=hs(id).wm||0;if(wm<need){sfx('deny');return toast(`戰功不足（${wm}/${need}）`)}if(S.wood<c||S.stone<c||S.energy<c/2){sfx('deny');return toast('資源不足')}S.wood-=c;S.stone-=c;S.energy-=c/2;hs(id).wm=wm-need;hs(id).tlv=l+1;SKC[id]=null;sfx('fanfare');const msg=`${H(id).n}的${HD[id]?.[11]||'特色部隊'}晉升 Lv${l+1}${l+1===3?'，習得「'+TLV3[TROLE(id)][0]+'」':l+1===5?'，習得終極絕技':''}`;feedPush('【部隊】'+msg);toast(msg)}
+function troopHtml(id){if(!TFX[id])return'';const r=TROLE(id);if(!tfOn(id))return`<div class="frame small" style="padding:6px 8px;margin-bottom:8px"><b style="color:var(--gold2)">特色部隊</b>　${HD[id]?.[11]||''}・${TROLEI[r]}${r}（尚未組建，到人物詳情組建）</div>`;const l=tlv(id);
+ return`<div class="frame small" style="padding:6px 8px;margin-bottom:8px;line-height:1.6"><b style="color:var(--gold2)">特色部隊</b>　${HD[id]?.[11]||''}・${TROLEI[r]}${r}・Lv${l}<br>${tfText(id)}${l>=3?`<br>二技「${TLV3[r][0]}」已習得`:'<br>Lv3 習得「'+TLV3[r][0]+'」'}${l>=5?'<br>終極絕技：首輪傷害 +50%':'・Lv5 終極絕技'}<br>戰功 ${hs(id).wm||0}${l<5?` / ${tlvNeed(l)}　<button class="btn sm" data-tup="${id}">升級（木石 ${tlvCost(l)}、能量 ${tlvCost(l)/2}）</button>`:''}</div>`}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-tup]');if(!b)return;const id=b.dataset.tup;troopUp(id);closeSheet();gridSheet(id);render()},true);
+
+/* 低優先事件也算入每旬視窗上限 */
+function lowEv(f,cb){if(!S.evB||S.evB.t!==S.t)S.evB={t:S.t,n:0};if(S.evB.n>=3)return cb();const was=$('#sheet').classList.contains('on');let fired=false;const r=f(()=>{fired=true;cb()});if(!was&&$('#sheet').classList.contains('on'))S.evB.n++;return r}
+{const _o=typeof jealousEvent==='function'?jealousEvent:null;if(_o)jealousEvent=function(cb){return lowEv(_o,cb)}}
+{const _o=typeof histEvent==='function'?histEvent:null;if(_o)histEvent=function(cb){return lowEv(_o,cb)}}
+{const _o=typeof ambEvent==='function'?ambEvent:null;if(_o)ambEvent=function(cb){return lowEv(_o,cb)}}
+{const _o=typeof bloodEvent==='function'?bloodEvent:null;if(_o)bloodEvent=function(cb){return lowEv(_o,cb)}}
+{const _o=typeof ownEvent==='function'?ownEvent:null;if(_o)ownEvent=function(cb){return lowEv(_o,cb)}}
+{const _o=typeof agEvent==='function'?agEvent:null;if(_o)agEvent=function(cb){return lowEv(_o,cb)}}
+{const _o=typeof factionEvent==='function'?factionEvent:null;if(_o)factionEvent=function(cb){return lowEv(_o,cb)}}
+{const _o=typeof cityEvent==='function'?cityEvent:null;if(_o)cityEvent=function(cb){return lowEv(_o,cb)}}
+{const _o=typeof powerEvent==='function'?powerEvent:null;if(_o)powerEvent=function(cb){return lowEv(_o,cb)}}
+{const _o=typeof brEvent==='function'?brEvent:null;if(_o)brEvent=function(cb){return lowEv(_o,cb)}}
+{const _o=typeof council==='function'?council:null;if(_o)council=function(cb){return lowEv(_o,cb)}}
+{const _o=typeof petition==='function'?petition:null;if(_o)petition=function(cb){return lowEv(_o,cb)}}
 function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'群像';const tabs=['群像','總表','心願','珍寶','勢力圖','一覽','動態','關係','建築','冷宮行宮','結義兄弟'];
  let h=`<div class="ltabs">${tabs.map(t=>`<button class="${S.hTab===t?'on':''}" data-ht="${t}">${t}</button>`).join('')}</div>`;
  if(S.hTab==='群像'){S.gridFH=S.gridFH||'夫人';return h+gridView('gridFH')}
