@@ -1643,7 +1643,8 @@ function relationsView(){
  });
  return '<div class="sec"><div class="orn">人物交情與出征羈絆</div><label>查看人物 <select id="relationFocus">'+S.order.map(id=>'<option value="'+id+'" '+(id===a?'selected':'')+'>'+H(id).n+'</option>').join('')+'</select></label><p class="small">以下依'+H(a).n+'目前的出征隊伍判定。兩人同城仍須編入同隊，才會取得雙人出征效果。</p>'+rows.join('')+'</div>'
 }
-function baseView(){
+function baseView(){return cityBar()+baseView0()}
+function baseView0(){
  const land=ownTiles().length,fac=S.slots.filter(s=>s&&s.lv).length,sc=score();
  return`<div class="basehero" style="background-image:url(img/${STAGES[S.stage][1]}.jpg);"><div class="cap"><h2>星盤燈塔・${STAGES[S.stage][0]}</h2><div class="stage">${STAGES.map((s,i)=>`<span class="${i<=S.stage?'on':''}">${s[0]}</span>`).join('')}</div><div class="small" style="margin-top:4px">自動升階條件：${stageNeed()}</div></div></div>
  <div class="sec"><div class="kpi"><div class="frame">勢力評價<b>${sc}</b>${rank(sc)}</div><div class="frame">領地<b>${land}</b>格</div><div class="frame">設施<b>${fac}</b>座</div><div class="frame">耐久<b>${S.dur}</b>/${S.durMax}</div></div>
@@ -1850,7 +1851,7 @@ function successionView(){
    return '<div class="frame" style="padding:8px">'+H(id).n+'・寵愛 '+w.fav+'/80・已探望 '+(w.visits||0)+'/3 次 '+status+
     (audienceOK(id)?' <button class="btn sm" data-family-visit="'+id+'">探望（1 行動）</button>':'')+'</div>';
   }).join('');
-  return '<div class="sec"><div class="orn">東宮・太子與教養</div><p>儲位虛懸。孩子出生後，可在此冊立儲君、拜師和教養。</p><p class="small">與紅顏締結誓約後，寵愛達 80 且探望至少 3 次，每旬有機會懷孕。孕期為 6 旬。</p>'+progress+'<button class="btn sm" data-family-home>前往後宮</button> <button class="btn ghost sm" data-family-heroes>查看武將與好感</button></div>';
+  return '<div class="sec"><div class="orn">東宮・太子與教養</div><p class="small">儲位虛懸。孩子出生後，可在此冊立儲君、拜師、抓周與教養；母親的性情與污染會影響孩子的血脈。</p></div>';
  }
  const heir=kids.find(k=>k.id===S.crown);
  const towns=cityTiles().filter(t=>t.city>1);
@@ -1919,7 +1920,7 @@ function successionTurn(add){
  const line='【爭儲】'+H(by).n+msg;feedPush(line);add(line,'');
 }
 
-function childrenView(){const pending=spouses().filter(id=>wed(id).preg);const pregnancies=pending.map(id=>H(id).n+'（'+Math.max(0,wed(id).preg-S.t)+' 旬後生產）').join('、');return successionView()+(S.pregLoss||[]).slice(-10).map(x=>'<div class="small">第 '+x.t+' 旬・'+H(x.mom).n+'失去胎兒</div>').join('')+(pregnancies?'<div class="sec">有孕：'+pregnancies+'</div>':'')+( (S.kids||[]).length?`<div class="sec"><div class="orn">子嗣</div>${S.kids.map(k=>`<div class="opt frame" style="margin-bottom:6px"><span class="pic" style="background-image:url(img/kid_${k.sex}.jpg)"></span><span class="t"><b>${k.n}</b> <span class="small">${k.sex==='m'?'公子':'千金'}・母親 ${H(k.mom).n}・${kidStage(k)}${k.adult?'（已加入麾下）':`（${24-kidAge(k)} 旬後成年）`}</span><div class="small">習文 ${k.wen||0}・習武 ${k.wu||0}</div>${k.adult?'':`<div style="display:flex;gap:6px;margin-top:4px"><button class="btn ghost sm" data-kt="${k.id}:wen">習文（1 行動）</button><button class="btn ghost sm" data-kt="${k.id}:wu">習武（1 行動）</button></div>`}</span></div>`).join('')}<p class="tip">孩子成年時會依教養方向成為內政或對外英靈，能力承襲母親。</p></div>`:'<div class="sec"><div class="orn">子嗣</div>目前尚無子嗣。</div>')}
+function childrenView(){const pending=spouses().filter(id=>wed(id).preg);const pregnancies=pending.map(id=>H(id).n+'（'+Math.max(0,wed(id).preg-S.t)+' 旬後生產）').join('、');return successionView()+bloodView()+(S.pregLoss||[]).slice(-10).map(x=>'<div class="small">第 '+x.t+' 旬・'+H(x.mom).n+'失去胎兒</div>').join('')+(pregnancies?'<div class="sec">有孕：'+pregnancies+'</div>':'')+( (S.kids||[]).length?`<div class="sec"><div class="orn">子嗣</div>${S.kids.map(k=>`<div class="opt frame" style="margin-bottom:6px"><span class="pic" style="background-image:url(img/kid_${k.sex}.jpg)"></span><span class="t"><b>${k.n}</b> <span class="small">${k.sex==='m'?'公子':'千金'}・母親 ${H(k.mom).n}・${kidStage(k)}${k.adult?'（已加入麾下）':`（${24-kidAge(k)} 旬後成年）`}</span><div class="small">習文 ${k.wen||0}・習武 ${k.wu||0}</div>${k.adult?'':`<div style="display:flex;gap:6px;margin-top:4px"><button class="btn ghost sm" data-kt="${k.id}:wen">習文（1 行動）</button><button class="btn ghost sm" data-kt="${k.id}:wu">習武（1 行動）</button></div>`}</span></div>`).join('')}<p class="tip">孩子成年時會依教養方向成為內政或對外英靈，能力承襲母親。</p></div>`:'<div class="sec"><div class="orn">子嗣</div>目前尚無子嗣。</div>')}
 function lordView(){
  return`<div class="sec"><div class="orn">天運者</div>${barHtml()}<p class="tip">你不上戰場。行動力用來擴張、建外部設施、談心、祝福部隊。好感越高忠誠越高；女性英靈到「誓約」可締結婚姻（需後宮殿閣），男性英靈結為生死之交。</p>${S.order.filter(id=>activePlace(id)==='home'&&canVow(id)).length?`<div class="sysline" style="margin:6px 0">💍 可以誓約：${S.order.filter(id=>activePlace(id)==='home'&&canVow(id)).map(id=>`<button class="btn sm" data-vow="${id}" style="margin:4px 4px 0 0">${H(id).n}・${vowLabel(id)}</button>`).join('')}${S.order.filter(id=>activePlace(id)==='home'&&canVow(id)).some(id=>!vowReady(id))?'<div class="small">（女性英靈需先蓋後宮殿閣）</div>':''}</div>`:''}
  <div class="kpi"><div class="frame">行動力<b>${S.ap}/${maxAP()}</b></div><div class="frame">能量<b>${S.energy}</b></div><div class="frame">天賦點<b>${S.talent}</b></div><div class="frame">晶核<b>${S.core}</b></div></div>
@@ -2821,7 +2822,7 @@ function doVerdict(id,k,worst){if(['flog','strip','execute'].includes(k)){return
 /* ---- 行宮 ---- */
 function palSend(id,t,mode){const w=wed(id);if(!w)return;w.pal={k:`${t.r}_${t.c}`,mode,t:S.t};w.duty=null;const L=GD.palace2&&GD.palace2[id];const o=mode==='favor'?{_fa:8,love:20,mood:'歡喜'}:{_fa:-10,love:-30,mood:'委屈'};fx33(o,{a:id});feedPush(`${H(id).n}${mode==='favor'?'奉恩旨':'被外放'}，移居${cityName(t)}的${(L&&L.name)||'行宮'}`,mode==='favor'?'':'neg');sheetDlg(id,(L&&L.send)||'……',`好（${lab33(o,{a:id})}）`,()=>{render()})}
 function palBack(id){const w=wed(id);if(!w||!w.pal)return;const L=GD.palace2&&GD.palace2[id];w.pal=null;fx33({love:15,_fa:5,mood:'甜蜜'},{a:id});sheetDlg(id,(L&&L.visit)||'夫君，我回來了。','好',()=>render())}
-function palTurn(add){spouses().forEach(id=>{const w=wed(id);if(!w.pal)return;const[r,c]=w.pal.k.split('_').map(Number);const t=cityTiles().find(x=>x.r===r&&x.c===c);if(!t||!(t.bs||[]).some(s=>s&&s.f==='xinggong')){w.pal=null;return}if((S.t-w.pal.t)%4===3){const L=GD.palace2&&GD.palace2[id];if(L&&L.letter)hxPush(id,L.letter,'行宮家書');loveAdd(id,w.pal.mode==='favor'?10:-5,true)}})}
+function palTurn(add){spouses().forEach(id=>{const w=wed(id);if(!w.pal)return;const[r,c]=w.pal.k.split('_').map(Number);const t=cityTiles().find(x=>x.r===r&&x.c===c);if(!t||!(t.bs||[]).some(s=>s&&s.f==='xinggong')){w.pal=null;return}if((S.t-w.pal.t)%(bfCount('yizhan')?2:4)===(bfCount('yizhan')?1:3)){const L=GD.palace2&&GD.palace2[id];if(L&&L.letter)hxPush(id,L.letter,'行宮家書');loveAdd(id,w.pal.mode==='favor'?10:-5,true)}})}
 
 /* ---- 分城設施 ---- */
 const BF={xinggong:['分城行宮',[90,90],'可讓一位夫人常駐（恩寵或外放），每 4 旬寄回家書'],yizhan:['八百里驛站',[50,40],'每旬糧 +6×級；每 3 旬禮物 +1'],shangguan:['萬國商館',[70,50],'每旬能量 +6×級；每 4 旬禮物 +1'],junying:['鎮霧大營',[60,80],'每旬兵力 +8×級；被圍多撐 1 旬'],xuetang:['歸墟學堂',[60,50],'每旬流民 +3×級、天賦進度 +0.05×級'],yaopu:['百草藥圃',[45,40],'每旬有機會讓一位傷兵提早痊癒'],kuangchang:['星鐵礦場',[50,70],'每旬石 +10×級；每 5 旬晶核 +1'],fenghuotai:['連珠烽火台',[40,70],'每旬污染 −1×級；襲擾機率 −3%×級'],mistwall:['鎮霧壁壘',[55,55],'阻擋黑霧向本城與鄰格蔓延，保護鄰近建築不被吞噬；每級據點污染 −2']};
@@ -3060,7 +3061,7 @@ function stirPick(){const sp=spouses().filter(id=>activePlace(id)==='home'&&audi
    ['敲打她',()=>{hp(a).inf=Math.max(0,(hp(a).inf|0)-10);wed(a).fav=Math.max(0,fv(a)-5);return`${N(a)}權勢 −10、寵愛 −5`}],
    [`警告${N(g)}`,()=>{relAdd(a,g,-20);hs(g).aff=Math.max(0,(hs(g).aff|0)-5);return`${N(g)}收斂了，與${N(a)}交情 −20`}]]})});
  if(!c.length)return null;let r=Math.random()*c.reduce((s,x)=>s+x.w,0);return c.find(x=>(r-=x.w)<0)||c[0]}
-function courtStir(cb){if(S.stirT===S.t||Math.random()>.5)return cb();const e=stirPick();if(!e)return cb();S.stirT=S.t;
+function courtStir(cb){if(S.stirT===S.t||Math.random()>Math.max(.25,.5-.08*spouses().filter(x=>wed(x).pal).length))return cb();const e=stirPick();if(!e)return cb();S.stirT=S.t;
  sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(e.img)}.jpg)"></div><div><b style="color:var(--gold2)">宮中暗流・${e.t}</b><p style="margin:6px 0">${e.txt}</p></div></div>${e.o.map((o,i)=>`<button class="btn ${i?'ghost':''}" style="width:100%;margin-top:6px" data-st="${i}">${o[0]}</button>`).join('')}`,true);
  $$('[data-st]').forEach(b=>b.onclick=()=>{const r=e.o[+b.dataset.st][1]();const s=`【${e.t}】${r}`;feedPush(s,'');closeSheet();toast(r);render();cb()})}
 {const _he2=haremEvent;haremEvent=function(cb){return _he2(()=>courtStir(cb))}}
@@ -3092,6 +3093,63 @@ function wishView(){const sp=spouses();if(!sp.length)return'<p class="small" sty
  return`<div class="small" style="color:var(--dim);margin:4px 2px 8px">每位夫人心裡都有一件最想要的事。成全她：寵愛 +10、情深上升；放著十二旬不理：寵愛 −5、心生怨懟。</div>${sp.map(id=>{const d=typeof desire==='function'?desire(id):null;if(!d)return'';const W=(hs(id).wishK||{})[d[0]]||{since:S.t},ok=d[2](),wait=S.t-W.since;
   return`<div class="frame" style="padding:8px;margin-bottom:6px;display:flex;gap:8px;align-items:center" data-gc="${id}"><span class="pic" style="width:42px;height:50px;flex:none;border-radius:6px;background:url(img/${face(id)}.jpg) center 15%/cover"></span><div style="flex:1"><b>${H(id).n}</b> <span class="chip" style="border-color:${ok?'#6c6':'#c9a24a'};color:${ok?'#9e9':'#f0d79a'}">${d[0]}</span><div class="small">${d[1]}</div><div class="meter" style="margin-top:3px"><i style="width:${ok?100:Math.min(100,wait/12*100)}%;background:${ok?'#6c6':wait>=9?'#e05060':'#c9a24a'}"></i></div><div class="small" style="color:${ok?'#9e9':wait>=9?'#ff8a8a':'var(--dim)'}">${ok?'已如願':`已等 ${wait} 旬${wait>=9?'・快要失望了':''}`}</div></div></div>`}).join('')}`}
 {const _he3=haremEvent;haremEvent=function(cb){wishTurn();return _he3(()=>audience(cb))}}
+
+/* ===== 分城總覽頁 ===== */
+const keyOf=t=>t.r+'_'+t.c;
+const branchCities=()=>cityTiles().filter(t=>t.city>1);
+function cityBar(){const L=branchCities();if(!L.length)return'';return`<div class="gfil" style="margin:6px 8px">${L.map(t=>`<button class="chip" data-cpage="${keyOf(t)}">🏯 ${cityName(t)}・${S.order.filter(id=>activePlace(id)===keyOf(t)).length}人</button>`).join('')}</div>`}
+function cityOut(id){const k=activePlace(id),t=branchCities().find(x=>keyOf(x)===k);if(wed(id)&&wed(id).pal){wed(id).pal=null;loveAdd(id,15,true)}if(t){t.cg=(t.cg||[]).filter(x=>x!==id);if(t.commander===id)t.commander=null}const st=hs(id);st.task='idle';delete st.station;delete st.cjob;delete st.manualTownJob}
+function cityMove(id,key){cityOut(id);const t=branchCities().find(x=>keyOf(x)===key);if(!t)return;setTask(id,'city:'+key);if(hs(id).task==='city:'+key)t.cg=[...new Set([...(t.cg||[]),id])]}
+function tripCost(){return bfCount('yizhan')?0:2}
+function cityTrip(t){const c=tripCost();if(S.ap<c){sfx('deny');return toast('行動力不足')}S.ap-=c;const ppl=S.order.filter(id=>activePlace(id)===keyOf(t));
+ ppl.forEach(id=>{if(wed(id)){wed(id).fav=Math.min(100,(wed(id).fav|0)+(wed(id).pal?10:6));loveAdd(id,wed(id).pal?60:30,true)}else gainAff(id,5)});
+ const pal=ppl.find(id=>wed(id)&&wed(id).pal),L=pal&&GD.palace2&&GD.palace2[pal];feedPush(`【巡幸】你親赴${cityName(t)}，${ppl.map(x=>H(x).n).join('、')||'守軍'}出城相迎`);
+ if(pal&&L&&L.visit)return sheetDlg(pal,L.visit,'好',()=>{cityPage(t)});toast(`巡幸${cityName(t)}：城中眾人好感上升`);cityPage(t)}
+function cityLetter(id){if(S.ap<1){sfx('deny');return toast('行動力不足')}S.ap--;const w=wed(id);w.fav=Math.min(100,(w.fav|0)+5);loveAdd(id,30,true);const L=GD.palace2&&GD.palace2[id];
+ if(Math.random()<.4&&L&&L.letter){hxPush(id,L.letter,'回信')}feedPush(`【家書】你寄信給${H(id).n}，寵愛 +5`);toast('信已寄出')}
+function cityPage(t){const key=keyOf(t),st=townStores(t),ppl=S.order.filter(id=>activePlace(id)===key);
+ const near=S.enemies.filter(e=>dist(e,t)<=3),others=branchCities().filter(x=>x!==t);
+ const facs=(t.townSlots||[]).filter(Boolean).map(s=>`<span class="chip" style="margin:2px">${FAC[s.f][0]} Lv${s.lv}${s.p<100?'・施工'+s.p+'%':''}</span>`).join('');
+ const bfs=(t.bs||[]).filter(Boolean).map(s=>`<span class="chip" style="margin:2px;border-color:#7fd0bd">${BF[s.f][0]} Lv${s.lv}</span>`).join('');
+ sheet(`<div class="evimg" style="background-image:url(img/city_view.jpg)"></div><h3 data-nodyn>🏯 ${cityName(t)}</h3>
+ <div class="gstat">${[['耐久',(t.dur??100)+'/'+(t.durMax??100)],['守軍',st.soldiers],['統領',t.commander&&S.order.includes(t.commander)?H(t.commander).n:'無'],['糧',st.food],['木',st.wood],['石',st.stone],['方針',t.policy||'自理'],['人員',ppl.length],['敵情',near.length?`<span style="color:#ff8a8a">${near.length} 支逼近</span>`:'平靜']].map(([a,b])=>`<div><span>${a}</span><b>${b}</b></div>`).join('')}</div>
+ <div class="small" style="color:var(--gold2)">城內設施</div><div>${facs||'<span class="small">尚無</span>'}</div><div class="small" style="color:var(--gold2);margin-top:4px">地方設施</div><div>${bfs||'<span class="small">尚無</span>'}</div>
+ <div class="small" style="color:var(--gold2);margin-top:8px">城中人物</div>
+ ${ppl.map(id=>{const sp=wed(id)&&H(id).sex==='f';return`<div class="frame" style="padding:6px;margin-bottom:5px;display:flex;gap:8px;align-items:center"><span class="pic" style="width:40px;height:48px;flex:none;border-radius:6px;background:url(img/${face(id)}.jpg) center 15%/cover"></span><div style="flex:1;min-width:0"><b>${H(id).n}</b> <span class="small" style="color:var(--gold2)">${sp?RANKN[rankOf(id)]:role(id)}</span><div class="small">${nowOf(id)}${sp?'・寵愛 '+wed(id).fav:'・好感 '+hs(id).aff}</div>
+  <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px"><button class="btn sm" data-cback="${id}">召回主城</button>${others.length?`<select class="cmove" data-cmove="${id}"><option value="">調往…</option>${others.map(x=>`<option value="${keyOf(x)}">${cityName(x)}</option>`).join('')}</select>`:''}${sp?`<button class="btn ghost sm" data-cletter="${id}">寄信（1 行動）</button><button class="btn ghost sm" data-cgift="${id}" ${S.gifts?'':'disabled'}>送賞賜</button>`:''}</div></div></div>`}).join('')||'<p class="small">城中沒有你的人。</p>'}
+ <div class="gacts" style="margin-top:8px"><button class="btn" id="cTrip">巡幸（${tripCost()?tripCost()+' 行動':'驛站直達・免行動'}）</button><button class="btn ghost" id="cOps">城務：派駐・調兵・運糧・出兵</button><button class="btn ghost" id="cBf">地方設施與行宮</button><button class="btn ghost" id="cClose">關閉</button></div>`);
+ $$('[data-cback]').forEach(b=>b.onclick=()=>{const id=b.dataset.cback;cityOut(id);feedPush(`【召回】${H(id).n}自${cityName(t)}返回主城`);toast(H(id).n+'已召回主城');render();cityPage(t)});
+ $$('[data-cmove]').forEach(s=>s.onchange=()=>{if(!s.value)return;const id=s.dataset.cmove;cityMove(id,s.value);toast(H(id).n+'已調往'+rosterName(s.value));render();cityPage(t)});
+ $$('[data-cletter]').forEach(b=>b.onclick=()=>{cityLetter(b.dataset.cletter);render();cityPage(t)});
+ $$('[data-cgift]').forEach(b=>b.onclick=()=>{personaAct(b.dataset.cgift,'gift');render();cityPage(t)});
+ $('#cTrip').onclick=()=>{cityTrip(t);render()};$('#cOps').onclick=()=>townPanel(t);$('#cBf').onclick=()=>bfSheet(t,true);$('#cClose').onclick=closeSheet}
+document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest('[data-cpage]');if(!c)return;const t=branchCities().find(x=>keyOf(x)===c.dataset.cpage);if(t)cityPage(t)});
+/* 分城夫人卡（後宮一覽） */
+function awayCard(id){const w=wed(id),loc=activePlace(id),t=branchCities().find(x=>keyOf(x)===loc);
+ return`<div class="frame" style="padding:8px;margin:4px 0 8px;display:flex;gap:8px;align-items:center"><span class="pic" data-gc="${id}" style="width:54px;height:66px;flex:none;border-radius:8px;background:url(img/${face(id)}.jpg) center 15%/cover"></span><div style="flex:1;min-width:0"><b>${H(id).n}</b> <span class="small" style="color:var(--gold2)">${RANKN[rankOf(id)]}${w.pal?'・行宮':w.cold?'・冷宮':''}</span><div class="small">${nowOf(id)}・寵愛 ${w.fav}・${md2(id)}</div><div class="meter" style="margin:3px 0"><i style="width:${w.fav}%;background:linear-gradient(90deg,#c76b8f,#f0a0c0)"></i></div>
+ <div style="display:flex;gap:4px;flex-wrap:wrap">${t?`<button class="btn sm" data-cletter2="${id}">寄信</button><button class="btn ghost sm" data-cback2="${id}">召回</button><button class="btn ghost sm" data-cpage="${loc}">前往${cityName(t)}</button>`:'<span class="small">出征或遠行中</span>'}</div></div></div>`}
+document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('[data-cletter2]');if(a){cityLetter(a.dataset.cletter2);render();return}const b=e.target.closest&&e.target.closest('[data-cback2]');if(b){const id=b.dataset.cback2;cityOut(id);feedPush(`【召回】${H(id).n}返回主城`);toast(H(id).n+'已召回主城');render()}});
+/* ===== 分城設施補完 ===== */
+{const _bf=bfTurn;bfTurn=function(add){_bf(add);if(inWorld())return;
+ branchCities().forEach(t=>{if(!(t.bs||[]).some(s=>s&&s.f==='xinggong'))return;spouses().filter(id=>wed(id).pal&&wed(id).pal.k===keyOf(t)).forEach(id=>{const st=townStores(t),f=Math.round(stat(id,'pol')/8),s=Math.round(stat(id,'cmd')/15);st.food+=f;st.soldiers+=s;if(f+s>0&&S.t%4===0)add(`【行宮】${H(id).n}坐鎮${cityName(t)}：本城糧 +${f}、兵 +${s}（每旬）`)})});
+ if(bfCount('shangguan')&&S.t%6===0){S.treasure=(S.treasure||0)+1;add('【萬國商館】西域商隊帶來一件稀世珍寶（賞賜時寵愛額外 +7）','pos')}
+ const xt=bfCount('xuetang');if(xt&&S.t%8===0&&Math.random()<.3*xt){S.talent=(S.talent||0)+1;S.energy+=40;add('【歸墟學堂】學堂舉薦民間良才：天賦點 +1、能量 +40','pos')}
+ const yp=bfCount('yaopu');if(yp)S.order.filter(x=>hst(x)==='inj'&&hs(x).hst.u>S.t+1).forEach(x=>{if(Math.random()<.3*yp)hs(x).hst.u--});
+ if(bfCount('yizhan')&&typeof tideIn==='function'&&tideIn()===2)add('【八百里驛站】急報：黑霧潮兩旬後來襲，請提早佈防','neg')}}
+{const _pa=personaAct;personaAct=function(id,k){if(k==='gift'&&S.gifts&&S.treasure>0&&wed(id)){S.treasure--;wed(id).fav=Math.min(100,(wed(id).fav|0)+7);toast('獻上稀世珍寶')}return _pa(id,k)}}
+
+/* ===== 子嗣：血脈與抓周 ===== */
+const INH={黑霧之子:['母親深陷黑霧，孩子天生帶著暗紫的眼瞳','武力、智略 +8，魅力 −5',{6:8,7:8,9:-5}],痴情血脈:['母親對你情深入骨','魅力 +8',{9:8}],野心血脈:['母親野心勃勃','統率、政治 +5',{5:5,8:5}],天運血脈:['燈塔庇佑的孩子','各項 +2',{5:2,6:2,7:2,8:2,9:2}]};
+const ZHUA={筆:['文曲','智略、政治 +5',{7:5,8:5},{wen:2}],劍:['武曲','統率、武力 +5',{5:5,6:5},{wu:2}],印:['權星','政治 +6、統率 +3',{8:6,5:3},{wen:1,wu:1}],鏡:['傾城','魅力 +10',{9:10},{}],星盤:['星眷','智略 +6、戰法發動率提升',{7:6},{wen:1}]};
+function kidInh(k){if(k.inh)return k.inh;const m=k.mom;k.inh=hs(m)&&mistState(m).band>=3?'黑霧之子':loveLv(m)>=4?'痴情血脈':heroAmb(m)>=70?'野心血脈':'天運血脈';return k.inh}
+{const _kh=kidHD;kidHD=function(k){_kh(k);const h=HD[k.id];if(!h)return;const adj=o=>Object.entries(o).forEach(([i,v])=>h[+i]=clamp(h[+i]+v,20,99));adj(INH[kidInh(k)][2]);if(k.zhua&&ZHUA[k.zhua])adj(ZHUA[k.zhua][2]);if(k.zhua==='星盤'&&h[14])h[14]={...h[14],rate:(h[14].rate||0)+.05}}}
+function kidMilestone(cb){const k=(S.kids||[]).find(x=>!x.adult&&!x.zhua&&kidAge(x)>=2);if(!k)return cb();kidInh(k);
+ sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/kid_${k.sex}.jpg)"></div><div><div class="small" style="color:var(--pink);letter-spacing:.2em">子嗣・${k.n}</div><h3>抓周</h3><p style="margin-top:6px">紅毯上擺滿了東西。${H(k.mom).n}抱著${k.sex==='f'?'女兒':'孩子'}坐在一旁，滿殿的人都屏住呼吸，看這孩子先抓哪一樣。<br><span class="small" style="color:var(--gold2)">血脈：${k.inh}（${INH[k.inh][0]}）</span></p></div></div>
+ ${Object.entries(ZHUA).map(([n,z])=>`<button class="opt frame" data-zh="${n}" style="margin-bottom:6px"><span class="t"><b>${n}・${z[0]}</b><div>${z[1]}</div></span></button>`).join('')}<button class="btn ghost" id="zhR" style="width:100%">讓孩子自己抓</button>`,true);
+ const done=n=>{k.zhua=n;const z=ZHUA[n];Object.entries(z[3]).forEach(([a,v])=>k[a]=(k[a]||0)+v);gainAff(k.mom,4);const s=`【抓周】${k.n}一把抓住了「${n}」——${z[0]}之相（${z[1]}）`;feedPush(s);if(typeof chronAdd==='function')chronAdd(s);closeSheet();toast(s.replace(/【.*?】/,''));render();cb()};
+ $$('[data-zh]').forEach(b=>b.onclick=()=>done(b.dataset.zh));$('#zhR').onclick=()=>done(pick(Object.keys(ZHUA)))}
+{const _ke=kidEvent;kidEvent=function(cb){return _ke(()=>kidMilestone(cb))}}
+function bloodView(){const K=(S.kids||[]);if(!K.length)return'';return`<div class="sec"><div class="orn">血脈與抓周</div>${K.map(k=>{const i=kidInh(k);return`<div class="frame small" style="padding:6px 8px;margin-bottom:5px"><b>${k.n}</b>・生母 ${H(k.mom).n}・${kidStage(k)}<br>血脈【${i}】${INH[i][1]}${k.zhua?`<br>抓周【${k.zhua}・${ZHUA[k.zhua][0]}】${ZHUA[k.zhua][1]}`:kidAge(k)<2?'<br>兩旬大時抓周':''}</div>`}).join('')}</div>`}
 function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'群像';const tabs=['群像','總表','心願','勢力圖','一覽','往來紀事','動態','關係','建築','冷宮行宮','結義兄弟'];
  let h=`<div class="ltabs">${tabs.map(t=>`<button class="${S.hTab===t?'on':''}" data-ht="${t}">${t}</button>`).join('')}</div>`;
  if(S.hTab==='群像'){S.gridFH=S.gridFH||'夫人';return h+gridView('gridFH')}
@@ -3111,7 +3169,7 @@ function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一�
  }
  if(S.hTab==='建築')return h+pbTab();
  if(!sp.length&&!['動態','關係','冷宮行宮'].includes(S.hTab))return h+`<div class="frame" style="padding:14px;margin:10px 0;text-align:center"><b>後宮尚無夫人</b><p class="small" style="margin-top:6px">與女英靈好感達到誓約後即可成婚。後宮的一舉一動、爭寵與陰謀都會在這裡呈現。</p></div>`;
- if(S.hTab==='一覽'){const m0=mother();h+=`<div class="small" style="color:var(--dim);margin:4px 2px 8px">情深隨寵愛起落；心境會影響她會掀起什麼樣的風波。${false&&S.corrupt?`<br><span style="color:${S.corrupt>=60?'#ff6a6a':'#d0a070'}">昏庸 ${S.hedon||0}・暴虐 ${S.tyranny||0}${S.corrupt>=60?'・朝野離心，逼宮與暴政事件增加':''}</span>`:''}</div>`+[...new Set(sp.map(activePlace))].map(loc=>'<div class="orn">'+rosterName(loc)+'</div>'+sp.filter(id=>activePlace(id)===loc).sort((a,b)=>(b===m0)-(a===m0)||loveLv(b)-loveLv(a)).map(id=>loc==='home'&&!away(id)?hCard(id):'<button class="btn ghost" style="margin:4px" data-ho="'+id+'">'+H(id).n+'・'+RANKN[rankOf(id)]+(wed(id).pal?'・行宮':wed(id).cold?'・冷宮':'')+'</button>').join('')).join('')}
+ if(S.hTab==='一覽'){const m0=mother();h+=`<div class="small" style="color:var(--dim);margin:4px 2px 8px">情深隨寵愛起落；心境會影響她會掀起什麼樣的風波。${false&&S.corrupt?`<br><span style="color:${S.corrupt>=60?'#ff6a6a':'#d0a070'}">昏庸 ${S.hedon||0}・暴虐 ${S.tyranny||0}${S.corrupt>=60?'・朝野離心，逼宮與暴政事件增加':''}</span>`:''}</div>`+[...new Set(sp.map(activePlace))].map(loc=>'<div class="orn">'+rosterName(loc)+'</div>'+sp.filter(id=>activePlace(id)===loc).sort((a,b)=>(b===m0)-(a===m0)||loveLv(b)-loveLv(a)).map(id=>loc==='home'&&!away(id)?hCard(id):awayCard(id)).join('')).join('')}
  if(S.hTab==='動態'){const F=S.hfeed||[];h+=F.length?F.map(f=>`<div class="frame" style="padding:7px 9px;margin-bottom:5px;border-color:${f.c==='neg'?'#8a3a4a':f.c==='rum'?'#6a5a8a':'var(--line)'}"><span class="small" style="color:var(--dim)">第 ${f.t} 旬${f.c==='rum'?'・傳聞':''}</span><div class="small" style="margin-top:2px;color:var(--ink,#ddd)">${f.s}</div></div>`).join(''):'<p class="small">宮中暫時風平浪靜。</p>'}
  if(S.hTab==='關係'){h+=relationsView();
   const rv=(GD.hrival||[]).map((r,i)=>[r,i]).filter(([r])=>r.ids.every(x=>sp.includes(x)));if(rv.length)h+=`<div class="orn">宿命恩怨</div>`+rv.map(([r,i])=>{const s=(S.rvS||{})[i]||0;return`<div class="frame" style="padding:6px 8px;margin-bottom:5px"><b class="small">${r.t}</b><span class="small" style="float:right;color:var(--dim)">${s>=3?'已了結':`第 ${s}/3 幕`}</span><div class="small" style="color:var(--dim)">${r.ids.map(x=>H(x).n).join(' × ')}</div></div>`}).join('')}
