@@ -1352,7 +1352,7 @@ function snap(){S.prev={food:S.food,wood:S.wood,stone:S.stone,energy:S.energy,so
 function hud(){const pc=S.pol>60?'var(--blood)':S.pol>30?'var(--void)':'var(--jade)';const ti=tideIn(),warn=ti===1;
  const cur={food:S.food,wood:S.wood,stone:S.stone,energy:S.energy,pop:S.pop,soldiers:S.soldiers};
  const cls=k=>lastRes[k]===undefined||lastRes[k]===cur[k]?'':cur[k]>lastRes[k]?'up':'dn';
- ['food','wood','stone','energy','pop','soldiers'].forEach(k=>S[k]=Math.round(S[k]||0));$('#hud').innerHTML=`<div class="row"><span class="date">${dateStr(S.t)}</span><span class="res" id="wxChip" style="margin-left:8px;cursor:pointer">${wxNow()[1]}${wxNow()[0]}</span><span class="res" style="margin-left:auto;color:var(--gold2)">行動 ${S.ap}/${maxAP()}</span></div>
+ ['food','wood','stone','energy','pop','soldiers'].forEach(k=>S[k]=Math.round(S[k]||0));$('#hud').innerHTML=`<div class="row"><span class="date">${dateStr(S.t)}</span><span class="res" id="wxChip" style="margin-left:8px;cursor:pointer">${wxNow()[1]}${wxNow()[0]}</span><span class="res" style="margin-left:auto;color:var(--gold2)">行動 ${S.ap}/${maxAP()}</span>${spouses().length?`<span class="res" style="margin-left:6px;color:#f0a0c0">宮務 ${gwLeft()}/${gwMax()}</span>`:''}</div>
  <div class="row" style="margin-top:3px"><span class="res ${cls('food')}"><img src="img/ic_food.jpg" alt="糧">${S.food}<small style="color:var(--dim)">/${capRes().food}</small></span><span class="res ${cls('wood')}"><img src="img/ic_wood.jpg" alt="木">${S.wood}</span><span class="res ${cls('stone')}"><img src="img/ic_stone.jpg" alt="石">${S.stone}</span>
  <span class="res ${cls('energy')}"><img src="img/ic_energy.jpg" alt="能量">${S.energy}</span><span class="res ${cls('pop')}"><img src="img/ic_pop.jpg" alt="流民">${(S.pop=typeof popN==='function'?popN(S.pop):Math.max(0,Math.round(S.pop||0)))}<small style="color:var(--dim)">/${popCap()}</small></span><span class="res ${cls('soldiers')}">兵 ${S.soldiers}</span><span class="res"><i style="width:10px;height:10px;border-radius:50%;display:inline-block;background:${pc};box-shadow:0 0 6px ${pc}"></i>污 ${S.pol}</span><span class="res lord">昏${S.hedon||0}・暴${S.tyranny||0}</span>${spouses().length&&hAlerts().length?`<span class="res alert" data-hjump="1">宮⚠${hAlerts().length}</span>`:''}</div>
  <div class="tidebar ${warn?'warn':''}"><span>黑霧潮 第${S.tides+1}波</span><span class="meter"><i style="width:${(tideInterval-ti+1)/tideInterval*100}%;background:${warn?'':'#6a4a9a'}"></i></span><span>${warn?'下旬來襲！':ti+' 旬後'}</span></div>`;
@@ -2013,7 +2013,7 @@ const WED_P={f:['今日辛苦了，什麼都不想，只想陪你說說話。','
 const WED_E={f:['那一夜，暖閣的燈火很晚才熄。','她靠在你肩頭，絮絮說著白日裡的瑣事，直到睡意悄悄襲來。','臨別時她替你理了理衣襟，小聲叮囑你明日早些回來。'],m:['酒罈見底時，東方已經泛白。','兩人並肩看著遠處的黑霧，誰也沒有再說話，卻都覺得踏實。']};
 function wedVisit(id){const h=H(id),st=hs(id),w=st.wed,sx=h.sex,P=GD.personal[id],G2=GD.wed&&GD.wed[id];if(['inj','jail','ban'].includes(hst(id))){sfx('deny');return toast(`${h.n}${HST[hst(id)][0]}中，見不到她`)}
  S.vh=[...(S.vh||[]),id].slice(-3);if(sx==='f'&&S.vh.length===3&&S.vh.every(x=>x===id)){const cs=spouses().filter(x=>x!==id&&GD.hev24&&GD.hev24[x]&&GD.hev24[x].cold3);if(cs.length){const x=pick(cs);hxPush(x,GD.hev24[x].cold3,'連續三次冷落')}}
- if(S.ap<1){sfx('deny');return toast('本旬行動力用完了')}S.ap--;const b0=w.fav;w.fav=Math.min(100,w.fav+R(22,30)+Math.round(stat(id,'cha')/20));w.grace=S.t+2;w.visits=(w.visits||0)+1;w.last=S.t;if(sx==='f')onVisitJealousy(id);if(sx==='f')loveAdd(id,R(25,40));
+ if(!gwPay())return;const b0=w.fav;w.fav=Math.min(100,w.fav+R(22,30)+Math.round(stat(id,'cha')/20));w.grace=S.t+2;w.visits=(w.visits||0)+1;w.last=S.t;if(sx==='f')onVisitJealousy(id);if(sx==='f')loveAdd(id,R(25,40));
  const fill=x=>x.replace(/\{n\}/g,h.n);let l;
  const ms=G2&&G2.ev&&G2.ev.find(e=>!w['ev_'+e.k]&&w.visits>=e.at);
  if(ms){w['ev_'+ms.k]=1;l=ms.l.slice();if(ms.t&&!l.some(x=>x[0]==='s'))l.unshift(['s',`${sx==='f'?'婚後事件':'結義事件'}【${ms.t}】`]);if(ms.eff){evApply(ms.eff,{aff:id});const et=evText(ms.eff,{aff:id});if(et)l.push(['s',et])}if(l.length<=3&&G2.talk&&G2.talk.length)l.splice(1,0,[id,pick(G2.talk)])}
@@ -2939,12 +2939,12 @@ function spySecrets(id){const st=hs(id),P=hp(id),m=mistState(id),out=[];
 function pmSheet(id){const sp=spouses().filter(x=>x!==id&&audienceOK(x)),spy=(S.spy||{})[id]>S.t;
  sheet(`<h3>${H(id).n}・${mother()===id?'主母':RANKN[rankOf(id)]}</h3>
  <div class="frame" style="padding:8px;margin:8px 0"><b class="small" style="color:var(--gold2)">🕵 密報</b>${spy?`<div class="small" style="margin-top:4px;line-height:1.7">${spySecrets(id).join('<br>')}</div><div class="small" style="color:var(--dim)">密探回報有效至第 ${S.spy[id]} 旬</div>`:`<div class="small" style="margin:4px 0">派人暗中盯著她，揭開私情、貪墨、記恨與她真正的慾望。</div><button class="btn sm" id="pmSpy" ${S.energy<30?'disabled':''}>派密探（能量 30・持續 6 旬）</button>`}</div>
- <div class="small" style="color:var(--gold2);margin-top:6px">挑撥（1 行動・交情 −15，有三成會被識破）</div><div>${sp.map(x=>`<button class="btn ghost sm" style="margin:3px" data-pmx="${x}">${H(x).n}（${relG(id,x)}）</button>`).join('')||'<span class="small">無人可挑撥</span>'}</div>
- <div class="small" style="color:var(--gold2);margin-top:6px">調和（1 行動・交情 +15）</div><div>${sp.map(x=>`<button class="btn ghost sm" style="margin:3px" data-pmh="${x}">${H(x).n}（${relG(id,x)}）</button>`).join('')||'<span class="small">無人可調和</span>'}</div>
+ <div class="small" style="color:var(--gold2);margin-top:6px">挑撥（1 宮務・交情 −15，有三成會被識破）</div><div>${sp.map(x=>`<button class="btn ghost sm" style="margin:3px" data-pmx="${x}">${H(x).n}（${relG(id,x)}）</button>`).join('')||'<span class="small">無人可挑撥</span>'}</div>
+ <div class="small" style="color:var(--gold2);margin-top:6px">調和（1 宮務，每旬首次免費・交情 +15）</div><div>${sp.map(x=>`<button class="btn ghost sm" style="margin:3px" data-pmh="${x}">${H(x).n}（${relG(id,x)}）</button>`).join('')||'<span class="small">無人可調和</span>'}</div>
  <button class="btn ghost" style="width:100%;margin-top:10px" data-pmo="${id}">查看人物詳情</button>`);
  if($('#pmSpy'))$('#pmSpy').onclick=()=>{if(S.energy<30)return;S.energy-=30;S.spy=S.spy||{};S.spy[id]=S.t+6;sfx('page');pmSheet(id);render()};
- $$('[data-pmx]').forEach(b=>b.onclick=()=>{if(S.ap<1){sfx('deny');return toast('本旬行動力用完了')}S.ap--;const x=b.dataset.pmx;relAdd(id,x,-15);if(Math.random()<.3){wed(id).fav=Math.max(0,wed(id).fav-6);wed(x).fav=Math.max(0,wed(x).fav-6);feedPush(`【挑撥敗露】${H(id).n}與${H(x).n}發現是你在中間搬弄是非，兩人寵愛 −6`,'neg');toast('挑撥被識破了')}else{feedPush(`【暗流】${H(id).n}與${H(x).n}之間起了嫌隙`,'rum');toast('兩人交情 −15')}closeSheet();render()});
- $$('[data-pmh]').forEach(b=>b.onclick=()=>{if(S.ap<1){sfx('deny');return toast('本旬行動力用完了')}S.ap--;const x=b.dataset.pmh;relAdd(id,x,15);feedPush(`【調和】你居中說和，${H(id).n}與${H(x).n}交情 +15`);closeSheet();render()});
+ $$('[data-pmx]').forEach(b=>b.onclick=()=>{if(!gwPay())return;const x=b.dataset.pmx;relAdd(id,x,-15);if(Math.random()<.3){wed(id).fav=Math.max(0,wed(id).fav-6);wed(x).fav=Math.max(0,wed(x).fav-6);feedPush(`【挑撥敗露】${H(id).n}與${H(x).n}發現是你在中間搬弄是非，兩人寵愛 −6`,'neg');toast('挑撥被識破了')}else{feedPush(`【暗流】${H(id).n}與${H(x).n}之間起了嫌隙`,'rum');toast('兩人交情 −15')}closeSheet();render()});
+ $$('[data-pmh]').forEach(b=>b.onclick=()=>{if(!gwPay('mediate'))return;const x=b.dataset.pmh;relAdd(id,x,15);feedPush(`【調和】你居中說和，${H(id).n}與${H(x).n}交情 +15`);closeSheet();render()});
  $$('[data-pmo]').forEach(b=>b.onclick=()=>{closeSheet();openHero(b.dataset.pmo)})}
 document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest('[data-pm]');if(g)pmSheet(g.dataset.pm)});
 
@@ -3105,7 +3105,7 @@ function cityTrip(t){const c=tripCost();if(S.ap<c){sfx('deny');return toast('行
  ppl.forEach(id=>{if(wed(id)){wed(id).fav=Math.min(100,(wed(id).fav|0)+(wed(id).pal?10:6));loveAdd(id,wed(id).pal?60:30,true)}else gainAff(id,5)});
  const pal=ppl.find(id=>wed(id)&&wed(id).pal),L=pal&&GD.palace2&&GD.palace2[pal];feedPush(`【巡幸】你親赴${cityName(t)}，${ppl.map(x=>H(x).n).join('、')||'守軍'}出城相迎`);
  if(pal&&L&&L.visit)return sheetDlg(pal,L.visit,'好',()=>{cityPage(t)});toast(`巡幸${cityName(t)}：城中眾人好感上升`);cityPage(t)}
-function cityLetter(id){if(S.ap<1){sfx('deny');return toast('行動力不足')}S.ap--;const w=wed(id);w.fav=Math.min(100,(w.fav|0)+5);loveAdd(id,30,true);const L=GD.palace2&&GD.palace2[id];
+function cityLetter(id){if(!gwPay('letter'))return;const w=wed(id);w.fav=Math.min(100,(w.fav|0)+5);loveAdd(id,30,true);const L=GD.palace2&&GD.palace2[id];
  if(Math.random()<.4&&L&&L.letter){hxPush(id,L.letter,'回信')}feedPush(`【家書】你寄信給${H(id).n}，寵愛 +5`);toast('信已寄出')}
 function cityPage(t){const key=keyOf(t),st=townStores(t),ppl=S.order.filter(id=>activePlace(id)===key);
  const near=S.enemies.filter(e=>dist(e,t)<=3),others=branchCities().filter(x=>x!==t);
@@ -3116,7 +3116,7 @@ function cityPage(t){const key=keyOf(t),st=townStores(t),ppl=S.order.filter(id=>
  <div class="small" style="color:var(--gold2)">城內設施</div><div>${facs||'<span class="small">尚無</span>'}</div><div class="small" style="color:var(--gold2);margin-top:4px">地方設施</div><div>${bfs||'<span class="small">尚無</span>'}</div>
  <div class="small" style="color:var(--gold2);margin-top:8px">城中人物</div>
  ${ppl.map(id=>{const sp=wed(id)&&H(id).sex==='f';return`<div class="frame" style="padding:6px;margin-bottom:5px;display:flex;gap:8px;align-items:center"><span class="pic" style="width:40px;height:48px;flex:none;border-radius:6px;background:url(img/${face(id)}.jpg) center 15%/cover"></span><div style="flex:1;min-width:0"><b>${H(id).n}</b> <span class="small" style="color:var(--gold2)">${sp?RANKN[rankOf(id)]:role(id)}</span><div class="small">${nowOf(id)}${sp?'・寵愛 '+wed(id).fav:'・好感 '+hs(id).aff}</div>
-  <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px"><button class="btn sm" data-cback="${id}">召回主城</button>${others.length?`<select class="cmove" data-cmove="${id}"><option value="">調往…</option>${others.map(x=>`<option value="${keyOf(x)}">${cityName(x)}</option>`).join('')}</select>`:''}${sp?`<button class="btn ghost sm" data-cletter="${id}">寄信（1 行動）</button><button class="btn ghost sm" data-cgift="${id}" ${S.gifts?'':'disabled'}>送賞賜</button>`:''}</div></div></div>`}).join('')||'<p class="small">城中沒有你的人。</p>'}
+  <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px"><button class="btn sm" data-cback="${id}">召回主城</button>${others.length?`<select class="cmove" data-cmove="${id}"><option value="">調往…</option>${others.map(x=>`<option value="${keyOf(x)}">${cityName(x)}</option>`).join('')}</select>`:''}${sp?`<button class="btn ghost sm" data-cletter="${id}">寄信（宮務）</button><button class="btn ghost sm" data-cgift="${id}" ${S.gifts?'':'disabled'}>送賞賜</button>`:''}</div></div></div>`}).join('')||'<p class="small">城中沒有你的人。</p>'}
  <div class="gacts" style="margin-top:8px"><button class="btn" id="cTrip">巡幸（${tripCost()?tripCost()+' 行動':'驛站直達・免行動'}）</button><button class="btn ghost" id="cOps">城務：派駐・調兵・運糧・出兵</button><button class="btn ghost" id="cBf">地方設施與行宮</button><button class="btn ghost" id="cClose">關閉</button></div>`);
  $$('[data-cback]').forEach(b=>b.onclick=()=>{const id=b.dataset.cback;cityOut(id);feedPush(`【召回】${H(id).n}自${cityName(t)}返回主城`);toast(H(id).n+'已召回主城');render();cityPage(t)});
  $$('[data-cmove]').forEach(s=>s.onchange=()=>{if(!s.value)return;const id=s.dataset.cmove;cityMove(id,s.value);toast(H(id).n+'已調往'+rosterName(s.value));render();cityPage(t)});
@@ -3150,6 +3150,12 @@ function kidMilestone(cb){const k=(S.kids||[]).find(x=>!x.adult&&!x.zhua&&kidAge
  $$('[data-zh]').forEach(b=>b.onclick=()=>done(b.dataset.zh));$('#zhR').onclick=()=>done(pick(Object.keys(ZHUA)))}
 {const _ke=kidEvent;kidEvent=function(cb){return _ke(()=>kidMilestone(cb))}}
 function bloodView(){const K=(S.kids||[]);if(!K.length)return'';return`<div class="sec"><div class="orn">血脈與抓周</div>${K.map(k=>{const i=kidInh(k);return`<div class="frame small" style="padding:6px 8px;margin-bottom:5px"><b>${k.n}</b>・生母 ${H(k.mom).n}・${kidStage(k)}<br>血脈【${i}】${INH[i][1]}${k.zhua?`<br>抓周【${k.zhua}・${ZHUA[k.zhua][0]}】${ZHUA[k.zhua][1]}`:kidAge(k)<2?'<br>兩旬大時抓周':''}</div>`}).join('')}</div>`}
+
+/* ===== 宮務：後宮專用的行動池 ===== */
+const gwMax=()=>2+(spouses().length>=4?1:0)+(spouses().length>=8?1:0);
+const gwLeft=()=>S.gw??(S.gw=gwMax());
+function gwPay(free){if(free&&S.gwFree?.[free]!==S.t){(S.gwFree??={})[free]=S.t;toast('本旬首次免費');return true}
+ if(gwLeft()>0){S.gw--;return true}if(S.ap>0){S.ap--;toast('宮務用完，改用 1 點行動');return true}sfx('deny');toast('宮務與行動都用完了');return false}
 function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'群像';const tabs=['群像','總表','心願','勢力圖','一覽','往來紀事','動態','關係','建築','冷宮行宮','結義兄弟'];
  let h=`<div class="ltabs">${tabs.map(t=>`<button class="${S.hTab===t?'on':''}" data-ht="${t}">${t}</button>`).join('')}</div>`;
  if(S.hTab==='群像'){S.gridFH=S.gridFH||'夫人';return h+gridView('gridFH')}
@@ -4181,7 +4187,7 @@ function endTurn(){
  S.t++;
  const wasTide=S.t%tideInterval===0;if(wasTide){if(away)homeTide(add);else tide(add)}worldTick(add);
  if(knows('convoy'))convoy();diplomaticTurn(add);fieldWorks(add);wxRoll(add);wtxTurn(add);nmilTurn(add);facTurn(add);moveEnemies(add);milTurn(add);
- S.ap=maxAP()-(S.apDebt||0)+(S.companionAP||0);S.companionAP=0;S.apDebt=0;S.blessed=S.blessed&&S.units.some(u=>u.id===S.blessed)?S.blessed:null;
+ S.gw=gwMax();S.ap=maxAP()-(S.apDebt||0)+(S.companionAP||0);S.companionAP=0;S.apDebt=0;S.blessed=S.blessed&&S.units.some(u=>u.id===S.blessed)?S.blessed:null;
  S.units.forEach(u=>{const dest=armyHome(u);if(!inWorld()&&u.r===dest.r&&u.c===dest.c&&!u.tgt){treasury(dest).soldiers+=u.troops;u.gens.forEach(g=>{hs(g).task='idle';hs(g).station=dest===BASE?null:dest.r+'_'+dest.c});u.dead=true;add(`${H(u.gens[0]).n}的部隊返回${dest===BASE?"燈塔":cityName(dest)}歸營`)}});
  S.units=S.units.filter(u=>!u.dead);
  const finish=()=>{checkFalls(r=>report.push([r,'pos']));if(wasTide){S.tides++;if(battleQ.length===0||true){}}showReport()};

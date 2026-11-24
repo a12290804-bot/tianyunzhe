@@ -14,7 +14,8 @@ window.makeCharacterEvents = function (game) {
   const g=S.order.filter(x=>H(x).sex==='m'&&!x.startsWith('kid')).sort((x,y)=>Number(activePlace(y)===activePlace(id))-Number(activePlace(x)===activePlace(id))||relG(id,y)-relG(id,x)||x.localeCompare(y))[0];
   return {b,c,g,heir:(S.kids||[]).find(k=>k.mom===id&&k.adult)?.id};
  }
- function textOf(e) {
+ function textOf(e){const r=textOf0(e);if(!r.choices||!r.choices.length){const D=defaults(e);if(D)r.choices=D}return r}
+ function textOf0(e) {
   const d=entries[e.id][e.key], v=e.variant;
   if(e.key==='tragedies'){const t=d[v];return {title:t.title,choices:t.choices,body:lines([t.scene,Object.values(t.variants||{})[Number(e.high)],t.dialogue,t.aftermath]).map(s=>s.replace(/侵蝕度直接鎖定(?:深淵| 95\+)/g,'永久留下惡墮印記'))}}
   if(e.key==='battlefieldEncounters')return {title:d.title,choices:d.choices,body:lines(d[v])};
@@ -59,12 +60,34 @@ window.makeCharacterEvents = function (game) {
     if(!w){const pending=st.packPending??={};pending[key]=(pending[key]||0)+n;continue}
     const dest=key==='aff'?w:hp(id),field=key==='aff'?'fav':'inf';
     dest[field]=Math.max(0,Math.min(100,(dest[field]||0)+n));
-   }else if(key==='corruption')st.mist=String(BigInt(st.mist||0)+BigInt(n));
+   }else if(key==='corruption'){const v=BigInt(st.mist||0)+BigInt(n);st.mist=String(v<0n?0n:v)}
    else if(key==='hedon'||key==='tyranny')barAdd(key,n);
    else if(key.startsWith('rel_'))relAdd(id,cast[key.slice(4)],n);
   }
  }
  // 劇情結果落到遊戲狀態
+
+ // 文本沒附選項時，依事件類型補上會改變數值的選項
+ function defaults(e){const k=e.key,v=e.variant;
+  const T={
+   bondAndDrift:[['成全這段情誼',{rel_g:15,aff:3}],['提防兩人走得太近',{rel_g:-12,inf:-3}],['把兩人拆到不同的城',{rel_g:-20,aff:-5},'split']],
+   factionRecruit:[['默許她招兵買馬',{inf:10,corruption:5}],['敲打她，別結黨',{inf:-10,aff:-5}],['把那些人收編到你麾下',{rel_g:-10,aff:-3},'absorb']],
+   rumorFrameReversal:[['支持她翻案，嚴懲造謠者',{aff:8,rel_b:-20},'punishB'],['各打五十大板',{aff:-3,rel_b:-5}],['偏袒對方，壓下此事',{aff:-12,corruption:10}]],
+   cooperateAfterRift:[['讓她們按約定分贓',{inf:5,rel_b:5}],['出面主持公道',{aff:-3,rel_b:10}]],
+   corruptionAndFall:[['縱容她，一起沉淪',{aff:10,corruption:20,hedon:4}],['以能量淨化她（30）',{corruption:-40,aff:-3},'purify'],['冷落她一陣子',{aff:-10}]],
+   humiliationAbuseRevolt:[['默許，那是她們之間的事',{inf:6,corruption:10},'allow'],['出手制止，救下對方',{aff:-10,rel_b:10},'stop']],
+   heirAndFamily:[['站在太子那邊',{aff:-15,inf:-10}],['站在她那邊，斥責太子',{aff:10,inf:8,tyranny:3}],['兩邊安撫，各退一步',{aff:-3}]],
+   coupAndAftermath:[['收下她的投名狀',{inf:5}],['怒斥她擅動刀兵',{aff:-8,corruption:10}]],
+   doubleLoyaltyBetrayal:[['裝作不知道，讓她繼續',{inf:6,corruption:12}],['當面拆穿',{aff:-10,rel_g:-10}]],
+   intimacyJealousy:[['順著她',{aff:10,hedon:2}],['推開她',{aff:-10,corruption:6}]],
+   branchCityLetters:[['回信安撫',{aff:6}],['召她回主城',{aff:4},'recall'],['擱著不回',{aff:-6}]],
+   remoteFaction:[['默許她在分城坐大',{inf:12,corruption:6}],['派人分她的權',{inf:-12,aff:-6}],['召她回主城',{aff:-3},'recall']],
+   firstPowerMove:[['肯定她立的威',{aff:6,inf:8}],['要她收斂',{aff:-6,inf:-4}]],
+   prePalaceLayout:[['不動聲色，記下這筆',{aff:3}],['當面警告她',{aff:-8}]],
+   battlefieldEncounters:[['嘉獎她',{aff:6,inf:4}],['責備她太冒險',{aff:-4}]],
+   bondFiveStages:v==='break'?[['讓她們決裂',{}],['出面調停',{rel_peer:15},'mend']]:v==='waver'?[['隨她去',{}],['提醒她珍惜',{rel_peer:8}]]:[['成全她們',{rel_peer:8}],['冷眼旁觀',{}]],
+   tragedies:v==='戰敗被俘'?[['立刻籌措贖金（到「將」頁贖回）',{aff:8}],['發兵營救',{aff:5}],['置之不理',{aff:-15,corruption:20}]]:v==='遺體送還'?[['厚葬，誓報此仇',{}],['草草收殮',{}]]:[['好好安慰她',{aff:8,corruption:-10}],['讓她自己走出來',{corruption:10}]]
+  };const L=T[k];return L?L.map(([text,effects,path])=>({text,effects,path})):null}
  // 依玩家選項文字，把處置真正落到她身上
  function verdict(id,text){const s=String(text||''),w=wed(id),nm=H(id).n;
   if(/死牢|下獄|掖庭獄|打入大牢|收押/.test(s)){setHst(id,'jail',4);return'【下獄】'+nm+'被押入大牢四旬'}
@@ -92,9 +115,14 @@ window.makeCharacterEvents = function (game) {
    {text:'當場拿下她',run:()=>{if(Math.random()<.5){setHst(id,'jail',4);fv(-20);mist(30);return'禁軍一擁而上。'+N+'被押入大牢四旬，寵愛 −20、污染 +30'}goneHero(id,'exile',10);return N+'帶著八百死士殺出宮門，消失在黑霧裡。之後也許能把她找回來'}},
    {text:'各退一步：虎符歸你，兵歸她',run:()=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+10);fv(-5);return N+'冷笑著收下這個交換。權勢 +10、寵愛 −5'}}];
   return null}
- function consequence(e,i,c){const {b,g}=e.cast||{},alive=x=>x&&S.heroes[x]&&!(S.gone&&S.gone[x]);if(c&&c.path)i=c.path==='duty'?0:1;
+ function consequence(e,i,c){const {b,g}=e.cast||{},alive=x=>x&&S.heroes[x]&&!(S.gone&&S.gone[x]);if(c&&c.path)i=c.path==='duty'?0:1;const P=c&&c.path,id=e.id;
+  if(P==='punishB'&&alive(b)){setHst(b,'ban',3);feedPush('【翻案】'+H(b).n+'造謠坐實，禁足三旬','neg')}
+  if(P==='purify'){if(S.energy>=30)S.energy-=30;else{const st=hs(id);st.mist=String(BigInt(st.mist||0)+40n)}}
+  if(P==='recall'){const st=hs(id);if(wed(id))wed(id).pal=null;st.task='idle';delete st.station;delete st.cjob;feedPush('【召回】'+H(id).n+'返回主城')}
+  if(P==='split'&&alive(g)){hs(g).task='idle';feedPush('【拆散】'+H(g).n+'被調離')}
+  if(P==='absorb'&&alive(g)){hs(g).aff=Math.min(100,(hs(g).aff||0)+10)}
   if(e.key==='coupAndAftermath'&&alive(b)&&wed(b)){goneHero(b,'exec');(S.dc??={})[b]=(S.dc[b]||0)+1;feedPush('【兵變】'+H(b).n+'死於'+H(e.id).n+'刀下','neg')}
-  else if(e.key==='humiliationAbuseRevolt'&&alive(b)&&wed(b)){const w=wed(b);w.cold={t:S.t};w.duty=null;w.fav=Math.max(0,(w.fav||0)-20);setHst(b,'inj',4);feedPush('【私刑】'+H(b).n+'毀容致殘，被丟進冷宮','neg')}
+  else if(e.key==='humiliationAbuseRevolt'&&alive(b)&&wed(b)&&!(c&&c.path==='stop')){const w=wed(b);w.cold={t:S.t};w.duty=null;w.fav=Math.max(0,(w.fav||0)-20);setHst(b,'inj',4);feedPush('【私刑】'+H(b).n+'毀容致殘，被丟進冷宮','neg')}
   else if(e.key==='threeContextsAndConflict'&&c&&c.path&&alive(g)){
    if(i===0){goneHero(g,'exec');feedPush('【斬友】'+H(g).n+'被'+H(e.id).n+'斬於西門水閘','neg')}
    else{goneHero(g,'exile',12);feedPush('【放走】'+H(g).n+'被'+H(e.id).n+'私放出城，十二旬內不會回來','neg')}}
