@@ -307,7 +307,13 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 .ltabs button.on{background:linear-gradient(180deg,#e0bf74,#9a7a2a);color:#1a1408;border-color:#e0bf74}
 .ltabs .dot{position:absolute;top:3px;right:6px;width:7px;height:7px;border-radius:50%;background:#e0507a}
 .mapfold{margin:4px 10px 0}.mapfold summary{font-size:12px;color:var(--gold2);cursor:pointer;padding:3px 0;list-style:none}.mapfold summary::after{content:' ▾'}
-</style>
+@media(max-width:680px){
+ #game.active,#game.on{min-height:0}#game .view{min-height:0;overscroll-behavior-y:contain;scroll-padding-bottom:1rem}
+ #nav{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0;padding-bottom:env(safe-area-inset-bottom);flex-shrink:0}
+ #nav button{min-width:0;width:100%;padding:5px 0;font-size:clamp(10px,2.8vw,13px);white-space:nowrap}
+ .ttree{display:grid;grid-template-columns:repeat(6,minmax(125px,1fr));overflow-x:auto;scroll-snap-type:x proximity}
+ .tcol{scroll-snap-align:start}#sheetIn{overscroll-behavior:contain}.frame .small,.tip{line-height:1.55}
+ }button:focus-visible{outline:2px solid #efcc79;outline-offset:2px}</style>
 </head>
 <body>
 <div id="app">
@@ -384,6 +390,8 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 <script src="rewrite_01t_pair.js?v=72eada437bbb"></script>
 <script src="rewrite_01u_batch.js?v=8be3142e20be"></script>
 <script src="rewrite_new_court.js"></script>
+<script src="court_pingyang.js"></script>
+<script src="court_zhangsun.js"></script>
 <script src="rewrite_01z_qing_terms.js"></script>
 <script>
 {
@@ -631,6 +639,57 @@ TAL.內政=[['p1','勸農','糧食產出 +10%',1],['p2','工巧','建設速度 +
 TAL.後宮=[['h1','雨露均沾','夫人們自主行動的頻率 −25%',1],['h2','母儀','主母風格效果 +30%',1],['h3','宮規','後宮對你的事件（欺瞞、羞辱等）機率 −30%',2],['h4','枕邊溫存','每旬所有夫人寵愛 +1',2],['h5','綿延','懷孕機率 +50%',3],['h6','明察','私情與貪墨更容易被察覺',3],['h7a','金屋','夫人們不再「進讒」「收買」',5,'x'],['h7b','鳳儀','私情發展速度 −50%、權勢過高的夫人每旬權勢 −1',5,'x']];
 const TALX={c7a:{atk:.08},c7b:{def:.08},s7b:{food:.15},p1:{food:.1},p2:{build:.15},p3:{market:.2},p4:{thrift:4},p6:{hire:.15},p7a:{build:.2,market:.1},p7b:{thrift:6,food:.05}};
 function talEff(k){let v=0;for(const id in TALX)if(S.talents[id]&&TALX[id][k])v+=TALX[id][k];return v}
+// 每一格描述直接取自同一份結算規則。
+const doctrines={
+ 天運:[
+ ['觀星','turn3','energy',12],['拾取戰魂','win','energy',9],['逆命','loss','core',1],['引渡','rescue','energy',32],
+ ['燃燈','fog','food',16],['破厄','monster','core',1],['七星授業','trainCost','discount',40],['天命凱旋','seat','talent',3]],
+ 統御:[
+ ['整隊','loss','soldiers',18],['乘勝追擊','win','train',2],['斬妖軍令','monster','soldiers',16],['輪番操演','turn3','train',3],
+ ['以戰養戰','factionWin','food',28],['攻堅授勳','seat','talent',2],['破釜','loss','train',8],['班師募勇','win','soldiers',35]],
+ 魅力:[
+ ['迎接歸人','rescue','gifts',2],['厚賞功臣','win','gifts',1],['招徠流民','turn3','pop',9],['弔祭','loss','gifts',2],
+ ['撫恤鄉里','loss','pop',16],['宣揚義舉','rescue','talent',1],['四方來投','seat','pop',55],['歃血相知','pact','gifts',4]],
+ 生存:[
+ ['集柴備冬','turn3','wood',12],['霧中設防','fog','dur',5],['戰地修繕','loss','dur',9],['淨土開荒','monster','food',20],
+ ['屯卒守關','fog','soldiers',14],['堅壁','turn3','dur',8],['收復故土','seat','stone',90],['劫後重築','loss','stone',36]],
+ 內政:[
+ ['輪作','turn3','food',20],['修渠備石','turn3','stone',15],['軍需折糧','factionWin','food',24],['山場徵材','monster','wood',24],
+ ['盟市','pact','food',36],['軍府立學','turn6','talent',1],['開倉濟軍','loss','food',55],['接管府庫','seat','core',4]],
+ 後宮:[
+ ['內府私贈','scheme','gifts',1],['女史記功','scheme','energy',8],['結社互濟','support','food',15],['清查私帳','intrigue','stone',16],
+ ['宮中撫孤','loss','food',24],['立傳','rescue','gifts',3],['同心掌事','support','soldiers',26],['借勢奪權','intrigue','energy',32]]
+};
+const tactics={
+ '逆命':['戰敗有俘虜風險時，機率由 42% 降至 24%','escape'],
+ '乘勝追擊':['上一戰取勝時，下一場首輪傷害 +18%','pursuit'],
+ '以戰養戰':['對勢力部隊傷害 +12%','assault'],
+ '斬妖軍令':['對污染體傷害 +15%','hunt'],
+ '堅壁':['守城受傷減少 18%','fortify'],
+ '同心掌事':['紅顏結援時雙方額外增加 4 關係','bond'],
+ '清查私帳':['紅顏排擠對手造成的權勢損失減半','audit'],
+ '輪作':['農田地塊每旬額外產糧 6','crop'],
+ '招徠流民':['每旬吸引 4 名流民','popturn']};
+const knows=key=>rules.some(r=>r.tactic===key&&S.talents[r.id]);
+const conditions={turn3:'每三旬',turn6:'每六旬',win:'部隊取勝',loss:'部隊戰敗',monster:'擊敗污染體',factionWin:'擊敗勢力部隊',seat:'攻破勢力本陣',rescue:'俘虜生還',pact:'主世界勢力締盟',fog:'旬結時污染達 25',scheme:'紅顏施計',support:'紅顏結援',intrigue:'紅顏排擠對手'};
+const yields={energy:'能量',core:'晶核',food:'糧',wood:'木',stone:'石',talent:'天賦點',soldiers:'後備兵',train:'訓練',gifts:'禮物',dur:'主堡耐久',pop:'流民'};
+const oldTrees=Object.values(TAL).flat(), rules=[];
+for(const [branch,rows] of Object.entries(doctrines)){
+ TAL[branch]=rows.map(([name,when,key,amount],i)=>{
+ const id='doctrine_'+branch+i;const tactic=tactics[name];rules.push({id,when,key,amount,name,tactic:tactic?.[1]});
+ return [id,name,tactic?tactic[0]:when==='trainCost'?'能量培養費用減少 40%':conditions[when]+'時，'+yields[key]+' +'+amount,[1,1,2,2,3,4,5,5][i],i>=6?'x':null]});
+}
+function doctrine(when,add){
+ for(const r of rules)if(!r.tactic&&r.when===when&&S.talents[r.id]){
+ const cap=r.key==='dur'?S.durMax:r.key==='train'?100:Infinity;
+ const before=S[r.key]||0;S[r.key]=Math.max(before,Math.min(cap,before+r.amount));
+ if(S[r.key]>before)add?.('【'+r.name+'】'+yields[r.key]+' +'+(S[r.key]-before),'pos');
+ }}
+function convertTalents(){
+ const old=oldTrees.filter(n=>S.talents[n[0]]);if(!old.length)return;
+ S.talent+=(S.talSpent??old.reduce((v,n,i)=>v+n[3]+Math.floor(i/10),0));for(const n of old){talOn(n[0],-1);delete S.talents[n[0]]}S.talSpent=0;
+}
+
 const talOwned=()=>Object.keys(S.talents).filter(k=>S.talents[k]).length;
 const talCost=n=>n[3]+Math.floor(talOwned()/10);
 function talCan(br,i){const ns=TAL[br],n=ns[i];if(S.talents[n[0]])return false;if(n[4]==='x')return !!S.talents[ns[5][0]]&&!ns.some(x=>x[4]==='x'&&S.talents[x[0]]);return i===0||!!S.talents[ns[i-1][0]]}
@@ -766,10 +825,67 @@ function genWorld(W){if(W)return genBattle(W);
  p=free(5,7);S.enemies.push({id:'e5',n:'無終亡兵',img:'en_bingzhong',troops:260,max:260,atk:44,r:p.r,c:p.c,still:true,eld:true,tr:'def'});
  S.map={base:{...BASE},city:{...CITY},nest:{...NEST}};
 }
-function hostileTo(f,t){return t.own?1:t.fac&&t.fac!==f?1:0}
+function treatyKey(a,b){return [a,b].sort().join('|')}
+function allied(a,b){return !!a&&!!b&&a!==b&&!inWorld()&&!!S.treaties?.[treatyKey(a,b)]}
+function diplomaticTurn(add){
+ if(inWorld()||S.t%3)return;
+ const living=curFacs().filter(f=>FS(f.id)?.alive);
+ const log=m=>{frontReport(m);add(m)};
+ S.treaties??={};
+ for(const [key,deal] of Object.entries(S.treaties)){
+  const [a,b]=key.split('|');if(!FS(a)?.alive||!FS(b)?.alive){delete S.treaties[key];continue}
+  const armies=[FS(a),FS(b)],rich=armies[0].troops>=armies[1].troops?0:1,poor=1-rich;
+  if(S.t-deal.since>=6&&(Math.random()<.3||armies[rich].troops>armies[poor].troops*2)){
+   delete S.treaties[key];(S.feuds??={})[key]=S.t+9;const attacker=[a,b][rich],victim=[a,b][poor];
+   const g=S.enemies.find(e=>e.fac===attacker&&!e.still&&e.troops>0);if(g)g.tgt={...FS(victim).seat};
+   log('【毀盟】'+FD(attacker).n+'撕毀與'+FD(victim).n+'的盟約，兩軍優先爭奪彼此領地。')
+  }else{const n=Math.min(32,Math.floor((armies[rich].troops-armies[poor].troops)/3));if(n>0){armies[rich].troops-=n;armies[poor].troops+=n;log('【盟軍增援】'+FD([a,b][rich]).n+'調 '+n+' 兵支援'+FD([a,b][poor]).n)}}
+ }
+ const pairs=[];for(const [i,a] of living.entries())for(const b of living.slice(i+1)){
+ const key=treatyKey(a.id,b.id);if(!allied(a.id,b.id)&&!(S.feuds?.[key]>S.t)&&![a,b].some(f=>Object.keys(S.treaties).some(k=>k.split('|').includes(f.id))))pairs.push([a,b])}
+ if(living.length>=3&&pairs.length){const [a,b]=pick(pairs);S.treaties[treatyKey(a.id,b.id)]={since:S.t};log('【締盟】'+a.n+'與'+b.n+'互停攻勢，開始互援。');doctrine('pact',add)}
+}
+function fieldWorks(add){
+ for(const t of ownTiles()){if(t.pol)continue;const lv=t.olv||1;
+ if(t.out==='remount'){const u=S.units.filter(x=>dist(x,t)<=2&&x.troops>0&&x.troops<x.max).sort((a,b)=>a.troops/a.max-b.troops/b.max)[0];
+ if(u){const n=Math.min(18*lv,S.soldiers,u.max-u.troops);if(n>0){S.soldiers-=n;u.troops+=n;add('【換馬驛】自後備調 '+n+' 兵補入前線。','pos')}}}
+ if(t.out==='earthwork'){const e=S.enemies.filter(x=>!x.still&&x.troops>0&&dist(x,t)<=lv).sort((a,b)=>b.troops-a.troops)[0];if(e){e.slowAt=S.t;add('【拒馬壕】'+e.n+'本旬最多行進一格。')}}
+ }}
+function courtMotive(id){const tags=ntagAll(id),p=hp(id);
+ if((p.foe&&S.order.includes(p.foe))||tags.includes('記仇'))return '清算舊怨';
+ if(heroAmb(id)>=60||tags.some(x=>['好強','驕縱'].includes(x)))return '爭奪聲望';
+ if((hs(id).aff||0)<45||tags.includes('善妒'))return '尋求靠山';
+ return '培植親信'}
+function schemeTurn(add){
+ if(inWorld())return;
+ const women=S.order.filter(id=>H(id).sex==='f'&&!unavail(id)&&hst(id)!=='ban'&&!wed(id)?.cold);
+ const eligible=women.filter(id=>(hs(id).schemeAt??-9)<=S.t-3&&women.some(b=>b!==id&&activePlace(b)===activePlace(id)));
+ if(!eligible.length)return;const a=pick(eligible),m=courtMotive(a),h=hp(a),support=['尋求靠山','培植親信'].includes(m);
+ const score=b=>support?relG(a,b)+(m==='尋求靠山'?hp(b).inf:-(hp(b).inf||0)):(b===h.foe?150:0)-relG(a,b)+(hp(b).inf||0);
+ const b=women.filter(b=>b!==a&&activePlace(a)===activePlace(b)).sort((x,y)=>score(y)-score(x))[0],v=hp(b);
+ hs(a).schemeAt=S.t;relAdd(a,b,support?(knows("bond")?11:7):-10);h.inf=clamp((h.inf||0)+(support?2:4),0,100);v.inf=clamp((v.inf||0)+(support?3:knows("audit")?-2:-4),0,100);
+ if(!support)v.foe=a;
+ const msg='【'+m+'】'+H(a).n+(support?'為'+H(b).n+'作保，兩人同進退（關係 +'+(knows("bond")?11:7)+'）。':'在議事時奪去'+H(b).n+'的功勞，對方記下這筆帳（關係 −10）。');
+ feedPush(msg);add(msg);doctrine('scheme',add);doctrine(support?'support':'intrigue',add);
+}
+function warAfter(u,en,win,add){
+ doctrine(win?'win':'loss',add);if(win){if(en.fac)doctrine('factionWin',add);if(en.eld)doctrine('monster',add);if(en.seat)doctrine('seat',add)}
+ const id=u.gens[0];if(!id)return;const st=hs(id),depot=treasury(u.siege?BASE:armyHome(u));delete st.warPride;delete st.warDoubt;
+ const tags=ntagAll(id);const type=pick(win?['炫耀','傲慢','分賞',heroAmb(id)>55?'炫耀':tags.includes('驕縱')?'傲慢':'分賞']:['受辱','沉淪','墮落',tags.includes('貪婪')?'墮落':'沉淪']);
+ let line='';switch(type){
+ case '炫耀':hp(id).inf=clamp((hp(id).inf||0)+4,0,100);line='將敵旗掛上轅門示眾，權勢 +4';break;
+ case '傲慢':st.warPride=true;line='拒聽斥候勸告，下次交戰首回合受傷增加 20%';break;
+ case '分賞':depot.food+=24;line='把繳獲的二十四袋軍糧運回出發城';break;
+ case '受辱':hp(id).inf=Math.max(0,(hp(id).inf||0)-5);line='的敗旗被敵軍挑出示眾，權勢 −5';break;
+ case '沉淪':st.warDoubt=true;line='懷疑自己的號令，下次交戰首回合傷害減少 15%';break;
+ case '墮落':{const n=Math.min(18,depot.food);depot.food-=n;line='把敗兵的伙糧扣作私用，出發城損失 '+n+' 糧';break}
+ }add('【'+type+'】'+H(id).n+line+'。',win?'pos':'neg')
+}
+
+function hostileTo(f,t){return t.own?1:t.fac&&t.fac!==f&&!allied(f,t.fac)?1:0}
 function facPickTarget(fid,from){const f=FD(fid),st=FS(fid);let best=null,bs=1e9;
  for(const t of S.tiles.flat()){if(!hostileTo(fid,t)||t.t==='B'||(t.own&&S.t-(st.playerAttack??-99)<4))continue;const d=dist(t,from);if(d>(t.fac?16:9))continue;
-  let sc=d+Math.random()*4-(t.fac?5:0);if(t.own)sc+=S.t<10?99:S.t<20?9:5;if(t.fac&&FS(t.fac)&&FS(t.fac).seat.r===t.r&&FS(t.fac).seat.c===t.c)sc+=6;if(sc<bs){bs=sc;best=t}}
+  let sc=d+Math.random()*4-(t.fac?5:0);if(t.fac&&S.feuds?.[treatyKey(fid,t.fac)]>S.t)sc-=10;if(t.own)sc+=S.t<10?99:S.t<20?9:5;if(t.fac&&FS(t.fac)&&FS(t.fac).seat.r===t.r&&FS(t.fac).seat.c===t.c)sc+=6;if(sc<bs){bs=sc;best=t}}
  return best?{r:best.r,c:best.c}:null}
 function clash(a,b,st,add){const pa=a.troops*(a.atk/50)*(.8+Math.random()*.4),pb=b.troops*(b.atk/50)*(.8+Math.random()*.4);const[w,l,pw,pl]=pa>=pb?[a,b,pa,pb]:[b,a,pb,pa];
  w.troops=Math.max(1,Math.round(w.troops*(1-pl/pw*.7)));const lt=l.troops;l.troops=0;
@@ -787,11 +903,11 @@ function facTurn(add){if(inWorld())return;if(!S.facs)return;checkFalls(add);
  for(const f of curFacs()){const st=FS(f.id);if(!st||!st.alive)continue;const tiles=facTiles(f.id);
   const seized=T(st.seat.r,st.seat.c);
   const localRecruit=seized?.rebFid===f.id?(seized.townSlots||[]).reduce((n,s)=>n+(s?.lv&&['granary','barracks','market'].includes(s.f)?4*s.lv:0),0):0;
-  st.troops+=18+tiles.length*5+localRecruit;const g=S.enemies.find(e=>e.id===st.gid);if(g)g.troops=Math.min(g.max,Math.round(g.troops+g.max*.04));
+  st.troops+=32+tiles.length*6+localRecruit;const g=S.enemies.find(e=>e.id===st.gid);if(g)g.troops=Math.min(g.max,Math.round(g.troops+g.max*.04));
   if(Math.random()<(f.kind==='war'?.5:.35)){const c=[];tiles.forEach(t=>nb(t.r,t.c).forEach(x=>{if(!x.fac&&!x.own&&!'BCKNDT'.includes(x.t)&&(f.kind==='cult'||!x.pol)&&dist(x,st.seat)<=6&&!S.enemies.some(e=>e.r===x.r&&e.c===x.c))c.push(x)}));
    if(c.length){const x=pick(c);x.fac=f.id;if(f.kind==='cult')x.pol=true;if(x.seen&&visible(x))add(`${f.n}的勢力擴張到 (${x.c},${x.r})`)}}
   const armies=S.enemies.filter(e=>e.fac===f.id&&!e.still&&e.troops>0).length;
-  if(armies<2+Math.floor(S.t/10)&&st.troops>=260&&Math.random()<.4+S.t*.01){const tg=facPickTarget(f.id,st.seat);if(tg){if(T(tg.r,tg.c).own)st.playerAttack=S.t;const sz=Math.round(Math.min(st.troops*.6,160+S.t*28));st.troops-=sz;
+  if(armies<2+Math.floor(S.t/10)&&st.troops>=260&&Math.random()<.4+S.t*.01){const tg=facPickTarget(f.id,st.seat);if(tg){if(T(tg.r,tg.c).own)st.playerAttack=S.t;const sz=Math.round(Math.min(st.troops*.6,210+S.t*32));st.troops-=sz;
    S.enemies.push({id:'f'+S.uid++,n:`${f.n}・${pick(f.caps)}軍`,img:f.img,troops:sz,max:sz,atk:42+S.t*2,r:st.seat.r,c:st.seat.c,eld:f.kind==='cult',tr:f.tr,fac:f.id,tgt:tg});
    const tt=T(tg.r,tg.c);const dc=f.dec&&f.dec.length?'〔系統〕'+pick(f.dec)+'<br>':'';if(tt.own)add(`${dc}【警報】${f.n}出兵 ${sz}，目標是你的領地！`,'neg');else if(tt.fac)add(`${dc}【天下大勢】${f.n}向${FD(tt.fac).n}發兵`)}}}}
 
@@ -811,16 +927,16 @@ function facArrive(e,add){if(campHold(T(e.r,e.c),e,add))return;const t0=T(e.r,e.
 function siegeHold(e,add){const t0=T(e.r,e.c);if(!t0.own||t0.t==='B'||inWorld())return false;if(!e.sg||e.sg.r!==t0.r||e.sg.c!==t0.c)e.sg={r:t0.r,c:t0.c,n:0};e.sg.n++;if(e.sg.n>=2+cityHold(t0)){if(t0.city){if(t0.city>1){const store=townStores(t0),defenders=Math.min(store.soldiers,Math.ceil(e.troops/3));if(defenders){store.soldiers-=defenders;e.troops=Math.max(0,e.troops-defenders*2);add('【守城】'+cityName(t0)+'動用本城 '+defenders+' 兵還擊');if(!e.troops){e.sg=null;return true}}t0.dur=Math.max(0,(t0.dur??100)-35);if(t0.dur>0){add('【攻城】'+cityName(t0)+'耐久剩 '+t0.dur,'neg');e.sg=null;return true}releaseTownStaff(t0)}t0.city--;(t0.cg||[]).forEach(g=>H(g).pool==='對外'&&setHst(g,'inj',2));if(!t0.city){(t0.cg||[]).forEach(g=>hs(g).task='idle');t0.cg=[]}add(`【陷落】${cityName(t0)}被${e.n}攻破，降為${t0.city?'堡寨':'廢墟'}！`,'neg');e.troops=Math.round(e.troops*.6);e.sg=null;return true}return false}
  add(`【圍攻】${e.n}（${e.troops}）正在圍攻你的${t0.out?OD(t0.out)[0]:'領地'} (${t0.c},${t0.r})！下一旬就會被攻破——快派部隊去解圍`,'neg');setTimeout(()=>sfx('siren'),600);return true}
 function moveEnemies(add){
- for(const e of S.enemies){if(e.front&&e.still&&(S.units.some(u=>dist(u,e)<=3)||Math.random()<.2)){e.still=false;e.tgt={r:BASE.r,c:BASE.c}}if(e.still||e.troops<=0)continue;
+ for(const e of S.enemies){if(e.fac&&e.tgt&&allied(e.fac,T(e.tgt.r,e.tgt.c)?.fac))e.tgt=facPickTarget(e.fac,e);if(e.front&&e.still&&(S.units.some(u=>dist(u,e)<=3)||Math.random()<.2)){e.still=false;e.tgt={r:BASE.r,c:BASE.c}}if(e.still||e.troops<=0)continue;
   if(e.tgt&&e.r===e.tgt.r&&e.c===e.tgt.c){if(siegeHold(e,add))continue;if(e.fac)facArrive(e,add);else if(!campHold(T(e.r,e.c),e,add)){const t0=T(e.r,e.c);if(t0.out){add(`${e.n}摧毀了你的${OD(t0.out)[0]}！<br><i>${pick(V14.destroyed)}</i>`,'neg');t0.out=null}if(t0.own&&Math.random()<.5){t0.pol=true;add('那一格領地也被黑霧污染了','neg')}e.tgt=null}}
   const home=e.fac&&FS(e.fac)&&FS(e.fac).alive?FS(e.fac).seat:null;const goal=e.tgt||home||BASE;
   if(e.fac&&!e.tgt&&home&&e.r===home.r&&e.c===home.c){FS(e.fac).troops+=e.troops;e.troops=0;continue}
-  const p=path(e,goal);if(!p.length)continue;let mp=2;
+  const p=path(e,goal);if(!p.length)continue;let mp=e.slowAt===S.t?1:2;
   for(const st of p){mp-=TERR[st.t][2];const u=S.units.find(u=>u.r===st.r&&u.c===st.c);
    if(u){battleQ.push({u,e,where:st,def:true});break}
    const o=S.enemies.find(o=>o!==e&&o.troops>0&&o.r===st.r&&o.c===st.c);
    if(o&&e.fac&&o.fac===e.fac&&o.seat){FS(e.fac).troops+=e.troops;e.troops=0;break}
-   if(o&&!o.officer&&o.fac!==e.fac&&(e.fac||o.fac)){const w=clash(e,o,st,add);if(w!==e)break}
+   if(o&&!o.officer&&o.fac!==e.fac&&!allied(e.fac,o.fac)&&(e.fac||o.fac)){const w=clash(e,o,st,add);if(w!==e)break}
    else if(o&&o.still)break;
    if(st.r===BASE.r&&st.c===BASE.c){if(inWorld()){e.troops=Math.round(e.troops*.8);e.tgt=null;e.front=false;{const X=GD.wtx&&GD.wtx[S.cur];add(`${e.n}衝擊營地，被本地義軍擋了回去（敵兵 −20%）${X&&X.campRep&&X.campRep.length?`<br><i>「${pick(X.campRep)}」</i>`:''}`,'neg')}break}battleQ.push({siege:true,e});break}
    e.r=st.r;e.c=st.c;if(e.tgt&&e.r===e.tgt.r&&e.c===e.tgt.c)break;
@@ -959,7 +1075,7 @@ const SKEY='tianyun_save_v7';
 function save(){try{localStorage.setItem(SKEY,JSON.stringify(S))}catch(e){}}
 function hasSave(){try{return !!localStorage.getItem(SKEY)}catch(e){return false}}
 function clearSave(){try{localStorage.removeItem(SKEY)}catch(e){}}
-function loadGame(){try{const d=JSON.parse(localStorage.getItem(SKEY));Object.assign(S,{crown:null,endorsements:{},petition:null,courtTick:null},d);regKids();S.cur=S.cur||'home';if(S.map){Object.assign(BASE,S.map.base);Object.assign(CITY,S.map.city);Object.assign(NEST,S.map.nest)}if(typeof v28migrate==='function')v28migrate();migrateReleasedPairs();repairTownRosters();return true}catch(e){return false}}
+function loadGame(){try{const d=JSON.parse(localStorage.getItem(SKEY));Object.assign(S,{crown:null,endorsements:{},petition:null,courtTick:null},d);convertTalents();regKids();S.cur=S.cur||'home';if(S.map){Object.assign(BASE,S.map.base);Object.assign(CITY,S.map.city);Object.assign(NEST,S.map.nest)}if(typeof v28migrate==='function')v28migrate();migrateReleasedPairs();repairTownRosters();return true}catch(e){return false}}
 if(hasSave()){const b=document.createElement('button');b.className='btn ghost';b.id='contBtn';b.style.cssText='min-width:220px;margin-top:10px;display:block;margin-left:auto;margin-right:auto';b.textContent='繼續遊戲';$('#startBtn').after(b);
  b.onclick=()=>{ac();if(!loadGame())return toast('存檔讀取失敗');sfx('ok');bgm('bgmBells');go('game');updateSeen();snap();setView('map');toast(`讀取存檔：${dateStr(S.t)}`)}}
 /* ================= SUMMON ================= */
@@ -1407,7 +1523,7 @@ function openHero(id){
  <div class="orn" style="margin-top:14px">個人劇情</div>
  <p class="small">好感每升一階（熟識・信賴・親密・誓約）會播放專屬事件。目前：${TIER(st.aff)}${GD.personal[id]?'':'（此英靈的個人劇情尚未交付）'}</p>
  ${st.wed?'':`<div class="small" style="margin-top:4px">誓約進度：好感 ${st.aff}/100・${h.sex==='f'?`到 100 並蓋好後宮殿閣（${hasFac('harem')?'<span style="color:var(--jade)">已建</span>':'<span style="color:var(--blood)">未建</span>'}）即可締結婚姻`:'到 100 即可結為生死之交'}</div><div class="meter" style="margin:4px 0"><i style="width:${st.aff}%;background:linear-gradient(90deg,#c76b8f,#f3b1c4)"></i></div>`}
- <div class="small">人物事跡（含傳說與演義）：${(deedTags[h.n]||["本局成長"]).join("、")}<br>人物標籤：${[...new Set([...(PTAG[id]||[]),...ntagAll(id),H(id).inn[0],FAC[H(id).sp]?.[0]].filter(Boolean))].join("、")}</div>${st.warPreg?"<p>俘營期間有孕・預計第 "+st.warPreg.due+" 旬分娩</p>":""}${st.warMemory?.length?"<p>戰敗記憶："+st.warMemory.map(r=>r.enemy+"・"+majorArt[r.outcome][0]+(r.spouse?"・曾被強立婚籍："+r.spouse:"")).join("、")+"</p>":""}
+ <div class="small">${H(id).sex==='f'?'當前心機：'+courtMotive(id)+'<br>':''}${st.warPride?'戰後傲慢：下戰首輪受傷 +20%<br>':''}${st.warDoubt?'戰後沉淪：下戰首輪傷害 −15%<br>':''}人物事跡（含傳說與演義）：${(deedTags[h.n]||["本局成長"]).join("、")}<br>人物標籤：${[...new Set([...(PTAG[id]||[]),...ntagAll(id),H(id).inn[0],FAC[H(id).sp]?.[0]].filter(Boolean))].join("、")}</div>${st.warPreg?"<p>俘營期間有孕・預計第 "+st.warPreg.due+" 旬分娩</p>":""}${st.warMemory?.length?"<p>戰敗記憶："+st.warMemory.map(r=>r.enemy+"・"+majorArt[r.outcome][0]+(r.spouse?"・曾被強立婚籍："+r.spouse:"")).join("、")+"</p>":""}
  ${affGateTxt(id)}${agendaCard(id)}${personaBlock(id)}${H(id).sex==='m'||!wed(id)?`<div class="small" style="margin:6px 0"><img src="img/fc_${facOf(id)}.jpg" style="width:16px;height:16px;border-radius:50%;vertical-align:-3px"> 派系：<b style="color:${FACC[facOf(id)]}">${FACN2[facOf(id)]}</b>${S.facOv&&S.facOv[id]?'（被拉攏轉投）':''}${GD.fac26&&GD.fac26.mem[id]?`・${GD.fac26.mem[id][1]}`:''}</div>`:''}
  ${hst(id)?`<div class="sysline" style="margin-top:10px;border-color:${HST[hst(id)][1]}"><b style="color:${HST[hst(id)][1]}">【${HST[hst(id)][0]}】</b>還剩 ${st.hst.u-S.t} 旬・${HST[hst(id)][2]}<div style="display:flex;gap:6px;margin-top:6px">${hst(id)==='jail'?`<button class="btn sm" data-hx="free">釋放</button><button class="btn ghost sm" data-hx="ask">探監（行動力 1，寵愛 +10）</button>`:hst(id)==='ban'?`<button class="btn sm" data-hx="free">解除禁見</button>`:hst(id)==='spoil'?`<button class="btn sm" data-hx="free">要她收斂（寵愛 −10）</button>`:''}</div></div>`:''}
  ${st.wed?`<div class="orn" style="margin-top:14px">${h.sex==='f'?'婚姻':'結義'}</div>
@@ -1420,7 +1536,7 @@ function openHero(id){
  $('#hpX').onclick=()=>{P.classList.remove('on');render()};
  if($('#hpRecallTown'))$('#hpRecallTown').onclick=()=>{if(unavail(id))return toast('目前無法調動');setTask(id,'idle');const t=garrisonOf(id);if(t!==BASE)t.cg=(t.cg||[]).filter(x=>x!==id);hs(id).task='idle';delete hs(id).station;save();openHero(id);render()};
  $('#hpTask').onclick=()=>pickTask(id);$$('[data-ia]').forEach(b=>b.onclick=()=>doIA(id,b.dataset.ia));
- const quote=()=>{const k=$('#trainKey').value,n=+$('#trainN').value,exp=k==='exp',cost=n*(T_('e7b')?(exp?6:18):(exp?10:30));
+ const quote=()=>{const k=$('#trainKey').value,n=+$('#trainN').value,exp=k==='exp',cost=n*(T_('doctrine_天運6')?(exp?6:18):(exp?10:30));
  let lv=lvOf(id),xp=st.exp||0;if(exp){xp+=n*50;while(lv<lvCap(id)&&xp>=expNeed(lv)){xp-=expNeed(lv);lv++}}
  $('#trainQuote').textContent='能量 '+cost+'・'+(exp?'經驗 +'+n*50+'，Lv'+lvOf(id)+' → '+lv:STAT[k]+' '+stat(id,k)+' → '+(stat(id,k)+n));
  $('#buyTrain').disabled=S.energy<cost||(exp&&lvOf(id)>=lvCap(id));return {k,n,exp,cost}};
@@ -1549,7 +1665,7 @@ function lordView(){
  <div class="kpi"><div class="frame">行動力<b>${S.ap}/${maxAP()}</b></div><div class="frame">能量<b>${S.energy}</b></div><div class="frame">天賦點<b>${S.talent}</b></div><div class="frame">晶核<b>${S.core}</b></div></div>
  <div style="display:grid;gap:8px;margin-top:8px"><button class="btn" id="lSum" ${S.energy<sumCost()?'disabled':''}>星盤召喚（${sumCost()} 能量）</button>
  <button class="btn ghost" id="lFeast">設宴（2 行動・糧 ${T_('m2')?20:40}）：全體好感 +${(5+(T_('m2')?3:0))*(teamEff('feast')?2:1)}</button></div></div>
- <div class="sec"><div class="orn">天賦樹</div><p class="tip">書院產出天賦點。每條分支要由上往下依序點開，點滿後可在兩個終極天賦中擇一。英靈提供的天賦進度每旬最多 +0.6。</p>
+ <div class="sec"><div class="orn">主世界盟約</div><div class="meta">${Object.keys(S.treaties||{}).map(k=>k.split('|')).filter(([a,b])=>FD(a)&&FD(b)).map(([a,b])=>'<span class="chip">'+FD(a).n+' × '+FD(b).n+'</span>').join('')||'目前尚無勢力締盟。'}</div></div><div class="sec"><div class="orn">天賦樹</div><p class="tip">書院產出天賦點。每條分支要由上往下依序點開，點滿後可在兩個終極天賦中擇一。英靈提供的天賦進度每旬最多 +0.6。</p>
  <div class="ttree">${Object.entries(TAL).map(([br,ns])=>{const base=ns.filter(n=>n[4]!=='x'),got=base.filter(n=>S.talents[n[0]]).length;return`<div class="tcol"><span class="thd">${br}</span><div class="tb"><span class="fill" style="height:${Math.max(0,got-1)*68}px"></span>${base.map((n,i)=>tnBtn(br,ns,i)).join('')}</div><div class="tx">${ns.map((n,i)=>n[4]==='x'?tnBtn(br,ns,i):'').join('')}</div></div>`}).join('')}</div>
  <div class="small" style="margin:4px 0 8px">已習得 ${talOwned()} 項・每多 10 項，之後所有天賦 +1 點。底部紫框為終極天賦，兩個只能擇一。</div><button class="btn ghost sm" id="tlReset" style="width:100%" ${talOwned()?'':'disabled'}>重置天賦（晶核 ${talResetCost()}）・全數返還已花費點數</button></div>
 
@@ -2018,7 +2134,7 @@ function majorShow(next){
  $('#majorOK').onclick=()=>{closeSheet();majorShow(next)};
 }
 function defeatCapture(ids,en,origin,add){
- const group=ids.filter(id=>S.order.includes(id));if(!group.length||!en.fac||!FD(en.fac)||Math.random()>.42)return;
+ const group=ids.filter(id=>S.order.includes(id));if(!group.length||!en.fac||!FD(en.fac)||Math.random()>(knows("escape")?.24:.42))return;
  const id=pick(group),st=hs(id);const r={enemy:FD(en.fac).n,fid:en.fac,city:origin===BASE?'燈塔':cityName(origin),origin:origin===BASE?'home':origin.r+'_'+origin.c,world:S.cur||'home',state:'captured',t:S.t,next:S.t+2};
  releaseDuties(id);pullArmy(id);for(const [k,x] of Object.entries(S.off||{}))if(x===id)delete S.off[k];
  S.order=S.order.filter(x=>x!==id);if(S.mainWife===id)S.mainWife=null;if(S.ringOn===id)S.ringOn=null;
@@ -2031,7 +2147,7 @@ function releaseCaptive(id,k,add){
  else{heroBack(id);const town=cityTiles().find(t=>t.city>1&&t.r+'_'+t.c===r.origin);r.city=town?cityName(town):'燈塔';
  if(['wounded_return','survivor_return','pregnancy_return'].includes(k))setHst(id,'inj',k==='wounded_return'?5:3);if(town)st.station=r.origin;
  if(k==='pregnancy_return')st.warPreg={since:r.t,due:Math.max(S.t+1,r.t+6)}}
- r.outcome=k;r.end=S.t;(st.warMemory??=[]).push(r);delete S.captives[id];majorNotice(id,k,r,add);
+ if(k!=='body_return')doctrine('rescue',add);r.outcome=k;r.end=S.t;(st.warMemory??=[]).push(r);delete S.captives[id];majorNotice(id,k,r,add);
 }
 function captiveTurn(add){
  for(const [id,r] of Object.entries(S.captives||{})){
@@ -2096,14 +2212,14 @@ function frontReport(msg){
  if(entries.length>8)entries.pop();
 }
 function localRise(add){
- if(inWorld()||S.t<5||S.t%5)return;
- const names=['渡口義社','寒山鹽幫','青禾屯軍','驛路商盟'];
+ if(inWorld()||S.t<4||S.t%4)return;
+ const names=['渡口義社','寒山鹽幫','青禾屯軍','驛路商盟','西嶺聯營','蒲津舟師','白石馬幫','北原戍盟'];
  const available=names.filter(n=>!Object.values(S.rebelDefs||{}).some(d=>d.n===n&&FS(d.id)?.alive));
- if(!available.length||curFacs().filter(d=>d.local&&FS(d.id)?.alive).length>=2)return;
+ if(!available.length||curFacs().filter(d=>d.local&&FS(d.id)?.alive).length>=5)return;
  const t=rebelTile();if(!t)return;
  const n=pick(available),id='local'+(S.localN=(S.localN||0)+1),leader=pick(['杜衡','梁青','程遠','柳岑']);
  (S.rebelDefs??={})[id]={id,n,kind:'war',local:true,color:'#699c83',img:'fa_rebel',limg:'fa_rebel',seatImg:'seat_rebel',mark:n[0],tr:'def',leader,caps:['鄉勇校尉','護糧隊長'],lore:leader+'在邊地招聚人馬，建立'+n+'。'};
- const gid='g_'+id;S.facs[id]={id,alive:true,troops:160,seat:{r:t.r,c:t.c},gid,news:[]};t.fac=id;t.seen=true;
+ const gid='g_'+id;S.facs[id]={id,alive:true,troops:270,seat:{r:t.r,c:t.c},gid,news:[]};t.fac=id;t.seen=true;
  S.enemies.push({id:gid,n:n+'本營',img:'fa_rebel',troops:260,max:260,atk:46,r:t.r,c:t.c,still:true,tr:'def',fac:id,seat:true,leader});
  const msg='【地方勢力】'+leader+'建立'+n+'，本營在（'+t.c+'，'+t.r+'）。';frontReport(msg);add(msg);
 }
@@ -2241,8 +2357,9 @@ Object.entries(NFAC).forEach(([k,f])=>{FAC[k]=f.slice(0,6);FPERK[k]=NFP[k]});
 function bldEff(key){let v=0;if(S.slots)settlementSlots().forEach(s=>{if(!s||!NFAC[s.f]||s.lv<1)return;const f=NFAC[s.f];if(f[6]===key)v+=facVal(s)*f[7]});if(key==='def')v+=spouses().filter(x=>loveLv(x)>=5).length*.03;return v}
 const NFTXT=(s,v)=>{const f=NFAC[s.f];return f?`${f[4]} ${['popg','energy','food2'].includes(f[6])?'+'+v:f[6]==='talent2'?'+'+(v*f[7]).toFixed(2):'+'+Math.round(v*f[7]*100)+'%'}`:''};
 const NMIL={farmstead:['屯田莊','莊',[20,10],'糧 +8、每旬兵 +5（可升級）','sLV'],fishery:['漁場','漁',[15,10],'糧 +9（可升級）','R'],saltworks:['鹽場','鹽',[20,15],'木 +5、石 +5（鹽貨換物資）','s'],herbvalley:['藥谷','藥',[20,20],'附近 3 格內我軍每旬回復 4% 兵力、污染 −1','FW'],watchtower:['瞭望塔','望',[20,25],'揭露周圍 3／4／5 格，敵軍動向一目了然',''],dock:['碼頭','碼',[30,20],'木 +6、石 +6','R'],tombdig:['古墓探坑','探',[25,25],'每旬 30% 掘得晶核或能量；但可能驚動亡兵','ULT']};
+Object.assign(MIL,{remount:['換馬驛','驛',[30,20],'每旬將後備兵調給兩格內缺兵最多（按比例）的部隊，每級最多 18 兵'],earthwork:['拒馬壕','壕',[18,26],'每旬牽制附近最強的一隊行軍敵人，使其最多行進一格。每級增加一格攔截範圍。']});
 Object.entries(NMIL).forEach(([k,o])=>{MIL[k]=o});
-function nmilYield(t,y){const L=1+((t.olv||1)-1)*.6,q=v=>Math.round(v*L);({farmstead:()=>y.food+=q(8),fishery:()=>y.food+=q(9),saltworks:()=>{y.wood+=q(5);y.stone+=q(5)},dock:()=>{y.wood+=q(6);y.stone+=q(6)},herbvalley:()=>y.pol-=1})[t.out]?.();return y}
+function nmilYield(t,y){if(t.out==="s"&&knows("crop"))y.food+=6;const L=1+((t.olv||1)-1)*.6,q=v=>Math.round(v*L);({farmstead:()=>y.food+=q(8),fishery:()=>y.food+=q(9),saltworks:()=>{y.wood+=q(5);y.stone+=q(5)},dock:()=>{y.wood+=q(6);y.stone+=q(6)},herbvalley:()=>y.pol-=1})[t.out]?.();return y}
 function nmilTurn(add){for(const t of ownTiles()){if(!t.out)continue;const lv=t.olv||1;
  if(t.out==='farmstead')S.soldiers+=5*lv;
  if(t.out==='herbvalley')S.units.forEach(u=>{if(dist(u,t)<=3&&u.troops<u.max){u.troops=Math.min(u.max,u.troops+Math.round(u.max*.04*lv))}});
@@ -3218,7 +3335,7 @@ function personalTurn(add,ids=[...S.order]){
  }
 }
 
-function hstTurn(add){captiveTurn(add);rivalTurn(add);localRise(add);personalTurn(add);haremAI(add);ambTurn(add);S.hxN=0;desireTurn(add);facTurn2(add);factionContest(add);factionCouncil(add);cityTurn(add);agendaTurn(add);dutyMigrate();favSync();loveTurn(add);v21Turn(add);dkTurn(add);v23Turn(add);corruptTurn(add);barTurn(add);powerTurn(add);powerEvTurn(add);valEvTurn(add);cycEvTurn(add);pbTurn(add);S.clean0=S.pol===0?(S.clean0||0)+1:0;checkAch2();(T_('h3')&&Math.random()<.3?0:ownEvRoll());S.order.forEach(id=>{const st=hs(id),x=st.hst;if(!x)return;if(x.u<=S.t){add(`${H(id).n}的【${HST[x.k][0]}】狀態解除了`,'pos');st.hst=null;return}const w=wed(id);
+function hstTurn(add){captiveTurn(add);rivalTurn(add);schemeTurn(add);localRise(add);personalTurn(add);haremAI(add);ambTurn(add);S.hxN=0;desireTurn(add);facTurn2(add);factionContest(add);factionCouncil(add);cityTurn(add);agendaTurn(add);dutyMigrate();favSync();loveTurn(add);v21Turn(add);dkTurn(add);v23Turn(add);corruptTurn(add);barTurn(add);powerTurn(add);powerEvTurn(add);valEvTurn(add);cycEvTurn(add);pbTurn(add);S.clean0=S.pol===0?(S.clean0||0)+1:0;checkAch2();(T_('h3')&&Math.random()<.3?0:ownEvRoll());S.order.forEach(id=>{const st=hs(id),x=st.hst;if(!x)return;if(x.u<=S.t){add(`${H(id).n}的【${HST[x.k][0]}】狀態解除了`,'pos');st.hst=null;return}const w=wed(id);
   if(x.k==='jail'){if(w)w.fav=Math.max(0,w.fav-3);gainAff(id,-2)}if(x.k==='ban'&&w)w.fav=Math.max(0,w.fav-2);if(x.k==='spoil'){spouses().filter(y=>y!==id).forEach(y=>{wed(y).fav=Math.max(0,wed(y).fav-2)});S.food=Math.max(0,S.food-15)}});
  S.order.forEach(id=>{if(hs(id).traitor&&!unavail(id)&&Math.random()<.14){const f=Math.min(S.food,40),so=Math.min(S.soldiers,30);S.food-=f;S.soldiers-=so;S.lastRaid=-9;add(`【內奸】糧倉帳目出現缺口（糧 −${f}），巡邏路線被敵人摸清（兵力 −${so}），敵襲機率上升……`,'neg')}});
  Object.entries(S.gone||{}).forEach(([id,g])=>{if(g.k==='exile'&&g.u<=S.t){if(Math.random()<.7){delete S.gone[id];S.order.push(id);hs(id).aff=Math.min(hs(id).aff,10);if(wed(id))wed(id).fav=20;add(`${H(id).n}結束流放，風塵僕僕地回到了燈塔`,'pos');hxPush(id,(GD.hstat&&GD.hstat[id]&&GD.hstat[id].exileBack)||'……我回來了。這些日子，我把該想的都想清楚了。','流放歸來')}else{g.k='lost';add(`流放中的${H(id).n}下落不明，再也沒有回來`,'neg')}}})}
@@ -3369,7 +3486,7 @@ function endTurn(){
   else if(!away&&hasFac('medic')&&(t.own||dist(u,BASE)<=1)){const v=facVal(slotsOf('medic')[0]),h=Math.max(1,Math.round((u.max-u.troops)*v/100));u.troops=Math.min(u.max,u.troops+h);add(`🩹 醫館在領地內醫治${H(u.gens[0]).n}的傷兵 +${h}`,'pos')}}
  S.t++;
  const wasTide=S.t%tideInterval===0;if(wasTide){if(away)homeTide(add);else tide(add)}worldTick(add);
- wxRoll(add);wtxTurn(add);nmilTurn(add);facTurn(add);moveEnemies(add);milTurn(add);
+ if(knows("popturn"))S.pop+=4;if(S.t%3===0)doctrine("turn3",add);if(S.t%6===0)doctrine("turn6",add);if(S.pol>=25)doctrine("fog",add);diplomaticTurn(add);fieldWorks(add);wxRoll(add);wtxTurn(add);nmilTurn(add);facTurn(add);moveEnemies(add);milTurn(add);
  S.ap=maxAP()-(S.apDebt||0)+(S.companionAP||0);S.companionAP=0;S.apDebt=0;S.blessed=S.blessed&&S.units.some(u=>u.id===S.blessed)?S.blessed:null;
  S.units.forEach(u=>{const dest=armyHome(u);if(!inWorld()&&u.r===dest.r&&u.c===dest.c&&!u.tgt){treasury(dest).soldiers+=u.troops;u.gens.forEach(g=>{hs(g).task='idle';hs(g).station=dest===BASE?null:dest.r+'_'+dest.c});u.dead=true;add(`${H(u.gens[0]).n}的部隊返回${dest===BASE?"燈塔":cityName(dest)}歸營`)}});
  S.units=S.units.filter(u=>!u.dead);
@@ -3429,15 +3546,15 @@ function runBattles(done){const b=battleQ.shift();if(!b)return done();
    battle(u,en,res=>{u.troops=res.left;if(res.win)u.gens.forEach(g=>gainExp(g,35+elv(en)*6,(x,c)=>report.push([x,c])));if(!res.win||u.troops<=0){report.push([`在${D.n}第 ${wi+1} 波敗退……`,'neg']);if(u.troops<=0){u.dead=true;u.gens.forEach(g=>hs(g).task='idle')}else u.tgt={...BASE};S.units=S.units.filter(x=>!x.dead);return runBattles(done)}wi++;next()},`秘境・${D.n} ${wi+1}/3`)};
   const X=V14.dun[b.dungeon];return scene(null,next,{bg:D.bg,l:[...(lv===0?[['n',X.story]]:[]),...X.intro,['s',`第 ${lv+1} 層：連戰三波，中途不會回復兵力。`]]})}
  if(b.e.troops<=0)return runBattles(done);
- if(b.siege){const def=owned().filter(h=>!busyArmy(h.id)).sort((a,b)=>(stat(b.id,'str')+stat(b.id,'cmd'))-(stat(a.id,'str')+stat(a.id,'cmd'))).slice(0,3).map(h=>h.id);
+ if(b.siege){const def=owned().filter(h=>activePlace(h.id)==='home'&&!unavail(h.id)&&!busyArmy(h.id)).sort((a,b)=>(stat(b.id,'str')+stat(b.id,'cmd'))-(stat(a.id,'str')+stat(a.id,'cmd'))).slice(0,3).map(h=>h.id);
   const troops=Math.max(120,Math.min(S.soldiers,800));battle({gens:def,troops,max:troops,siege:true},b.e,res=>{
-   const lost=troops-res.left;S.soldiers=Math.max(0,S.soldiers-lost);
+   warAfter({gens:def,siege:true},b.e,res.win,(m,c)=>report.push([m,c]));const lost=troops-res.left;S.soldiers=Math.max(0,S.soldiers-lost);
    if(res.win){report.push([`守城成功！擊退${b.e.n}（我軍損失 ${lost}）`,'pos']);def.forEach(g=>gainExp(g,30+elv(b.e)*5,(x,c)=>report.push([x,c])));if(S.dur<20)unlock('ember');if(b.e.n.includes('黑霧潮')){if(S.tides+1>=1)unlock('tide1');if(S.tides+1>=3)unlock('tide3');if(T_('e5'))S.energy+=40;if(!S.tideWonOnce){S.tideWonOnce=1;queueScene('tideWin1')}else queueScene('tideWin')}}
    else if(S.cur&&S.cur!=='home'){S.units.forEach(x=>x.troops=Math.max(1,Math.round(x.troops*.7)));report.push(['遠征營地被攻破！所有部隊兵力 −30%','neg']);b.e.troops=Math.round(b.e.troops*.5)}
    else{defeatCapture(def,b.e,BASE,(m,c)=>report.push([m,c]));const d=30-(hasFac('wall')?Math.round(facVal(slotsOf('wall')[0])/4):0);S.dur-=d;report.push([`城門被攻破！燈塔耐久 −${d}（剩 ${S.dur}）`,'neg']);if(S.dur>0&&S.dur<35&&!S.lowWarned){S.lowWarned=1;queueScene('lowDur')}if(S.dur>0)b.e.troops=Math.round(b.e.troops*.5)}
    S.enemies=S.enemies.filter(e=>e.troops>0);runBattles(done)},'燈塔守城戰');return}
  const u=b.u;if(b.e.officer==='lubu'&&!S.lubuFight){S.lubuFight=1;battleQ.unshift(b);return scene('lubu2',()=>runBattles(done))}
- u.gens.forEach(g=>{const s2=hs(g);if(!s2)return;s2.bt=(s2.bt||0)+1;if(inWorld()&&H(g).line&&H(g).line===S.cur)s2.wbt=1});const t0_=b.e.troops,u0_=u.troops;battle(u,b.e,res=>{battleStat(b.e,res,t0_,u0_,u);
+ u.gens.forEach(g=>{const s2=hs(g);if(!s2)return;s2.bt=(s2.bt||0)+1;if(inWorld()&&H(g).line&&H(g).line===S.cur)s2.wbt=1});const t0_=b.e.troops,u0_=u.troops;battle(u,b.e,res=>{battleStat(b.e,res,t0_,u0_,u);warAfter(u,b.e,res.win,(m,c)=>report.push([m,c]));
   u.troops=res.left;if(hasFac('medic')&&u.troops>0){const h0=u.troops;u.troops=Math.min(u.max,u.troops+Math.round((u.max-u.troops)*facVal(slotsOf('medic')[0])/100));if(u.troops>h0)report.push([`🩹 醫館救回傷兵 +${u.troops-h0}（${H(u.gens[0]).n}的部隊）`,'pos'])}
   if(res.win){report.push([`${H(u.gens[0]).n}擊破${b.e.n}！`,'pos']);u.gens.forEach(g=>gainExp(g,60+elv(b.e)*10,(x,c)=>report.push([x,c])));if(!b.def){u.r=b.where.r;u.c=b.where.c;if(u.tgt&&u.tgt.r===u.r&&u.tgt.c===u.c)u.tgt=null}
    if(b.e.boss&&!S.cityWon){S.cityWon=1;evApply({core:5,energy:150,gift:3},{});report.push(['【奪回沉沒長安】畫皮班主倒下了！但歸墟仍在擴張——新的世界線正不斷降臨……（晶核 +5、能量 +150、禮物 +3）','pos'])}
@@ -3476,9 +3593,9 @@ function fight(our,en,quiet,hooks={}){
     else if(a[1]==='buff'){buff*=a[2];const s3=xtra(a);hooks.skill&&hooks.skill(i,h,a,`我軍傷害 ×${a[2]}${s3}`,'s')}
     else{const ex=(stat(id,'str')+stat(id,'int'))/2*a[2]*(a[1]==='one'?1.3:1)*mul*1.5;dmg+=ex;if(a[1]==='aoeh')ot=Math.min(our.max*1.2,ot+40);let st2=xtra(a);const sx=a[6]&&a[6].stun;if((a[5]==='stun'||sx)&&Math.random()<(sx?.6:.35)+m.stunUp){stun=true;st2+='，敵軍陷入混亂'}hooks.skill&&hooks.skill(i,h,a,`造成 ${Math.round(ex)} 傷害${st2}`,'s')}
     break}}});
-  if(AF.includes('armor'))dmg*=.75;dmg=Math.round(dmg);et-=dmg;hooks.hit&&hooks.hit(dmg);if(et<=0&&split){split=false;et=Math.round(en.max*.35)}if(AF.includes('regen')&&et>0)et=Math.min(en.max,et+Math.round(en.max*.05));if(AF.includes('fire')&&ot>0)ot-=Math.round(our.max*.02);
+  const resistance=en.seat?.76:en.eld?.83:en.fac?.88:1;dmg*=resistance;if(en.fac&&knows("assault"))dmg*=1.12;if(en.eld&&knows("hunt"))dmg*=1.15;if(round===1&&S.streak>0&&knows("pursuit"))dmg*=1.18;if(round===1&&lead&&hs(lead).warDoubt)dmg*=.85;if(AF.includes('armor'))dmg*=.75;dmg=Math.round(dmg);et-=dmg;hooks.hit&&hooks.hit(dmg);if(et<=0&&split){split=false;et=Math.round(en.max*.35)}if(AF.includes('regen')&&et>0)et=Math.min(en.max,et+Math.round(en.max*.05));if(AF.includes('fire')&&ot>0)ot-=Math.round(our.max*.02);
   if(m.regen&&ot>0){const rg=Math.round(our.max*m.regen);ot=Math.min(our.max*1.2,ot+rg);hooks.regen&&hooks.regen(rg)}
-  if(et>0){if(round===1&&fGuard){hooks.guard&&hooks.guard()}else if(stun){stun=false;hooks.stunned&&hooks.stunned()}else if(m.counter&&Math.random()<m.counter){hooks.countered&&hooks.countered()}else{let ed=et*.1*(en.atk/55)*(1-m.def)*(.85+Math.random()*.3);if(ot<our.max*.3)ed*=1-m.last;if(ot<our.max*.5)ed*=1-m.halfdef;ed*=lvD*cmdDef;if(round<=3)ed*=1-m.earlydef;if(TM.oc==='步')ed*=.9;if(TM.adv<0)ed*=1.15;if(TM.ec==='騎'&&round===1)ed*=1.2;if(AF.includes('swift')&&round<=2)ed*=1.4;ed=Math.round(ed);ot-=ed;hooks.ehit&&hooks.ehit(ed);if(en.tr==='leech'){const lh=Math.round(ed*.3);et=Math.min(en.max,et+lh);hooks.leech&&hooks.leech(lh)}}}
+  if(et>0){if(round===1&&fGuard){hooks.guard&&hooks.guard()}else if(stun){stun=false;hooks.stunned&&hooks.stunned()}else if(m.counter&&Math.random()<m.counter){hooks.countered&&hooks.countered()}else{let ed=et*.1*(en.atk/55)*(1-m.def)*(.85+Math.random()*.3);if(ot<our.max*.3)ed*=1-m.last;if(ot<our.max*.5)ed*=1-m.halfdef;if(our.siege&&knows("fortify"))ed*=.82;ed*=lvD*cmdDef*(en.seat?1.5:en.eld?1.38:en.fac?1.28:1);if(round===1&&lead&&hs(lead).warPride)ed*=1.2;if(round<=3)ed*=1-m.earlydef;if(TM.oc==='步')ed*=.9;if(TM.adv<0)ed*=1.15;if(TM.ec==='騎'&&round===1)ed*=1.2;if(AF.includes('swift')&&round<=2)ed*=1.4;ed=Math.round(ed);ot-=ed;hooks.ehit&&hooks.ehit(ed);if(en.tr==='leech'){const lh=Math.round(ed*.3);et=Math.min(en.max,et+lh);hooks.leech&&hooks.leech(lh)}}}
  }
  const win=et<=0||(round>=10&&et/en.max<ot/our.max);return{win,left:Math.max(0,Math.round(ot)),eleft:Math.max(0,Math.round(et)),round}}
 function battleVoices(ids,win){
