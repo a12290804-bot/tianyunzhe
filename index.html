@@ -3669,6 +3669,13 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
  const k=s.f.slice(3),id=s.owner,v=id&&hs(id).pv&&hs(id).pv[k],seen=id&&pvSeen(id,k);
  sheet(`<div class="evimg" style="background-image:url(img/${PVIMG[k]||'b_harem'}.jpg)"></div><h3>${seen?PV[k][0]:PV[k][1]+'（底細不明）'} Lv${s.lv||1}</h3><p class="small">${id?H(id).n+'的私宅・她自己蓋的，不聽你調度':''}</p>${seen?`<p class="small" style="margin:6px 0">${PV[k][5]}</p>`:'<p class="small" style="margin:6px 0;color:#ff9a9a">派密探盯她，才能看穿這裡真正在做什麼。</p>'}<p class="small" style="margin:6px 0">全城：${pvFx(k,s.lv||1)}</p>${id&&v?`<div style="display:flex;gap:4px;margin-top:6px"><button class="btn ghost sm" data-pvx="${id}|${k}|raze">拆除</button><button class="btn ghost sm" data-pvx="${id}|${k}|seize">抄沒</button><button class="btn ghost sm" data-pvx="${id}|${k}|take">接管</button></div>`:''}`,true)},true);
 {const _hpv=haremEvent;haremEvent=function(cb){try{pvPlaceAll()}catch(e){}return _hpv(cb)}}
+/* ===== 顯示清理：把文本裡殘留的英文角色代號（daji：、you：）換成名字 ===== */
+const DEENG_RE=/(?<![A-Za-z0-9_{])(you|[a-z][a-z0-9_]{1,24})(?=：|:「)/g;
+function deEng(s){if(typeof s!=='string'||!/[a-z]/.test(s))return s;return s.replace(DEENG_RE,(m,k)=>k==='you'?'你':(HD[k]?HD[k][0]:m))}
+{const fixNode=n=>{if(n.nodeType===3){const v=n.nodeValue;if(v&&/[a-z][：:]/.test(v)){const r=deEng(v);if(r!==v)n.nodeValue=r}}else if(n.nodeType===1&&!/^(SCRIPT|STYLE|TEXTAREA|INPUT)$/.test(n.tagName)){const w=document.createTreeWalker(n,NodeFilter.SHOW_TEXT);let x;while(x=w.nextNode()){const v=x.nodeValue;if(v&&/[a-z][：:]/.test(v)){const r=deEng(v);if(r!==v)x.nodeValue=r}}}};
+ try{new MutationObserver(ms=>{for(const m of ms){if(m.type==='characterData')fixNode(m.target);else m.addedNodes.forEach(fixNode)}}).observe(document.documentElement,{childList:true,subtree:true,characterData:true})}catch(e){}}
+{const _fp=feedPush;feedPush=function(s,...a){return _fp(deEng(s),...a)}}
+{const _hxp=hxPush;hxPush=function(id,s,...a){return _hxp(id,deEng(s),...a)}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
