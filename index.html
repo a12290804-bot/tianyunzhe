@@ -926,14 +926,15 @@ function courtMotive(id){const tags=ntagAll(id),p=hp(id);
  if((hs(id).aff||0)<45||tags.includes('善妒'))return '尋求靠山';
  return '培植親信'}
 function courtLinks(id){return S.order.filter(b=>b!==id&&S.sworn?.[rk(id,b)])}
+function courtHabit(id,tag){return hs(id)?.courtHabits?.[tag]||0}
 function courtDrive(id){
  const st=hs(id),p=hp(id),tags=ntagAll(id),allies=courtLinks(id);
  const has=rx=>tags.some(t=>rx.test(t));
  const foes=S.order.filter(b=>b!==id&&activePlace(b)===activePlace(id)&&relG(id,b)<-20);
  return {
-  power:clamp(Math.round(heroAmb(id)*.55+cH(id)*.16+(100-p.inf)*.22+(has(/野心|專權|好強|弄權|背盟奪權|兩面下注/)?18:0)),0,100),
-  shelter:clamp(65-Math.round((st.aff||0)/3)-allies.length*15+foes.length*10+(has(/謹慎|多疑|善妒|護持盟友/)?12:0),0,100),
-  revenge:clamp(Math.round(cT(id)*.38)+(foes.length?18:0)+(p.foe?18:0)+(has(/狠|殘|記仇|報復|構陷對手/)?15:0)+(st.grievance||0),0,100)
+  power:clamp(Math.round(heroAmb(id)*.55+cH(id)*.16+courtHabit(id,'兩面下注')*3+courtHabit(id,'背盟奪權')*3+(100-p.inf)*.22+(has(/野心|專權|好強|弄權|背盟奪權|兩面下注/)?18:0)),0,100),
+  shelter:clamp(65+courtHabit(id,'護持盟友')*3-Math.round((st.aff||0)/3)-allies.length*15+foes.length*10+(has(/謹慎|多疑|善妒|護持盟友/)?12:0),0,100),
+  revenge:clamp(Math.round(cT(id)*.38)+courtHabit(id,'構陷對手')*3+(foes.length?18:0)+(p.foe?18:0)+(has(/狠|殘|記仇|報復|構陷對手/)?15:0)+(st.grievance||0),0,100)
  }
 }
 function courtProfile(id){const d=courtDrive(id);return '奪權 '+d.power+'　自保 '+d.shelter+'　復仇 '+d.revenge}
@@ -943,13 +944,13 @@ function intrigueAction(a,others,add){
  const partners=others.filter(ally),outsiders=others.filter(b=>!ally(b));
  const options=[];
  function offer(w,act){if(w>0)options.push({w,act})}
- function pact(x,y){(S.sworn??={})[rk(x,y)]=S.t+1;relAdd(x,y,12)}
+ function pact(x,y){for(const [owner,other] of [[x,y],[y,x]]){const secrets=hs(owner).secretPacts;if(secrets)for(const [who,prior] of Object.entries(secrets))if(who===other||prior===other)delete secrets[who]}(S.sworn??={})[rk(x,y)]=S.t+1;relAdd(x,y,12)}
  function sway(x,amt){const h=hp(x),old=h.inf;h.inf=clamp(old+amt,0,100);return h.inf-old}
- function learn(tag){const tags=st.courtTags??=[];if(!tags.includes(tag))tags.push(tag)}
+ function learn(tag){const tags=st.courtTags??=[];if(!tags.includes(tag))tags.push(tag);const habits=st.courtHabits??={};habits[tag]=Math.min(5,(habits[tag]||0)+1)}
  for(const b of outsiders){
   const v=hp(b),friend=relG(a,b),shared=partners.find(c=>relG(b,c)<-15||hp(c).foe===b||v.foe===c);
   offer(12+d.shelter*.55+friend*.25,()=>{pact(a,b);sway(b,2);return ['結盟',b,'自保',H(b).n+'收下盟書，雙方結盟，交情加深。']});
-  if(shared)offer(26+d.power*.6,()=>{pact(a,b);learn('兩面下注');return ['雙面結盟',b,'奪權','瞞著盟友'+H(shared).n+'與其對頭'+H(b).n+'立下第二份盟書。兩份盟約同時有效。']});
+  if(shared)offer(26+d.power*.6,()=>{pact(a,b);(st.secretPacts??={})[b]=shared;learn('兩面下注');return ['雙面結盟',b,'奪權','瞞著盟友'+H(shared).n+'與其對頭'+H(b).n+'立下第二份盟書。兩份盟約同時有效。']});
   const patron=courtLinks(b).find(c=>c!==a&&others.includes(c));
   if(patron)offer(d.power*.45,()=>{delete S.sworn[rk(b,patron)];pact(a,b);relAdd(patron,a,-20);hp(patron).foe=a;return ['挖角',b,'奪權',H(b).n+'交還'+H(patron).n+'的盟印，轉入她麾下。舊主將她列為仇敵。']});
   if((friend<0||p.foe===b||d.revenge>=45)&&!hst(b)){
@@ -959,6 +960,12 @@ function intrigueAction(a,others,add){
   }
  }
  for(const b of partners){
+  const witness=st.secretPacts?.[b];
+  if(witness&&partners.includes(witness))offer(24+d.revenge*.4,()=>{
+   delete st.secretPacts[b];delete S.sworn[rk(a,witness)];relAdd(a,witness,-30);relAdd(b,witness,-10);
+   hp(witness).foe=a;const loss=-sway(a,-8);
+   return ['密盟曝光',b,'雙面盟約',H(witness).n+'帶著第一份盟書趕到，指著'+H(b).n+'手中的同印密約，當場撕毀自己的那份。'+H(a).n+'失去 '+loss+' 權勢，與'+H(witness).n+'交情 −30。']
+  });
   offer(20+d.shelter*.2,()=>{const gain=sway(b,5);relAdd(a,b,6);learn('護持盟友');return ['保舉',b,'自保','以自己的印信替'+H(b).n+'作保。盟友權勢 +'+gain+'，兩人交情加深。']});
   if(partners.length>1||hp(b).inf>p.inf||p.foe===b)offer(10+d.power*.4+d.revenge*.35,()=>{delete S.sworn[rk(a,b)];const stolen=Math.min(12,hp(b).inf,100-p.inf);sway(b,-stolen);sway(a,stolen);relAdd(a,b,-38);hp(b).foe=a;hs(b).grievance=Math.min(35,(hs(b).grievance||0)+20);learn('背盟奪權');return ['背叛',b,'奪權','當眾交出盟友'+H(b).n+'的密信。盟約破裂，'+stolen+' 點權勢易手，對方將她列為仇敵。']});
  }
@@ -998,7 +1005,7 @@ function intrigueTurn(add){
  if(S.intrigueAt===S.t)return;S.intrigueAt=S.t;
  const women=S.order.filter(id=>H(id).sex==='f'&&!unavail(id)&&!hst(id));
  const actors=women.map(id=>({id,priority:(hs(id).plotTurn??-5)+Math.random()})).sort((a,b)=>a.priority-b.priority);
- let left=Math.ceil(women.length/3);
+ let left=Math.ceil(women.length/2);
  for(const {id} of actors){if(left<=0)break;if(hst(id))continue;const near=women.filter(b=>b!==id&&!hst(b)&&activePlace(b)===activePlace(id));if(!near.length)continue;intrigueAction(id,near,add);left--}
 }
 function recordCourt(s){
@@ -1009,7 +1016,7 @@ function recordCourt(s){
 function intrigueView(){
  const women=S.order.filter(id=>H(id).sex==='f'),log=S.courtLedger||S.hfeed||[];
  const row=x=>'<p><small>第 '+x.t+' 旬</small><br>'+x.s+'</p>';
- return '<div class="sec"><div class="orn">往來紀事</div>'+ (log.length?log.slice(0,16).map(row).join('')+(log.length>16?'<details><summary>較早的紀錄</summary>'+log.slice(16).map(row).join('')+'</details>':''):'尚無往來紀錄。兩名紅顏同處一地，過旬後就能看見她們的行動。')+'</div><div class="sec"><div class="orn">查閱人物</div>'+women.map(id=>'<details><summary>'+H(id).n+'・'+intriguePlace(id)+'</summary><p>'+courtProfile(id)+'<br>'+ntagAll(id).join('、')+'<br>已登用的羈絆人物：'+((tieRoster.get(id)||[]).concat(familyTies().filter(t=>t[0].includes(id))).map(t=>[t,t[0].find(b=>b!==id)]).filter(([,b])=>S.order.includes(b)).map(([t,b])=>H(b).n+'（'+tieKinds[t[5]][0]+'）').join('、')||'無')+'<br>盟友：'+(courtLinks(id).map(b=>H(b).n).join('、')||'無')+'</p>'+log.filter(x=>x.s.includes(H(id).n)).map(row).join('')+'</details>').join('')+'</div>'
+ return '<div class="sec"><div class="orn">往來紀事</div>'+ (log.length?log.slice(0,16).map(row).join('')+(log.length>16?'<details><summary>較早的紀錄</summary>'+log.slice(16).map(row).join('')+'</details>':''):'尚無往來紀錄。兩名紅顏同處一地，過旬後就能看見她們的行動。')+'</div><div class="sec"><div class="orn">查閱人物</div>'+women.map(id=>'<details><summary>'+H(id).n+'・'+intriguePlace(id)+'</summary><p>'+courtProfile(id)+'<br>'+ntagAll(id).map(tag=>tag+(courtHabit(id,tag)?'（'+courtHabit(id,tag)+'/5）':'')).join('、')+'<br>已登用的羈絆人物：'+((tieRoster.get(id)||[]).concat(familyTies().filter(t=>t[0].includes(id))).map(t=>[t,t[0].find(b=>b!==id)]).filter(([,b])=>S.order.includes(b)).map(([t,b])=>H(b).n+'（'+tieKinds[t[5]][0]+'）').join('、')||'無')+'<br>盟友：'+(courtLinks(id).map(b=>H(b).n).join('、')||'無')+'</p>'+log.filter(x=>x.s.includes(H(id).n)).map(row).join('')+'</details>').join('')+'</div>'
 }
 
 function schemeTurn(add){
@@ -3770,9 +3777,9 @@ const ecls=e=>e.fac==='xiongnu'||/crawler|lubu/.test(e.img)?'騎':e.fac==='qin'|
 const BEATS={步:'騎',騎:'弓',弓:'步'};
 function troopMatch(our,en){const oc=our.gens&&our.gens[0]?tcls(our.gens[0]):'步',ec=ecls(en);return{oc,ec,adv:BEATS[oc]===ec?1:BEATS[ec]===oc?-1:0}}
 function enemyDoctrine(en){
- if(inWorld()){const fallen=wFallen(S.cur);if(en.wboss)return {label:fallen?'淪陷本陣・三輪齊射':'悲歌本陣・三輪齊射',power:fallen?2.65:2.12};return fallen?{label:'淪陷精銳',power:2.05}:{label:'悲歌伏軍',power:1.65}}
+ if(inWorld()){const fallen=wFallen(S.cur);if(en.wboss)return {label:fallen?'淪陷本陣・三輪齊射':'悲歌本陣・三輪齊射',power:fallen?2.85:2.32};return fallen?{label:'淪陷精銳',power:2.05}:{label:'悲歌伏軍',power:1.65}}
  if(en.seat)return {label:'重城輪防',power:2.15};
- if(en.fac)return {label:'勢力戰陣',power:1.45};
+ if(en.fac)return {label:'勢力戰陣',power:1.6};
  return {label:en.eld?'黑霧先鋒':'散兵',power:en.eld?1.2:1};
 }
 function fight(our,en,quiet,hooks={}){
@@ -3795,7 +3802,7 @@ function fight(our,en,quiet,hooks={}){
   if(m.regen&&ot>0){const rg=Math.round(our.max*m.regen);ot=Math.min(our.max*1.2,ot+rg);hooks.regen&&hooks.regen(rg)}
   if(et>0){if(round===1&&fGuard){hooks.guard&&hooks.guard()}else if(stun){stun=false;hooks.stunned&&hooks.stunned()}else if(m.counter&&Math.random()<m.counter){hooks.countered&&hooks.countered()}else{let ed=Math.max(et,startingEnemy*(doctrine.power>1?.38:0))*.1*doctrine.power*(en.atk/55)*clamp(1-m.def,.18,1.5)*(.85+Math.random()*.3);if(ot<our.max*.3)ed*=1-m.last;if(ot<our.max*.5)ed*=1-m.halfdef;if(knows('shield')&&TM.adv<=0&&round<=3)ed*=.8;ed*=lvD*cmdDef*(en.seat?1.5:en.eld?1.38:en.fac?1.28:1);if(round===1&&lead&&hs(lead).warPride)ed*=1.2;if(round<=3)ed*=1-m.earlydef;if(TM.oc==='步')ed*=.9;if(TM.adv<0)ed*=1.15;if(TM.ec==='騎'&&round===1)ed*=1.2;if(AF.includes('swift')&&round<=2)ed*=1.4;ed=Math.round(ed);ot-=ed;hooks.ehit&&hooks.ehit(ed);if(en.tr==='leech'){const lh=Math.round(ed*.3);et=Math.min(en.max,et+lh);hooks.leech&&hooks.leech(lh)}}}
  }
- const win=ot>0&&(et<=0||(round>=10&&!en.seat&&et/en.max+(doctrine.power-1)*.2<ot/our.max));return{win,left:Math.max(0,Math.round(ot)),eleft:Math.max(0,Math.round(et)),round}}
+ const win=ot>0&&(et<=0||(round>=10&&!en.seat&&!en.wboss&&et/en.max+(doctrine.power-1)*.2<ot/our.max));return{win,left:Math.max(0,Math.round(ot)),eleft:Math.max(0,Math.round(et)),round}}
 function battleVoices(ids,win){
  const fieldKey=win?'winIn':'loseIn', homeKey=win?'winHome':'loseHome';
  const field=ids.find(id=>GD.war?.[id]?.[fieldKey]?.length)||ids[0];
