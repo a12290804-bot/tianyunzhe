@@ -2879,7 +2879,7 @@ function bfSheet(t,local=false){if(!t.own||t.rebFid)return;if(t.city>1&&!local)r
  sheet(`<div class="evimg" style="background-image:url(img/city_view.jpg)"></div><h3 data-nodyn>${cityName(t)}・分城設施</h3><p class="small" style="margin:4px 0 8px">${bs.filter(Boolean).length}/${bs.length} 格。每座設施可升到 3 級。</p>
  ${bs.map((s,i)=>{if(!s)return`<button class="opt frame" data-bfn="${i}" style="margin-bottom:6px"><span class="t"><b>⊕ 空地</b><div>點擊選擇要蓋的設施</div></span></button>`;if(s.readyAt)return `<div class="frame">${pbData(s.f)?.n||s.f}・施工中，尚需 ${Math.max(0,s.readyAt-S.t)} 旬</div>`;const B=bfInfo(s.f),g=G2[s.f];const pal=s.f==='xinggong'?spouses().find(x=>wed(x).pal&&wed(x).pal.k===`${t.r}_${t.c}`):null;return`<div class="frame" style="padding:8px;margin-bottom:6px;display:flex;gap:8px;align-items:center"><span class="pic" style="width:44px;height:44px;flex:none;border-radius:8px;background:url(${slotArt(s.f)}) center/cover"></span><div style="flex:1"><b>${B[0]}</b> <span class="small">Lv${s.lv}</span><div class="small">${B[2]}</div>${pal?`<div class="small" style="color:var(--pink)">${H(pal).n}常駐中（${wed(pal).pal.mode==='favor'?'恩寵':'外放'}）</div>`:''}</div><div style="display:flex;flex-direction:column;gap:4px">${s.lv<3?`<button class="btn sm" data-bfu="${i}">升級<br><span class="small">木${B[1][0]*(s.lv+1)} 石${B[1][1]*(s.lv+1)}</span></button>`:''}${s.f==='xinggong'?(pal?`<button class="btn ghost sm" data-pb="${pal}">召回</button>`:`<button class="btn ghost sm" data-ps="1">派駐夫人</button>`):''}</div></div>`}).join('')}
  ${bs.length<8?`<button class="btn ghost sm" id="bfEx" style="width:100%">擴建一格（木 ${60*(bs.length-1)}・石 ${80*(bs.length-1)}）</button>`:''}`);
- $$('#sheetIn [data-bfn]').forEach(b=>b.onclick=()=>{const i=+b.dataset.bfn;const have=bs.filter(Boolean).map(s=>s.f);sheet(`<h3>選擇設施</h3>${Object.entries(BF).filter(([k])=>!have.includes(k)&&!k.startsWith('pb_')).map(([k,B])=>`<button class="opt frame" data-bfb="${k}" style="margin-bottom:6px"><span class="pic" style="background-image:url(${slotArt(k)});width:44px;flex:none"></span><span class="t"><b>${B[0]}</b> <span class="small">木 ${B[1][0]}・石 ${B[1][1]}</span><div>${B[2]}</div>${G2[k]?`<div class="small" style="color:var(--dim)">${G2[k].eff||''}</div>`:''}</span></button>`).join('')}`);
+ $$('#sheetIn [data-bfn]').forEach(b=>b.onclick=()=>{const i=+b.dataset.bfn;const have=bs.filter(Boolean).map(s=>s.f);sheet(`<h3>選擇設施</h3>${Object.entries(BF).filter(([k])=>!have.includes(k)&&!k.startsWith('pb_')&&!k.startsWith('pv_')).map(([k,B])=>`<button class="opt frame" data-bfb="${k}" style="margin-bottom:6px"><span class="pic" style="background-image:url(${slotArt(k)});width:44px;flex:none"></span><span class="t"><b>${B[0]}</b> <span class="small">木 ${B[1][0]}・石 ${B[1][1]}</span><div>${B[2]}</div>${G2[k]?`<div class="small" style="color:var(--dim)">${G2[k].eff||''}</div>`:''}</span></button>`).join('')}`);
   $$('#sheetIn [data-bfb]').forEach(b2=>b2.onclick=()=>{const k=b2.dataset.bfb,B=BF[k];if(S.wood<B[1][0]||S.stone<B[1][1]||S.ap<1){sfx('deny');return toast('木石或行動力不足')}S.ap--;S.wood-=B[1][0];S.stone-=B[1][1];bs[i]={f:k,lv:1};S.bfN=(S.bfN||0)+1;sfx('build');closeSheet();const g=G2[k];if(g&&g.built)toast(g.built.slice(0,40));bfSheet(t,true);render()})});
  $$('#sheetIn [data-bfu]').forEach(b=>b.onclick=()=>{const s=bs[+b.dataset.bfu],B=bfInfo(s.f),m=s.lv+1;if(S.wood<B[1][0]*m||S.stone<B[1][1]*m){sfx('deny');return toast('木石不足')}S.wood-=B[1][0]*m;S.stone-=B[1][1]*m;s.lv++;sfx('build');closeSheet();bfSheet(t,true);render()});
  if($('#bfEx'))$('#bfEx').onclick=()=>{const n=bs.length-1;if(S.wood<60*n||S.stone<80*n){sfx('deny');return toast('木石不足')}S.wood-=60*n;S.stone-=80*n;bs.push(null);sfx('build');closeSheet();bfSheet(t,true);render()};
@@ -3428,7 +3428,7 @@ const AUTOACT=[
  ['rebel','自立門戶',1,(c)=>(c.inf>=60&&c.fav<35&&c.band>=2)?c.has('背盟奪權','兩面下注','野心')*2+1:0,(id)=>{const mem=S.order.filter(x=>x!==id&&relG(id,x)>=30&&!wed(x)).slice(0,2);rebelFound(id,mem,feedPush,`${H(id).n}對你徹底死心，帶著自己的人馬自立門戶。`);return'帶著黨羽自立門戶'}]
 ];
 function actCtx(id){const w=wed(id),tags=ntagAll(id).concat(PTAG[id]||[]).join(' ');return{fav:w.fav|0,love:Math.max(0,loveLv(id)),band:mistState(id).band,cy:cyc(id),inf:hp(id).inf|0,amb:heroAmb(id),has:(...k)=>k.filter(x=>tags.includes(x)).length}}
-function autoTurn(add){spouses().forEach(id=>{if(!S.order.includes(id)||hst(id)||wed(id).cold||busyArmy(id))return;const c=actCtx(id);const p=.3*(c.cy===0?.6:1);if(Math.random()>p)return;
+function autoTurn(add){spouses().forEach(id=>{if(!S.order.includes(id)||hst(id)||wed(id).cold||busyArmy(id))return;const c=actCtx(id);const p=.32*(c.cy===0?.7:1)*(1+Math.min(1,c.band*.15+(c.love>=5?.3:0)+(c.fav<25?.3:0)));if(Math.random()>p)return;
  const L=AUTOACT.map(a=>[a,Math.max(0,a[3](c))]).filter(x=>x[1]>0);const sum=L.reduce((s,x)=>s+x[1],0);if(!sum)return;let r=Math.random()*sum;const [a]=L.find(x=>(r-=x[1])<0)||L[0];
  let s=null;try{s=a[4](id,c)}catch(e){s=null}if(!s)return;const st=hs(id);(st.acts??=[]).push({t:S.t,s,secret:a[2]});if(st.acts.length>20)st.acts.shift();
  const seen=!a[2]||(S.spy||{})[id]>S.t||Math.random()<.25;if(!seen)return;const line=`【${H(id).n}・${a[1]}】${s}`;add(line,a[2]?'neg':'');
@@ -3482,6 +3482,61 @@ function lowEv(f,cb){if(!S.evB||S.evB.t!==S.t)S.evB={t:S.t,n:0};if(S.evB.n>=3)re
 {const _o=typeof brEvent==='function'?brEvent:null;if(_o)brEvent=function(cb){return lowEv(_o,cb)}}
 {const _o=typeof council==='function'?council:null;if(_o)council=function(cb){return lowEv(_o,cb)}}
 {const _o=typeof petition==='function'?petition:null;if(_o)petition=function(cb){return lowEv(_o,cb)}}
+
+/* ===== 紅顏私宅 ===== */
+// key:[名稱,偽裝名,秘密?,觸發標籤,附帶標籤,說明,每旬效果(id,lv)]
+const PV={
+ mianshou:['面首院','別苑',1,['私通','多情','風流','享樂','怨懟','縱慾'],'縱慾','豢養面首：私會進展大增，冷落也不太傷她，污染上升',(id,l)=>{const k=Object.keys(S.aff2||{}).find(k=>k.startsWith(id+'|'));if(k)S.aff2[k].v+=6*l;const w=wed(id);w.fav=Math.max(w.fav,40);mistAdd(id,3*l)}],
+ sibing:['私兵營','護院',0,['背盟奪權','跋扈','兩面下注','野心','擁兵'],'擁兵','每旬招募私兵；城被圍時助守，她若叛變私兵全數跟她走',(id,l)=>{const st=hs(id);st.pvTroops=(st.pvTroops||0)+15*l}],
+ xingfang:['刑房','刑房',0,['殘暴','刻薄','嗜血','記仇'],'殘暴','私刑大增，其他夫人驚恐，她的權勢與污染一起上升',(id,l)=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+l);mistAdd(id,4*l);if(Math.random()<.2)spouses().filter(x=>x!==id).forEach(x=>{(hs(x).dtag??={}).驚弓=hs(x).dtag.驚弓??S.t;hs(x).punT=S.t})}],
+ fotang:['佛堂','佛堂',0,['虔誠','慈悲','心死','清冷','恬淡'],'虔誠','污染下降、心境平靜，嗜血墮落慢慢褪去；可能請求出家',(id,l)=>{mistAdd(id,-6*l);setMd(id,'平靜');const d=hs(id).dtag||{};delete d.嗜血;delete d.墮落}],
+ liandan:['煉丹房','丹房',0,['求仙','享樂','長生','渴求永生'],'求仙','煉出丹藥（能量），偶爾服丹走火：污染上升、臥病',(id,l)=>{S.energy+=8*l;if(Math.random()<.08){mistAdd(id,25);setHst(id,'inj',2)}}],
+ jinwu:['金屋私庫','庫房',0,['貪婪','虛榮','奢','享樂'],'貪婪','貪墨自動累積，私房越來越厚；抄沒時可得一大筆',(id,l)=>{const n=8*l;S.food=Math.max(0,S.food-n);hs(id).graft=(hs(id).graft||0)+n}],
+ mishi:['密室暗閣','書閣',1,['心機','多疑','構陷對手'],'心機','握有別人的秘密：構陷與告密更易成功，甚至握有你的把柄',(id,l)=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+l);spouses().filter(x=>x!==id).forEach(x=>{if(Math.random()<.1*l)relAdd(id,x,-2)})}],
+ jiuchi:['酒池歌舞坊','樂坊',0,['享樂','恃寵','驕縱'],'享樂','夜夜笙歌：你的昏庸上升、全宮好感上升',(id,l)=>{barAdd('hedon',1);S.order.forEach(x=>gainAff(x,1))}],
+ dujiao:['毒窖','藥圃',1,['控孕','殘暴','陰毒'],'控孕','下毒頻率與成功率提高；後宮有人懷孕時特別危險',(id,l)=>{mistAdd(id,2*l)}],
+ jitan:['黑霧祭壇','祠堂',1,['墮落','嗜血'],'墮落','污染加速加深，換來權勢與戰力；可能引來黑霧異變',(id,l)=>{mistAdd(id,10*l);hp(id).inf=Math.min(100,(hp(id).inf|0)+2*l);if(Math.random()<.05)S.pol=Math.min(100,S.pol+5)}],
+ xiulou:['繡樓深閨','繡樓',0,['痴魔','佔有','偏執','嫉妒'],'佔有','情深上升更快，吃醋更多，容不下別人靠近你',(id,l)=>{loveAdd(id,20*l,true);spouses().filter(x=>x!==id&&wed(x).fav>wed(id).fav).forEach(x=>relAdd(id,x,-2))}],
+ jiaochang:['校場','校場',0,['尚武','剛烈','武勳','果決'],'尚武','練兵：訓練度上升，她的部隊更快升級',(id,l)=>{S.train=Math.min(100,(S.train||0)+l);hs(id).wm=(hs(id).wm||0)+(S.t%3===0?1:0)}],
+ yuying:['育嬰堂','育嬰堂',0,['慈母','慈悲','母性'],'慈母','懷孕機率上升、孩子成長加快',(id,l)=>{(S.kids||[]).filter(k=>!k.adult&&k.mom===id&&S.t%3===0).forEach(k=>k.wen=(k.wen||0)+1)}],
+ shishe:['詩社書院','書院',0,['才情','才女','清高','詩'],'才情','天賦進度、全宮好感上升',(id,l)=>{S.talentFrac=(S.talentFrac||0)+.05*l;if(S.t%4===0)S.order.forEach(x=>gainAff(x,1))}]};
+const mistAdd=(id,v)=>{const x=BigInt(hs(id).mist||0)+BigInt(v);hs(id).mist=String(x<0n?0n:x)};
+const pvOf=id=>Object.entries(hs(id).pv||{});
+const pvSeen=(id,k)=>!PV[k][2]||(hs(id).pv[k]||{}).found||(S.spy||{})[id]>S.t;
+function pvPick(id){const tags=ntagAll(id).concat(PTAG[id]||[]).join(' ');const own=hs(id).pv||{};let L=Object.entries(PV).filter(([k,v])=>!own[k]).map(([k,v])=>[k,v[3].filter(x=>tags.includes(x)).length]).filter(x=>x[1]>0);if(!L.length)L=Object.keys(PV).filter(k=>!own[k]&&!PV[k][2]).map(k=>[k,.3]);if(!L.length)return null;let r=Math.random()*L.reduce((s,x)=>s+x[1],0);return(L.find(x=>(r-=x[1])<0)||L[0])[0]}
+function pvBuild(id){const st=hs(id);const up=pvOf(id).find(([k,v])=>v.lv<3&&Math.random()<.4);const cost=60;const pay=()=>{if((st.graft||0)>=cost){st.graft-=cost;return'私房錢'}if(S.wood>=cost&&S.stone>=cost){S.wood-=cost;S.stone-=cost;return'國庫木石'}return null};
+ if(up){const src=pay();if(!src)return null;up[1].lv++;return`擴建了她的${PV[up[0]][0]}（Lv${up[1].lv}，動用${src}）`}
+ const k=pvPick(id);if(!k)return null;const src=pay();if(!src)return null;const loc=activePlace(id);(st.pv??={})[k]={lv:1,t:S.t,where:loc,found:!PV[k][2]};(st.dtag??={})[PV[k][4]]=S.t;
+ const town=branchCities().find(x=>keyOf(x)===loc);if(town){const bs=bfSlots(town);const i=bs.findIndex(s=>!s);if(i>=0){bs[i]={f:'pv_'+k,lv:1,owner:id};st.pv[k].slot=i}}
+ return`動用${src}，在${rosterName(loc)}蓋起了${PV[k][2]?PV[k][1]+'（實為'+PV[k][0]+'）':PV[k][0]}`}
+function pvTurn(add){spouses().forEach(id=>{if(!S.order.includes(id))return;pvOf(id).forEach(([k,v])=>{try{PV[k][6](id,v.lv||1)}catch(e){}if(!v.found&&(S.spy||{})[id]>S.t){v.found=1;add(`【密報】${H(id).n}的${PV[k][1]}，其實是${PV[k][0]}！`,'neg')}})})}
+function pvRemove(id,k,mode){const st=hs(id),v=st.pv[k];if(!v)return;const town=branchCities().find(x=>keyOf(x)===v.where);if(town&&v.slot!=null&&town.bs&&town.bs[v.slot]&&town.bs[v.slot].f==='pv_'+k)town.bs[v.slot]=null;delete st.pv[k];const w=wed(id),N=H(id).n;let r;
+ if(mode==='raze'){w.fav=Math.max(0,w.fav-12);setGrudge(id,8);r=`你下令拆了${N}的${PV[k][0]}，她寵愛 −12、記恨`}
+ else if(mode==='seize'){const g=st.graft||0;S.food+=g;st.graft=0;const tr=st.pvTroops||0;S.soldiers+=tr;st.pvTroops=0;w.fav=Math.max(0,w.fav-15);setGrudge(id,10);r=`你抄沒了${N}的${PV[k][0]}（糧 +${g}${tr?'、兵 +'+tr:''}），她寵愛 −15、記恨`}
+ else{(S.myPv??={})[k]=(S.myPv[k]||0)+(v.lv||1);w.fav=Math.max(0,w.fav-6);r=`你接管了${N}的${PV[k][0]}，從此歸你所用`}
+ feedPush('【私宅】'+r);toast(r);render()}
+function pvView(){const rows=spouses().flatMap(id=>pvOf(id).filter(([k])=>pvSeen(id,k)).map(([k,v])=>[id,k,v]));const hidden=spouses().reduce((s,id)=>s+pvOf(id).filter(([k])=>!pvSeen(id,k)).length,0);
+ return`<div class="orn">紅顏私宅</div><div class="small" style="color:var(--dim);margin:0 2px 6px">她們與你有同等的權力，蓋什麼不必請示。秘密的私宅會偽裝成別的名字，要靠密探才看得穿。${hidden?`<br><b style="color:#ff8a8a">另有 ${hidden} 座身分不明的建築</b>`:''}</div>${rows.map(([id,k,v])=>`<div class="frame" style="padding:7px;margin-bottom:6px"><b>${PV[k][0]}</b> Lv${v.lv} <span class="small">・${H(id).n}・${rosterName(v.where||'home')}</span><div class="small">${PV[k][5]}</div><div style="display:flex;gap:4px;margin-top:4px"><button class="btn ghost sm" data-pvx="${id}|${k}|raze">拆除</button><button class="btn ghost sm" data-pvx="${id}|${k}|seize">抄沒</button><button class="btn ghost sm" data-pvx="${id}|${k}|take">接管</button></div></div>`).join('')||'<p class="small">還沒有人自建私宅。</p>'}`}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-pvx]');if(!b)return;const[id,k,m]=b.dataset.pvx.split('|');pvRemove(id,k,m)},true);
+{const _ptb=pbTab;pbTab=function(){return _ptb()+pvView()}}
+setTimeout(()=>{Object.entries(PV).forEach(([k,v])=>{BF['pv_'+k]=[v[0],[60,60],v[5]]});Object.assign(DKTAGD,{縱慾:'豢養面首，夜夜笙歌：私通再無顧忌',擁兵:'手握私兵：說話更硬，必要時可以自立',虔誠:'禮佛修心：污染漸淡，也可能想出家',求仙:'一心求長生，願意為此付出任何代價',尚武:'愛刀兵勝過胭脂：喜歡出征與練兵',慈母:'把孩子看得比命還重',才情:'寄情詩文：心思細膩，也容易多愁',狂信:'把天運者當成神明崇拜',渴求永生:'知道你能給她永生，最大的心願就是這個',永生:'與你同命，不老不死；處死只會讓她沉睡',喪子:'失去了孩子：悲慟、多疑、要血債血償',還俗:'出家又回來：看破了一些事，也放下了一些事'})},0);
+/* 自主行為擴充：同等權力・放大 */
+const AUTOX=[
+ ['build','自建私宅',0,(c)=>1.2+(c.inf>=40?1:0)+c.has('貪婪','享樂','跋扈','慾壑難填','擁兵')*.8,(id)=>pvBuild(id)],
+ ['edict','以自己名義頒布政令',0,(c)=>(c.inf>=50?1.5:0)+c.has('跋扈','背盟奪權','恃寵')*.8,(id)=>{const k=pick(Object.keys(POLICY));S.policy={k,until:S.t+4};return`越過你，以自己的名義頒布「${POLICY[k][0]}」`}],
+ ['punish','處置其他夫人',0,(c)=>(c.inf>=55?1.2:0)+c.has('殘暴','刻薄','跋扈','記仇','善妒')*.9+c.band*.3,(id)=>{const r=spouses().filter(x=>x!==id&&!hst(x)&&rankOf(x)<=rankOf(id)).sort((a,b)=>relG(id,a)-relG(id,b))[0];if(!r)return null;if(c0(id).band>=4&&Math.random()<.3){wed(r).cold={t:S.t};return`下令把${H(r).n}打入冷宮`}setHst(r,Math.random()<.5?'ban':'inj',2);relAdd(id,r,-15);return`以宮規處置了${H(r).n}`}],
+ ['grantT','把珍寶轉送心腹',1,(c)=>c.has('心機','兩面下注')*1+(c.inf>=60?.5:0),(id)=>{const k=Object.keys(S.tre||{}).find(k=>S.tre[k]&&!S.tre[k].who);const ally=spouses().filter(x=>x!==id&&relG(id,x)>=25)[0];if(!k||!ally)return null;treGive(k,ally);return`擅自把${TRE[k][0]}送給了心腹${H(ally).n}`}],
+ ['slap','當眾掌摑對手',0,(c)=>c.has('善妒','恃寵','驕縱','佔有')*1.5+(c.cy===2?1.5:0)+(c.love>=4?1:0),(id)=>{const r=spouses().filter(x=>x!==id).sort((a,b)=>wed(b).fav-wed(a).fav)[0];if(!r)return null;setHst(r,'inj',1);relAdd(id,r,-15);return`當著眾人的面掌摑了${H(r).n}`}],
+ ['storm','闖進你的寢殿',0,(c)=>(c.love>=5?2:0)+c.has('痴魔','佔有','偏執')*1.2+(c.cy===1?1.5:0),(id)=>{wed(id).fav=Math.min(100,wed(id).fav+5);(S.vT??={})[id]=S.t;return'深夜闖進你的寢殿，把別的女人趕了出去'}],
+ ['ruin','砸毀庫房洩憤',0,(c)=>(c.fav<25?2:0)+c.has('怨懟','記仇','偏執')*.8+c.band*.3,(id)=>{const n=R(30,60);S.food=Math.max(0,S.food-n);return`在庫房放了一把火，燒掉了糧 ${n}`}],
+ ['nun','出家修行',0,(c)=>c.has('虔誠','心死')*1.5+(hs(c.id).pv?.fotang?2:0),(id)=>{if(activePlace(id)!=='home')return null;hs(id).nunT=S.t;goneHero(id,'exile',R(6,12));return'落髮出家，住進了城外的庵堂'}]];
+const c0=id=>actCtx(id);
+{const _ac=actCtx;actCtx=function(id){const c=_ac(id);c.id=id;return c}}
+AUTOACT.push(...AUTOX);
+AUTOACT.forEach(a=>{const f=a[3];a[3]=c=>{let w=f(c);if(c.cy===1&&['seek','affair','storm'].includes(a[0]))w*=2;if(c.cy===2&&['compete','slap','abuse','punish'].includes(a[0]))w*=1.8;if(c.cy===0&&['seek','affair'].includes(a[0]))w*=.4;return w}});
+const AUTOACT_old=AUTOACT.findIndex(a=>a[0]==='estate');if(AUTOACT_old>=0)AUTOACT.splice(AUTOACT_old,1);
+{const _at=autoTurn;autoTurn=function(add){for(let i=0;i<2;i++)_at(add);pvTurn(add);
+ spouses().concat(Object.keys(S.gone||{})).forEach(id=>{const st=hs(id);if(!st||st.nunT==null)return;if(S.order.includes(id)&&!(S.gone&&S.gone[id])){delete st.nunT;const d=st.dtag??={};delete d.心死;d.還俗=S.t;add(`【還俗】${H(id).n}從庵堂回來了，像是放下了什麼`)}})}}
 function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'群像';const tabs=['群像','總表','心願','珍寶','勢力圖','一覽','動態','關係','建築','冷宮行宮','結義兄弟'];
  let h=`<div class="ltabs">${tabs.map(t=>`<button class="${S.hTab===t?'on':''}" data-ht="${t}">${t}</button>`).join('')}</div>`;
  if(S.hTab==='群像'){S.gridFH=S.gridFH||'夫人';return h+gridView('gridFH')}
