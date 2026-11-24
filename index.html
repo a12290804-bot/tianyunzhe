@@ -316,6 +316,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
  }button:focus-visible{outline:2px solid #efcc79;outline-offset:2px}.pathgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:12px}.pathgrid section{padding:9px;border:1px solid #625337;border-radius:8px}.pathgrid h3{margin:0 0 6px}.pathpair{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pathpair>div{display:grid;gap:5px}.pathpair>div>b{color:var(--gold2);text-align:center}.pathpair .tn{width:100%;min-height:48px;border-radius:6px}.pathpair .tn b{font-size:14px}.talTree h3,.treeTier{text-align:center}.treeTier{display:grid;grid-template-columns:1fr 1fr;gap:6px;color:var(--gold2)}.treeTier .tn{width:100%;margin:0}.talTree svg{display:block;width:100%;height:16px;stroke:#a38b5b;stroke-width:1;fill:none}.treeTier>b{padding:6px}
 .sideTier{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;padding-top:6px;border-top:1px dashed rgba(240,215,154,.25)}.sideTier i{width:100%;font-size:11px;color:var(--gold2);font-style:normal}.sideTier .tn{flex:1 1 45%}.tn.side{border-style:dashed}
 .htWrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:8px}.htab{border-collapse:collapse;font-size:12px;white-space:nowrap;min-width:100%}.htab th,.htab td{padding:6px 5px;border-bottom:1px solid rgba(255,255,255,.06);text-align:center}.htab thead th{position:sticky;top:0;background:#1a1620;color:var(--gold2);font-weight:600;cursor:pointer}.htab thead th.on{color:#fff}.htab tbody th{position:sticky;left:0;background:#15121a;text-align:left;font-weight:600;color:#eee}.htab tbody th i{font-style:normal;font-size:10px;color:var(--gold2);margin-left:2px}.htab td.bad{color:#ff7a7a;font-weight:600}.htab tbody tr:active{background:rgba(240,215,154,.08)}.hpic{display:inline-block;width:22px;height:22px;border-radius:50%;background:center 15%/cover;vertical-align:middle;margin-right:4px}.res.lord{color:#e0a070}.res.alert{color:#ff8a8a;border:1px solid #8a3a4a;border-radius:10px;padding:0 6px}
+.rgrp{margin:4px 0;border:1px solid var(--line);border-radius:8px;padding:4px 8px}.rgrp.neg{border-color:#8a3a4a}.rgrp summary{font-weight:600;color:var(--gold2);cursor:pointer;padding:2px 0}.rgrp>div{font-size:13px;padding:2px 0;border-top:1px solid rgba(255,255,255,.04)}.rchg{font-size:12px}.rchg b{margin-right:6px}.rchg span{margin-right:4px}
 </style>
 </head>
 <body>
@@ -1330,7 +1331,7 @@ function autoTask(h){if(h.pool==='對外')return'recruit';if(h.pool==='內政')r
 function setView(v){view=v;mode=null;$$('#nav [data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));render()}
 $$('#nav [data-v]').forEach(b=>b.onclick=()=>setView(b.dataset.v));
 $('#endBtn').onclick=endTurn;
-function snap(){S.prev={food:S.food,wood:S.wood,stone:S.stone,energy:S.energy,soldiers:S.soldiers,pop:S.pop,pol:S.pol,land:ownTiles().length,score:score()}}
+function snap(){S.prev={food:S.food,wood:S.wood,stone:S.stone,energy:S.energy,soldiers:S.soldiers,pop:S.pop,pol:S.pol,land:ownTiles().length,score:score(),hedon:S.hedon||0,tyranny:S.tyranny||0};S.prevH={};try{spouses().forEach(id=>{const w=wed(id);S.prevH[id]={fav:w.fav|0,love:loveLv(id),inf:hp(id).inf|0,mist:mistState(id).band,md:md2(id)}})}catch(e){}}
 function hud(){const pc=S.pol>60?'var(--blood)':S.pol>30?'var(--void)':'var(--jade)';const ti=tideIn(),warn=ti===1;
  const cur={food:S.food,wood:S.wood,stone:S.stone,energy:S.energy,pop:S.pop,soldiers:S.soldiers};
  const cls=k=>lastRes[k]===undefined||lastRes[k]===cur[k]?'':cur[k]>lastRes[k]?'up':'dn';
@@ -4104,6 +4105,21 @@ function battle(our,en,cb,title){
 }
 
 /* ================= REPORT ================= */
+/* 旬報分組：警訊／喜訊／後宮／其他，加上後宮數值變化 */
+function reportBody(report){const sp=spouses(),names=sp.map(id=>H(id).n);
+ const isH=s=>/後宮|侍寢|冷宮|行宮|主母|夫人|爭寵|私情|有孕|生產|紅顏/.test(s)||names.some(n=>s.includes(n));
+ const g={警訊:[],喜訊:[],後宮:[],其他:[]},idle=[];
+ report=report.filter(([s])=>{const m=/^(.+?)待命中，什麼也沒做$/.exec(s);if(m){idle.push(m[1]);return false}return true});if(idle.length)report.unshift([`待命未派任務：${idle.join('、')}`,'neg']);
+ report.forEach(([s,c])=>{const k=c==='neg'?'警訊':isH(s)?'後宮':c==='pos'?'喜訊':'其他';g[k].push([s,c])});
+ const P=S.prevH||{},chg=[];
+ sp.forEach(id=>{const o=P[id];if(!o)return;const w=wed(id),l=loveLv(id),b=mistState(id).band,parts=[];const df=(w.fav|0)-o.fav,di=(hp(id).inf|0)-o.inf;
+  if(df)parts.push(`<span class="${df>0?'pos':'neg'}">寵${df>0?'+':''}${df}</span>`);if(di)parts.push(`<span class="${di>0?'pos':'neg'}">權${di>0?'+':''}${di}</span>`);
+  if(l!==o.love)parts.push(`<span class="${l>o.love?'pos':'neg'}">情→${LOVEN[Math.max(0,l)]}</span>`);if(b!==o.mist)parts.push(`<span class="${b>o.mist?'neg':'pos'}">污→${b?mistState(id).name:'清'}</span>`);
+  const m=md2(id);if(m!==o.md)parts.push(`<span class="${HBAD.includes(m)?'neg':''}">心→${m}</span>`);
+  if(parts.length)chg.push(`<div class="rchg"><b>${H(id).n}</b>${parts.join(' ')}</div>`)});
+ const p=S.prev||{},lordD=[['昏庸',(S.hedon||0)-(p.hedon||0)],['暴虐',(S.tyranny||0)-(p.tyranny||0)]].filter(x=>x[1]).map(x=>`${x[0]} ${x[1]>0?'+':''}${x[1]}`).join('・');
+ const sec=(k,open)=>g[k].length?`<details class="rgrp ${k==='警訊'?'neg':''}" ${open?'open':''}><summary>${k}（${g[k].length}）</summary>${g[k].map(([s,c])=>`<div><span class="${c}">${s}</span></div>`).join('')}</details>`:'';
+ return`${lordD?`<div class="small" style="color:#e0a070;margin:4px 0">天運者：${lordD}</div>`:''}${chg.length?`<details class="rgrp" open><summary>後宮數值變化（${chg.length}）</summary>${chg.join('')}</details>`:''}<div class="sum">${sec('警訊',true)}${sec('後宮',g.後宮.length<=6)}${sec('喜訊',g.喜訊.length<=6)}${sec('其他',false)}</div>`}
 function showReport(){
  if(S.dur<=0&&typeof towerBreach==='function')towerBreach();
  if(S.pop>S.prev.pop)S.popIn=(S.popIn||0)+(S.pop-S.prev.pop);
@@ -4117,7 +4133,7 @@ function showReport(){
  sheet(`<h2>旬報・${dateStr(S.t-1)}</h2>
  <div class="kpi" style="margin-top:8px"><div class="frame">勢力評價<b>${sc}</b>${d('score',sc)}</div><div class="frame">領地<b>${land}</b>${d('land',land)}</div><div class="frame">兵力<b>${S.soldiers}</b>${d('soldiers',S.soldiers)}</div><div class="frame">流民<b>${S.pop}</b>${d('pop',S.pop)}</div></div>
  <div class="kpi"><div class="frame">糧<b>${S.food}</b>${d('food',S.food)}</div><div class="frame">木<b>${S.wood}</b>${d('wood',S.wood)}</div><div class="frame">石<b>${S.stone}</b>${d('stone',S.stone)}</div><div class="frame">污染<b>${S.pol}</b>${d('pol',S.pol)}</div></div>
- <div class="sum">${report.map(([t,c])=>`<div><span class="${c}">${t}</span></div>`).join('')}</div>
+ ${reportBody(report)}
  <div class="small">下一次黑霧潮：${tideIn()} 旬後${hasFac('observatory')?`（觀星台預測：約 ${tideSize(S.tides+1)} 隻）`:''}</div>
  <button class="btn" id="rOk" style="width:100%;margin-top:12px">進入 ${dateStr(S.t)}</button>`);
  $('#rOk').onclick=()=>{closeSheet();sfx('page');go2()};render();
