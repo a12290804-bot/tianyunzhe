@@ -3354,7 +3354,7 @@ const WISH={
  mother:[3,'想要主母之位','成為主母',1,id=>mother()===id?1:0],
  kill:[3,'想要你除掉她的眼中釘','對頭被處死或逐出',1,id=>{const f=hs(id).wish2&&hs(id).wish2.foe;return f&&S.gone&&S.gone[f]?1:0}],
  hedon:[3,'想要你陪她縱情聲色','你的昏庸 +10',10,id=>S.hedon||0]};
-function wishPick(id){const n=hs(id).wishN||0,tier=Math.min(3,Math.floor(n/2)),tags=dtagList(id).join(' ')+(PTAG[id]||[]).join(' '),amb=heroAmb(id),m=mistState(id).band,last=(hs(id).wish2||{}).k;
+function wishPick(id){const n=hs(id).wishN||0,tier=Math.min(3,Math.max(Math.floor(n/2),(typeof craveTier==='function'?craveTier(id):0)-1)),tags=dtagList(id).join(' ')+(PTAG[id]||[]).join(' '),amb=heroAmb(id),m=mistState(id).band,last=(hs(id).wish2||{}).k;
  let L=Object.entries(WISH).filter(([k,w])=>w[0]<=tier&&w[0]>=tier-1&&k!==last);
  if(amb>=60)L=L.concat(L.filter(([k])=>['power','rank','mother'].includes(k)));if(/妒|佔有|恃寵/.test(tags))L=L.concat(L.filter(([k])=>['solo','kill','visit'].includes(k)));if(m>=3)L=L.concat(L.filter(([k])=>['kill','hedon'].includes(k)));
  if(mother()===id)L=L.filter(([k])=>k!=='mother');const [k,w]=pick(L);const o={k,since:S.t,base:w[4](id),p:0};if(k==='kill'){const f=spouses().filter(x=>x!==id).sort((a,b)=>relG(id,a)-relG(id,b))[0];if(!f)return wishPick2(id);o.foe=f}return o}
@@ -3600,11 +3600,51 @@ function extortEvent(cb){const x=S.extort;S.extort=null;if(!x||!evOK())return cb
  $$('[data-ex]').forEach(b=>b.onclick=()=>{const k=b.dataset.ex;let r;if(k==='pay'){S.food=Math.max(0,S.food-amt);r=`你送了糧 ${amt}，${d.n}暫時退兵`}else if(k==='wed'){const id=sp[sp.length-1];goneHero(id,'exile',12);S.spouses?.forEach?.(()=>{});spouses().forEach(x=>{if(x!==id)wed(x).fav=Math.max(0,wed(x).fav-8)});r=`${H(id).n}被送去和親。後宮一片死寂，全員寵愛 −8`}else{const tg=pick(ownTiles());if(tg){const sz=150+S.t*6;S.enemies.push({id:'f'+S.uid++,n:`${d.n}・討伐軍`,img:d.img||'fa_rebel',troops:sz,max:sz,atk:55+S.t*2,r:f.seat.r,c:f.seat.c,fac:d.id,tgt:{r:tg.r,c:tg.c}})}r=`你趕走了使者。${d.n}發兵來犯！`}
   feedPush('【勒索】'+r,k==='pay'?'':'neg');closeSheet();toast(r);render();cb()})}
 {const _hef=haremEvent;haremEvent=function(cb){facAI(feedPush);return _hef(()=>extortEvent(cb))}}
+/* ===== 本性・慾壑：永不滿足、越來越重、各具風格 ===== */
+const CRAVE={
+ lust:['色慾','#ff6a9a',['多情','風流','魅惑','私通','縱慾','享樂','妖媚','嫵媚'],['多情','風流','縱情','淫逸','慾海無邊'],['seek','affair','storm','party'],'越被寵越想要；冷落太久就會往外找'],
+ power:['權欲','#e8b86a',['權謀','好權','野心','跋扈','果決','威嚴','背盟奪權','精明'],['好權','攬權','專權','擅權','牝雞司晨'],['edict','punish','party','grantT','rebel'],'權勢只會往上爬；給她越多，她要的位子越高'],
+ greed:['貪財','#d9c36a',['貪婪','低買高賣','虛榮','奢','貪財'],['愛財','斂財','貪墨','巧取豪奪','富可敵國'],['embezzle','build','estate'],'私房越攢越厚，國庫越挖越深'],
+ own:['獨佔','#c07aff',['善妒','佔有','痴情','偏執','恃寵','痴魔','重情','敏感'],['黏人','善妒','佔有','偏執成狂','容不下任何人'],['compete','slap','storm','frame','spyYou'],'要你只看她；你看誰一眼，她就恨誰一分'],
+ blood:['嗜殺','#ff4a4a',['殘暴','刻薄','記仇','嗜血','火爆','好戰','剛烈','狠辣'],['易怒','狠辣','嗜虐','嗜殺','殺伐成性'],['punish','abuse','slap','poison','killKid','ruin'],'下手一次比一次重，污染也一次比一次深'],
+ immortal:['求仙','#7ad0ff',['求仙','長生','清冷','淡泊','孤寂','虔誠','渴求永生'],['好道','求仙','癡迷長生','服丹成癮','捨身求道'],['build','pray','nun','leave'],'丹藥、能量、永生，吃多少都不夠'],
+ vanity:['虛榮','#ff9ad0',['嬌貴','嬌憨','驕縱','端麗','虛榮','爭寵'],['愛美','好妝飾','爭奇鬥豔','揮霍無度','窮奢極侈'],['compete','grantT','build','party'],'珍寶、賞賜、排場，永遠要比別人多一件']};
+const CRAVE_T=[0,15,40,80,140],CRAVE_TN=['微露','漸深','熾烈','成癮','無底'];
+function craveOf(id){const st=hs(id);if(st.crave&&CRAVE[st.crave])return st.crave;const tags=(ntagAll(id)||[]).concat(PTAG[id]||[]).join(' ');
+ let best=null,bs=-1;Object.entries(CRAVE).forEach(([k,c],i)=>{const s=c[2].filter(x=>tags.includes(x)).length*10+((id.charCodeAt(0)+id.length*7+i*13)%9)/10;if(s>bs){bs=s;best=k}});return st.crave=best}
+const craveApp=id=>(hs(id)&&hs(id).app)||0;
+const craveTier=id=>{const a=craveApp(id);let t=0;CRAVE_T.forEach((v,i)=>{if(a>=v)t=i});return t};
+function craveTurn(add){spouses().forEach(id=>{if(!S.order.includes(id))return;const st=hs(id),w=wed(id),k=craveOf(id),C=CRAVE[k],t0=craveTier(id);
+ const items=(st.items||[]).filter(x=>S.t-x.t<=1).length,vis=(S.vT||{})[id]>=S.t-1,wn=(st.wishN||0)>(st.craveWN||0);st.craveWN=st.wishN||0;
+ const fed=vis||items||wn;if(fed)st.craveFed=S.t;const starve=S.t-(st.craveFed??S.t);
+ st.app=(st.app||0)+.6+eraE()*.8+(fed?2:0)+(starve>6?1:0)+(st.pv&&st.pv.fotang?-.5:0);const tr=craveTier(id),m=1+tr;
+ // 標籤：本性的層級標籤取代上一級
+ const d=st.dtag||(st.dtag={});C[3].forEach((n,i)=>{if(i!==tr&&d[n]&&!(k==='lust'&&n==='縱慾'&&st.pv&&st.pv.mianshou))delete d[n]});if(!d[C[3][tr]])d[C[3][tr]]=S.t;
+ if(tr>t0)add(`【本性】${H(id).n}的${C[0]}又深了一層：如今「${C[3][tr]}」（${CRAVE_TN[tr]}）`,'neg');
+ // 污染：只會越來越深
+ mistAdd(id,tr+(k==='blood'?tr:0)+(starve>4?tr:0));
+ // 胃口：越餓越難熬，寵愛流失加快
+ const patience=Math.max(2,9-tr*1.6);if(w&&starve>patience)w.fav=Math.max(0,w.fav-Math.ceil(m*(k==='own'||k==='lust'?1.5:1)));
+ try{({
+  lust:()=>{Object.keys(S.aff2||{}).filter(x=>x.startsWith(id+'|')).forEach(x=>S.aff2[x].v+=2*m*(starve>4?2:1))},
+  power:()=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+Math.ceil(m/2));if(tr>=3&&(hp(id).inf|0)>=100&&Math.random()<.15)st.ambUp=(st.ambUp||0)+1},
+  greed:()=>{const n=3*m*(starve>4?2:1);S.food=Math.max(0,S.food-n);st.graft=(st.graft||0)+n},
+  own:()=>{const r=spouses().filter(x=>x!==id).sort((a,b)=>((S.vT||{})[b]||0)-((S.vT||{})[a]||0))[0];if(r)relAdd(id,r,-m)},
+  blood:()=>{if(tr>=2&&Math.random()<.08*tr){const r=pick(spouses().filter(x=>x!==id&&!hst(x)));if(r){setHst(r,'inj',1);relAdd(id,r,-5);add(`【${H(id).n}】${C[3][tr]}：又有人被她弄傷了（${H(r).n}）`,'neg')}}},
+  immortal:()=>{S.energy=Math.max(0,S.energy-2*m);if(tr>=3&&Math.random()<.06)setHst(id,'inj',1)},
+  vanity:()=>{if(!items&&starve>2&&w)w.fav=Math.max(0,w.fav-Math.ceil(m/2));S.food=Math.max(0,S.food-2*m)}
+ })[k]()}catch(e){}})}
+{const _hcv=haremEvent;haremEvent=function(cb){craveTurn(feedPush);return _hcv(cb)}}
+{const _acv=actCtx;actCtx=function(id){const c=_acv(id);c.crave=craveOf(id);c.ct=craveTier(id);return c}}
+AUTOACT.forEach(a=>{const f=a[3];a[3]=c=>{let w=f(c);if(c.crave&&CRAVE[c.crave][4].includes(a[0])&&w>0)w*=1+c.ct*.5;else if(c.crave&&CRAVE[c.crave][4].includes(a[0])&&c.ct>=2)w+=c.ct*.4;return w}});
+setTimeout(()=>{Object.values(CRAVE).forEach(c=>c[3].forEach((n,i)=>{if(!DKTAGD[n])DKTAGD[n]=`${c[0]}・${CRAVE_TN[i]}：${c[5]}`}))},0);
+function craveHtml(id){const k=craveOf(id),C=CRAVE[k],tr=craveTier(id),a=craveApp(id),nx=CRAVE_T[tr+1];
+ return`<div class="small" style="margin:5px 0 3px"><b style="color:${C[1]}">本性・${C[0]}</b>　<b style="color:${C[1]}">「${C[3][tr]}」</b><span style="color:var(--dim)">（${CRAVE_TN[tr]}）</span></div><div class="meter" style="margin:2px 0"><i style="width:${nx?Math.round((a-CRAVE_T[tr])/(nx-CRAVE_T[tr])*100):100}%;background:${C[1]}"></i></div><div class="small" style="color:var(--dim)">${C[5]}・${nx?'胃口再長 '+Math.ceil(nx-a)+' 就更深一層':'已經沒有底了'}・越滿足她、胃口長得越快</div>`}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
   return`<div class="frame" style="padding:8px;margin-bottom:8px;border-color:${HEATC[tr]}"><div style="display:flex;gap:8px;align-items:center"><span class="pic" style="background-image:url(img/${face(id)}.jpg);width:42px;height:42px;flex:none"></span><div style="flex:1"><b>${H(id).n}</b> <b style="color:${HEATC[tr]}">「${HEATN[tr]}」</b><div class="meter" style="margin:3px 0"><i style="width:${tr>=3?100:Math.round(hv/nx*100)}%;background:${HEATC[tr]}"></i></div><div class="small" style="color:var(--dim)">${tr>=3?'已經沒有什麼攔得住她':'再 '+(nx-hv)+' 次動作就更進一步'}・每旬最多 ${1+Math.min(2,Math.floor(eraE()*1.5+hv/35))} 次・私宅上限 Lv${3+Math.min(2,Math.floor(hv/30))}</div></div></div>
-  <div style="display:flex;flex-wrap:wrap;gap:4px;margin:6px 0">${pv.length?pv.map(([k,v])=>pvSeen(id,k)?`<span class="tag" style="background:#3a2a1a;color:#f0d79a;padding:3px 7px;border-radius:6px">🏛 ${PV[k][0]} Lv${v.lv}</span>`:`<span class="tag" style="background:#3a1a1a;color:#ff8a8a;padding:3px 7px;border-radius:6px">❓ ${PV[k][1]} Lv${v.lv}</span>`).join(''):'<span class="small" style="color:var(--dim)">尚無私宅</span>'}</div>
+  ${craveHtml(id)}<div style="display:flex;flex-wrap:wrap;gap:4px;margin:6px 0">${pv.length?pv.map(([k,v])=>pvSeen(id,k)?`<span class="tag" style="background:#3a2a1a;color:#f0d79a;padding:3px 7px;border-radius:6px">🏛 ${PV[k][0]} Lv${v.lv}</span>`:`<span class="tag" style="background:#3a1a1a;color:#ff8a8a;padding:3px 7px;border-radius:6px">❓ ${PV[k][1]} Lv${v.lv}</span>`).join(''):'<span class="small" style="color:var(--dim)">尚無私宅</span>'}</div>
   ${acts.length?acts.map(o=>`<div class="small" style="padding:2px 0;${o.secret?'color:#ff9a9a':''}">第${o.t}旬・<b>${o.n||''}</b> ${o.s}</div>`).join(''):'<div class="small" style="color:var(--dim)">最近很安分</div>'}</div>`}).join('');
  return`<div class="small" style="color:var(--dim);margin:4px 2px 8px">她們和你有同等的權力：自己蓋、自己擴建、自己動手。時間越久、她們做得越多，就越放肆——次數更多、手段更狠、私宅蓋得更高。</div>${rows||'<p class="small">還沒有夫人。</p>'}${pvView()}`}
 function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'群像';const tabs=['群像','總表','私宅','心願','珍寶','勢力圖','一覽','動態','關係','建築','冷宮行宮','結義兄弟'];const pvNew=spouses().reduce((s,x)=>s+(hs(x).acts||[]).filter(o=>o.seen!==false&&o.t>(S.pvLook??-1)).length,0);
