@@ -1289,7 +1289,7 @@ function roll(pool){const c=Object.keys(HD).filter(id=>(HD[id][2]!=='在野'||['
  const sw=(T_('e2')?1.5:1)+(T_('e7a')?.25:0),w=c.map(id=>HD[id][3]==='SSR'?sw:1.8);let t=Math.random()*w.reduce((a,b)=>a+b,0);for(let i=0;i<c.length;i++){t-=w[i];if(t<=0)return c[i]}return c[c.length-1]}
 let packRuntime;
 function charEvents(){
- return packRuntime??=window.makeCharacterEvents({S,H,hs,wed,hp,mistState,rankOf,relG,relAdd,activePlace,barAdd,sheet,closeSheet,save,feedPush,$});
+ return packRuntime??=window.makeCharacterEvents({S,H,hs,wed,hp,mistState,rankOf,relG,relAdd,activePlace,barAdd,sheet,closeSheet,save,feedPush,$,goneHero,setHst});
 }
 function addHero(id,aff=0){if(S.heroes[id])return;S.heroes[id]={aff,star:1,task:'idle',met:false};S.order.push(id);charEvents().enqueue(id,'firstRecruit');
  if(H(id).sex==='f'&&!id.startsWith('kid')){
