@@ -1695,7 +1695,7 @@ function pickFac(i){
   S.wood-=f[2][0];S.stone-=f[2][1];const [bank,idx]=slotBank(i);bank[idx]={f:k,lv:0,p:0,gar:null};sfx('build');closeSheet();pickBuilder(i)});
 }
 const buildRate=id=>Math.round((25+stat(id,'pol')*.45)*(hasFac('office')?1.3:1)*(1+heroEff(id,'build')));
-const upCost=s=>{const m=1-Math.min(.5,polEff('build'));return[Math.round((30*s.lv+20)*m),Math.round((40*s.lv+20)*m)]};
+const upCost=s=>{const m=1-Math.min(.5,teamEff('build'));return[Math.round((30*s.lv+20)*m),Math.round((40*s.lv+20)*m)]};
 function slotPlace(i){return String(i).includes('_')?String(i).split('_').slice(0,2).join('_'):'home'}
 function facPanel(i){
  const s=slotAt(i),f=FAC[s.f];
