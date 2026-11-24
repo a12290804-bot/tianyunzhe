@@ -1695,7 +1695,7 @@ function pickFac(i){
   S.wood-=f[2][0];S.stone-=f[2][1];const [bank,idx]=slotBank(i);bank[idx]={f:k,lv:0,p:0,gar:null};sfx('build');closeSheet();pickBuilder(i)});
 }
 const buildRate=id=>Math.round((25+stat(id,'pol')*.45)*(hasFac('office')?1.3:1)*(1+heroEff(id,'build')));
-const upCost=s=>{const m=1-Math.min(.5,talEff('build'));return[Math.round((30*s.lv+20)*m),Math.round((40*s.lv+20)*m)]};
+const upCost=s=>{const m=1-Math.min(.5,polEff('build'));return[Math.round((30*s.lv+20)*m),Math.round((40*s.lv+20)*m)]};
 function slotPlace(i){return String(i).includes('_')?String(i).split('_').slice(0,2).join('_'):'home'}
 function facPanel(i){
  const s=slotAt(i),f=FAC[s.f];
@@ -4695,7 +4695,7 @@ const WX={qing:['晴','☀️','無特殊影響',{}],yu:['雨','🌧️','弓弩
 const wxNow=()=>WX[S.wx||'qing'];function mods0(our,en,M0){const w=wxNow()[3],oc=our.gens&&our.gens[0]?tcls(our.gens[0]):'步';if(w.gong&&oc==='弓')M0.atk+=w.gong;if(w.qi&&oc==='騎')M0.atk+=w.qi;if(w.xie&&oc==='器')M0.atk+=w.xie;if(w.first)M0.first+=w.first;if(w.mou&&oc==='謀')M0.rate+=w.mou;if(w.budef&&oc==='步')M0.def=Math.min(.7,M0.def+w.budef);if(w.heat)M0.regen-=w.heat;return M0}
 function wxRoll(add){const pool=inWorld()?{mobei:['qing','feng','re','re','feng'],gaixia:['xue','xue','wu','feng'],chibi:['feng','feng','wu','yu'],wuyue:['yu','wu','qing','yu'],mawei:['yu','yu','wu'],fengbo:['xue','yu','wu'],wugu:['qing','feng','wu'],danggu:['xue','qing','feng'],ganlu:['xue','wu','qing'],muye:['re','qing','feng'],changping:['qing','feng','wu']}[S.cur]:null;const mo=Math.floor(S.t/3)%12;const base=mo<3||mo>=11?['qing','xue','xue','feng','wu']:mo<5?['qing','yu','wu','feng']:mo<8?['qing','re','yu','yu']:['qing','feng','wu','qing'];const old=S.wx;S.wx=pick(pool||base);if(S.wx!==old&&S.wx!=='qing')add(`【天氣】${wxNow()[1]} ${wxNow()[0]}：${wxNow()[2]}`)}
 function mods(our,en){return mods0(our,en,mods1(our,en))}
-function mods1(our,en){const ids=our.gens,ties=teamTies(ids),tieBonus=k=>ties.reduce((v,t)=>v+(t[3][k]||0)*tieStrength(t),0)*(T_('m5')?1.5:1);const sum=k=>ids.reduce((a,id)=>a+heroEff(id,k),0)+bondEff(k,ids)+tieBonus(k)+(['atk','def','rate','regen','eld','siege'].includes(k)?perkEff(k)+polEff(k):0);
+function mods1(our,en){const ids=our.gens,ties=teamTies(ids),tieBonus=k=>ties.reduce((v,t)=>v+(t[3][k]||0)*tieStrength(t),0)*(T_('m5')?1.5:1);const sum=k=>ids.reduce((a,id)=>a+heroEff(id,k),0)+bondEff(k,ids)+tieBonus(k)+(['atk','def','rate','regen','eld','siege','first'].includes(k)?perkEff(k)+polEff(k):0);
  return{atk:1+sum('atk')+(our.siege?0:sum('atkOff')+(S.atkNext||0))+ids.reduce((a,id)=>a+(hs(id)&&hs(id).aff>=80?heroEff(id,'affAtk'):0),0)+(T_('c6')?.1:0)+nemAtk(our,en)+(ids.some(id=>hs(id)&&hs(id).aff>=100)&&T_('m6')?.2:0),def:clamp(sum('def')+(our.siege?(sum('siege')+(hasFac('wall')?facVal(slotsOf('wall')[0])/100:0)+(T_('s6')?.3:0)+ownTiles().filter(t=>t.out==='U').length*.05):0),0,.7),
   eld:en.eld?sum('eld')+(hasFac('zhenyao')?facVal(slotsOf('zhenyao')[0])/100:0):0,first:sum('first'),exec:sum('exec'),desp:sum('desp'),under:sum('under'),regen:sum('regen'),rate:sum('rate'),last:sum('last'),ramp:sum('ramp'),halfdef:Math.min(.5,sum('halfdef')),earlydef:Math.min(.5,sum('earlydef')),counter:Math.min(.5,sum('counter')),stunUp:sum('stunUp')}}
 
