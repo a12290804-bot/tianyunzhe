@@ -19,7 +19,7 @@ window.makeCharacterEvents = function (game) {
   if(e.key==='tragedies'){const t=d[v];return {title:t.title,choices:t.choices,body:lines([t.scene,Object.values(t.variants||{})[Number(e.high)],t.dialogue,t.aftermath]).map(s=>s.replace(/侵蝕度直接鎖定(?:深淵| 95\+)/g,'永久留下惡墮印記'))}}
   if(e.key==='battlefieldEncounters')return {title:d.title,choices:d.choices,body:lines(d[v])};
   if(d.stages)return {title:d.title,choices:d.choices,body:lines(d.stages[v]).map(s=>s.replaceAll('{b}／{g}','{peer}'))};
-  if(d.contexts)return {title:d.title,body:lines([d.contexts[v],d.dutyConflict.dilemma]),choices:d.choices||[{text:'以職責為先',outcome:d.dutyConflict.choiceDuty,effects:{inf:8,corruption:35}},{text:'以羈絆為先',outcome:d.dutyConflict.choiceBond,effects:{aff:-10}}]};
+  if(d.contexts)return {title:d.title,body:lines([d.contexts[v],d.dutyConflict.dilemma]),react:d.choices,choices:[{text:'密令她依軍法處置{g}',path:'duty',outcome:d.dutyConflict.choiceDuty,effects:{corruption:20}},{text:'暗中示意：{g}的去留由她發落',path:'bond',outcome:d.dutyConflict.choiceBond}]};
   const dynamic=d.dynamicVariants;
   const branch=dynamic&&(dynamic[e.high?'highCorruption':'lowCorruption']??Object.entries(dynamic).find(([k])=>k.startsWith(e.favored?'highAffection':'alienated'))?.[1]);
   return {title:d.title,body:lines([d.dynamicOpeners?.[e.opener],d.howSheLearns,d.rumorChain,d.scene,branch,d.aftermathDialogues]),choices:d.choices,follow:d.followUp?.default};
@@ -65,10 +65,37 @@ window.makeCharacterEvents = function (game) {
   }
  }
  // 劇情結果落到遊戲狀態
- function consequence(e,i){const {b,g}=e.cast||{},alive=x=>x&&S.heroes[x]&&!(S.gone&&S.gone[x]);
+ // 依玩家選項文字，把處置真正落到她身上
+ function verdict(id,text){const s=String(text||''),w=wed(id),nm=H(id).n;
+  if(/死牢|下獄|掖庭獄|打入大牢|收押/.test(s)){setHst(id,'jail',4);return'【下獄】'+nm+'被押入大牢四旬'}
+  if(/冷宮/.test(s)&&w){w.cold=true;return'【冷宮】'+nm+'被打入冷宮'}
+  if(/禁足/.test(s)){setHst(id,'ban',3);return'【禁足】'+nm+'禁足三旬'}
+  if(/流放|逐出|趕出|貶出/.test(s)){goneHero(id,'exile',10);return'【流放】'+nm+'被逐出燈塔，十旬後或許會回來'}
+  if(/杖|鞭|軍棍|笞/.test(s)){setHst(id,'inj',2);return'【受刑】'+nm+'受刑負傷兩旬'}
+  return''}
+ // 劇情結束後還需要你表態的事件
+ function follow(e,c,d){const id=e.id,N=H(id).n,G=e.cast&&e.cast.g&&H(e.cast.g)?H(e.cast.g).n:'他',w=wed(id),fv=v=>{if(w)w.fav=Math.max(0,Math.min(100,(w.fav|0)+v));else hs(id).aff=Math.max(0,Math.min(100,(hs(id).aff|0)+v))};
+  const mist=v=>{hs(id).mist=String(BigInt(hs(id).mist||0)+BigInt(v)<0n?0n:BigInt(hs(id).mist||0)+BigInt(v))};
+  if(e.key==='threeContextsAndConflict'&&c.path){
+   if(d.react)return d.react.map(r=>({text:r.text,run:()=>{apply(id,r.effects,e.cast);const v=verdict(id,r.text);return [r.outcome,v].filter(Boolean).join(' ')}}));
+   return c.path==='duty'?[
+    {text:'抱住她，讓她哭出來',run:()=>{fv(8);mist(-10);return N+'在你懷裡第一次失聲痛哭。寵愛 +8、污染 −10'}},
+    {text:'論功行賞',run:()=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+10);mist(10);return N+'領了賞，眼神卻更冷了。權勢 +10、污染 +10'}},
+    {text:'冷冷收下首級',run:()=>{fv(-5);mist(20);return N+'把刀插回鞘裡，什麼也沒說。寵愛 −5、污染 +20'}}]:[
+    {text:'扶她起來，此事不再追究',run:()=>{fv(6);return N+'愣了很久，才低聲謝恩。寵愛 +6'}},
+    {text:'杖責二十，以儆效尤',run:()=>{setHst(id,'inj',2);fv(-10);return N+'一聲不吭挨完二十杖。寵愛 −10、負傷兩旬'}},
+    {text:'收回兵權，禁足反省',run:()=>{setHst(id,'ban',3);hp(id).inf=Math.max(0,(hp(id).inf|0)-15);return N+'交出兵符，禁足三旬。權勢 −15'}},
+    {text:'派兵把'+G+'追回來',run:()=>{const g=e.cast.g;if(S.gone&&S.gone[g]&&S.gone[g].k==='exile')S.gone[g].u=S.t+1;fv(-8);relAdd(id,g,-10);return '追兵出城，'+G+'下旬就會被押回來。'+N+'寵愛 −8'}}];
+  }
+  if(e.key==='coupAndAftermath')return[
+   {text:'把虎符交給她',run:()=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+25);barAdd('hedon',3);return N+'接過虎符，城門的兵都換成了她的人。權勢 +25、昏庸 +3'}},
+   {text:'當場拿下她',run:()=>{if(Math.random()<.5){setHst(id,'jail',4);fv(-20);mist(30);return'禁軍一擁而上。'+N+'被押入大牢四旬，寵愛 −20、污染 +30'}goneHero(id,'exile',10);return N+'帶著八百死士殺出宮門，消失在黑霧裡。之後也許能把她找回來'}},
+   {text:'各退一步：虎符歸你，兵歸她',run:()=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+10);fv(-5);return N+'冷笑著收下這個交換。權勢 +10、寵愛 −5'}}];
+  return null}
+ function consequence(e,i,c){const {b,g}=e.cast||{},alive=x=>x&&S.heroes[x]&&!(S.gone&&S.gone[x]);if(c&&c.path)i=c.path==='duty'?0:1;
   if(e.key==='coupAndAftermath'&&alive(b)&&wed(b)){goneHero(b,'exec');(S.dc??={})[b]=(S.dc[b]||0)+1;feedPush('【兵變】'+H(b).n+'死於'+H(e.id).n+'刀下','neg')}
   else if(e.key==='humiliationAbuseRevolt'&&alive(b)&&wed(b)){const w=wed(b);w.cold={t:S.t};w.duty=null;w.fav=Math.max(0,(w.fav||0)-20);setHst(b,'inj',4);feedPush('【私刑】'+H(b).n+'毀容致殘，被丟進冷宮','neg')}
-  else if(e.key==='threeContextsAndConflict'&&e.variant!=='battle'&&!entries[e.id][e.key].choices&&alive(g)){
+  else if(e.key==='threeContextsAndConflict'&&c&&c.path&&alive(g)){
    if(i===0){goneHero(g,'exec');feedPush('【斬友】'+H(g).n+'被'+H(e.id).n+'斬於西門水閘','neg')}
    else{goneHero(g,'exile',12);feedPush('【放走】'+H(g).n+'被'+H(e.id).n+'私放出城，十二旬內不會回來','neg')}}
  }
@@ -82,13 +109,15 @@ window.makeCharacterEvents = function (game) {
   sheet('<h3>'+esc(fill(d.title))+'</h3>'+d.body.map(s=>'<p>'+esc(fill(s))+'</p>').join('')+choices.map((c,i)=>'<button class="btn" id="packChoice'+i+'">'+esc(fill(c.text))+'</button>').join(''),true);
   choices.forEach((c,i)=>$('#packChoice'+i).onclick=()=>{
    if(S.packQueue[0]!==e)return;
-   S.packQueue.shift();apply(e.id,c.effects,e.cast);consequence(e,i);
+   S.packQueue.shift();apply(e.id,c.effects,e.cast);consequence(e,i,c);const vd=c.path?'':verdict(e.id,c.text);if(vd)feedPush(vd,'neg');
    if(e.key==='tragedies'&&e.variant==='公開羞辱')(hs(e.id).packFlags??={}).permanentFall=true;
    const permanent=e.key==='tragedies'&&entries[e.id].tragedies[e.variant].permanentState;
    if(permanent)(hs(e.id).packStates??={})[permanent.state]=permanent.effect;
-   const result=lines([c.outcome,d.follow,permanent?'永久狀態・'+permanent.state+'：'+permanent.effect:null]).map(fill).join(' ');
+   const result=lines([c.outcome,d.follow,permanent?'永久狀態・'+permanent.state+'：'+permanent.effect:null,vd]).map(fill).join(' ');const F=follow(e,c,d);
    feedPush('【'+H(e.id).n+'】'+fill(d.title)+(result?'・'+result:''));save();closeSheet();
-   if(!result)return show(next,n+1);
+   if(!result&&!F)return show(next,n+1);
+   if(F){sheet('<p>'+esc(result)+'</p><div class="small" style="color:var(--gold2);margin:8px 0 4px">你要怎麼做？</div>'+F.map((f,j)=>'<button class="btn '+(j?'ghost':'')+'" style="width:100%;margin-top:6px" id="packF'+j+'">'+esc(fill(f.text))+'</button>').join(''),true);
+    F.forEach((f,j)=>$('#packF'+j).onclick=()=>{const r=fill(f.run());feedPush('【'+H(e.id).n+'】'+r);save();closeSheet();sheet('<p>'+esc(r)+'</p><button id="packContinue" class="btn">繼續</button>',true);$('#packContinue').onclick=()=>{closeSheet();show(next,n+1)}});return}
    sheet('<p>'+esc(result)+'</p><button id="packContinue" class="btn">繼續</button>',true);
    $('#packContinue').onclick=()=>{closeSheet();show(next,n+1)};
   });
