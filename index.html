@@ -1841,7 +1841,7 @@ function pickTask(id){
 
 /* ---------- LORD ---------- */
 const TIER=a=>a>=100?'誓約':a>=80?'親密':a>=50?'信賴':a>=20?'熟識':'陌生';
-const LTAB=[['總覽',['天運者','人際']],['天賦',['天賦樹']],['史冊',['史冊']],['成就',['成就']]];
+const LTAB=[['總覽',['天運者','人際','天下勢力']],['天賦',['天賦樹']],['史冊',['史冊']],['成就',['成就']]];
 function lordTabs(h){const parts=h.split('<div class="sec">');const pre=parts.shift();const cur=LTAB.some(([k])=>k===S.lordTab)?S.lordTab:'總覽';const grp=LTAB.find(x=>x[0]===cur)||LTAB[0];
  const secs=parts.map(p=>{const m=p.match(/<div class="orn">([^<$]+)/);const t=m?m[1].trim():'';const show=grp[1].some(g=>t.startsWith(g))||(!LTAB.some(x=>x[1].some(g=>t.startsWith(g)))&&cur==='總覽');return`<div class="sec" style="${show?'':'display:none'}">${p}`}).join('');
  const badge=k=>k==='後宮'&&spouses().some(x=>wed(x).iaT!==S.t)?'<i class="dot"></i>':k==='天賦'&&S.talent>0?'<i class="dot"></i>':'';
@@ -1948,6 +1948,7 @@ function lordView(){
 
  <div class="sec"><div class="orn">人際</div><div class="hgrid">${owned().filter(h=>activePlace(h.id)==='home').map(h=>{const a=hs(h.id).aff;return`<button class="hcard ${h.r}" data-m="${h.id}" style="background-image:url(img/${h.id}.jpg)"><span class="st" style="color:var(--pink)">${'♥'.repeat(Math.min(5,Math.floor(a/20)+ (a>0?1:0)))}</span><b>${h.n}</b><span class="tk" style="color:var(--pink)">${TIER(a)}・${a}</span></button>`}).join('')}</div></div>
  ${chronView()}
+ ${facTable()}
  <div class="sec"><div class="orn">成就 ${Object.keys(S.ach).length}/${ACH.length}</div><div class="meta">${ACH.map(a=>`<span class="chip ${S.ach[a[0]]?'':'r'}" style="${S.ach[a[0]]?'':'opacity:.4;border-color:#333;color:#777'}">${a[1]}</span>`).join('')}</div></div>`}
 function bindLord(){$$('[data-mw]').forEach(b=>b.onclick=e=>{e.stopPropagation();setMainWife(b.dataset.mw);render()});$$('[data-kt]').forEach(b=>b.onclick=()=>{const[k,w]=b.dataset.kt.split(':');kidTeach(k,w)});$$('[data-vow]').forEach(b=>b.onclick=()=>startVow(b.dataset.vow));$$('[data-w]').forEach(b=>b.onclick=()=>wedVisit(b.dataset.w));
  $('#lSum').onclick=()=>{if(S.energy<sumCost())return;const paid=sumCost();S.energy-=paid;summon(null,()=>{if(knows('echo')){S.summonEcho=(S.summonEcho||0)+1;if(S.summonEcho%3===0){S.energy+=paid;toast('雙星回響・能量返還')}}if(knows('stars')){const camp=S.enemies.find(e=>e.seat&&!T(e.r,e.c).seen);if(camp)S.tiles.flat().filter(t=>dist(t,camp)<=2).forEach(t=>t.seen=true)}const id=S.order[S.order.length-1];hs(id).task=autoTask(H(id));render()})};
@@ -3040,8 +3041,8 @@ function gridSheet(id){const h=H(id),w=wed(id),sp=w&&h.sex==='f',m=mistState(id)
  <div class="gstat">${sp?row('寵愛',w.fav)+row('情深',LOVEN[Math.max(0,loveLv(id))])+row('心境',md2(id))+row('權勢',hp(id).inf|0)+row('野心',heroAmb(id))+row('週期',CYI[cyc(id)]+CYN[cyc(id)]):row('好感',hs(id).aff)+row('忠誠',typeof loyal==='function'?loyal(id):'?')+row('任務',hs(id).task||'idle')}${row('污染',m.band?m.name:'清明')}${row('負荷',mistStrain(id)+'/10')}</div>
  <div class="frame small" style="padding:6px 8px;margin-bottom:8px;line-height:1.6"><b style="color:var(--gold2)">此刻</b>　${nowOf(id)}${(()=>{const o=sp&&hs(id).wish2;if(!o)return'';const [c,n]=wishProg(id);return`<br><b style="color:var(--gold2)">心之所向</b>　${WISH[o.k][1]}${o.foe?'：'+H(o.foe).n:''}（${Math.min(c,n)}/${n}）`})()}${sp&&dtagList(id).length?`<br><b style="color:var(--gold2)">性情</b>　${dtagList(id).join('、')}`:''}${recentOf(id).length?`<br><b style="color:var(--gold2)">近況</b><br>${recentOf(id).map(s=>'・'+s).join('<br>')}`:''}</div>
  ${sp?invHtml(id):''}${troopHtml(id)}
- <div class="gacts">${sp&&home?`<button class="btn" data-ga="visit">探望</button><button class="btn ghost" data-ga="gift">賞賜</button><button class="btn ghost" data-ga="spy">密報・挑撥</button>`:''}${!sp&&home?`<button class="btn" data-ga="meet">召見談心</button>`:''}${home?`<button class="btn" data-ga="spend">相處（宮務）</button>`:''}<button class="btn ghost" data-ga="detail">詳情・處置</button></div>`);
- $$('[data-ga]').forEach(b=>b.onclick=()=>{const k=b.dataset.ga;closeSheet();if(k==='visit')wedVisit(id);else if(k==='gift'){giftSheet(id)}else if(k==='spy')pmSheet(id);else if(k==='meet')meet(id);else if(k==='spend')spendSheet(id);else openHero(id)})}
+ <div class="gacts">${sp&&home?`<button class="btn" data-ga="visit">探望</button><button class="btn ghost" data-ga="gift">賞賜</button><button class="btn ghost" data-ga="spy">密報・挑撥</button>`:''}${!sp&&home?`<button class="btn" data-ga="meet">召見談心</button>`:''}${home?`<button class="btn" data-ga="spend">相處（宮務）</button>`:''}${sp&&S.immMethod&&!hs(id).immortal?`<button class="btn" data-ga="imm" style="border-color:#f0d79a">✦ 同命契</button>`:''}<button class="btn ghost" data-ga="detail">詳情・處置</button></div>`);
+ $$('[data-ga]').forEach(b=>b.onclick=()=>{const k=b.dataset.ga;closeSheet();if(k==='visit')wedVisit(id);else if(k==='gift'){giftSheet(id)}else if(k==='spy')pmSheet(id);else if(k==='meet')meet(id);else if(k==='spend')spendSheet(id);else if(k==='imm')immPact(id);else openHero(id)})}
 document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest('[data-gc]');if(c){gridSheet(c.dataset.gc);return}const f=e.target.closest&&e.target.closest('[data-gf]');if(f){const[k,v]=f.dataset.gf.split('|');S[k]=v;render()}});
 
 /* ===== 宮中暗流：依現有數值觸發的互動事件 ===== */
@@ -3537,6 +3538,51 @@ AUTOACT.forEach(a=>{const f=a[3];a[3]=c=>{let w=f(c);if(c.cy===1&&['seek','affai
 const AUTOACT_old=AUTOACT.findIndex(a=>a[0]==='estate');if(AUTOACT_old>=0)AUTOACT.splice(AUTOACT_old,1);
 {const _at=autoTurn;autoTurn=function(add){for(let i=0;i<2;i++)_at(add);pvTurn(add);
  spouses().concat(Object.keys(S.gone||{})).forEach(id=>{const st=hs(id);if(!st||st.nunT==null)return;if(S.order.includes(id)&&!(S.gone&&S.gone[id])){delete st.nunT;const d=st.dtag??={};delete d.心死;d.還俗=S.t;add(`【還俗】${H(id).n}從庵堂回來了，像是放下了什麼`)}})}}
+
+/* ===== 不死之身與永生之約 ===== */
+WISH.immortal=[3,'想要與你一同永生','同命契',1,id=>hs(id).immortal?1:0];
+function immTurn(add){if(inWorld())return null;Object.entries(S.gone||{}).forEach(([id,g])=>{if(g.sleep&&g.u<=S.t){heroBack(id);mistAdd(id,30);add(`【甦醒】${H(id).n}從沉睡中醒來，記得一切（污染 +30）`,'neg')}});if(S.t<12)return null;const sp=spouses().filter(id=>S.order.includes(id));
+ if(!S.immMethod&&S.t>=18&&Math.random()<.04){S.immMethod=S.t;return{k:'method'}}
+ const u=sp.filter(id=>!hs(id).knowImm);if(u.length&&Math.random()<.07){const id=pick(u);return{k:'know',id}}
+ sp.forEach(id=>{const st=hs(id);if(st.immortal||!st.knowImm||!S.immMethod)return;if(!st.wish2||st.wish2.k!=='immortal'){if(Math.random()<.3)st.wish2={k:'immortal',since:S.t,base:0,p:0}}});return null}
+function immEvent(cb){const e=immTurn(feedPush);if(!e||!evOK(true))return cb();
+ if(e.k==='method'){sheet(`<h2>永生之法</h2><p style="margin:8px 0">星盤深處浮現一行古老的銘文——天運者之命，可與所愛之人同契。從此，你能為紅顏舉行「同命契」，讓她與你一同不老不死。</p><div class="small" style="color:var(--gold2)">點開人物面板即可舉行同命契（晶核 3、能量 150；她的情深需達「深愛」）。</div><button class="btn" id="imOk" style="width:100%;margin-top:10px">知道了</button>`,true);feedPush('【永生之法】你在星盤深處找到了同命契');if(typeof chronAdd==='function')chronAdd('【永生之法】你找到了讓紅顏一同永生的方法');$('#imOk').onclick=()=>{closeSheet();cb()};return}
+ const id=e.id,st=hs(id),tags=ntagAll(id).concat(PTAG[id]||[]).join(' ');st.knowImm=S.t;const d=st.dtag??={};let r;
+ if(/痴魔|虔誠|偏執/.test(tags)){d.狂信=S.t;r='她跪在你面前，像是終於確認了自己信仰的神。'}
+ else if(/野心|背盟奪權|跋扈|心機/.test(tags)){d.渴求永生=S.t;hs(id).ambUp=(hs(id).ambUp||0)+5;r='她沉默了很久，然後笑了：「那麼，我要排第一個。」'}
+ else if(/心死|冷心|怨懟/.test(tags)){d.渴求永生=S.t;mistAdd(id,30);r='她看著鏡中自己的臉，忽然害怕起老去。'}
+ else{d.渴求永生=S.t;r='她握住你的手，指尖在發抖：「帶我一起，好不好？」'}
+ sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(id)}.jpg)"></div><div><b style="color:var(--gold2)">她發現了・${H(id).n}</b><p style="margin:6px 0">${H(id).n}終於明白：你不會老，也不會死。<br>${r}</p></div></div><button class="btn" id="imOk" style="width:100%;margin-top:8px">知道了</button>`,true);feedPush(`【發現】${H(id).n}發現你不死不滅`);$('#imOk').onclick=()=>{closeSheet();cb()}}
+function immPact(id){const w=wed(id);if(!S.immMethod||hs(id).immortal)return;if(loveLv(id)<2){sfx('deny');return toast('她的情深還不夠')}if((S.core||0)<3||S.energy<150){sfx('deny');return toast('需要晶核 3、能量 150')}S.core-=3;S.energy-=150;const st=hs(id);st.immortal=S.t;(st.dtag??={}).永生=S.t;delete st.dtag.渴求永生;w.fav=100;loveAdd(id,300,true);
+ const n=spouses().filter(x=>hs(x).immortal).length;spouses().filter(x=>x!==id&&!hs(x).immortal).forEach(x=>{wed(x).fav=Math.max(0,wed(x).fav-5);relAdd(x,id,-10);if(hs(x).knowImm)(hs(x).dtag??={}).渴求永生=S.t});
+ const s=`【同命契】${H(id).n}成為第 ${n} 位與你同命的人，從此不老不死`;feedPush(s);if(typeof chronAdd==='function')chronAdd(s);sfx('ssr');closeSheet();sheetDlg(id,'從今以後，你去哪裡，我就去哪裡——永遠。','好',()=>render())}
+{const _gh=goneHero;goneHero=function(id,k,n){if(k==='exec'&&hs(id)&&hs(id).immortal){_gh(id,'exile',R(3,6));S.gone[id].sleep=1;feedPush(`【沉睡】${H(id).n}倒下了，但永生之身不會死——她將沉睡數旬`,'neg');return}return _gh(id,k,n)}}
+/* ===== 子嗣遇害 ===== */
+AUTOACT.push(['killKid','謀害他人子嗣',1,(c)=>{const k=(S.kids||[]).some(k=>!k.adult&&k.mom!==c.id);return k?((c.band>=3?1:0)+c.has('控孕','殘暴','嗜血','善妒')*.8+(c.fav<35?.5:0))*(hs(c.id).pv?.dujiao?2:1):0},(id)=>{const L=(S.kids||[]).filter(k=>!k.adult&&k.mom!==id);if(!L.length)return null;const k=pick(L);kidKilled(k,id);return`暗中害死了${H(k.mom).n}的孩子${k.n}`}]);
+function kidKilled(k,by){S.kids=(S.kids||[]).filter(x=>x!==k);(S.kidDead??=[]).push({id:k.id,n:k.n,mom:k.mom,by,t:S.t});const m=k.mom,st=hs(m);if(!st)return;
+ const rivals=spouses().filter(x=>x!==m);const sus=Math.random()<.5?by:pick(rivals)||by;st.suspect={id:sus,kid:k.n,real:by,t:S.t};(st.dtag??={}).喪子=S.t;mistAdd(m,60);setMd(m,'癲狂');if(wed(m))loveAdd(m,-200,true);
+ const s=`【喪子】${H(m).n}的孩子${k.n}夭亡。${H(m).n}認定是${H(sus).n}下的手`;feedPush(s,'neg');if(typeof chronAdd==='function')chronAdd(s);(S.revQ??=[]).push(m)}
+AUTOACT.push(['revenge','為子復仇',0,(c)=>{const s=hs(c.id).suspect;return s&&S.order.includes(s.id)?6:0},(id)=>{const s=hs(id).suspect,x=s.id;if(Math.random()<.4){setHst(x,'inj',3);mistAdd(id,20);return`為了${s.kid}，在${H(x).n}的湯裡下了毒`}relAdd(id,x,-30);wed(x).fav=Math.max(0,wed(x).fav-10);return`四處蒐證，要把${H(x).n}置於死地`}]);
+function revengeEvent(cb){const q=S.revQ||[];const m=q.shift();if(!m||!S.order.includes(m)||!evOK(true))return cb();const s=hs(m).suspect;if(!s)return cb();const N=H(m).n,X=H(s.id).n;
+ sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(m)}.jpg)"></div><div><b style="color:#ff8a8a">血債・${N}</b><p style="margin:6px 0">${N}披頭散髮跪在殿前，懷裡還抱著${s.kid}的小衣裳：「是${X}！求你，殺了她！」</p></div></div>
+ <button class="btn" style="width:100%;margin-top:6px" data-rv="0">處死${X}</button><button class="btn ghost" style="width:100%;margin-top:6px" data-rv="1">派密探徹查</button><button class="btn ghost" style="width:100%;margin-top:6px" data-rv="2">安撫她，此事不再追究</button>`,true);
+ $$('[data-rv]').forEach(b=>b.onclick=()=>{const i=+b.dataset.rv;let r;if(i===0){goneHero(s.id,'exec');const ok=s.id===s.real;wed(m).fav=Math.min(100,wed(m).fav+15);r=`你下令處死${X}。${ok?'':'（多年後你才知道，她是冤枉的）'}`;if(!ok)(S.wrongful??=[]).push({id:s.id,t:S.t});delete hs(m).suspect}
+  else if(i===1){if(S.energy<30){sfx('deny');return toast('能量不足')}S.energy-=30;if(s.id===s.real)r=`密探查實：真兇就是${X}`;else{r=`密探查出：真兇不是${X}，而是${H(s.real).n}！`;s.id=s.real}(S.revQ??=[]).push(m)}
+  else{wed(m).fav=Math.max(0,wed(m).fav-15);(hs(m).dtag??={}).怨懟=S.t;r=`你要${N}放下。她看著你，眼裡最後一點光熄滅了`;hs(m).hateYou=(hs(m).hateYou||0)+1;if(hs(m).hateYou>=2&&(hp(m).inf|0)>=50)rebelFound(m,[],feedPush,`${N}認定你包庇殺子仇人，帶人出走自立。`)}
+  feedPush('【血債】'+r);closeSheet();toast(r);render();cb()})}
+{const _hei=haremEvent;haremEvent=function(cb){return _hei(()=>immEvent(()=>revengeEvent(cb)))}}
+/* ===== 勢力：迷霧中可見・天下勢力表・建造掠奪勒索 ===== */
+{const _vi=visible;visible=function(t){if(_vi(t))return true;if(!t||inWorld())return false;return Object.values(S.facs||{}).some(f=>f.alive&&f.seat&&f.seat.r===t.r&&f.seat.c===t.c)}}
+function facTable(){const F=curFacs().filter(d=>FS(d.id)&&FS(d.id).alive);if(!F.length)return'';return`<div class="sec"><div class="orn">天下勢力</div>${F.map(d=>{const f=FS(d.id),e=S.enemies.find(x=>x.id===f.gid);return`<div class="frame small" style="padding:6px 8px;margin-bottom:5px;border-color:${d.color||'#888'}"><b style="color:${d.color||'#ddd'}">${d.mark||''} ${d.n}</b>・首領 ${d.leader||'—'}<br>本陣（${f.seat.c}，${f.seat.r}）・兵力約 ${Math.round((f.troops||0)+(e?e.troops:0))}${f.fort?`・城防 ${f.fort} 級`:''}${d.nem?'・<span style="color:#ff8a8a">宿敵</span>':d.rebel?'・叛軍':d.local?'・地方':''}</div>`}).join('')}</div>`}
+function facAI(add){if(inWorld())return;curFacs().forEach(d=>{const f=FS(d.id);if(!f||!f.alive)return;f.troops=(f.troops||0)+R(4,10);const e=S.enemies.find(x=>x.id===f.gid);
+ if(e&&S.t%8===0&&Math.random()<.5){f.fort=(f.fort||0)+1;e.troops+=60;e.max+=60;add(`【天下大勢】${d.n}加固本陣（城防 ${f.fort} 級）`)}
+ if(S.t%5===0&&Math.random()<.25){const town=pick(branchCities());if(town){const st=townStores(town);const n=Math.round(st.food*.3);st.food-=n;add(`【掠奪】${d.n}的游騎劫掠了${cityName(town)}，搶走糧 ${n}`,'neg')}else{const n=Math.min(S.food,R(20,50));S.food-=n;add(`【掠奪】${d.n}劫走了運糧車隊（糧 −${n}）`,'neg')}}
+ if(S.t%7===0&&Math.random()<.2&&!S.extort)S.extort={fid:d.id}})}
+function extortEvent(cb){const x=S.extort;S.extort=null;if(!x||!evOK())return cb();const d=FD(x.fid),f=FS(x.fid);if(!d||!f||!f.alive)return cb();const sp=spouses().filter(id=>activePlace(id)==='home'&&!hs(id).immortal);const amt=60+S.t*3;
+ sheet(`<h3>${d.n}來使</h3><p style="margin:8px 0">使者昂著頭：「${d.leader||'我主'}說了，送糧 ${amt}，兩家相安無事${sp.length?'；或者，送一位夫人來和親':''}。否則，城下見。」</p><button class="btn" style="width:100%;margin-top:6px" data-ex="pay">送糧 ${amt}</button>${sp.length?`<button class="btn ghost" style="width:100%;margin-top:6px" data-ex="wed">送${H(sp[sp.length-1]).n}去和親</button>`:''}<button class="btn ghost" style="width:100%;margin-top:6px" data-ex="no">趕走使者</button>`,true);
+ $$('[data-ex]').forEach(b=>b.onclick=()=>{const k=b.dataset.ex;let r;if(k==='pay'){S.food=Math.max(0,S.food-amt);r=`你送了糧 ${amt}，${d.n}暫時退兵`}else if(k==='wed'){const id=sp[sp.length-1];goneHero(id,'exile',12);S.spouses?.forEach?.(()=>{});spouses().forEach(x=>{if(x!==id)wed(x).fav=Math.max(0,wed(x).fav-8)});r=`${H(id).n}被送去和親。後宮一片死寂，全員寵愛 −8`}else{const tg=pick(ownTiles());if(tg){const sz=150+S.t*6;S.enemies.push({id:'f'+S.uid++,n:`${d.n}・討伐軍`,img:d.img||'fa_rebel',troops:sz,max:sz,atk:55+S.t*2,r:f.seat.r,c:f.seat.c,fac:d.id,tgt:{r:tg.r,c:tg.c}})}r=`你趕走了使者。${d.n}發兵來犯！`}
+  feedPush('【勒索】'+r,k==='pay'?'':'neg');closeSheet();toast(r);render();cb()})}
+{const _hef=haremEvent;haremEvent=function(cb){facAI(feedPush);return _hef(()=>extortEvent(cb))}}
 function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'群像';const tabs=['群像','總表','心願','珍寶','勢力圖','一覽','動態','關係','建築','冷宮行宮','結義兄弟'];
  let h=`<div class="ltabs">${tabs.map(t=>`<button class="${S.hTab===t?'on':''}" data-ht="${t}">${t}</button>`).join('')}</div>`;
  if(S.hTab==='群像'){S.gridFH=S.gridFH||'夫人';return h+gridView('gridFH')}
