@@ -3156,6 +3156,52 @@ const gwMax=()=>2+(spouses().length>=4?1:0)+(spouses().length>=8?1:0);
 const gwLeft=()=>S.gw??(S.gw=gwMax());
 function gwPay(free){if(free&&S.gwFree?.[free]!==S.t){(S.gwFree??={})[free]=S.t;toast('本旬首次免費');return true}
  if(gwLeft()>0){S.gw--;return true}if(S.ap>0){S.ap--;toast('宮務用完，改用 1 點行動');return true}sfx('deny');toast('宮務與行動都用完了');return false}
+
+/* ===== 宿敵勢力：角色歷史上的宿敵跟著墜入歸墟 ===== */
+const NEM={
+ rouran:{who:['mulan'],n:'柔然汗庭',mark:'柔',color:'#8a6a3a',leader:'柔然可汗・郁久閭大檀',caps:['柔然騎帥','汗庭突騎'],lore:'北魏邊塞打了十二年的柔然，連同他們的汗帳一起墜進了歸墟。可汗還記得那個替父從軍的女人。',env:'可汗說：把那個叫花木蘭的女將交出來，柔然便退兵百里。'},
+ jin:{who:['lianghongyu','yuefei'],n:'金國南侵軍',mark:'金',color:'#c9a24a',leader:'完顏宗弼（金兀朮）',caps:['拐子馬統領','鐵浮屠萬戶'],lore:'黃天蕩一戰困了四十八天的金兀朮，帶著鐵浮屠衝出了另一條世界線，第一件事就是打聽宋將的下落。',env:'金使傲慢地說：四太子要黃天蕩的舊帳，一筆一筆討回來。'},
+ xiliang:{who:['diaochan'],n:'西涼軍',mark:'董',color:'#9a3a3a',leader:'董卓',caps:['西涼鐵騎','飛熊軍'],lore:'鳳儀亭的血還沒乾，董卓肥胖的身軀卻從黑霧裡站了起來。他身後是燒過洛陽的西涼鐵騎。',env:'西涼使者大笑：太師說了，貂蟬本是他的人。'},
+ fuchai:{who:['xishi'],n:'吳國殘部',mark:'吳',color:'#4a7a9a',leader:'吳王夫差',caps:['姑蘇甲士','伍氏舊部'],lore:'姑蘇台焚毀那夜，夫差沒有死。他帶著亡國的恨意與殘兵，一路追著西施的影子來到歸墟。',env:'吳使跪呈一束枯萎的館娃宮花：大王只想再見她一面。'},
+ fanyang:{who:['yangguifei'],n:'范陽叛軍',mark:'燕',color:'#7a3a5a',leader:'安祿山',caps:['曳落河','同羅精騎'],lore:'漁陽鼙鼓動地來。安祿山的叛軍穿過黑霧，打著「清君側」的旗號，指名要那位貴妃。',env:'叛軍使者高喊：交出楊氏，天下便太平。'},
+ caowei:{who:['xiaoqiao'],n:'曹軍荊州水師',mark:'曹',color:'#3a5a8a',leader:'蔡瑁',caps:['樓船校尉','荊州降卒'],lore:'赤壁的火燒了一整夜，蔡瑁的水師卻從灰燼裡重新集結，銅雀台的旗號還插在船頭。',env:'曹軍使者說：銅雀台上，還空著一個位置。'},
+ han:{who:['yuji','xiangyu'],n:'漢軍',mark:'漢',color:'#b04a3a',leader:'劉邦',caps:['韓信舊部','灌嬰騎兵'],lore:'垓下的四面楚歌再次響起。劉邦帶著漢軍墜入歸墟，要把當年沒做完的事做完。',env:'漢使笑道：漢王說，楚地的歌，還沒唱完。',skip:'liubang'},
+ xujingye:{who:['wuzetian'],n:'討武義軍',mark:'討',color:'#6a6a3a',leader:'徐敬業',caps:['揚州義兵','駱賓王'],lore:'「請看今日之域中，竟是誰家之天下。」徐敬業的討武檄文，在歸墟裡又傳開了。',env:'義軍使者朗讀檄文，字字都在罵牝雞司晨。'},
+ houyi:{who:['change'],n:'射日營',mark:'羿',color:'#a07a3a',leader:'后羿',caps:['射日弓手','有窮氏部眾'],lore:'被背叛的丈夫帶著射落九日的弓，追著奔月的妻子來到這片沒有太陽的荒原。',env:'后羿的箭釘在城門上，箭尾繫著一句話：把藥，還來。'}};
+const nemOf=id=>Object.entries(NEM).find(([k,v])=>v.who.includes(id));
+function nemSpawn(key,add){const N=NEM[key],t=rebelTile();if(!t)return false;const id='nem_'+key;
+ (S.rebelDefs??={})[id]={id,n:N.n,kind:'war',nem:key,color:N.color,img:'fa_rebel',limg:'fa_rebel',seatImg:'seat_rebel',mark:N.mark,tr:'def',leader:N.leader,caps:N.caps,lore:N.lore};
+ S.facs[id]={id,alive:true,troops:300+S.t*4,seat:{r:t.r,c:t.c},gid:'g_'+id,news:[]};S.tiles.flat().forEach(x=>{if(dist(x,t)<=1&&!x.own&&!'BC'.includes(x.t)&&!x.fac){x.fac=id;x.seen=true}});
+ const pw=420+S.t*8;S.enemies.push({id:'g_'+id,n:`${N.leader}・${N.n}本陣`,img:'fa_rebel',troops:pw,max:pw,atk:50+Math.min(40,S.t),r:t.r,c:t.c,still:true,tr:'def',fac:id,seat:true,leader:N.leader,nem:key});
+ const her=N.who.filter(x=>S.order.includes(x)).map(x=>H(x).n).join('、');const msg=`【宿敵降臨】${N.lore}（本陣在（${t.c}，${t.r}）；${her}認出了那面旗）`;add(msg,'neg');if(typeof chronAdd==='function')chronAdd(msg);S.nemAt=S.nemAt||{};S.nemAt[key]=S.t;return true}
+function nemAtk(our,en){if(!en||!en.fac)return 0;const d=FD(en.fac);if(!d||!d.nem)return 0;return our.gens.some(g=>NEM[d.nem].who.includes(g))?.2:0}
+function nemTurn(cb){if(inWorld())return cb();S.nemQ=S.nemQ||{};S.nemDone=S.nemDone||{};const add=(s,c)=>feedPush(s,c);
+ Object.entries(NEM).forEach(([k,N])=>{if(S.nemQ[k]!=null||S.nemDone[k])return;if(N.skip&&S.order.includes(N.skip))return;if(N.who.some(x=>S.order.includes(x)))S.nemQ[k]=S.t+R(3,6)});
+ Object.entries(S.nemQ).forEach(([k,due])=>{if(due!=null&&due<=S.t&&!S.facs['nem_'+k]&&!S.nemDone[k]){if(nemSpawn(k,add))S.nemQ[k]=-1}});
+ // 審判：本陣被拔除
+ const fall=Object.keys(NEM).find(k=>S.facs['nem_'+k]&&!S.nemDone[k]&&(!S.facs['nem_'+k].alive||!S.enemies.some(e=>e.id==='g_nem_'+k)));
+ if(fall)return nemJudge(fall,cb);
+ // 來使點名
+ const live=Object.keys(NEM).filter(k=>S.facs['nem_'+k]&&S.facs['nem_'+k].alive&&!S.nemDone[k]);const k=live.find(x=>S.t-(S.nemAt?.[x]||0)>=4&&Math.random()<.35);
+ if(!k)return cb();S.nemAt[k]=S.t;const N=NEM[k],her=N.who.find(x=>S.order.includes(x));if(!her)return cb();
+ sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(her)}.jpg)"></div><div><b style="color:#ff8a8a">宿敵來使・${N.n}</b><p style="margin:6px 0">${N.env}<br><span class="small">${H(her).n}站在殿側，指節捏得發白。</span></p></div></div>
+ <button class="btn" style="width:100%;margin-top:6px" data-ne="0">斬使立威</button><button class="btn ghost" style="width:100%;margin-top:6px" data-ne="1">冷冷回絕</button><button class="btn ghost" style="width:100%;margin-top:6px" data-ne="2">收下厚禮，虛與委蛇</button>`,true);
+ $$('[data-ne]').forEach(b=>b.onclick=()=>{const i=+b.dataset.ne,w=wed(her),fv=v=>{if(w)w.fav=clamp((w.fav|0)+v,0,100);else gainAff(her,v)};const en=S.enemies.find(e=>e.id==='g_nem_'+k);let r;
+  if(i===0){fv(10);if(w)loveAdd(her,80,true);if(en){en.troops+=80;en.max+=80}barAdd('tyranny',2);r=`你當殿斬了使者。${H(her).n}寵愛 +10；${N.n}被激怒，本陣兵力 +80；暴虐 +2`}
+  else if(i===1){fv(3);r=`你回絕了使者。${H(her).n}寵愛 +3`}
+  else{S.food+=60;S.energy+=30;fv(-12);if(w)setMd(her,'委屈');r=`你收下糧 60、能量 30。${H(her).n}以為你要把她交出去，寵愛 −12`}
+  feedPush(`【宿敵來使】${r}`,i===2?'neg':'');closeSheet();toast(r);render();cb()})}
+function nemJudge(k,cb){S.nemDone[k]=S.t;const N=NEM[k],her=N.who.find(x=>S.order.includes(x)),w=her&&wed(her);
+ const s0=`【宿敵覆滅】${N.n}本陣被攻破，${N.leader}被押到殿前。`;feedPush(s0,'pos');if(typeof chronAdd==='function')chronAdd(s0);
+ if(!her)return cb();
+ sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(her)}.jpg)"></div><div><b style="color:var(--gold2)">審判・${N.leader}</b><p style="margin:6px 0">${N.leader}被五花大綁跪在階下。${H(her).n}一步一步走下來，在他面前停住，回頭看你。</p></div></div>
+ <button class="btn" style="width:100%;margin-top:6px" data-nj="0">交給她處置</button><button class="btn ghost" style="width:100%;margin-top:6px" data-nj="1">當眾處決</button><button class="btn ghost" style="width:100%;margin-top:6px" data-nj="2">收編他的殘部</button>`,true);
+ $$('[data-nj]').forEach(b=>b.onclick=()=>{const i=+b.dataset.nj,fv=v=>{if(w)w.fav=clamp((w.fav|0)+v,0,100);else gainAff(her,v)};let r;
+  if(i===0){fv(20);if(w)loveAdd(her,200,true);hs(her).mist=String(BigInt(hs(her).mist||0)+30n);r=`你把${N.leader}交給了${H(her).n}。那一夜發生的事沒人敢問。${H(her).n}寵愛 +20、情深大增、污染 +30`}
+  else if(i===1){fv(12);if(w)loveAdd(her,100,true);barAdd('tyranny',3);r=`${N.leader}在城門下伏誅。${H(her).n}寵愛 +12；暴虐 +3`}
+  else{S.soldiers+=150;fv(-8);r=`你收編了殘部，兵力 +150。${H(her).n}不敢相信你竟饒了他，寵愛 −8`}
+  (hs(her).titles??=[]).push(`斬${N.mark}`);feedPush(`【審判】${r}`);if(typeof chronAdd==='function')chronAdd(`【審判】${r}`);closeSheet();toast(r);render();cb()})}
+{const _he4=haremEvent;haremEvent=function(cb){return _he4(()=>nemTurn(cb))}}
 function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'群像';const tabs=['群像','總表','心願','勢力圖','一覽','往來紀事','動態','關係','建築','冷宮行宮','結義兄弟'];
  let h=`<div class="ltabs">${tabs.map(t=>`<button class="${S.hTab===t?'on':''}" data-ht="${t}">${t}</button>`).join('')}</div>`;
  if(S.hTab==='群像'){S.gridFH=S.gridFH||'夫人';return h+gridView('gridFH')}
@@ -4268,7 +4314,7 @@ const wxNow=()=>WX[S.wx||'qing'];function mods0(our,en,M0){const w=wxNow()[3],oc
 function wxRoll(add){const pool=inWorld()?{mobei:['qing','feng','re','re','feng'],gaixia:['xue','xue','wu','feng'],chibi:['feng','feng','wu','yu'],wuyue:['yu','wu','qing','yu'],mawei:['yu','yu','wu'],fengbo:['xue','yu','wu'],wugu:['qing','feng','wu'],danggu:['xue','qing','feng'],ganlu:['xue','wu','qing'],muye:['re','qing','feng'],changping:['qing','feng','wu']}[S.cur]:null;const mo=Math.floor(S.t/3)%12;const base=mo<3||mo>=11?['qing','xue','xue','feng','wu']:mo<5?['qing','yu','wu','feng']:mo<8?['qing','re','yu','yu']:['qing','feng','wu','qing'];const old=S.wx;S.wx=pick(pool||base);if(S.wx!==old&&S.wx!=='qing')add(`【天氣】${wxNow()[1]} ${wxNow()[0]}：${wxNow()[2]}`)}
 function mods(our,en){return mods0(our,en,mods1(our,en))}
 function mods1(our,en){const ids=our.gens,ties=teamTies(ids),tieBonus=k=>ties.reduce((v,t)=>v+(t[3][k]||0)*tieStrength(t),0)*(T_('m5')?1.5:1);const sum=k=>ids.reduce((a,id)=>a+heroEff(id,k),0)+bondEff(k,ids)+tieBonus(k)+(['atk','def','rate','regen','eld','siege'].includes(k)?perkEff(k)+polEff(k):0);
- return{atk:1+sum('atk')+(our.siege?0:sum('atkOff')+(S.atkNext||0))+ids.reduce((a,id)=>a+(hs(id)&&hs(id).aff>=80?heroEff(id,'affAtk'):0),0)+(T_('c6')?.1:0)+(ids.some(id=>hs(id)&&hs(id).aff>=100)&&T_('m6')?.2:0),def:clamp(sum('def')+(our.siege?(sum('siege')+(hasFac('wall')?facVal(slotsOf('wall')[0])/100:0)+(T_('s6')?.3:0)+ownTiles().filter(t=>t.out==='U').length*.05):0),0,.7),
+ return{atk:1+sum('atk')+(our.siege?0:sum('atkOff')+(S.atkNext||0))+ids.reduce((a,id)=>a+(hs(id)&&hs(id).aff>=80?heroEff(id,'affAtk'):0),0)+(T_('c6')?.1:0)+nemAtk(our,en)+(ids.some(id=>hs(id)&&hs(id).aff>=100)&&T_('m6')?.2:0),def:clamp(sum('def')+(our.siege?(sum('siege')+(hasFac('wall')?facVal(slotsOf('wall')[0])/100:0)+(T_('s6')?.3:0)+ownTiles().filter(t=>t.out==='U').length*.05):0),0,.7),
   eld:en.eld?sum('eld')+(hasFac('zhenyao')?facVal(slotsOf('zhenyao')[0])/100:0):0,first:sum('first'),exec:sum('exec'),desp:sum('desp'),under:sum('under'),regen:sum('regen'),rate:sum('rate'),last:sum('last'),ramp:sum('ramp'),halfdef:Math.min(.5,sum('halfdef')),earlydef:Math.min(.5,sum('earlydef')),counter:Math.min(.5,sum('counter')),stunUp:sum('stunUp')}}
 
 /* ---------- 兵種 ---------- */
