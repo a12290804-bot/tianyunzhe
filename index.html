@@ -3029,7 +3029,7 @@ function gridPeople(f){return S.order.filter(id=>S.heroes[id]&&!(S.gone&&S.gone[
 function gridCard(id){const h=H(id),st=hs(id),w=wed(id),sp=w&&h.sex==='f',mo=mother()===id,m=mistState(id),hx=hst(id),loc=activePlace(id);
  const fav=sp?w.fav|0:st.aff|0,l=sp?loveLv(id):-1,third=sp?(hp(id).inf|0):(typeof loyal==='function'?loyal(id):0);
  const ic=[];if(sp){const c=cyc(id);if(c===0)ic.push('🩸');if(c===1)ic.push('🌸');if(w.preg)ic.push('🤰')}
- if(hx==='inj')ic.push('🤕');if(hx==='jail'||hx==='ban'||(w&&w.cold))ic.push('🔒');if(busyArmy(id))ic.push('⚔');else if(/^\d+_\d+$/.test(loc))ic.push('🏯');if((S.spy||{})[id]>S.t)ic.push('🕵');if(grudge(id))ic.push('❗');
+ if(hx==='inj')ic.push('🤕');if(hx==='jail'||hx==='ban'||(w&&w.cold))ic.push('🔒');if(busyArmy(id))ic.push('⚔');else if(/^\d+_\d+$/.test(loc))ic.push('🏯');if((S.spy||{})[id]>S.t)ic.push('🕵');if(grudge(id))ic.push('❗');if(sp&&typeof pvOf==='function'){const n=pvOf(id).length;if(n)ic.push('🏛'+n);if(heatTier(id)>=2)ic.push('🔥')}
  const warn=sp?(w.fav<25||HBAD.includes(md2(id))||m.band>=3||mistStrain(id)>=5||grudge(id)):third<40||m.band>=3;
  const bc=mo?'#f0d79a':sp?LOVEC[Math.max(0,l)]:(ROLEC[role(id)]||'#555');
  const bar=(v,c,lab)=>`<i class="gb" title="${lab}"><b style="width:${Math.max(0,Math.min(100,v))}%;background:${c}"></b></i>`;
@@ -3039,7 +3039,7 @@ function gridCard(id){const h=H(id),st=hs(id),w=wed(id),sp=w&&h.sex==='f',mo=mot
   <span class="gnow">${nowOf(id)}</span><span class="gnum"><em style="color:#f0a0c0">♥${fav}</em><em style="color:#b07ad0">污${m.band}</em><em style="color:#f0d79a">${sp?'權':'忠'}${third}</em></span>${bar(fav,'linear-gradient(90deg,#c76b8f,#f0a0c0)',sp?'寵愛':'好感')}${bar(m.band?Math.min(100,m.band*17):0,'linear-gradient(90deg,#6a3a8a,#2a0a3a)','污染')}${bar(third,'linear-gradient(90deg,#9a7a2a,#f0d79a)',sp?'權勢':'忠誠')}</button>`}
 function gridView(key){key=key||'gridF';const f=S[key]||'全部',L=gridPeople(f);
  return`${orderBoard()}<div class="gfil">${GRIDF.map(x=>`<button class="chip ${x===f?'on':''}" data-gf="${key}|${x}">${x} ${gridPeople(x).length}</button>`).join('')}</div>
- <div class="glegend"><span><i style="background:#f0a0c0"></i>寵愛／好感</span><span><i style="background:#6a3a8a"></i>污染</span><span><i style="background:#f0d79a"></i>權勢／忠誠</span><span>🩸經期 🌸排卵 🤰有孕 🤕傷 🔒禁 ⚔征 🏯分城 🕵密報 ❗記恨</span></div>
+ <div class="glegend"><span><i style="background:#f0a0c0"></i>寵愛／好感</span><span><i style="background:#6a3a8a"></i>污染</span><span><i style="background:#f0d79a"></i>權勢／忠誠</span><span>🩸經期 🌸排卵 🤰有孕 🤕傷 🔒禁 ⚔征 🏯分城 🕵密報 🏛私宅 🔥猖狂 ❗記恨</span></div>
  <div class="ggrid">${L.map(gridCard).join('')||'<p class="small">沒有符合的人。</p>'}</div>`}
 function gridSheet(id){const h=H(id),w=wed(id),sp=w&&h.sex==='f',m=mistState(id),home=activePlace(id)==='home'&&!busyArmy(id);
  const row=(k,v)=>`<div><span>${k}</span><b>${v}</b></div>`;
@@ -3435,11 +3435,22 @@ const AUTOACT=[
  ['rebel','自立門戶',1,(c)=>(c.inf>=60&&c.fav<35&&c.band>=2)?c.has('背盟奪權','兩面下注','野心')*2+1:0,(id)=>{const mem=S.order.filter(x=>x!==id&&relG(id,x)>=30&&!wed(x)).slice(0,2);rebelFound(id,mem,feedPush,`${H(id).n}對你徹底死心，帶著自己的人馬自立門戶。`);return'帶著黨羽自立門戶'}]
 ];
 function actCtx(id){const w=wed(id),tags=ntagAll(id).concat(PTAG[id]||[]).join(' ');return{fav:w.fav|0,love:Math.max(0,loveLv(id)),band:mistState(id).band,cy:cyc(id),inf:hp(id).inf|0,amb:heroAmb(id),has:(...k)=>k.filter(x=>tags.includes(x)).length}}
-function autoTurn(add){spouses().forEach(id=>{if(!S.order.includes(id)||hst(id)||wed(id).cold||busyArmy(id))return;const c=actCtx(id);const p=.32*(c.cy===0?.7:1)*(1+Math.min(1,c.band*.15+(c.love>=5?.3:0)+(c.fav<25?.3:0)));if(Math.random()>p)return;
- const L=AUTOACT.map(a=>[a,Math.max(0,a[3](c))]).filter(x=>x[1]>0);const sum=L.reduce((s,x)=>s+x[1],0);if(!sum)return;let r=Math.random()*sum;const [a]=L.find(x=>(r-=x[1])<0)||L[0];
- let s=null;try{s=a[4](id,c)}catch(e){s=null}if(!s)return;const st=hs(id);(st.acts??=[]).push({t:S.t,s,secret:a[2]});if(st.acts.length>20)st.acts.shift();
- const seen=!a[2]||(S.spy||{})[id]>S.t||Math.random()<.25;if(!seen)return;const line=`【${H(id).n}・${a[1]}】${s}`;add(line,a[2]?'neg':'');
- if(a[2]&&['frame','affair','poison','embezzle','party','abuse'].includes(a[0]))(S.caught??=[]).push({id,k:a[0],n:a[1],s,t:S.t})})}
+const HEATN=['收斂','放肆','猖狂','瘋魔'],HEATC=['#9aa','#e8b86a','#ff8a5a','#ff4a6a'];
+const heatOf=id=>(hs(id)&&hs(id).heat)||0,heatTier=id=>{const h=heatOf(id);return h>=80?3:h>=40?2:h>=15?1:0};
+const eraE=()=>Math.min(1,Math.max(0,(S.t-6)/100));
+function autoTurn(add){spouses().forEach(id=>{if(!S.order.includes(id)||hst(id)||wed(id).cold||busyArmy(id))return;const st=hs(id);
+ const rolls=1+Math.min(2,Math.floor(eraE()*1.5+heatOf(id)/35));
+ for(let n=0;n<rolls;n++){if(!S.order.includes(id)||hst(id)||wed(id).cold)break;const c=actCtx(id);
+ const p=Math.min(.92,.32*(c.cy===0?.7:1)*(1+Math.min(1,c.band*.15+(c.love>=5?.3:0)+(c.fav<25?.3:0)))*(1+eraE()*.8+Math.min(1,heatOf(id)*.012)));if(Math.random()>p)continue;
+ const L=AUTOACT.map(a=>[a,Math.max(0,a[3](c))]).filter(x=>x[1]>0);const sum=L.reduce((s,x)=>s+x[1],0);if(!sum)continue;let r=Math.random()*sum;const [a]=L.find(x=>(r-=x[1])<0)||L[0];
+ let s=null;try{s=a[4](id,c)}catch(e){s=null}if(!s)continue;
+ const tr=heatTier(id);if(tr>=2&&['punish','slap','ruin','frame','abuse','embezzle','party','poison','grantT'].includes(a[0])&&Math.random()<(tr-1)*.3){try{const s2=a[4](id,c);if(s2)s+='；還嫌不夠，又'+s2}catch(e){}}
+ st.heat=(st.heat||0)+1+(a[2]?1:0);const tr2=heatTier(id);
+ (st.acts??=[]).push({t:S.t,s,n:a[1],secret:a[2]});if(st.acts.length>30)st.acts.shift();
+ if(tr2>tr){add(`【${H(id).n}】越來越不加掩飾——她現在「${HEATN[tr2]}」了`,'neg')}
+ const seen=!a[2]||(S.spy||{})[id]>S.t||Math.random()<.25+tr2*.1;st.acts[st.acts.length-1].seen=seen;if(!seen)continue;
+ const pre=['','變本加厲，','肆無忌憚地','瘋了似地'][tr2];add(`【${H(id).n}・${a[1]}】${pre}${s}`,a[2]||tr2>=2?'neg':'');
+ if(a[2]&&['frame','affair','poison','embezzle','party','abuse'].includes(a[0]))(S.caught??=[]).push({id,k:a[0],n:a[1],s,t:S.t})}})}
 function caughtEvent(cb){const q=S.caught||[];const it=q.shift();if(!it||!S.order.includes(it.id)||!evOK())return cb();const id=it.id,N=H(id).n;
  sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(id)}.jpg)"></div><div><b style="color:#ff8a8a">撞破・${it.n}</b><p style="margin:6px 0">你的人查到：${N}${it.s}。</p></div></div>
  <button class="btn" style="width:100%;margin-top:6px" data-cg="0">當眾杖責</button><button class="btn ghost" style="width:100%;margin-top:6px" data-cg="1">禁足三旬</button><button class="btn ghost" style="width:100%;margin-top:6px" data-cg="2">打入冷宮</button><button class="btn ghost" style="width:100%;margin-top:6px" data-cg="3">寬恕她</button><button class="btn ghost" style="width:100%;margin-top:6px" data-cg="4">裝作不知道，派人盯著</button>`,true);
@@ -3511,7 +3522,7 @@ const mistAdd=(id,v)=>{const x=BigInt(hs(id).mist||0)+BigInt(v);hs(id).mist=Stri
 const pvOf=id=>Object.entries(hs(id).pv||{});
 const pvSeen=(id,k)=>!PV[k][2]||(hs(id).pv[k]||{}).found||(S.spy||{})[id]>S.t;
 function pvPick(id){const tags=ntagAll(id).concat(PTAG[id]||[]).join(' ');const own=hs(id).pv||{};let L=Object.entries(PV).filter(([k,v])=>!own[k]).map(([k,v])=>[k,v[3].filter(x=>tags.includes(x)).length]).filter(x=>x[1]>0);if(!L.length)L=Object.keys(PV).filter(k=>!own[k]&&!PV[k][2]).map(k=>[k,.3]);if(!L.length)return null;let r=Math.random()*L.reduce((s,x)=>s+x[1],0);return(L.find(x=>(r-=x[1])<0)||L[0])[0]}
-function pvBuild(id){const st=hs(id);const up=pvOf(id).find(([k,v])=>v.lv<3&&Math.random()<.4);const cost=60;const pay=()=>{if((st.graft||0)>=cost){st.graft-=cost;return'私房錢'}if(S.wood>=cost&&S.stone>=cost){S.wood-=cost;S.stone-=cost;return'國庫木石'}return null};
+function pvBuild(id){const st=hs(id);const cap=3+Math.min(2,Math.floor(heatOf(id)/30));const up=pvOf(id).find(([k,v])=>v.lv<cap&&Math.random()<.4+Math.min(.4,heatOf(id)*.005));const cost=up?40+20*up[1].lv:60;const pay=()=>{if((st.graft||0)>=cost){st.graft-=cost;return'私房錢'}if(S.wood>=cost&&S.stone>=cost){S.wood-=cost;S.stone-=cost;return'國庫木石'}return null};
  if(up){const src=pay();if(!src)return null;up[1].lv++;return`擴建了她的${PV[up[0]][0]}（Lv${up[1].lv}，動用${src}）`}
  const k=pvPick(id);if(!k)return null;const src=pay();if(!src)return null;const loc=activePlace(id);(st.pv??={})[k]={lv:1,t:S.t,where:loc,found:!PV[k][2]};(st.dtag??={})[PV[k][4]]=S.t;
  const town=branchCities().find(x=>keyOf(x)===loc);if(town){const bs=bfSlots(town);const i=bs.findIndex(s=>!s);if(i>=0){bs[i]={f:'pv_'+k,lv:1,owner:id};st.pv[k].slot=i}}
@@ -3589,8 +3600,16 @@ function extortEvent(cb){const x=S.extort;S.extort=null;if(!x||!evOK())return cb
  $$('[data-ex]').forEach(b=>b.onclick=()=>{const k=b.dataset.ex;let r;if(k==='pay'){S.food=Math.max(0,S.food-amt);r=`你送了糧 ${amt}，${d.n}暫時退兵`}else if(k==='wed'){const id=sp[sp.length-1];goneHero(id,'exile',12);S.spouses?.forEach?.(()=>{});spouses().forEach(x=>{if(x!==id)wed(x).fav=Math.max(0,wed(x).fav-8)});r=`${H(id).n}被送去和親。後宮一片死寂，全員寵愛 −8`}else{const tg=pick(ownTiles());if(tg){const sz=150+S.t*6;S.enemies.push({id:'f'+S.uid++,n:`${d.n}・討伐軍`,img:d.img||'fa_rebel',troops:sz,max:sz,atk:55+S.t*2,r:f.seat.r,c:f.seat.c,fac:d.id,tgt:{r:tg.r,c:tg.c}})}r=`你趕走了使者。${d.n}發兵來犯！`}
   feedPush('【勒索】'+r,k==='pay'?'':'neg');closeSheet();toast(r);render();cb()})}
 {const _hef=haremEvent;haremEvent=function(cb){facAI(feedPush);return _hef(()=>extortEvent(cb))}}
-function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'群像';const tabs=['群像','總表','心願','珍寶','勢力圖','一覽','動態','關係','建築','冷宮行宮','結義兄弟'];
- let h=`<div class="ltabs">${tabs.map(t=>`<button class="${S.hTab===t?'on':''}" data-ht="${t}">${t}</button>`).join('')}</div>`;
+function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
+ const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
+  const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
+  return`<div class="frame" style="padding:8px;margin-bottom:8px;border-color:${HEATC[tr]}"><div style="display:flex;gap:8px;align-items:center"><span class="pic" style="background-image:url(img/${face(id)}.jpg);width:42px;height:42px;flex:none"></span><div style="flex:1"><b>${H(id).n}</b> <b style="color:${HEATC[tr]}">「${HEATN[tr]}」</b><div class="meter" style="margin:3px 0"><i style="width:${tr>=3?100:Math.round(hv/nx*100)}%;background:${HEATC[tr]}"></i></div><div class="small" style="color:var(--dim)">${tr>=3?'已經沒有什麼攔得住她':'再 '+(nx-hv)+' 次動作就更進一步'}・每旬最多 ${1+Math.min(2,Math.floor(eraE()*1.5+hv/35))} 次・私宅上限 Lv${3+Math.min(2,Math.floor(hv/30))}</div></div></div>
+  <div style="display:flex;flex-wrap:wrap;gap:4px;margin:6px 0">${pv.length?pv.map(([k,v])=>pvSeen(id,k)?`<span class="tag" style="background:#3a2a1a;color:#f0d79a;padding:3px 7px;border-radius:6px">🏛 ${PV[k][0]} Lv${v.lv}</span>`:`<span class="tag" style="background:#3a1a1a;color:#ff8a8a;padding:3px 7px;border-radius:6px">❓ ${PV[k][1]} Lv${v.lv}</span>`).join(''):'<span class="small" style="color:var(--dim)">尚無私宅</span>'}</div>
+  ${acts.length?acts.map(o=>`<div class="small" style="padding:2px 0;${o.secret?'color:#ff9a9a':''}">第${o.t}旬・<b>${o.n||''}</b> ${o.s}</div>`).join(''):'<div class="small" style="color:var(--dim)">最近很安分</div>'}</div>`}).join('');
+ return`<div class="small" style="color:var(--dim);margin:4px 2px 8px">她們和你有同等的權力：自己蓋、自己擴建、自己動手。時間越久、她們做得越多，就越放肆——次數更多、手段更狠、私宅蓋得更高。</div>${rows||'<p class="small">還沒有夫人。</p>'}${pvView()}`}
+function haremView(){const sp=spouses();if(S.hTab==='誓約結義')S.hTab='一覽';S.hTab=S.hTab||'群像';const tabs=['群像','總表','私宅','心願','珍寶','勢力圖','一覽','動態','關係','建築','冷宮行宮','結義兄弟'];const pvNew=spouses().reduce((s,x)=>s+(hs(x).acts||[]).filter(o=>o.seen!==false&&o.t>(S.pvLook??-1)).length,0);
+ let h=`<div class="ltabs">${tabs.map(t=>`<button class="${S.hTab===t?'on':''}" data-ht="${t}">${t}${t==='私宅'&&pvNew&&S.hTab!=='私宅'?`<b style="color:#ff6a7a"> ●${pvNew}</b>`:''}</button>`).join('')}</div>`;
+ if(S.hTab==='私宅'){S.pvLook=S.t;return h+pvPage()}
  if(S.hTab==='群像'){S.gridFH=S.gridFH||'夫人';return h+gridView('gridFH')}
  if(S.hTab==='總表')return h+haremTable();
  if(S.hTab==='心願')return h+wishView();
