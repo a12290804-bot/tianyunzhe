@@ -3453,7 +3453,7 @@ const eraE=()=>Math.min(1,Math.max(0,(S.t-6)/100));
 function autoTurn(add){spouses().forEach(id=>{if(!S.order.includes(id)||hst(id)||wed(id).cold||busyArmy(id))return;const st=hs(id);
  const rolls=1+Math.min(2,Math.floor(eraE()*1.5+heatOf(id)/35));
  for(let n=0;n<rolls;n++){if(!S.order.includes(id)||hst(id)||wed(id).cold)break;const c=actCtx(id);
- const p=Math.min(.92,.32*(c.cy===0?.7:1)*(1+Math.min(1,c.band*.15+(c.love>=5?.3:0)+(c.fav<25?.3:0)))*(1+eraE()*.8+Math.min(1,heatOf(id)*.012)));if(Math.random()>p)continue;
+ const p=Math.min(.95,.5*(c.cy===0?.8:1)*(1+Math.min(1,c.band*.15+(c.love>=5?.3:0)+(c.fav<25?.3:0)))*(1+eraE()*.8+Math.min(1,heatOf(id)*.012)));if(Math.random()>p)continue;
  const L=AUTOACT.map(a=>[a,Math.max(0,a[3](c))]).filter(x=>x[1]>0);const sum=L.reduce((s,x)=>s+x[1],0);if(!sum)continue;let r=Math.random()*sum;const [a]=L.find(x=>(r-=x[1])<0)||L[0];
  let s=null;try{s=a[4](id,c)}catch(e){s=null}if(!s)continue;
  const tr=heatTier(id);if(tr>=2&&['punish','slap','ruin','frame','abuse','embezzle','party','poison','grantT'].includes(a[0])&&Math.random()<(tr-1)*.3){try{const s2=a[4](id,c);if(s2)s+='；還嫌不夠，又'+s2}catch(e){}}
@@ -3728,13 +3728,84 @@ const PREACT=[
  ['quit','負氣出走',0,c=>(c.aff<8&&heatOf(c.id)>=8?1:0),id=>{goneHero(id,'exile',8);return'受夠了，收拾行囊離開了燈塔'}]];
 function preCtx(id){const st=hs(id),tags=(ntagAll(id)||[]).concat(PTAG[id]||[]).join(' ');return{id,aff:st.aff|0,amb:heroAmb(id),band:mistState(id).band,has:(...k)=>k.filter(x=>tags.includes(x)).length}}
 function preTurn(add){if(typeof inWorld==='function'&&inWorld())return;femFree().forEach(id=>{if(hst(id)||busyArmy(id))return;const st=hs(id);const rolls=1+Math.min(1,Math.floor(eraE()+heatOf(id)/40));
- for(let n=0;n<rolls;n++){const p=Math.min(.85,.3*(1+eraE()*.8+Math.min(1,heatOf(id)*.012)));if(Math.random()>p)continue;const c=preCtx(id);
+ for(let n=0;n<rolls;n++){const p=n===0?1:Math.min(.9,.5*(1+eraE()*.8+Math.min(1,heatOf(id)*.012)));if(Math.random()>p)continue;const c=preCtx(id);
   const L=PREACT.map(a=>[a,Math.max(0,a[3](c))]).filter(x=>x[1]>0);const sum=L.reduce((s,x)=>s+x[1],0);if(!sum)continue;let r=Math.random()*sum;const[a]=L.find(x=>(r-=x[1])<0)||L[0];
   let s=null;try{s=a[4](id)}catch(e){s=null}if(!s)continue;st.heat=(st.heat||0)+1+(a[2]?1:0);(st.acts??=[]).push({t:S.t,s,n:a[1],secret:a[2]});if(st.acts.length>30)st.acts.shift();
   const seen=!a[2]||(S.spy||{})[id]>S.t||Math.random()<.35;st.acts[st.acts.length-1].seen=seen;if(seen)add(`【${H(id).n}・${a[1]}】${s}`,a[2]?'neg':'');if(!S.order.includes(id))break}})}
 {const _hpre=haremEvent;haremEvent=function(cb){try{preTurn(feedPush)}catch(e){}return _hpre(cb)}}
 /* 盯梢：你去找誰她都知道 */
 {const _wsp=wedVisit;wedVisit=function(id){const r=_wsp(id);try{Object.entries(S.spyOn||{}).forEach(([w,u])=>{if(u>S.t&&w!==id&&wed(w)&&S.order.includes(w)){relAdd(w,id,-5);setMd(w,'吃醋');const ww=wed(w);ww.fav=Math.max(0,ww.fav-2)}})}catch(e){}return r}}
+/* ===== 紅顏全面自主 v2：招牌動作・連鎖報復・介入・後宮大動作・軟禁天運者 ===== */
+const MAG=id=>wed(id)?1.5:.7;
+const foeOf=id=>{const L=S.order.filter(x=>x!==id&&H(x)&&H(x).sex==='f'&&!x.startsWith('kid'));return L.sort((a,b)=>relG(id,a)-relG(id,b))[0]};
+const hurtFav=(x,n)=>{if(wed(x)){const w=wed(x);w.fav=Math.max(0,w.fav-n)}else{const s=hs(x);s.aff=Math.max(0,(s.aff|0)-n)}};
+function harm(by,vs,sev){if(!vs||!S.order.includes(vs))return;(S.retQ??=[]).push({by:vs,vs:by,at:S.t+1,sev});S.order.filter(x=>x!==vs&&x!==by&&relG(vs,x)>=25).forEach(x=>relAdd(x,by,-4))}
+function bigQ(id,n,s,vs){(S.interQ??=[]).push({id,n,s,vs,t:S.t})}
+const SIGT={
+ seizeEdict:(id,m)=>{const k=pick(Object.keys(POLICY));S.policy={k,until:S.t+Math.round(4*m)};const o=(typeof OFF!=='undefined'?OFF:[]).find(o=>S.off&&S.off[o[0]]&&S.off[o[0]]!==id);let x='';if(o&&wed(id)){const old=S.off[o[0]];setOff(o[0],id,true);hurtFav(old,5);x=`，把${H(old).n}從${o[1]}的位子上拉了下來，自己坐上去`}hp(id).inf=Math.min(100,(hp(id).inf|0)+Math.round(8*m));return`改寫了你的詔令，頒布「${POLICY[k][0]}」${x}（權勢 +${Math.round(8*m)}）`},
+ humanSwine:(id,m)=>{const r=foeOf(id);if(!r)return null;setHst(r,'inj',Math.round(6*m));hurtFav(r,40);if(wed(r))mistAdd(r,40);spouses().forEach(x=>hs(x).punT=S.t);barAdd('tyranny',Math.round(3*m));mistAdd(id,30);harm(id,r,3);return`把${H(r).n}折磨得不成人形（${H(r).n}重傷 ${Math.round(6*m)} 旬、寵愛／好感 −40；全宮驚恐；暴虐 +${Math.round(3*m)}）`},
+ paoluo:(id,m)=>{const n=Math.round(5*m);S.pop=Math.max(0,(S.pop||0)-n);barAdd('tyranny',Math.round(4*m));S.atkNext=(S.atkNext||0)+.1*m;mistAdd(id,15);return`架起銅柱行刑取樂（流民 −${n}、暴虐 +${Math.round(4*m)}；軍中畏懼，下次出征傷害 +${Math.round(10*m)}%）`},
+ sortie:(id,m)=>{const n=Math.round(40*m);if((S.soldiers||0)<n)return null;if(Math.random()<.55){const f=Math.round(60*m);S.food+=f;S.train=Math.min(100,(S.train|0)+Math.round(5*m));gainExp(id,30,()=>{});return`沒等你下令就帶兵出城，搶回糧 ${f}（訓練度 +${Math.round(5*m)}）`}S.soldiers-=n;setHst(id,'inj',2);return`私自帶兵出城，中了埋伏（士兵 −${n}，她負傷兩旬）`},
+ sowDiscord:(id,m)=>{const F=(typeof curFacs==='function'?curFacs():[]).filter(d=>FS(d.id)&&FS(d.id).alive);if(F.length<1)return null;const a=pick(F),f=FS(a.id);const loss=Math.round((f.troops||200)*.15*m);f.troops=Math.max(0,(f.troops||0)-loss);hp(id).inf=Math.min(100,(hp(id).inf|0)+3);return`派人潛入${a.n}，挑得他們內鬥（${a.n}兵力 −${loss}）`},
+ poisonCup:(id,m)=>{const r=foeOf(id);if(!r)return null;if(wed(r)&&wed(r).preg&&Math.random()<.5){wed(r).preg=0;(S.pregLoss??=[]).push({t:S.t,mom:r});harm(id,r,3);return`在${H(r).n}的湯藥裡下了東西，${H(r).n}失去了孩子`}setHst(r,'inj',Math.round(3*m));hurtFav(r,8);barAdd('tyranny',1);harm(id,r,2);return`一杯鴆酒送到${H(r).n}面前（${H(r).n}臥病 ${Math.round(3*m)} 旬）`},
+ salon:(id,m)=>{S.order.forEach(x=>gainAff(x,Math.round(2*m)));S.talentFrac=(S.talentFrac||0)+.2*m;S.food=Math.max(0,S.food-20);return`辦了一場雅集（全員好感 +${Math.round(2*m)}、天賦進度 +${(.2*m).toFixed(1)}、糧 −20）`},
+ dance:(id,m)=>{barAdd('hedon',Math.round(2*m));S.order.filter(x=>H(x)&&H(x).sex==='m').forEach(x=>gainAff(x,Math.round(3*m)));S.food=Math.max(0,S.food-30);return`一舞傾城，滿座將領看得失了魂（男將好感 +${Math.round(3*m)}、昏庸 +${Math.round(2*m)}、糧 −30）`},
+ siphon:(id,m)=>{const f=Math.round(60*m),w=Math.min(S.wood,Math.round(20*m)),s=Math.min(S.stone,Math.round(20*m));S.food=Math.max(0,S.food-f);S.wood-=w;S.stone-=s;hs(id).graft=(hs(id).graft||0)+f+w+s;return`把國庫掏走一大塊（糧 −${f}、木 −${w}、石 −${s}，全進了她的私房）`},
+ spyNet:(id,m)=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+Math.round(5*m));const L=spouses().filter(x=>x!==id);let n=0;L.forEach(x=>{const a=(hs(x).acts||[]).filter(o=>o.secret&&o.seen===false&&S.t-o.t<6);a.forEach(o=>{o.seen=true;n++;(S.caught??=[]).push({id:x,k:'frame',n:o.n,s:o.s,t:S.t})})});return`耳目遍布全宮，把別人的把柄都抓在手裡（權勢 +${Math.round(5*m)}${n?`，揭出 ${n} 件陰私`:''}）`},
+ recruitPriv:(id,m)=>{const n=Math.min(S.soldiers||0,Math.round(30*m));S.soldiers-=n;hs(id).pvTroops=(hs(id).pvTroops||0)+n+Math.round(10*m);return`從軍中挖走 ${n} 人，編成她自己的私兵（她的私兵 ${hs(id).pvTroops}）`},
+ hunt:(id,m)=>{const f=Math.round(40*m);S.food+=f;S.pop=Math.max(0,(S.pop||0)-2);S.train=Math.min(100,(S.train|0)+Math.round(3*m));return`縱馬圍獵，踏壞了流民的田（糧 +${f}、流民 −2、訓練度 +${Math.round(3*m)}）`},
+ invent:(id,m)=>{if(S.wood<30)return null;S.wood-=30;S.dur=Math.min(S.durMax||100,(S.dur||0)+Math.round(10*m));S.atkNext=(S.atkNext||0)+.05*m;return`拆了木料改造機關（木 −30、燈塔耐久 +${Math.round(10*m)}、下次出征傷害 +${Math.round(5*m)}%）`},
+ tradeDeal:(id,m)=>{const f=Math.round(50*m);S.food+=f;hs(id).graft=(hs(id).graft||0)+Math.round(20*m);hp(id).inf=Math.min(100,(hp(id).inf|0)+2);return`私開商路（糧 +${f}，她自己抽成 ${Math.round(20*m)}）`},
+ heirGambit:(id,m)=>{const mine=(S.kids||[]).filter(k=>k.mom===id&&!k.adult);const other=(S.kids||[]).filter(k=>k.mom&&k.mom!==id&&!k.adult);if(mine.length){mine.forEach(k=>k.esteem=(k.esteem||0)+Math.round(3*m));hp(id).inf=Math.min(100,(hp(id).inf|0)+5);return`四處替${mine[0].n}鋪路爭儲（權勢 +5）`}if(other.length){const k=pick(other);k.esteem=Math.max(0,(k.esteem||0)-Math.round(4*m));relAdd(id,k.mom,-15);harm(id,k.mom,2);return`散布${k.n}並非你親生的流言（${k.n}聲望下降，與${H(k.mom).n}交惡）`}hp(id).inf=Math.min(100,(hp(id).inf|0)+3);return'在朝臣之間打聽儲位的風向（權勢 +3）'},
+ marryOff:(id,m)=>{S.extort=null;S.food+=Math.round(30*m);hurtFav(id,5);return`以和親之名出使外邦，換回邊境安寧（勒索解除、糧 +${Math.round(30*m)}；她心裡不痛快）`},
+ immortalRite:(id,m)=>{const e=Math.min(S.energy||0,Math.round(30*m));S.energy-=e;mistAdd(id,-10);hs(id).app=(hs(id).app||0)+3;return`拜月求仙，燒掉能量 ${e}（她污染 −10、胃口更大）`},
+ orgy:(id,m)=>{barAdd('hedon',Math.round(4*m));S.order.forEach(x=>gainAff(x,1));spouses().forEach(x=>{if(x!==id&&Math.random()<.4)mistAdd(x,10)});mistAdd(id,10);S.food=Math.max(0,S.food-Math.round(40*m));return`大開宮宴，通宵荒淫（昏庸 +${Math.round(4*m)}、糧 −${Math.round(40*m)}，與宴者污染上升）`}};
+const SIGN={mulan:[['sortie','代父出征'],['recruitPriv','收攏邊軍']],change:[['immortalRite','奔月祭儀'],['salon','廣寒清宴']],xiaoqiao:[['tradeDeal','江東奇珍市'],['dance','銅雀春深']],zhenmi:[['salon','洛神雅集'],['sowDiscord','凌波離間']],wuzetian:[['seizeEdict','代君批紅'],['spyNet','銅匭告密'],['heirGambit','廢立太子']],yuji:[['sortie','劍舞帳前・死守'],['dance','霸王別姬舞']],lianghongyu:[['sortie','擂鼓出擊'],['hunt','黃天蕩圍獵']],fuhao:[['sortie','親征鬼方'],['paoluo','人牲大祭']],qinliangyu:[['recruitPriv','白杆兵'],['hunt','石柱圍獵']],diaochan:[['sowDiscord','連環計'],['dance','拜月之舞']],shangguan:[['seizeEdict','代擬詔書'],['spyNet','內舍人密檔']],liqingzhao:[['salon','金石詩社'],['siphon','搜購金石']],xishi:[['sowDiscord','吳宮離間'],['dance','響屧廊舞']],yangguifei:[['orgy','霓裳羽衣宴'],['siphon','一騎紅塵']],zhuowenjun:[['tradeDeal','當壚賣酒'],['salon','白頭吟會']],wangzhaojun:[['marryOff','出塞和親'],['salon','琵琶夜話']],daji:[['paoluo','炮烙之刑'],['orgy','酒池肉林']],lvzhi:[['humanSwine','人彘'],['seizeEdict','臨朝稱制'],['heirGambit','鞏固嫡系']],sunshangxiang:[['sortie','弓腰姬出獵'],['hunt','江東縱馬']],caiwenji:[['salon','胡笳夜宴'],['spyNet','過目不忘']],zhaofeiyan:[['dance','掌上舞'],['heirGambit','斷人子嗣']],huangyueying:[['invent','木牛流馬'],['recruitPriv','機關衛']],jiananfeng:[['poisonCup','鴆殺'],['seizeEdict','矯詔'],['humanSwine','戟擲孕婦']],liuchuyu:[['orgy','面首三十'],['siphon','公主府揮霍']],xuzhaopei:[['orgy','半面妝夜宴'],['poisonCup','妒殺']],wanzhener:[['heirGambit','墮人胎'],['spyNet','昭德宮眼線']],xiaji:[['orgy','株林之會'],['sowDiscord','三夫爭色']],fengxiaolian:[['dance','玉體橫陳'],['hunt','更獵一圍']],liji:[['heirGambit','驪姬之亂'],['poisonCup','胙肉置毒']],pingyang:[['recruitPriv','娘子軍'],['sortie','葦澤關出擊']],huhou:[['orgy','佛寺私會'],['siphon','宮宴索獻']],mibazi:[['seizeEdict','宣太后專政'],['siphon','秦府聚斂']],liurushi:[['salon','絳雲樓雅集'],['tradeDeal','河東私販']],zhangsun:[['salon','女則講學'],['spyNet','內廷耳目']],nvwa:[['immortalRite','煉石補天'],['invent','摶土造物']]};
+const SIGDEF={lust:[['orgy','夜宴']],power:[['seizeEdict','擅改詔令']],greed:[['siphon','掏空國庫']],own:[['poisonCup','除掉情敵']],blood:[['paoluo','酷刑取樂']],immortal:[['immortalRite','求仙']],vanity:[['dance','爭奇鬥豔']]};
+const sigOf=id=>SIGN[id]||SIGDEF[craveOf(id)]||[['salon','雅集']];
+const BIG=['seizeEdict','humanSwine','paoluo','poisonCup','siphon','orgy','sortie','heirGambit'];
+function sigAct(id,add){const L=sigOf(id);const[k,n]=pick(L);let s=null;try{s=SIGT[k](id,MAG(id))}catch(e){s=null}if(!s)return null;const st=hs(id);st.heat=(st.heat||0)+2;(st.acts??=[]).push({t:S.t,s,n,seen:true,sig:1});if(st.acts.length>30)st.acts.shift();add(`<b style="color:#ffb86a">【${H(id).n}・${n}】</b>${s}`,'neg');if(BIG.includes(k))bigQ(id,n,s);return`${n}：${s}`}
+/* A. 頻率拉高＋招牌動作 */
+{const _pt0=preTurn;preTurn=function(add){_pt0(add);femFree().forEach(id=>{if(hst(id)||busyArmy(id)||!S.order.includes(id))return;if(Math.random()<.35+eraE()*.3+Math.min(.3,heatOf(id)*.006))sigAct(id,add)})}}
+{const _at0=autoTurn;autoTurn=function(add){_at0(add);spouses().forEach(id=>{if(!S.order.includes(id)||hst(id)||wed(id).cold||busyArmy(id))return;const n=1+(Math.random()<.4+eraE()*.4?1:0)+(heatTier(id)>=2?1:0);for(let i=0;i<n;i++)sigAct(id,add)})}}
+/* D. 後宮專屬大動作 */
+AUTOACT.push(
+ ['regency','垂簾聽政',0,c=>(c.inf>=60?2:0)+(c.crave==='power'?c.ct*.5:0),id=>{const k=pick(Object.keys(POLICY));S.policy={k,until:S.t+6};S.apPen=(S.apPen||0)+1;hp(id).inf=Math.min(100,(hp(id).inf|0)+5);bigQ(id,'垂簾聽政',`坐在你身後的簾子裡替你決斷朝政，頒布「${POLICY[k][0]}」`);return`坐在你身後的簾子裡決斷朝政，頒布「${POLICY[k][0]}」（你下旬行動 −1、她權勢 +5）`}],
+ ['army','私自調兵',1,c=>(c.inf>=50?1.2:0)+c.has('擁兵','跋扈','尚武','背盟奪權')*.8,id=>{const n=Math.min(S.soldiers||0,60);if(n<10)return null;S.soldiers-=n;hs(id).pvTroops=(hs(id).pvTroops||0)+n;bigQ(id,'私自調兵',`把 ${n} 名士兵調到自己麾下`);return`拿著偷來的虎符調走士兵 ${n} 人`}],
+ ['bringMan','引外男入宮',1,c=>c.has('私通','縱慾','風流','魅惑')*1.2+(c.crave==='lust'?c.ct*.6:0),id=>{const m=pick(S.order.filter(x=>H(x)&&H(x).sex==='m'&&!x.startsWith('kid')));if(!m)return null;S.aff2=S.aff2||{};const k=id+'|'+m,a=S.aff2[k]=S.aff2[k]||{v:0,k:1};a.v+=25;mistAdd(id,15);barAdd('hedon',2);return`夜裡把${H(m).n}引進了自己的寢宮（私情 +25、污染 +15、昏庸 +2）`}],
+ ['depose','廢立主母',0,c=>{const mo=mother();return mo&&mo!==c.id&&c.inf>(hp(mo).inf|0)+15?2.5:0},id=>{const mo=mother();if(!mo||mo===id)return null;S.mainWife=id;const w=wed(mo);w.fav=Math.max(0,w.fav-15);relAdd(id,mo,-30);harm(id,mo,3);bigQ(id,'廢立主母',`逼宮奪下主母之位，把${H(mo).n}趕了下去`,mo);return`聯合朝臣逼宮，奪下主母之位（${H(mo).n}寵愛 −15）`}],
+ ['confine','軟禁天運者',0,c=>((S.houseCD||0)>S.t||S.house)?0:(c.love>=5&&c.has('佔有','痴魔','偏執')?2:0)+(c.inf>=70?1.2:0)+(['own','power'].includes(c.crave)&&c.ct>=3?1.5:0),id=>{S.house={by:id,t:S.t};S.houseCD=S.t+14;return'把你關進寢殿，下旬的事由她來辦'}]);
+AUTOACT.forEach(a=>{if(['regency','army','bringMan','depose','confine'].includes(a[0])&&!a._c){a._c=1;const f=a[3];a[3]=c=>{let w=f(c);if(c.crave&&CRAVE[c.crave][4].includes(a[0])&&w>0)w*=1+c.ct*.5;return w}}});
+/* E. 輕動作加重 */
+AUTOACT.forEach(a=>{const f=a[4];if(a[0]==='pray')a[4]=(id,c)=>{const s=f(id,c);S.pol=Math.max(0,(S.pol||0)-1);return s+'；據點污染 −1'};if(a[0]==='nurse')a[4]=(id,c)=>{const s=f(id,c);S.soldiers=(S.soldiers||0)+8;return s+'；傷兵歸隊 +8'};if(a[0]==='seek')a[4]=(id,c)=>{const s=f(id,c);spouses().filter(x=>x!==id).forEach(x=>{if(Math.random()<.3)relAdd(id,x,-3)});return s+'（其他人看在眼裡）'}});
+/* C. 連鎖報復 */
+function retTurn(add){const q=S.retQ||[];S.retQ=q.filter(x=>x.at>S.t);q.filter(x=>x.at<=S.t).forEach(x=>{if(!S.order.includes(x.by)||!S.order.includes(x.vs)||hst(x.by))return;relAdd(x.by,x.vs,-10);const r=Math.random();let s;
+ if(r<.4){hurtFav(x.vs,5+x.sev*3);s=`在你面前告了${H(x.vs).n}一狀（${H(x.vs).n}${wed(x.vs)?'寵愛':'好感'} −${5+x.sev*3}）`}
+ else if(r<.7){setHst(x.vs,'inj',1+x.sev);s=`找人把${H(x.vs).n}打傷了（臥床 ${1+x.sev} 旬）`}
+ else{hp(x.by).inf=Math.min(100,(hp(x.by).inf|0)+3);if(x.sev>=3&&wed(x.by))(S.retQ??=[]).push({by:x.vs,vs:x.by,at:S.t+2,sev:x.sev-1});s=`暗中聯絡${H(x.vs).n}的仇家，準備下一步（權勢 +3）`}
+ add(`<b style="color:#ff7a8a">【報復・${H(x.by).n}】</b>${s}`,'neg')})}
+/* C. 介入（獨立額度：每旬最多 2 件） */
+function interEvent(cb){const q=S.interQ||[];S.interQ=[];const L=q.filter(x=>S.order.includes(x.id)).slice(-2);const step=i=>{if(i>=L.length)return cb();const x=L[i],N=H(x.id).n;
+ sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(x.id)}.jpg)"></div><div><b style="color:#ffb86a">${N}・${x.n}</b><p style="margin:6px 0;font-family:Noto Serif TC,serif">${N}${x.s}。</p></div></div><div class="small" style="color:var(--dim)">你不管，事情就照她的意思走完。</div>
+ <button class="btn" style="width:100%;margin-top:6px" data-iv="0">嚴懲（禁足三旬、寵愛 −10、暴虐 +1）</button><button class="btn ghost" style="width:100%;margin-top:6px" data-iv="1">包庇她（權勢 +6、昏庸 +1，被害的人更恨）</button><button class="btn ghost" style="width:100%;margin-top:6px" data-iv="2">裝作不知道</button>`,true);
+ $$('[data-iv]').forEach(b=>b.onclick=()=>{const k=+b.dataset.iv,st=hs(x.id);let r;if(k===0){setHst(x.id,'ban',3);hurtFav(x.id,10);barAdd('tyranny',1);st.heat=Math.max(0,(st.heat||0)-5);r=`你下令禁足${N}三旬`}else if(k===1){hp(x.id).inf=Math.min(100,(hp(x.id).inf|0)+6);barAdd('hedon',1);if(x.vs)relAdd(x.vs,x.id,-10);st.heat=(st.heat||0)+3;r=`你替${N}壓下了這件事`}else{st.heat=(st.heat||0)+2;r=`你裝作什麼都不知道，${N}更大膽了`}feedPush('【'+x.n+'】'+r);closeSheet();step(i+1)})};step(0)}
+{const _hiv=haremEvent;haremEvent=function(cb){try{retTurn(feedPush)}catch(e){}return _hiv(()=>interEvent(cb))}}
+/* 軟禁天運者：跳過一旬，由她告訴你發生了什麼 */
+const HOUSEO={power:['別起來了。今日的朝會，我替你去。','你累了。印信我先收著，這一旬，天下由我看著。'],own:['外面太吵了。這一旬，你只看著我就好。','門我鎖上了。誰也別想再把你從我身邊帶走。'],lust:['今晚、明晚、後晚……你哪裡都別去了。','外頭的事？讓他們等著。你現在是我的。'],greed:['國庫的鑰匙我拿走了，你就好好歇著吧。'],blood:['外面有人不聽話。我去處理，你待在這裡，乖。'],immortal:['丹爐要守七日七夜。你陪著我，哪兒也不許去。'],vanity:['這一旬，全城都要看我的排場。你只要在我身邊就好。']};
+function houseCheck(cb){const h=S.house;if(!h)return cb();if(h.done){delete S.house;return cb()}const id=h.by;if(!S.order.includes(id)||!wed(id)){delete S.house;return cb()}h.done=1;const N=H(id).n,C=CRAVE[craveOf(id)]||['','#ff9ad0'],col=C[1];
+ const L=[];const add=s=>L.push(String(s).replace(/<[^>]+>/g,''));for(let i=0;i<3;i++)sigAct(id,add);const c=actCtx(id);for(let i=0;i<2;i++){const A=AUTOACT.filter(a=>a[0]!=='confine').map(a=>[a,Math.max(0,a[3](c))]).filter(x=>x[1]>0);const sum=A.reduce((s,x)=>s+x[1],0);if(!sum)break;let r=Math.random()*sum;const[a]=A.find(x=>(r-=x[1])<0)||A[0];try{const s=a[4](id,c);if(s)L.push(`【${N}・${a[1]}】${s}`)}catch(e){}}
+ hp(id).inf=Math.min(100,(hp(id).inf|0)+8);wed(id).fav=Math.min(100,wed(id).fav+10);loveAdd(id,60,true);
+ const op=pick(HOUSEO[craveOf(id)]||HOUSEO.own);const say=s=>s.replace(/^【[^】]*】/,'').replace(/（/g,'<span style="color:#f0d79a;font-size:.85em">（').replace(/）/g,'）</span>');
+ sheet(`<div class="evimg" style="background-image:url(img/${face(id)}.jpg);background-position:center 15%;height:200px"></div>
+ <h2 style="font-family:Noto Serif TC,serif;color:${col};letter-spacing:2px;text-shadow:0 0 12px ${col}88">軟禁・${N}</h2>
+ <p style="font-family:Noto Serif TC,serif;font-size:1.15em;color:${col};margin:8px 0">「${op}」</p>
+ <div class="small" style="color:var(--dim);margin-bottom:4px">這一旬你被關在寢殿裡，什麼都不能做。她告訴你，外面發生了這些事——</div>
+ ${L.map((s,i)=>`<p style="font-family:Noto Serif TC,serif;margin:6px 0;padding-left:8px;border-left:3px solid ${col};color:${i%2?'#f3d0dc':'#ffe9c8'}">「我${say(s)}。」</p>`).join('')||`<p style="font-family:Noto Serif TC,serif;color:${col}">「什麼也沒發生。你只是陪了我一整旬。」</p>`}
+ <p class="small" style="color:#f0d79a;margin-top:8px">${N}權勢 +8、寵愛 +10、情深上升</p>
+ <button class="btn" id="houseOk" style="width:100%;margin-top:8px">……</button>`,true);
+ feedPush(`【軟禁】${N}把你關了一旬，替你做了 ${L.length} 件事`,'neg');if(typeof chronAdd==='function')chronAdd(`${N}軟禁天運者一旬`);
+ $('#houseOk').onclick=()=>{closeSheet();cb();setTimeout(()=>{try{endTurn()}catch(e){}},400)}}
+{const _mhc=maybeEvent;maybeEvent=function(cb){return _mhc(()=>houseCheck(cb))}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
