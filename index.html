@@ -378,6 +378,10 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 <audio id="bgmBells" src="aud/bgm_bells.mp3" loop preload="auto"></audio>
 </div>
 
+<script>
+(function(){var shown=0;function show(msg){if(shown>3)return;shown++;var d=document.getElementById('errBanner');if(!d){d=document.createElement('div');d.id='errBanner';d.style.cssText='position:fixed;left:6px;right:6px;bottom:6px;z-index:99999;background:#3a0a12;color:#ffd0d6;border:1px solid #ff6a7a;border-radius:8px;padding:8px 10px;font:12px/1.4 sans-serif;max-height:40vh;overflow:auto';d.innerHTML='<b>遊戲發生錯誤（請截圖給開發者）</b> <button id="errSafe" style="margin-left:6px">安全模式載入存檔</button> <button id="errX" style="margin-left:4px">關閉</button><div id="errMsg"></div>';document.body.appendChild(d);document.getElementById('errX').onclick=function(){d.remove()};document.getElementById('errSafe').onclick=function(){try{var k='tianyun_save_v7',s=JSON.parse(localStorage.getItem(k));['reqQ','interQ','retQ','house','packQueue','caught','evQ','hxQ'].forEach(function(x){delete s[x]});localStorage.setItem(k,JSON.stringify(s));location.reload()}catch(e){alert('安全模式失敗：'+e)}}}document.getElementById('errMsg').insertAdjacentHTML('beforeend','<div>'+String(msg).replace(/</g,'&lt;').slice(0,400)+'</div>')}
+window.addEventListener('error',function(e){show((e.message||'')+' @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''))});window.addEventListener('unhandledrejection',function(e){show('Promise: '+(e.reason&&e.reason.message||e.reason))});})();
+</script>
 <script src="story.js"></script>
 <script src="events.js"></script>
 <script src="story2.js"></script>
@@ -445,10 +449,6 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 <script src="events/v42_text.js"></script>
 <script src="events/v4_5_mutation_system.js"></script>
 <script src="events/engine.js"></script>
-<script>
-(function(){var shown=0;function show(msg){if(shown>3)return;shown++;var d=document.getElementById('errBanner');if(!d){d=document.createElement('div');d.id='errBanner';d.style.cssText='position:fixed;left:6px;right:6px;bottom:6px;z-index:99999;background:#3a0a12;color:#ffd0d6;border:1px solid #ff6a7a;border-radius:8px;padding:8px 10px;font:12px/1.4 sans-serif;max-height:40vh;overflow:auto';d.innerHTML='<b>遊戲發生錯誤（請截圖給開發者）</b> <button id="errSafe" style="margin-left:6px">安全模式載入存檔</button> <button id="errX" style="margin-left:4px">關閉</button><div id="errMsg"></div>';document.body.appendChild(d);document.getElementById('errX').onclick=function(){d.remove()};document.getElementById('errSafe').onclick=function(){try{var k='tianyun_save_v7',s=JSON.parse(localStorage.getItem(k));['reqQ','interQ','retQ','house','packQueue','caught','evQ','hxQ'].forEach(function(x){delete s[x]});localStorage.setItem(k,JSON.stringify(s));location.reload()}catch(e){alert('安全模式失敗：'+e)}}}document.getElementById('errMsg').insertAdjacentHTML('beforeend','<div>'+String(msg).replace(/</g,'&lt;').slice(0,400)+'</div>')}
-window.addEventListener('error',function(e){show((e.message||'')+' @'+(e.filename||'').split('/').pop()+':'+(e.lineno||''))});window.addEventListener('unhandledrejection',function(e){show('Promise: '+(e.reason&&e.reason.message||e.reason))});})();
-</script>
 <script src="rewrite_01z_qing_terms.js"></script>
 <script>
 {
