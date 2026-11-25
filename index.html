@@ -3993,6 +3993,23 @@ function statusStrip(){const L=[];S.order.filter(x=>H(x)&&!x.startsWith('kid')).
  return L.length?`<div id="statusStrip" style="display:flex;gap:6px;overflow-x:auto;padding:4px 8px;font-size:12px;white-space:nowrap">${L.map(([i,x,s,c])=>`<span data-ho="${x}" style="flex:none;border:1px solid ${c};color:${c};border-radius:12px;padding:2px 8px;cursor:pointer">${i} ${H(x).n}・${s}</span>`).join('')}</div>`:''}
 {const _rs=render;render=function(...a){const r=_rs.apply(this,a);try{const hud=document.getElementById('hud');if(hud){let el=document.getElementById('statusStrip');const html=statusStrip();if(el)el.outerHTML=html||'<div id="statusStrip"></div>';else hud.insertAdjacentHTML('beforeend',html||'<div id="statusStrip"></div>')}}catch(e){}return r}}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#statusStrip [data-ho]');if(!b)return;e.stopPropagation();const id=b.dataset.ho;if(wed(id)&&typeof gridSheet==='function')gridSheet(id);else if(typeof openHero==='function')openHero(id)},true);
+/* ===== 本旬待辦：該處理的事集中一張清單，點了直接處理 ===== */
+function todoList(){const L=[];const go=(lab,act)=>({lab,act});
+ if((S.ap||0)>0)L.push({i:'⚡',t:`還有 ${S.ap} 點行動力沒用`,b:[go('去據點',"setView('base')")]});
+ if(S.food<60)L.push({i:'🌾',t:`糧食${S.food<0?'已經虧空（'+S.food+'）':'快見底（'+S.food+'）'}`,b:[go('看據點',"setView('base')")].concat((S.hedon||0)>=30?[go('禁酒罷宴',"lordSheet()")]:[])});
+ if((S.hedon||0)>=60||(S.tyranny||0)>=60)L.push({i:'⚠',t:`昏庸 ${S.hedon||0}・暴虐 ${S.tyranny||0}，下場正在發生`,b:[go('回頭路',"lordSheet()")]});
+ const empty=(S.slots||[]).filter(s=>!s).length;if(empty)L.push({i:'🏗',t:`主城有 ${empty} 格空地`,b:[go('去建造',"setView('base')")]});
+ const idle=S.order.filter(x=>H(x)&&!x.startsWith('kid')&&!hst(x)&&!busyArmy(x)&&hs(x).task==='idle'&&activePlace(x)==='home');if(idle.length)L.push({i:'💤',t:`閒著：${idle.slice(0,4).map(x=>H(x).n).join('、')}${idle.length>4?' 等 '+idle.length+' 人':''}`,b:idle.slice(0,3).map(x=>go(H(x).n,`openHero('${x}')`))});
+ S.order.filter(x=>hst(x)==='inj').forEach(x=>L.push({i:'🤕',t:`${H(x).n} 負傷中，不能派出`,b:[go('看她／他',wed(x)?`gridSheet('${x}')`:`openHero('${x}')`)]}));
+ spouses().filter(x=>S.order.includes(x)&&!hst(x)&&wed(x).fav<25).forEach(x=>L.push({i:'💔',t:`${H(x).n} 寵愛只剩 ${wed(x).fav}，快撐不住了`,b:[go('探望',`gridSheet('${x}')`)]}));
+ spouses().filter(x=>hs(x).wish2&&typeof wishProg==='function').forEach(x=>{const[c,n]=wishProg(x);const o=hs(x).wish2;if(c<n&&n-c<=1)L.push({i:'💗',t:`${H(x).n} 的心願差一步（${c}/${n}）`,b:[go('去完成',`gridSheet('${x}')`)]});else if(o.since!=null&&S.t-o.since>=10&&c<n)L.push({i:'⏳',t:`${H(x).n} 的心願快過期`,b:[go('看她',`gridSheet('${x}')`)]})});
+ S.order.filter(x=>H(x)&&H(x).sex==='f'&&!wed(x)&&!x.startsWith('kid')&&(hs(x).aff|0)>=100&&canVow(x)).forEach(x=>L.push({i:'💍',t:`${H(x).n} 好感已滿，可以締結婚姻`,b:[go('締結',`startVow('${x}')`)]}));
+ const caught=(S.caught||[]).length;if(caught)L.push({i:'🕵',t:`有 ${caught} 件撞破的陰私等你處置`,b:[]});
+ return L}
+function todoSheet(){const L=todoList();sheet(`<h3>📋 本旬待辦</h3>${L.length?L.map((x,i)=>`<div class="frame" style="padding:7px 9px;margin-bottom:6px;display:flex;align-items:center;gap:8px"><span style="font-size:18px">${x.i}</span><span style="flex:1" class="small">${x.t}</span>${x.b.map((b,j)=>`<button class="btn sm" data-todo="${i}|${j}">${b.lab}</button>`).join('')}</div>`).join(''):'<p class="small">這一旬沒有待辦的事了，可以結束本旬。</p>'}<button class="btn ghost" style="width:100%;margin-top:6px" data-sheetx>關閉</button>`);
+ $$('[data-todo]').forEach(b=>b.onclick=()=>{const[i,j]=b.dataset.todo.split('|').map(Number);const a=L[i].b[j].act;closeSheet();try{(new Function('return '+a)).call(null)}catch(e){try{eval(a)}catch(e2){}}})}
+{const _rt=render;render=function(...a){const r=_rt.apply(this,a);try{const n=todoList().length;const el=document.getElementById('statusStrip');if(el){const chip=`<span id="todoChip" style="flex:none;background:#d9b56a;color:#1a1408;border-radius:12px;padding:2px 10px;font-weight:700;cursor:pointer">📋 待辦 ${n}</span>`;if(!el.innerHTML.trim()){el.setAttribute('style','display:flex;gap:6px;overflow-x:auto;padding:4px 8px;font-size:12px;white-space:nowrap')}el.insertAdjacentHTML('afterbegin',chip)}}catch(e){}return r}}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#todoChip');if(!b)return;e.stopPropagation();todoSheet()},true);
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
