@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["qinliangyu"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 09 號 秦良玉 (qinliangyu)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "qinliangyu",
     "index": 9,
@@ -18,7 +23,8 @@
       "0-34（初染）：帶著亡夫遭奸宦構陷慘死獄中的刻骨血恨入宮，披著御賜蟒袍步步為營，誰敢拿她邊鄙土司與寡婦身分作文章，她當場便用白桿家法討回血債。",
       "35-69（深蝕）：在黑霧與後宮傾軋侵蝕下，徹底把石柱山民的『赤瘴催情藥』與土司酷刑化為日常爭權手段，一面高舉清君側大義抄檢政敵，一面在密帳中徹底釋放積壓多年的肉慾與控制癖。",
       "70+（深淵）：徹底黑化為『蟒袍慾魔』——已親手將羞辱她的政敵灌下巴蜀催情藥丟給粗鄙護衛輪番糟蹋並公開捉姦、已將石柱『女土司挑壯丁侍寢』的野蠻舊俗搬進深宮密苑、已用白桿長矛抽打親兒逼其踏著政敵屍骨接掌大印，披著最聖潔的貞節牌坊行最腐爛的血慾霸權。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -46,7 +52,13 @@
             "hedon": 10,
             "corruption": 8,
             "rel_g": 8,
-            "flag": "qinliangyu_white_staff_entry"
+            "flag": "qinliangyu_white_staff_entry",
+            "troops": 80,
+            "mist": 10,
+            "crave": 10,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "秦良玉眼底驟然迸發出積壓多年的狂野火光，竟直接反手扯開御賜蟒袍的盤扣，反客為主將你死死壓在鋪滿巴蜀輿圖的帥案上。帳外是兩名奸吏的慘叫，帳內卻已是令人窒息的鐵血狂歡。"
         },
@@ -57,7 +69,11 @@
             "inf": -6,
             "tyranny": 10,
             "corruption": 10,
-            "rel_g": -10
+            "rel_g": -10,
+            "troops": 80,
+            "mist": 10,
+            "heat": 5,
+            "office": 1
           },
           "outcome": "秦良玉冷冷收回手，恭敬行了一個無可挑剔的軍禮。可轉身入宮的當晚，她便用巴蜀重金買通了宮門守將，將五十名換上雜役衣裳的白桿死士全數塞進了內廷柴房。"
         },
@@ -69,7 +85,12 @@
             "tyranny": 14,
             "corruption": 14,
             "hedon": 6,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 14,
+            "crave": 6,
+            "heat": 7,
+            "affair": "g",
+            "tag": "桀驁未馴"
           },
           "outcome": "秦良玉看著血水染紅營地，滿意地勾起唇角，隨即親手替你斟上一杯摻了微量赤瘴暖藥的蜀地烈酒——她已經確定，這座吃人的皇宮裡，你與她是同一路人。"
         }
@@ -96,7 +117,13 @@
             "tyranny": 12,
             "rel_b": -20,
             "rel_c": -10,
-            "flag": "qinliangyu_bamboo_cage_purge"
+            "flag": "qinliangyu_bamboo_cage_purge",
+            "exec": "b",
+            "mist": 16,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "當夜 {b} 在宮中果然藥性發作、抓傷臉頰並幾乎在偏殿強拉侍衛醜態盡露，被迫稱病避見；而 {c} 在被秦良玉用鐵鉤抵著下巴恐嚇一整夜後，徹底淪為她最聽話的內應。"
         },
@@ -107,7 +134,11 @@
             "inf": 8,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 5
+            "rel_c": 5,
+            "mist": 10,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "拖上岸的老婢早已淹死其三、只剩一口氣的也嚇瘋了。秦良玉無所謂地笑了笑，趁夜色拉著你的手探入她蟒袍下的溫熱腰際：「陛下嘴上說要留活口，心裡不也愛看 {b} 發騷出醜嗎？」"
         },
@@ -118,7 +149,10 @@
             "inf": -10,
             "tyranny": 6,
             "rel_b": 12,
-            "rel_c": 8
+            "rel_c": 8,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "秦良玉眼神一冷，收起茶盞垂首領罰。可她轉身便暗中讓人把那四具泡腫的屍體悄悄塞進了 {b} 宮苑的枯井裡，不出三日便讓整座宮殿臭氣熏天、鬼哭狼嚎。"
         }
@@ -145,7 +179,13 @@
             "corruption": 14,
             "rel_b": -30,
             "rel_c": -5,
-            "flag": "qinliangyu_imperial_raid"
+            "flag": "qinliangyu_imperial_raid",
+            "pop": -15,
+            "mist": 14,
+            "heat": 7,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "三天後 {b} 被抬出石柱軍獄時，身上不見半點外傷（全被巴蜀秘藥掩去），雙眼卻徹底空洞失神，從此一見到玄紅蟒袍便當場尿失禁。整個後宮徹底明白：絕不能惹這位披著忠臣外衣的活閻王。"
         },
@@ -156,7 +196,10 @@
             "inf": 8,
             "tyranny": 6,
             "rel_b": -15,
-            "rel_c": 6
+            "rel_c": 6,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "秦良玉挑眉一笑，收起白桿長矛退下。然而當夜她依然派人送了一碗「壓驚湯」去宗人府，讓 {b} 在裡面吃出了一枚沾著她貼身侍衛血跡的鐵鉤。"
         },
@@ -166,7 +209,12 @@
             "aff": -16,
             "inf": -12,
             "tyranny": 8,
-            "rel_b": 14
+            "rel_b": 14,
+            "troops": 80,
+            "heat": 5,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "秦良玉面色鐵青地交出金牌，轉身離去時卻留下一句冷冰冰的話：「陛下若真愛護這些吃兵血的蛀蟲，下次關外鐵騎叩關時，陛下便請她們去城頭跳支舞退敵罷。」"
         }
@@ -195,7 +243,13 @@
             "hedon": 8,
             "tyranny": 12,
             "rel_b": -40,
-            "flag": "qinliangyu_aphrodisiac_frame"
+            "flag": "qinliangyu_aphrodisiac_frame",
+            "exec": "b",
+            "troops": 80,
+            "mist": 18,
+            "crave": 8,
+            "heat": 6,
+            "affair": "g"
           },
           "outcome": "兩名馬夫當場被白桿兵滅口，{b} 醒來後發現自己徹底身敗名裂、連母族都宣布與她斷絕關係。當夜秦良玉卻把剩餘的半瓶赤瘴香抹在了自己頸間與鎖骨上，笑著走上你的龍榻：「這藥對別人是毒，對陛下與臣妾，可是絕佳的助興良藥。」"
         },
@@ -205,7 +259,10 @@
             "aff": -8,
             "inf": 4,
             "corruption": 8,
-            "rel_b": -10
+            "rel_b": -10,
+            "mist": 10,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "太醫根本驗不出巴蜀深山的無名奇草。秦良玉坦然一笑，絲毫不慌——反正已經有十幾名宮女親眼看見了 {b} 的醜態，這樁穢聞早已像瘟疫般傳遍後宮。"
         }
@@ -233,7 +290,13 @@
             "tyranny": 12,
             "rel_g": -10,
             "rel_c": 8,
-            "flag": "qinliangyu_tusi_tent_caught"
+            "flag": "qinliangyu_tusi_tent_caught",
+            "mist": 18,
+            "crave": 18,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "秦良玉在你粗暴的懲罰與佔有中發出壓抑不住的浪笑，反而更加興奮地迎合著你的力道，眼神挑釁地掃過跪在地上冷汗直流的 {g}。那一夜過後，{g} 徹底成了你們夫妻手裡不敢有二心的鐵血家奴。"
         },
@@ -244,7 +307,11 @@
             "corruption": 14,
             "rel_g": 14,
             "rel_c": 10,
-            "rel_b": -18
+            "rel_b": -18,
+            "mist": 14,
+            "heat": 6,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "三日後 {g} 果然在朝堂上反水倒戈，當眾揭發 {b} 外戚虛報兵額。秦良玉事後送來一壺巴蜀壯陽藥酒，笑稱「替陛下馴好了馬，今晚該換陛下騎騎臣妾了」。"
         },
@@ -256,7 +323,13 @@
             "tyranny": 16,
             "corruption": 12,
             "rel_g": -40,
-            "rel_b": 15
+            "rel_b": 15,
+            "affair": "g",
+            "exec": "g",
+            "mist": 12,
+            "heat": 8,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "密帳血濺三尺，{g} 當場慘死。秦良玉披著染血的薄衣冷笑著看你：「陛下殺得了好乾脆——只可惜京營裡還有一半將領拿了我的銀子，陛下打算今晚全殺光嗎？」"
         }
@@ -283,7 +356,10 @@
             "corruption": 16,
             "rel_b": -30,
             "rel_g": -45,
-            "flag": "qinliangyu_traitor_pinned"
+            "flag": "qinliangyu_traitor_pinned",
+            "mist": 16,
+            "heat": 9,
+            "exec": "b"
           },
           "outcome": "秦良玉手起槍落將 {g} 挑死在柱上，鮮血濺了滿地。當夜她帶著濃重的殺氣闖入你的寢宮，說今夜必須在床上把這股戾氣全發洩在你身上才睡得著。"
         },
@@ -295,7 +371,12 @@
             "tyranny": 8,
             "corruption": 8,
             "rel_b": -15,
-            "rel_g": -25
+            "rel_g": -25,
+            "jail": "b",
+            "mist": 10,
+            "heat": 5,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "秦良玉冷冷瞥了你一眼，沒有反駁。然而三天後，天牢便傳來消息：{g} 在牢飯裡吃進了巴蜀斷腸草，七竅流血而死，死前還在瘋狂抓爛自己的喉嚨。"
         }
@@ -323,7 +404,14 @@
             "tyranny": 10,
             "rel_b": -35,
             "rel_c": 8,
-            "flag": "qinliangyu_coffin_court_win"
+            "flag": "qinliangyu_coffin_court_win",
+            "ban": "b",
+            "mist": 16,
+            "crave": 10,
+            "heat": 5,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "滿朝上下從此對秦良玉敬若神明，再也沒人敢提她半句私生活流言——而當晚她就在那口還沒來得及抬走的黑漆棺材旁的軟榻上，穿著那身素白孝服與你荒唐了一整夜。"
         },
@@ -334,7 +422,10 @@
             "inf": 6,
             "corruption": 10,
             "rel_b": -12,
-            "rel_c": -8
+            "rel_c": -8,
+            "mist": 10,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "秦良玉恭順領旨，背過身卻冷笑著下令，讓石柱暗探將京城裡那十幾個說書人的舌頭全割了下來，整整齊齊裝進錦盒送上了 {b} 的梳妝台。"
         }
@@ -361,7 +452,14 @@
             "tyranny": 14,
             "rel_b": 12,
             "rel_c": -35,
-            "flag": "qinliangyu_salt_monopoly"
+            "flag": "qinliangyu_salt_monopoly",
+            "troops": 80,
+            "pop": -15,
+            "mist": 16,
+            "heat": 7,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "半月內 {c} 外戚商行全線破產抄沒，白桿兵與內庫瞬間暴富。秦良玉用分來的第一批江南雲錦，給自己裁了三件極薄極透的寢衣，專程穿給你看。"
         },
@@ -372,7 +470,10 @@
             "inf": -6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 15
+            "rel_c": 15,
+            "mist": 10,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "圍獵撲空，{b} 被反咬一口元氣大傷。秦良玉立刻明白是你在背後做手腳，當夜便在床榻上用訓馬韁繩死死綁住你的手腕，咬牙切齒地討回「利息」。"
         }
@@ -399,7 +500,11 @@
             "hedon": 20,
             "corruption": 16,
             "rel_b": -25,
-            "flag": "qinliangyu_bridle_domination"
+            "flag": "qinliangyu_bridle_domination",
+            "mist": 16,
+            "crave": 20,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "那一夜龍榻搖晃如驚濤駭浪，平日端莊威嚴的女土司在榻上卻放浪狂野得判若兩人。次日清晨她親自替你繫上龍袍玉帶，眼尾還帶著未散的春紅，走出殿門便又恢復成那尊生人勿近的貞烈女帥。"
         },
@@ -410,7 +515,12 @@
             "hedon": 18,
             "tyranny": 12,
             "corruption": 16,
-            "rel_b": -20
+            "rel_b": -20,
+            "mist": 16,
+            "crave": 18,
+            "heat": 6,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "被蒙住雙眼、反壓在身下的瞬間，秦良玉竟發出一聲近乎崩潰的甜膩顫音，雙腿死死盤住你的腰不肯鬆開——這個習慣掌控萬人的女土司，骨子裡竟也沉迷於被更強暴的力量徹底征服。"
         },
@@ -420,7 +530,11 @@
             "aff": -20,
             "inf": -10,
             "tyranny": 14,
-            "rel_b": 12
+            "rel_b": 12,
+            "ban": "b",
+            "heat": 7,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "秦良玉被拉出殿門時衣衫半敞，眼神卻冷得像石柱深山的萬年玄冰。三日後，{b} 睡覺時在被窩裡摸到了三條被拔了毒牙卻依舊冰冷滑膩的巴蜀五步蛇，當場嚇暈過去。"
         }
@@ -447,7 +561,12 @@
             "tyranny": 16,
             "rel_g": 10,
             "rel_c": 10,
-            "flag": "qinliangyu_python_robe_abyss"
+            "flag": "qinliangyu_python_robe_abyss",
+            "pv": 1,
+            "mist": 24,
+            "crave": 24,
+            "heat": 8,
+            "pol": 15
           },
           "outcome": "那一夜密室的銅鏡映滿了極致的荒唐與禁忌。從此秦良玉徹底撕碎了所有偽裝，白日裡越是正氣凜然、殺人如麻，夜裡便越是在你身下與密帳中瘋狂索歡，成了全大明最可怕的雙面慾魔。"
         },
@@ -460,7 +579,13 @@
             "hedon": 18,
             "tyranny": 22,
             "rel_g": -40,
-            "rel_c": -5
+            "rel_c": -5,
+            "pv": 1,
+            "mist": 20,
+            "crave": 18,
+            "heat": 11,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "{g} 哀嚎著被拖走，池水瞬間染紅。秦良玉盯著滿地鮮血反而呼吸急促、眼底泛起病態的潮紅，雙臂死死勾住你的脖子狂吻起來——她愛極了這種帶著血腥味的獨佔與凌虐。"
         }
@@ -487,7 +612,12 @@
             "hedon": 20,
             "tyranny": 18,
             "rel_b": -45,
-            "flag": "qinliangyu_water_prison_break"
+            "flag": "qinliangyu_water_prison_break",
+            "mist": 22,
+            "crave": 20,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "天亮時 {b} 已經徹底咬破嘴唇、眼神渙散成了一個只會流口水傻笑的廢人，被秦良玉用「突染急瘋病」的名義送進了宮外尼庵自生自滅。"
         },
@@ -498,7 +628,12 @@
             "inf": 4,
             "tyranny": 8,
             "corruption": 6,
-            "rel_b": -20
+            "rel_b": -20,
+            "exec": "b",
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "秦良玉冷冷放下茶盞，臨走前卻還是順手扯下了 {b} 脖子上那串她最珍愛的東珠項鍊，直接套在了自己養的巴蜀藏獒脖子上。"
         }
@@ -525,7 +660,12 @@
             "tyranny": 16,
             "corruption": 16,
             "rel_b": -25,
-            "flag": "qinliangyu_heir_staff_forged"
+            "flag": "qinliangyu_heir_staff_forged",
+            "mist": 16,
+            "heat": 8,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "秦良玉眼底閃過志在必得的銳光。從此 {heir} 性情日益陰冷果決，對母親唯命是從，成了朝中所有文官與政敵聞風喪膽的少壯派煞星。"
         },
@@ -536,7 +676,12 @@
             "inf": -12,
             "tyranny": 10,
             "corruption": 8,
-            "rel_b": 10
+            "rel_b": 10,
+            "mist": 10,
+            "heat": 5,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "秦良玉沒有阻攔，只是盯著被帶走的 {heir} 冷聲留下一句：「記住你背上的白桿印，文官教你的禮義廉恥救不了你的命，只有手裡的刀能！」"
         }
@@ -564,7 +709,14 @@
             "tyranny": 25,
             "rel_b": -50,
             "rel_g": 20,
-            "flag": "qinliangyu_regent_shadow"
+            "flag": "qinliangyu_regent_shadow",
+            "mist": 25,
+            "crave": 20,
+            "heat": 12,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "次日早朝，滿朝文武看著城頭挑滿的白桿人頭與御賜新詔，無不戰慄俯首。秦良玉從此成了大明江山名副其實的無冕女皇，白日清正威嚴、夜裡在龍榻上把你徹底馴服在她的掌心。"
         },
@@ -575,7 +727,12 @@
             "inf": -15,
             "tyranny": 20,
             "corruption": 15,
-            "rel_g": -20
+            "rel_g": -20,
+            "mist": 15,
+            "heat": 10,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "劍鋒割破她白皙的頸項滲出血珠，秦良玉卻不退反笑，眼底燃起極度危險的狂熱：「好啊，陛下終於肯亮獠牙了——只要今夜沒砍下我的頭，咱們這場權與慾的死鬥，才剛開始呢。」"
         }
@@ -603,7 +760,13 @@
             "corruption": 10,
             "hedon": 8,
             "rel_b": -22,
-            "flag": "qinliangyu_sichuan_lifeline"
+            "flag": "qinliangyu_sichuan_lifeline",
+            "mist": 10,
+            "crave": 8,
+            "heat": 6,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "五日後長江鹽船恢復暢通，秦良玉還隨船附贈了一件沾著她體香與濃烈藥香的貼身玄紅抹胸，挑逗之意昭然若揭。"
         },
@@ -613,7 +776,10 @@
             "aff": -14,
             "inf": -8,
             "tyranny": 12,
-            "rel_b": 10
+            "rel_b": 10,
+            "troops": 80,
+            "heat": 6,
+            "affair": "g"
           },
           "outcome": "鄰省官軍剛進三峽便遭白桿兵滾木礌石伏擊，灰頭土臉撤退。秦良玉又寄回一封空信，只在裡面夾了一根沾著火藥味的白桿鐵鉤。"
         }
@@ -639,7 +805,12 @@
             "corruption": 16,
             "tyranny": 10,
             "rel_b": -28,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 16,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "京師上下從此談「蜀茶」色變，無人再敢在秦良玉背後搞小動作，而 {c} 也在她的遙控下成了後宮炙手可熱的新貴。"
         },
@@ -650,7 +821,10 @@
             "inf": -10,
             "tyranny": 14,
             "rel_b": 12,
-            "rel_c": -35
+            "rel_c": -35,
+            "heat": 7,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "{c} 咬碎藏在牙縫裡的毒囊自盡，一個字也沒吐。巴蜀隨即傳來急報：秦良玉已停止向朝廷解送今年全部川稅，宣稱「就地留作防賊軍費」。"
         }
@@ -675,7 +849,14 @@
             "corruption": 16,
             "hedon": 16,
             "rel_g": 8,
-            "flag": "qinliangyu_five_stage_bonded"
+            "flag": "qinliangyu_five_stage_bonded",
+            "pol": 12,
+            "energy": 25,
+            "mist": 16,
+            "crave": 16,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "秦良玉眼角罕見地泛起一絲滾燙的水光，旋即化作極具侵略性的深吻——從此她是世人眼中的大明柱石，卻是你獨享的瘋魔共犯。"
         },
@@ -685,7 +866,10 @@
             "aff": -6,
             "inf": 8,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "troops": 80,
+            "mist": 10,
+            "house": 1
           },
           "outcome": "秦良玉敏感地察覺到你眼底的冰冷，鬆開手替自己重新扣好蟒袍盤扣，冷笑一聲：「也好，這皇宮裡動真心的人死得最快——咱們就各取所需罷。」"
         }
@@ -711,7 +895,13 @@
             "hedon": 18,
             "corruption": 14,
             "rel_b": -20,
-            "rel_g": -12
+            "rel_g": -12,
+            "pop": -15,
+            "mist": 14,
+            "crave": 18,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "秦良玉在權力與財富的雙重刺激下徹底放開了手腳，整夜將你折騰得筋疲力盡，次日早朝卻依舊神采奕奕地站在百官之首。"
         },
@@ -722,7 +912,12 @@
             "inf": 6,
             "tyranny": 10,
             "rel_b": -10,
-            "rel_g": -18
+            "rel_g": -18,
+            "troops": 80,
+            "food": 100,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b"
           },
           "outcome": "秦良玉撇了撇嘴，咬著你的耳垂輕聲威脅：「陛下真摳門……下回再不肯分肉給臣妾吃，臣妾可就不替陛下把那些髒帳擦乾淨了。」"
         }
@@ -750,7 +945,12 @@
             "corruption": 12,
             "rel_b": -32,
             "rel_g": 16,
-            "flag": "qinliangyu_white_staff_crusade"
+            "flag": "qinliangyu_white_staff_crusade",
+            "troops": 80,
+            "mist": 12,
+            "heat": 7,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "出征前夜，秦良玉穿著冰冷的戰甲直接將你壓在帥帳的輿圖上狂野索歡，說是要帶著你的餘溫去砍關外鐵騎的腦袋。三日後首戰交鋒，{b} 的胞弟果然被她第一時間派去蹚雷陣，當場萬箭穿心。"
         },
@@ -760,7 +960,11 @@
             "aff": 4,
             "inf": 6,
             "rel_b": 6,
-            "rel_g": 8
+            "rel_g": 8,
+            "troops": 80,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "秦良玉冷哼一聲接過虎符。大軍剛出京城五十里，那名監軍便「不小心」喝了白桿營裡的巴蜀瘴水，一路上吐下瀉到連馬都騎不穩，軍權依舊百分之百握在她手裡。"
         }
@@ -786,7 +990,13 @@
             "hedon": 16,
             "tyranny": 14,
             "rel_g": 14,
-            "flag": "qinliangyu_snow_blood_triumph"
+            "flag": "qinliangyu_snow_blood_triumph",
+            "mist": 16,
+            "crave": 16,
+            "heat": 7,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "帳外風雪呼嘯、敵屍遍野，帳內卻是熱氣蒸騰、肉體激烈碰撞的血色狂歡。此戰過後，秦良玉的威望直逼人主，連關外敵帥聞「白桿女帥」之名皆膽寒。"
         },
@@ -796,7 +1006,10 @@
             "aff": -6,
             "inf": 8,
             "tyranny": 6,
-            "rel_g": 4
+            "rel_g": 4,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "秦良玉咂了咂嘴，舔掉唇角一絲血跡，眼神卻依舊灼熱地盯著你的腰際：「陛下還真是假正經——沒關係，等進了帥帳關上門，臣妾有的是巴蜀赤瘴香讓陛下原形畢露。」"
         }
@@ -825,7 +1038,13 @@
               "corruption": 14,
               "rel_b": -35,
               "rel_g": 22,
-              "flag": "qinliangyu_state_blood_funeral"
+              "flag": "qinliangyu_state_blood_funeral",
+              "troops": 80,
+              "mist": 14,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "{g} 與殘存白桿兵磕破額頭誓死效忠於你，{b} 家族數名大員當場問斬；可夜深人靜時，你總覺得那股巴蜀赤瘴香與冰冷的鐵護腕依然縈繞在龍榻旁。"
           },
@@ -835,7 +1054,11 @@
               "inf": -12,
               "tyranny": 14,
               "rel_b": 18,
-              "rel_g": -40
+              "rel_g": -40,
+              "heat": 7,
+              "pol": 15,
+              "mist": 15,
+              "wood": -50
             },
             "outcome": "石柱土司當即爆發慘烈兵變，{g} 帶著白桿舊部退入深山焚毀全部棧道，從此西南門戶大開、永無寧日。"
           }
@@ -861,7 +1084,12 @@
               "inf": 8,
               "corruption": 12,
               "rel_b": -22,
-              "flag": "qinliangyu_ransom_raid"
+              "flag": "qinliangyu_ransom_raid",
+              "troops": 80,
+              "mist": 12,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "你當朝掌摑了阻撓營救的 {b} 親信御史；消息傳入敵帳時，被鐵枷鎖住的秦良玉吐出一口帶血的唾沫，眼底閃過瘋狂的冷光。"
           },
@@ -872,7 +1100,11 @@
               "inf": -16,
               "corruption": 24,
               "tyranny": 14,
-              "rel_b": 20
+              "rel_b": 20,
+              "mist": 24,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "敵帥故意將你的除籍聖旨唸給她聽。秦良玉聽完沒有哭，反而仰天狂笑到咳血——她發誓若有一日能活著爬回京城，定要讓這座皇城血流成河。"
           }
@@ -899,7 +1131,15 @@
               "corruption": 12,
               "hedon": 6,
               "rel_b": -28,
-              "flag": "qinliangyu_crippled_oath"
+              "flag": "qinliangyu_crippled_oath",
+              "ban": "b",
+              "pv": 1,
+              "mist": 12,
+              "crave": 6,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "秦良玉忍著劇痛死死抱住你的腰，指甲幾乎掐進你的皮肉裡，嘶啞地求你今夜就在滿屋苦藥味裡佔有她——她需要用肉體的痛與歡愉確認自己還沒有被你拋棄。"
           },
@@ -910,7 +1150,12 @@
               "inf": -16,
               "corruption": 22,
               "tyranny": 12,
-              "rel_b": 20
+              "rel_b": 20,
+              "troops": 80,
+              "mist": 22,
+              "heat": 6,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "秦良玉鬆開手看著你拿走兵符，一滴淚也沒流。半個月後，{b} 宮中所有日常用的胭脂裡全被滲入了巴蜀腐膚毒粉，一夜之間爛了半張臉。"
           }
@@ -937,7 +1182,11 @@
               "tyranny": 18,
               "corruption": 18,
               "rel_b": -32,
-              "flag": "qinliangyu_humiliation_bloodwash"
+              "flag": "qinliangyu_humiliation_bloodwash",
+              "exec": "b",
+              "pop": -15,
+              "mist": 18,
+              "heat": 9
             },
             "outcome": "當夜秦良玉洗去滿身污垢後，竟親手找來粗麻繩遞給你，眼神瘋狂又絕望地要你把她綁起來狠狠蹂躪——只有用你的印記覆蓋掉那些骯髒的目光，她才能重新站起來。"
           },
@@ -948,7 +1197,12 @@
               "inf": -18,
               "corruption": 26,
               "tyranny": 14,
-              "rel_b": 16
+              "rel_b": 16,
+              "exec": "b",
+              "mist": 26,
+              "heat": 7,
+              "ban": 1,
+              "tag": "受辱怨骨"
             },
             "outcome": "偏殿的鐵鎖根本關不住這頭瘋了的女土司。不到十日，她便靠著色誘與重金收買了整隊看守侍衛，把幽禁偏殿變成了一座暗中操控宮廷毒殺與淫亂的魔窟。"
           }
@@ -975,7 +1229,12 @@
               "corruption": 20,
               "hedon": 10,
               "tyranny": 14,
-              "flag": "qinliangyu_three_thousand_vow"
+              "flag": "qinliangyu_three_thousand_vow",
+              "mist": 20,
+              "crave": 10,
+              "heat": 7,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "秦良玉在你懷裡終於爆發出一聲撕心裂肺的獸吼，隨即發瘋般撕扯你的衣襟，在滿院木桿靈位之間與你激烈交纏，彷彿唯有最痛的歡愛能讓她感覺自己還活在人間。"
           },
@@ -985,7 +1244,11 @@
               "aff": -26,
               "inf": -16,
               "corruption": 26,
-              "tyranny": 16
+              "tyranny": 16,
+              "pv": 1,
+              "mist": 26,
+              "heat": 8,
+              "jail": 1
             },
             "outcome": "她醒來後不再哭喊，只是每天對著牆壁冷笑。不出一個月，朝中當初反對發援軍的三名大臣接連在自家府中暴斃，喉嚨上全插著一截削尖的竹筷。"
           }
@@ -1012,7 +1275,12 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_b": -32,
-              "flag": "qinliangyu_poison_purge_saved"
+              "flag": "qinliangyu_poison_purge_saved",
+              "exec": "b",
+              "mist": 20,
+              "heat": 8,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "秦良玉在鬼門關前轉了一圈才撿回半條命。她剛能下床的第一夜，便派人將剩餘的巴蜀絕子毒藥悄悄混進了 {b} 每天必喝的燕窩羹裡，讓 {b} 終身絕育。"
           },
@@ -1023,7 +1291,13 @@
               "inf": -12,
               "corruption": 28,
               "tyranny": 20,
-              "rel_b": 12
+              "rel_b": 12,
+              "mist": 28,
+              "heat": 10,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "秦良玉看著你冰冷的眼神，徹底死心。從那天起，她雖被迫保住性命，卻在你與整個皇室心底埋下了一顆隨時會把所有人炸得粉身碎骨的毒瘤。"
           }
@@ -1051,7 +1325,14 @@
               "hedon": 18,
               "tyranny": 14,
               "rel_b": -35,
-              "flag": "qinliangyu_flayed_captor_spouse"
+              "flag": "qinliangyu_flayed_captor_spouse",
+              "exec": "b",
+              "mist": 20,
+              "crave": 18,
+              "heat": 7,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "滿朝罵聲在敵帥首級前徹底變成死寂。當夜秦良玉在龍榻上瘋狂索取著你的體溫，一邊劇烈喘息一邊逼你聽她細數如何把敵帥一點點凌遲的殘忍細節。"
           },
@@ -1062,7 +1343,13 @@
               "inf": -10,
               "corruption": 24,
               "tyranny": 16,
-              "rel_b": 15
+              "rel_b": 15,
+              "exec": "b",
+              "pv": 1,
+              "mist": 24,
+              "heat": 8,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "秦良玉臨走前故意用沾著敵帥血痂的手指輕輕劃過你的咽喉，笑得溫柔又森冷：「陛下別怕呀——只要陛下不把臣妾當狗一樣栓在床上，臣妾舌底這根毒針，永遠不會扎在陛下眼珠子上。」"
           }
@@ -1090,7 +1377,14 @@
               "tyranny": 12,
               "rel_b": -35,
               "rel_g": 16,
-              "flag": "qinliangyu_rescued_reckoning"
+              "flag": "qinliangyu_rescued_reckoning",
+              "exec": "b",
+              "pv": 1,
+              "mist": 14,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "秦良玉這才拔出鐵鉤，帶著一身血腥撲進你懷裡——然而當晚她卻也私下召見了滿身傷口的 {g} 進石柱別院共飲巴蜀暖酒，帳中燈火亮至三更。"
           },
@@ -1101,7 +1395,10 @@
               "inf": -12,
               "corruption": 20,
               "rel_b": 12,
-              "rel_g": -12
+              "rel_g": -12,
+              "mist": 20,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "秦良玉鬆手把白桿長矛砸在地上，轉頭對 {g} 冷笑：「聽見了嗎？咱們在外頭替皇家流乾了血，人家在暖被窩裡護著通敵的賤人呢。」從此她與 {g} 徹底結成只忠於彼此的暗黑同盟。"
           }
@@ -1129,7 +1426,12 @@
               "hedon": 16,
               "tyranny": 14,
               "rel_g": -50,
-              "flag": "qinliangyu_private_jail_burned"
+              "flag": "qinliangyu_private_jail_burned",
+              "pv": 1,
+              "mist": 22,
+              "crave": 16,
+              "heat": 7,
+              "exec": "g"
             },
             "outcome": "回到皇宮後，秦良玉在床榻上變得極具侵略性——她再也不許你佔據上風，唯有將你死死壓在身下、看你露出失控神色時，她眼底那股陰冷的瘋狂才會暫時退散。"
           },
@@ -1139,7 +1441,13 @@
               "aff": -28,
               "inf": -14,
               "corruption": 28,
-              "hedon": 16
+              "hedon": 16,
+              "jail": 1,
+              "pv": 1,
+              "mist": 28,
+              "crave": 16,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "秦良玉一眼看穿了你骨子裡的嫌棄。她不再向你索歡，反而開始在石柱別院地下仿照那座地牢，暗中私藏並用赤瘴香折磨數名眉眼酷似你的年輕俊美男奴，徹底沉淪於瘋狂的復仇與淫樂。"
           }
@@ -1166,7 +1474,12 @@
               "corruption": 16,
               "tyranny": 12,
               "rel_b": -40,
-              "flag": "qinliangyu_lone_escape_return"
+              "flag": "qinliangyu_lone_escape_return",
+              "tag": "毀容@b",
+              "mist": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1
             },
             "outcome": "秦良玉一把奪過帥印，反手扣住你的後頸狠狠咬破你的嘴唇：「記住今天的血腥味，陛下。從今往後誰再敢碰我石柱秦家的東西，我連陛下的臉面也不會留了。」"
           },
@@ -1177,7 +1490,12 @@
               "inf": -14,
               "tyranny": 16,
               "corruption": 24,
-              "rel_b": 10
+              "rel_b": 10,
+              "pv": 1,
+              "mist": 24,
+              "heat": 8,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "秦良玉擦掉鐵槍頭上的血水，笑得冰冷徹骨：「好啊，陛下既要講宮法，那咱們就看看，到底是您的宮法硬，還是我從關外死人堆裡帶回來的白桿鐵鉤硬！」"
           }
@@ -1186,3 +1504,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['qinliangyu'] = DATA;
+  (window.characterPacks ||= {})['qinliangyu'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

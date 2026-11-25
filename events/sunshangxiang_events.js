@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["sunshangxiang"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 19 號 孫尚香 (sunshangxiang)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "sunshangxiang",
     "index": 19,
@@ -18,7 +23,8 @@
       "0-34（初染）：帶著江東郡主天生驕橫與防備聯姻算計的銳氣，身邊百婢執刀寸步不離，誰敢拿她當政治玩物，她當場便拔出腿上短刃見血立威。",
       "35-69（深蝕）：在黑霧與宮鬥權慾的腐蝕下，徹底將江東女兵與長江樓船變成私家武裝——一面暗中截江綁架政敵人質勒索家財，一面在演武密室與刀陣紗帳裡以野性肉搏收編握兵猛將。",
       "70+（深淵）：徹底黑化為『白刃妖姬』——已親手將落敗貴妃剝剩單衣綁在演武場當箭靶割衣羞辱並在旁赤身歡愛、已習慣在百名女親兵持刀侍立的紗帳後與君王及悍將進行充滿汗水與刀鋒張力的荒淫肉搏、已將親兒訓練成隨時能領兵劫持江山的江東小霸王，笑看中原皇室徹底臣服於她的弓弦與短刃之下。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -46,7 +52,13 @@
             "hedon": 14,
             "corruption": 8,
             "rel_g": -4,
-            "flag": "sunshangxiang_blade_bed_entry"
+            "flag": "sunshangxiang_blade_bed_entry",
+            "troops": 80,
+            "mist": 10,
+            "crave": 14,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "短刃「噹啷」跌落錦被！孫尚香被你強悍的力道壓在身下非但沒怒，眼底反而驟然燃起遇到旗鼓相當獵手的極致狂喜，雙腿如鐵鉗般猛地勾住你的腰胯，當著紅紗外百名女親兵的屏息注視下與你展開一場激烈如沙場搏殺的瘋狂深吻。"
         },
@@ -57,7 +69,11 @@
             "inf": -6,
             "tyranny": 10,
             "corruption": 10,
-            "rel_g": 8
+            "rel_g": 8,
+            "troops": 80,
+            "mist": 10,
+            "heat": 5,
+            "office": 1
           },
           "outcome": "孫尚香冷笑著揮手讓女兵收刀，眼底卻燃起森寒野火：「想繳江東郡主的械？陛下這後宮的籠子，可別被我拆得片瓦不留！」當夜她便把五十名最精銳的女兵換上普通宮婢衣裙全數帶進了皇城。"
         },
@@ -69,7 +85,13 @@
             "hedon": 16,
             "corruption": 14,
             "tyranny": 8,
-            "rel_g": -12
+            "rel_g": -12,
+            "troops": 80,
+            "mist": 14,
+            "crave": 16,
+            "heat": 5,
+            "affair": "g",
+            "tag": "桀驁未馴"
           },
           "outcome": "刀鋒貼著肌膚、身後是冰冷的兵器架與滿屋持刀女親兵，這種極端危險與禁忌的感官張力瞬間點燃了孫尚香骨子裡的野性，她在你懷裡喘息著發出既驕傲又銷魂的低笑。"
         }
@@ -97,7 +119,14 @@
             "tyranny": 12,
             "rel_b": -28,
             "rel_c": 14,
-            "flag": "sunshangxiang_female_guard_legitimized"
+            "flag": "sunshangxiang_female_guard_legitimized",
+            "ban": "b",
+            "mist": 16,
+            "crave": 10,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "次日 {b} 因偷賣軍馬一事遭到重罰禁足，全後宮徹底明白：梟姬閣裡那百名執刀女兵就是活生生的禁區，誰敢伸手就剁誰的爪子！而 {c} 從此死心塌地成了孫尚香的內線。"
         },
@@ -108,7 +137,11 @@
             "inf": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_c": 6
+            "rel_c": 6,
+            "mist": 10,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "孫尚香哼了一聲交出一批生鏽舊刀敷衍了事，轉頭卻在你耳邊輕咬著低笑：「陛下真愛和稀泥——下回 {b} 再敢惹我，我可就不是只把她的人吊起來吹風囉。」"
         },
@@ -118,7 +151,10 @@
             "aff": -14,
             "inf": -10,
             "tyranny": 10,
-            "rel_b": 14
+            "rel_b": 14,
+            "troops": 80,
+            "heat": 5,
+            "affair": "g"
           },
           "outcome": "孫尚香冷冷收起長劍，當晚便派心腹連夜將被遣散的五十名女親兵全部安插進了京城碼頭的孫氏樓船上，反而將整個水路咽喉悄悄攥進了手裡。"
         }
@@ -146,7 +182,13 @@
             "tyranny": 14,
             "rel_b": -38,
             "rel_c": 10,
-            "flag": "sunshangxiang_river_kidnap_win"
+            "flag": "sunshangxiang_river_kidnap_win",
+            "inj": "b",
+            "mist": 16,
+            "crave": 12,
+            "heat": 7,
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "{b} 哭嚎著抽腫了自己的臉才換回嚇破膽的弟弟，全後宮從此見了孫尚香如同見到江東活煞神！當夜江心樓船隨波搖晃，她在月色與刀光裡褪去濕透的水靠，用最具爆發力的狂野姿態犒賞你的偏愛。"
         },
@@ -157,7 +199,12 @@
             "inf": 8,
             "tyranny": 8,
             "rel_b": -16,
-            "rel_c": 4
+            "rel_c": 4,
+            "troops": 80,
+            "heat": 5,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "孫尚香見好就收放開了人質，臨走前卻故意一腳把 {b} 的幼弟踹進了淺水灘裡喝了一肚子江水，照樣把 {b} 氣得當場暈厥。"
         },
@@ -167,7 +214,12 @@
             "aff": -20,
             "inf": -14,
             "tyranny": 14,
-            "rel_b": 14
+            "rel_b": 14,
+            "ban": 1,
+            "heat": 7,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "孫尚香冷笑著交出船鑰，三天後長江下游的江東水軍便截停了十幾艘運往都城的糧船，點名要求「先放孫夫人出來透氣」。"
         }
@@ -195,7 +247,13 @@
             "corruption": 18,
             "tyranny": 14,
             "rel_b": -45,
-            "flag": "sunshangxiang_yangtze_piracy"
+            "flag": "sunshangxiang_yangtze_piracy",
+            "affair": "g",
+            "jail": "b",
+            "food": 100,
+            "mist": 18,
+            "heat": 7,
+            "crave": 6
           },
           "outcome": "{b} 母族一夜之間血本無歸、淪為階下囚。當夜孫尚香興致大發，在鋪滿搶來的江南絲綢的演武榻上主動拉著你進行了一場酣暢淋漓的汗水肉搏。"
         },
@@ -206,7 +264,12 @@
             "inf": 4,
             "corruption": 8,
             "tyranny": 8,
-            "rel_b": -15
+            "rel_b": -15,
+            "food": 100,
+            "mist": 10,
+            "heat": 5,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "孫尚香爽快地吐出一半貨，眼底卻閃過一絲狡黠——剩下那一半早已足夠她擴編兩百名女兵，而 {b} 娘家照樣賠得傾家蕩產。"
         }
@@ -234,7 +297,13 @@
             "tyranny": 12,
             "rel_g": -15,
             "rel_c": 8,
-            "flag": "sunshangxiang_wrestling_affair_caught"
+            "flag": "sunshangxiang_wrestling_affair_caught",
+            "mist": 20,
+            "crave": 22,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "兵器架劇烈搖晃作響，孫尚香在你充滿醋意與力量的粗暴征服中發出暢快又銷魂的野性低喘，汗津津的長腿緊緊盤住你的腰，挑釁地看向跪在虎皮墊上發抖的 {g}。那一夜過後，{g} 徹底成了你們夫妻手裡最聽話的惡犬。"
         },
@@ -245,7 +314,11 @@
             "corruption": 14,
             "rel_g": 16,
             "rel_c": 10,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 14,
+            "heat": 6,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "次日 {g} 果然在朝堂上反水倒戈，處處為孫尚香保駕護航。當夜她洗去一身練武汗氣赤足爬上你的龍榻：「陛下別吃醋嘛，那蠢武夫連我三招都接不住，只配給我當練拳的沙包，哪裡配碰我真正柔軟的地方呀。」"
         },
@@ -257,7 +330,12 @@
             "tyranny": 16,
             "corruption": 12,
             "rel_g": -50,
-            "rel_b": 16
+            "rel_b": 16,
+            "exec": "g",
+            "mist": 12,
+            "heat": 8,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "虎皮墊瞬間被 {g} 的鮮血染紅。孫尚香抹掉濺在頰邊的血珠，冷笑著望向你：「陛下殺得了好乾脆——只可惜，京營裡想跟我江東梟姬切磋武藝的將領排成排呢，陛下殺得過來嗎？」"
         }
@@ -284,7 +362,11 @@
             "corruption": 18,
             "rel_b": -35,
             "rel_g": -50,
-            "flag": "sunshangxiang_river_pavilion_purge"
+            "flag": "sunshangxiang_river_pavilion_purge",
+            "exec": "b",
+            "pop": -15,
+            "mist": 18,
+            "heat": 9
           },
           "outcome": "刀光閃過，{g} 伏誅沉江，{b} 嚇得徹底失魂落魄。當夜孫尚香帶著一身未散的殺氣與熱汗闖進你的寢宮，跨坐上你腰間低吼：「背叛者已經餵魚了，今夜陛下可得好好接住我這股還沒消下去的殺氣！」"
         },
@@ -296,7 +378,12 @@
             "tyranny": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_g": -22
+            "rel_g": -22,
+            "troops": 80,
+            "mist": 10,
+            "heat": 5,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "孫尚香冷哼一聲收劍入鞘。可不過兩日，{g} 便在押送刑部的途中「突發箭毒攻心」暴斃，連半句指證孫尚香的話都沒能留下。"
         }
@@ -324,7 +411,14 @@
             "tyranny": 12,
             "rel_b": -38,
             "rel_c": 14,
-            "flag": "sunshangxiang_unarmed_court_win"
+            "flag": "sunshangxiang_unarmed_court_win",
+            "ban": "b",
+            "pop": -15,
+            "mist": 16,
+            "crave": 14,
+            "heat": 6,
+            "jail": "b",
+            "tag": "誣陷成案@b"
           },
           "outcome": "從此再也沒人敢拿「江東女刺客」攻訐孫尚香半句——她反倒成了朝野公認的護駕女戰神！當夜你在梟姬閣親手替她將短刃綁回修長緊實的雪白大腿上，順勢展開一場激烈至極的床笫搏殺。"
         },
@@ -335,7 +429,11 @@
             "inf": 6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 4
+            "rel_c": 4,
+            "troops": 80,
+            "mist": 10,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "孫尚香挑眉一笑，痛快點頭應諾——反正剩餘七十名女兵換上京城商號夥計衣裳駐紮在碼頭，調動起來反而比在宮裡更自由無礙。"
         }
@@ -362,7 +460,14 @@
             "tyranny": 14,
             "rel_b": 14,
             "rel_c": -40,
-            "flag": "sunshangxiang_shipyard_monopoly"
+            "flag": "sunshangxiang_shipyard_monopoly",
+            "pop": -15,
+            "mist": 18,
+            "crave": 6,
+            "heat": 7,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "半月內 {c} 外戚造船廠全數易主，孫尚香的水軍戰船規模一夜暴漲。當夜她在新下水的豪華樓船頂艙裡赤身邀你共飲，在江浪起伏間展開一場狂野至極的歡愛。"
         },
@@ -373,7 +478,10 @@
             "inf": -6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 18
+            "rel_c": 18,
+            "mist": 10,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "圍獵失手，{b} 賠盡老本；孫尚香卻只是爽朗一笑，當夜便在床榻上用雙腿死死絞住你的腰，咬破你的肩頭冷聲討回「沒吃到魚肉的補償」。"
         }
@@ -400,7 +508,11 @@
             "hedon": 24,
             "corruption": 16,
             "rel_b": -30,
-            "flag": "sunshangxiang_sweat_wrestle_claim"
+            "flag": "sunshangxiang_sweat_wrestle_claim",
+            "mist": 16,
+            "crave": 24,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "那一夜龍榻搖晃得如同江心狂浪，充滿力量感與野性喘息的激烈交纏一直持續到黎明。次日清晨她精神抖擻地穿著你的中衣走出殿門，當眾對眼眶紅腫的 {b} 揚眉冷笑。"
         },
@@ -411,7 +523,12 @@
             "hedon": 20,
             "tyranny": 12,
             "corruption": 16,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 16,
+            "crave": 20,
+            "heat": 6,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "雙腕被自己綁短刃的紅絲帶死死縛住、在你的強悍力道下被迫仰起修長雪頸承受暴風驟雨般的撞擊，孫尚香眼底反而燃起前所未有的狂熱水光——唯有能真正武力壓服她的男人，才配讓這位梟姬徹底臣服。"
         },
@@ -421,7 +538,10 @@
             "aff": -22,
             "inf": -10,
             "tyranny": 14,
-            "rel_b": 14
+            "rel_b": 14,
+            "heat": 7,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "孫尚香赤足大笑著走出殿門，當晚便帶著百名女兵在 {b} 宮牆外整夜敲鑼打鼓操練刀陣，吵得 {b} 一連五夜無法合眼、精神幾近崩潰。"
         }
@@ -448,7 +568,14 @@
             "tyranny": 16,
             "rel_g": 10,
             "rel_c": 12,
-            "flag": "sunshangxiang_blade_orgy_abyss"
+            "flag": "sunshangxiang_blade_orgy_abyss",
+            "pol": 12,
+            "energy": 25,
+            "soldiers": 60,
+            "mist": 24,
+            "crave": 28,
+            "heat": 8,
+            "pv": 1
           },
           "outcome": "那一夜梟姬閣內戰鼓雷動、刀光映著滿榻汗水與激烈肉搏。你與孫尚香在極致的武力征服與荒淫狂歡中徹底墜入黑霧深淵，滿宮女兵與邊關悍將全成了你們血色慾海裡的忠實爪牙。"
         },
@@ -461,7 +588,13 @@
             "hedon": 20,
             "tyranny": 22,
             "rel_g": -48,
-            "rel_c": -5
+            "rel_c": -5,
+            "troops": 80,
+            "mist": 20,
+            "crave": 20,
+            "heat": 11,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "{g} 哀嚎著被拖走，鮮血濺上虎皮。孫尚香盯著血跡眼底驟然亮起瘋狂的野火，反手死死抱住你強壯的背脊大笑：「好！這才配做壓得住我孫尚香的真霸主——用力點，別手軟！」"
         }
@@ -488,7 +621,13 @@
             "hedon": 22,
             "tyranny": 18,
             "rel_b": -50,
-            "flag": "sunshangxiang_arrow_target_revenge"
+            "flag": "sunshangxiang_arrow_target_revenge",
+            "soldiers": 60,
+            "mist": 24,
+            "crave": 22,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "那一夜靶場裡偶爾飛出的驚魂箭矢、{b} 徹底崩潰的哭嚎與涼亭虎皮椅上狂野高亢的肉搏喘息交織至黎明。天亮時 {b} 已經徹底神智失常、聽見任何破空聲便跪地抱頭尖叫，被丟進了荒廢冷院。"
         },
@@ -499,7 +638,11 @@
             "inf": 4,
             "tyranny": 8,
             "corruption": 6,
-            "rel_b": -20
+            "rel_b": -20,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "孫尚香無所謂地收起硬弓，臨走前卻還是順手一箭射碎了 {b} 掉在地上那支最珍愛的白玉鳳釵。"
         }
@@ -526,7 +669,12 @@
             "corruption": 18,
             "tyranny": 14,
             "rel_b": -28,
-            "flag": "sunshangxiang_heir_little_conqueror"
+            "flag": "sunshangxiang_heir_little_conqueror",
+            "mist": 18,
+            "heat": 7,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "孫尚香眼中迸發出極度的驕傲與得意。從此 {heir} 仗著母親的江東樓船與百名女兵在朝中橫行無忌，將 {b} 派系壓得毫無還手之力。"
         },
@@ -537,7 +685,13 @@
             "inf": -14,
             "tyranny": 12,
             "corruption": 10,
-            "rel_b": 12
+            "rel_b": 12,
+            "troops": 80,
+            "mist": 10,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "孫尚香冷笑著目送兒子被帶走，只在臨別前把一枚江東水軍虎符的半塊悄悄塞進兒子掌心：「留著，文官教你的禮法救不了你的命，只有長江上的戰船能！」"
         }
@@ -565,7 +719,14 @@
             "tyranny": 22,
             "rel_b": -50,
             "rel_g": 22,
-            "flag": "sunshangxiang_wu_princess_regime"
+            "flag": "sunshangxiang_wu_princess_regime",
+            "mist": 26,
+            "crave": 26,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "玉璽落下，滿殿刀兵齊聲山呼。從此江東勢力與你的皇權徹底合流，朝堂之上無人敢忤這位持刀女霸主，而你每夜在她的香汗、刀光與極致健美肉體中徹底沉淪。"
         },
@@ -576,7 +737,12 @@
             "inf": -15,
             "tyranny": 20,
             "corruption": 16,
-            "rel_g": -35
+            "rel_g": -35,
+            "mist": 16,
+            "heat": 10,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "冰冷刀鋒壓進她雪白脖頸滲出一線鮮紅，孫尚香卻毫無懼色，反而眼眸發亮地放聲大笑：「好身手！這才配做我孫尚香的男人——只要你今夜沒割斷我的喉嚨，明天咱們換真刀再戰三百回合！」"
         }
@@ -604,7 +770,14 @@
             "corruption": 12,
             "hedon": 12,
             "rel_b": -24,
-            "flag": "sunshangxiang_yangtze_blockade_win"
+            "flag": "sunshangxiang_yangtze_blockade_win",
+            "affair": "g",
+            "mist": 12,
+            "crave": 12,
+            "heat": 6,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "五日後長江糧船全線暢通，孫尚香更隨船附贈了一罈頂級江東女兒紅與一柄親手磨亮的精緻短刃，邀請你早日登船切磋。"
         },
@@ -614,7 +787,10 @@
             "aff": -14,
             "inf": -8,
             "tyranny": 12,
-            "rel_b": 10
+            "rel_b": 10,
+            "heat": 6,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "派去接管水寨的官船還沒靠近便被江東快船團團圍住撞漏了船底。你只收到她寄回的一支光禿禿的箭桿，上面刻著四個豪橫大字：『有膽來搶。』"
         }
@@ -640,7 +816,12 @@
             "corruption": 16,
             "tyranny": 10,
             "rel_b": -28,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 16,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "都城百官從此夜間睡覺都得派十名護衛守床頭，生怕惹怒遠在江南的江東梟姬，再無人敢替 {b} 出頭。"
         },
@@ -651,7 +832,11 @@
             "inf": -10,
             "tyranny": 14,
             "rel_b": 12,
-            "rel_c": -35
+            "rel_c": -35,
+            "jail": "c",
+            "heat": 7,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "留守女兵見勢不妙立刻全數突圍殺出宮門、搶船順江而下與孫尚香匯合，反而讓長江下游的水軍威脅瞬間升級。"
         }
@@ -676,7 +861,12 @@
             "corruption": 16,
             "hedon": 20,
             "rel_g": 5,
-            "flag": "sunshangxiang_five_stage_bonded"
+            "flag": "sunshangxiang_five_stage_bonded",
+            "mist": 16,
+            "crave": 20,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "孫尚香眼底綻放出前所未有的熾熱光彩，發出一聲豪爽又銷魂的低笑，將你徹底拉進她的刀光與滾燙懷抱之中——從此生死同袍，唯餘無盡征服與狂歡。"
         },
@@ -686,7 +876,9 @@
             "aff": -6,
             "inf": 8,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "house": 1
           },
           "outcome": "孫尚香敏銳地察覺到你眼底殘存的防備，冷笑著把短刃插回大腿紅絲帶裡：「不愧是能坐穩龍椅的男人……沒關係，咱們往後日子長著呢，看最後是你的江山硬，還是我的刀硬！」"
         }
@@ -712,7 +904,12 @@
             "hedon": 20,
             "corruption": 14,
             "rel_b": -20,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 14,
+            "crave": 20,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "孫尚香在你懷裡發出暢快至極的野性大笑，整夜如獵豹般主動纏綿，汗水與銷魂喘息徹夜不絕。"
         },
@@ -723,7 +920,11 @@
             "inf": 6,
             "tyranny": 10,
             "rel_b": -10,
-            "rel_g": -22
+            "rel_g": -22,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "孫尚香揚眉輕哼一聲，故意用大腿外側冰涼的短刃柄輕輕戳了戳你的胸口：「陛下真是鐵公雞——罰你今晚多陪本宮打兩輪，不把你榨乾不許睡！」"
         }
@@ -751,7 +952,13 @@
             "tyranny": 12,
             "rel_b": -32,
             "rel_g": 18,
-            "flag": "sunshangxiang_yangtze_crusade"
+            "flag": "sunshangxiang_yangtze_crusade",
+            "office": 1,
+            "troops": 80,
+            "mist": 14,
+            "heat": 6,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "出征前夜，孫尚香穿著銀紅魚鱗輕甲在你的帥帳裡大口喝乾壯行烈酒，跨坐上你腰間狂野索歡。開拔後 {b} 兄長果然被她綁在旗艦船頭當擋箭鼓手，嚇得魂飛魄散。"
         },
@@ -761,7 +968,12 @@
             "aff": 4,
             "inf": 6,
             "rel_b": 6,
-            "rel_g": 8
+            "rel_g": 8,
+            "inj": "b",
+            "troops": 80,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "孫尚香英氣一笑接過虎符，臨行前卻暗中下令水師徵調了 {b} 娘家名下全部十二艘豪華私家畫舫改裝成火攻衝船，氣得 {b} 吐血。"
         }
@@ -787,7 +999,13 @@
             "hedon": 20,
             "tyranny": 14,
             "rel_g": 14,
-            "flag": "sunshangxiang_river_fire_victory"
+            "flag": "sunshangxiang_river_fire_victory",
+            "troops": 80,
+            "soldiers": 60,
+            "mist": 18,
+            "crave": 20,
+            "heat": 7,
+            "tag": "浴血功勳"
           },
           "outcome": "艙外江火映天、水軍歡呼震耳，艙內卻是緋紅水靠撕裂、激烈肉搏與高亢嬌喘隨江浪起伏。此戰過後，天下水師聞「江東梟姬」之名無不聞風喪膽。"
         },
@@ -797,7 +1015,10 @@
             "aff": -6,
             "inf": 8,
             "tyranny": 6,
-            "rel_g": 4
+            "rel_g": 4,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "孫尚香裹著你的披風靠在你懷裡豪爽一笑，小手卻早已鑽進你甲冑縫隙裡輕輕摩挲：「陛下還是一樣愛裝正經……行吧，等進了船艙關上門，看你還裝不裝得下去！」"
         }
@@ -826,7 +1047,13 @@
               "corruption": 14,
               "rel_b": -38,
               "rel_g": 22,
-              "flag": "sunshangxiang_river_funeral_purge"
+              "flag": "sunshangxiang_river_funeral_purge",
+              "troops": 80,
+              "mist": 14,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "{b} 一黨徹底覆滅，江東孫氏感念你替郡主報仇而暫息兵戈；只是從此空蕩蕩的梟姬閣再無刀光劍影，也再無那個在龍榻上與你激烈過招的野性身影。"
           },
@@ -836,7 +1063,11 @@
               "inf": -12,
               "tyranny": 14,
               "rel_b": 16,
-              "rel_g": -40
+              "rel_g": -40,
+              "heat": 7,
+              "pol": 15,
+              "mist": 15,
+              "wood": -50
             },
             "outcome": "江東孫氏震怒之下徹底與朝廷決裂、斷絕長江一切商貿並頻頻劫掠官船，{g} 悲憤掛印遠遁江湖。"
           }
@@ -862,7 +1093,12 @@
               "inf": 8,
               "corruption": 12,
               "rel_b": -24,
-              "flag": "sunshangxiang_rescue_ordered"
+              "flag": "sunshangxiang_rescue_ordered",
+              "troops": 80,
+              "mist": 12,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "消息傳入敵營，滿身鞭痕卻眼神如狼的孫尚香吐出一口血沫，望著都城方向露出一抹森冷徹骨的笑。"
           },
@@ -873,7 +1109,12 @@
               "inf": -16,
               "corruption": 24,
               "tyranny": 14,
-              "rel_b": 20
+              "rel_b": 20,
+              "troops": 80,
+              "mist": 24,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "敵帥大笑著把你的除籍聖旨唸給被鐵鏈鎖住的她聽。孫尚香聽完竟仰天大笑到眼眶發紅——從那一刻起，她發誓若有一日活著掙斷鐵鏈，定要帶著江東水師親手把這座薄情皇宮拆成廢墟。"
           }
@@ -900,7 +1141,15 @@
               "corruption": 14,
               "hedon": 10,
               "rel_b": -30,
-              "flag": "sunshangxiang_wounded_leg_kissed"
+              "flag": "sunshangxiang_wounded_leg_kissed",
+              "ban": "b",
+              "troops": 80,
+              "mist": 14,
+              "crave": 10,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "孫尚香渾身劇烈戰慄，強忍多日的倔強淚水終於奪眶而出，發狂地將你拉倒在虎皮榻上，用完好的雙臂死死箍住你的脖頸以最激烈的歡愛確認你的承諾。"
           },
@@ -911,7 +1160,11 @@
               "inf": -16,
               "corruption": 26,
               "tyranny": 12,
-              "rel_b": 18
+              "rel_b": 18,
+              "mist": 26,
+              "heat": 6,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "你拿走水軍印信的那一刻，孫尚香眼底所有熱血徹底化作寒冰。不到半月，{b} 在宮苑散步時便「意外」被一支無名冷箭射穿了腳踝，從此比她跛得更慘。"
           }
@@ -938,7 +1191,11 @@
               "tyranny": 18,
               "corruption": 18,
               "rel_b": -35,
-              "flag": "sunshangxiang_shame_bloodwash"
+              "flag": "sunshangxiang_shame_bloodwash",
+              "exec": "b",
+              "mist": 18,
+              "heat": 9,
+              "pop": -15
             },
             "outcome": "當夜她在梟姬閣滾燙的藥浴桶裡一遍遍搓洗著發紅的肌膚，隨即哭笑著拉你入水，要你用最粗暴的力道與吻痕把敵人留下的所有屈辱徹底覆蓋。"
           },
@@ -949,7 +1206,12 @@
               "inf": -18,
               "corruption": 26,
               "tyranny": 14,
-              "rel_b": 16
+              "rel_b": 16,
+              "ban": 1,
+              "troops": 80,
+              "mist": 26,
+              "heat": 7,
+              "tag": "受辱怨骨"
             },
             "outcome": "荒院根本關不住江東梟姬。不到七天，她便靠著拳腳與肉體把整隊看守侍衛全數馴化成了死忠家奴，把荒院變成了日夜操練死士與縱情宣淫的暗黑兵營。"
           }
@@ -976,7 +1238,12 @@
               "corruption": 20,
               "hedon": 12,
               "tyranny": 14,
-              "flag": "sunshangxiang_hundred_blades_vow"
+              "flag": "sunshangxiang_hundred_blades_vow",
+              "mist": 20,
+              "crave": 12,
+              "heat": 7,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "孫尚香在你懷裡終於爆發出一聲撕心裂肺的獸吼，隨即發瘋般撕扯你的龍袍，在滿殿斷刀之間與你激烈交纏，彷彿唯有極致的肉體碰撞與痛楚能證明她還活著。"
           },
@@ -986,7 +1253,11 @@
               "aff": -26,
               "inf": -16,
               "corruption": 26,
-              "tyranny": 16
+              "tyranny": 16,
+              "pv": 1,
+              "mist": 26,
+              "heat": 8,
+              "jail": 1
             },
             "outcome": "她醒來後不再喊叫，只是每天在牆上用刀尖刻滿仇人的名字。不出一個月，當初阻撓發兵救援的四名朝中大員接連在自家府中遭無聲抹喉，胸口都插著半截江東斷刀。"
           }
@@ -1013,7 +1284,11 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_b": -32,
-              "flag": "sunshangxiang_herb_purge_saved"
+              "flag": "sunshangxiang_herb_purge_saved",
+              "mist": 20,
+              "heat": 8,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "從鬼門關爬回來的孫尚香變得比以往冷酷十倍。她剛能起身的第一夜，便把剩餘的絕子烈藥悄悄混進了 {b} 每天必喝的養顏參湯裡，讓 {b} 終身絕育。"
           },
@@ -1024,7 +1299,13 @@
               "inf": -12,
               "corruption": 28,
               "tyranny": 20,
-              "rel_b": 12
+              "rel_b": 12,
+              "mist": 28,
+              "heat": 10,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "孫尚香透過模糊汗淚看清了你骨子裡的冷酷無情，徹底對你死心。她強忍無盡屈辱保住性命，卻從此在你的茶酒與江東防線裡埋下了隨時引爆的致命殺機。"
           }
@@ -1052,7 +1333,13 @@
               "hedon": 22,
               "tyranny": 14,
               "rel_b": -35,
-              "flag": "sunshangxiang_hairpin_widow"
+              "flag": "sunshangxiang_hairpin_widow",
+              "mist": 20,
+              "crave": 22,
+              "heat": 7,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "滿朝嘲諷瞬間化為深入骨髓的敬畏與寒意。當夜孫尚香在你身下極盡野性主動，一邊劇烈騎乘一邊豪笑問你：「陛下，敢不敢也讓本宮戴著那根鐵簪陪您睡呀？」"
           },
@@ -1063,7 +1350,12 @@
               "inf": -10,
               "corruption": 24,
               "tyranny": 16,
-              "rel_b": 15
+              "rel_b": 15,
+              "mist": 24,
+              "crave": 6,
+              "heat": 8,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "孫尚香臨走前故意用沾著敵帥血漬的修長玉指輕輕劃過你的喉結，笑得豪邁又森冷：「陛下怕了？放心，只要陛下別像那蠢貨一樣想關死我，這根鐵簪就永遠只殺敵人喔。」"
           }
@@ -1091,7 +1383,13 @@
               "tyranny": 12,
               "rel_b": -38,
               "rel_g": 18,
-              "flag": "sunshangxiang_rescued_reckoning"
+              "flag": "sunshangxiang_rescued_reckoning",
+              "exec": "b",
+              "mist": 14,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "孫尚香這才收刀入鞘、帶著一身煙火血氣撲進你懷裡喘息——然而當晚她卻也私下將負傷的 {g} 召進梟姬閣演武偏廳「親自倒江東烈酒替將軍療傷謝恩」，紅燭亮至天明。"
           },
@@ -1102,7 +1400,11 @@
               "inf": -12,
               "corruption": 20,
               "rel_b": 12,
-              "rel_g": -15
+              "rel_g": -15,
+              "ban": "b",
+              "mist": 20,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "孫尚香冷笑著把長刀扔在地上，當著你的面豪氣地搭住 {g} 染血的肩膀轉身離去：「將軍瞧見了嗎？咱們在外頭拿命拼，深宮裡卻有人護著出賣咱們的賤婦呢。」從此她與 {g} 徹底結成只忠於彼此的暗黑軍中死黨。"
           }
@@ -1130,7 +1432,12 @@
               "hedon": 20,
               "tyranny": 14,
               "rel_g": -50,
-              "flag": "sunshangxiang_cell_prison_burned"
+              "flag": "sunshangxiang_cell_prison_burned",
+              "mist": 22,
+              "crave": 20,
+              "heat": 7,
+              "exec": "g",
+              "pv": 1
             },
             "outcome": "回到梟姬閣後，孫尚香在床榻上變得極具侵略性與偏執控制欲——她一定要由自己跨坐在你身上如馴馬般掌控一切，看你徹底臣服時，她眼底的陰霾才會短暫散去。"
           },
@@ -1140,7 +1447,12 @@
               "aff": -28,
               "inf": -14,
               "corruption": 28,
-              "hedon": 18
+              "hedon": 18,
+              "pv": 1,
+              "mist": 28,
+              "crave": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "孫尚香一眼看穿了你骨子裡的潔癖與薄情。她冷笑著不再求寵，轉而在梟姬閣地下仿照那座密室，暗中用武力囚禁並折磨數名容貌酷似你的俊美年輕武官，徹底化為吞噬男人的白刃妖魔。"
           }
@@ -1167,7 +1479,12 @@
               "corruption": 16,
               "tyranny": 12,
               "rel_b": -42,
-              "flag": "sunshangxiang_lone_escape_return"
+              "flag": "sunshangxiang_lone_escape_return",
+              "troops": 80,
+              "mist": 16,
+              "heat": 6,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "孫尚香一把奪過金印，踮起赤腳狠狠咬破你的嘴唇，血腥與江風氣息在唇齒間炸開：「陛下記住了，以後誰敢再碰我梟姬閣一把刀、一根箭，本宮可不會再等陛下點頭才動手砍人囉。」"
           },
@@ -1178,7 +1495,12 @@
               "inf": -14,
               "tyranny": 16,
               "corruption": 24,
-              "rel_b": 10
+              "rel_b": 10,
+              "troops": 80,
+              "mist": 24,
+              "heat": 8,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "孫尚香擦掉刀鋒上的血漬，英氣眉眼間閃過瘋狂的冷笑：「好啊，陛下既要講宮規，那咱們就看看，到底是您的宮規硬，還是我江東百艘戰船手裡的刀劍硬！」"
           }
@@ -1187,3 +1509,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['sunshangxiang'] = DATA;
+  (window.characterPacks ||= {})['sunshangxiang'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

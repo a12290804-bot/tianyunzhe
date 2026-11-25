@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["diaochan"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 10 號 貂蟬 (diaochan)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "diaochan",
     "index": 10,
@@ -18,7 +23,8 @@
       "0-34（初染）：帶著兩世流離看透人心的警覺與八面玲瓏的手段，用溫柔眼淚與採買人情網不動聲色地替自己築巢、給政敵下絆子。",
       "35-69（深蝕）：在黑霧與後宮爭寵的腐蝕下，重新拾起司徒府與郿塢最陰毒的『連環美人計』與沉水催情香——一面在榻上把君王迷得神魂顛倒，一面在暗室裡挑動武將與外臣為她自相殘殺。",
       "70+（深淵）：徹底黑化為『閉月妖姬』——已親手在閉月花廊裡設下雙男爭豔的荒淫血局、已將落敗貴妃剝去華服畫上娼妝逼其跪舔沾血繡鞋並轉賞賤僕、已把親兒調教成用假淚與自殘陷害政敵的連環計棋子，赤足踏血跳著亡國之舞，笑看滿城權貴為她爛死在溫柔鄉裡。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -46,7 +52,12 @@
             "hedon": 10,
             "corruption": 8,
             "rel_g": -12,
-            "flag": "diaochan_silk_trap_entry"
+            "flag": "diaochan_silk_trap_entry",
+            "mist": 10,
+            "crave": 10,
+            "heat": 6,
+            "marry": 1,
+            "preg": 1
           },
           "outcome": "貂蟬在你懷裡得逞地勾起紅唇，當著被喝退的 {g} 之面，柔弱無骨地勾住你的脖頸送上一記帶著甜酒與沉水香氣的深吻——第一回合，她就輕而易舉地挑撥了你與悍將的裂痕，順便把自己送上了你的龍床。"
         },
@@ -57,7 +68,10 @@
             "inf": 4,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": 5
+            "rel_g": 5,
+            "mist": 10,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "貂蟬先是一愣，隨即掩唇發出銀鈴般妖媚的嬌笑，反手用舌尖輕舔你捏著她下巴的虎口：「呀，夫君竟這般眼毒呢……既然軟戲騙不過夫君，那今晚奴家便換一套更銷魂的真本事伺候夫君囉。」"
         },
@@ -68,7 +82,11 @@
             "inf": 12,
             "tyranny": 12,
             "corruption": 14,
-            "rel_g": -25
+            "rel_g": -25,
+            "mist": 14,
+            "heat": 6,
+            "affair": "g",
+            "tag": "桀驁未馴"
           },
           "outcome": "{g} 滿心委屈與怨恨地挨了三十軍棍，從此對你生了嫌隙；而貂蟬在紗帳裡聽著外頭的板子聲，臉頰竟泛起一層病態的紅暈，整夜在你身下嬌啼得格外婉轉動人。"
         }
@@ -95,7 +113,13 @@
             "hedon": 8,
             "rel_b": -20,
             "rel_c": 12,
-            "flag": "diaochan_ledger_control"
+            "flag": "diaochan_ledger_control",
+            "office": 1,
+            "mist": 14,
+            "crave": 8,
+            "heat": 6,
+            "pv": 1,
+            "food": -60
           },
           "outcome": "次日 {b} 果然滿臉爆出奇癢無比的紅疹、整月不敢見人；而貂蟬憑著這本總帳與 {c} 的依附，兵不血刃便把整個內廷的銀錢與下人咽喉攥在了自己那雙纖纖玉手裡。"
         },
@@ -106,7 +130,10 @@
             "inf": 8,
             "corruption": 6,
             "rel_b": -10,
-            "rel_c": 6
+            "rel_c": 6,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "貂蟬嗔怪地輕捶了你胸口一下，眼波卻溫順如水：「夫君心軟捨不得弄壞她的臉蛋，那奴家下回就換個不會留疤、只會讓她哭得死去活來的法子好不好？」"
         },
@@ -116,7 +143,11 @@
             "aff": -12,
             "inf": -10,
             "tyranny": 8,
-            "rel_b": 10
+            "rel_b": 10,
+            "exile": 1,
+            "heat": 5,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "貂蟬垂眸柔順認錯，眼眶微紅惹人憐愛；可你一轉身，她便擦乾眼淚，笑著讓丫頭把剩餘兩名管事私藏宮女的醜事直接捅給了御史台。"
         }
@@ -145,7 +176,14 @@
             "rel_b": -30,
             "rel_g": -25,
             "rel_c": -5,
-            "flag": "diaochan_pavilion_replay"
+            "flag": "diaochan_pavilion_replay",
+            "jail": "b",
+            "mist": 14,
+            "crave": 8,
+            "heat": 5,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "一石二鳥，既重創 {b} 又狠狠敲打了 {g}。暖閣門一關，貂蟬立刻收起眼淚，赤足跨上你的膝頭，用那件剛被扯開半邊的水紅紗衣蒙住你們二人的頭，嬌笑著討要「受驚的補償」。"
         },
@@ -157,7 +195,10 @@
             "tyranny": 6,
             "rel_b": -8,
             "rel_g": 8,
-            "rel_c": 6
+            "rel_c": 6,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "那張字條是用遇水即化的特調米漿寫的，侍衛掏出來時早已變成一張白紙。貂蟬淚眼盈盈地看著你，彷彿受了天大的委屈，反倒讓滿席旁觀的 {c} 覺得是你太過偏袒 {b}。"
         },
@@ -168,7 +209,12 @@
             "inf": -12,
             "tyranny": 10,
             "rel_b": 14,
-            "rel_g": 5
+            "rel_g": 5,
+            "ban": "b",
+            "heat": 5,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "貂蟬盈盈下拜領罰，眼底最後一絲溫存卻徹底熄滅。禁足期間，她每天派丫頭往 {b} 宮中送去一盒摻了微毒的極品沉香，笑容甜美得像在送催命符。"
         }
@@ -197,7 +243,12 @@
             "hedon": 10,
             "tyranny": 12,
             "rel_b": -40,
-            "flag": "diaochan_erotic_scroll_betrayal"
+            "flag": "diaochan_erotic_scroll_betrayal",
+            "exec": "b",
+            "mist": 18,
+            "crave": 10,
+            "heat": 6,
+            "affair": "g"
           },
           "outcome": "貂蟬接過賞賜時嬌笑如花，當夜竟拿著那張最露骨的春宮圖鋪在床頭，模仿著畫上的姿勢在你身下婉轉承歡，軟語問你「是 {b} 姐姐美，還是貂蟬更讓夫君銷魂」。"
         },
@@ -207,7 +258,10 @@
             "aff": -8,
             "inf": 4,
             "corruption": 8,
-            "rel_b": -12
+            "rel_b": -12,
+            "mist": 10,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "貂蟬委屈地咬著下唇點頭應下。可隔天宮外青樓茶肆便不知為何流出了數百張木版拓印的同款春宮圖，把 {b} 的娘家逼得連夜辭官告老。"
         }
@@ -235,7 +289,13 @@
             "tyranny": 12,
             "rel_g": -15,
             "rel_c": 8,
-            "flag": "diaochan_veil_dance_caught"
+            "flag": "diaochan_veil_dance_caught",
+            "mist": 18,
+            "crave": 20,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "貂蟬在你的粗暴凌虐與佔有中竟發出比方才更加放浪銷魂的嬌啼，甚至挑釁地回頭望著跪在地上發抖的 {g}。那一夜過後，{g} 徹底成了你們夫妻手裡連命都攥著的走狗。"
         },
@@ -246,7 +306,11 @@
             "corruption": 14,
             "rel_g": 14,
             "rel_c": 10,
-            "rel_b": -20
+            "rel_b": -20,
+            "mist": 14,
+            "heat": 6,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "次日 {g} 果然乖乖把宮門換防權與 {b} 外戚的密帳雙手奉上。當夜貂蟬洗淨身上的異味，赤身鑽進你的龍被裡撒嬌：「夫君別吃醋嘛，那些蠢男人只配碰碰皮毛，奴家最銷魂的深處，永遠只留給夫君一個人呀。」"
         },
@@ -258,7 +322,12 @@
             "tyranny": 16,
             "corruption": 12,
             "rel_g": -45,
-            "rel_b": 15
+            "rel_b": 15,
+            "exec": "g",
+            "mist": 12,
+            "heat": 8,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "血濺花廊，{g} 死不瞑目。貂蟬披著沾血的水紅薄紗，卻對著你淒美一笑：「夫君跟當年的董卓還真像呢……只許自己玩，不許別人看，可殺了這一個，下一個替我賣命的蠢男人已經在路上了喔。」"
         }
@@ -285,7 +354,10 @@
             "corruption": 16,
             "rel_b": -32,
             "rel_g": -45,
-            "flag": "diaochan_chain_kill"
+            "flag": "diaochan_chain_kill",
+            "mist": 16,
+            "heat": 9,
+            "exec": "b"
           },
           "outcome": "亂箭齊發，{g} 被射成刺蝟，{b} 被嚇得當場昏死。貂蟬伏在你肩頭聽著慘叫聲輕輕顫抖，臉頰泛紅地貼上你的唇：「看男人為我發瘋互殺的滋味……果然最能助興了呢，夫君今晚可要好好疼我。」"
         },
@@ -297,7 +369,11 @@
             "tyranny": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_g": -20
+            "rel_g": -20,
+            "mist": 10,
+            "heat": 5,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "{g} 還沒開口，便在押送途中「突然心脈爆裂」暴斃——貂蟬在酒裡混的是雙重毒，她對著你無辜地眨了眨美眸，連半點證據都沒留下。"
         }
@@ -325,7 +401,14 @@
             "tyranny": 10,
             "rel_b": -35,
             "rel_c": 14,
-            "flag": "diaochan_blood_tears_win"
+            "flag": "diaochan_blood_tears_win",
+            "ban": "b",
+            "mist": 16,
+            "crave": 12,
+            "heat": 5,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "從此再無人敢輕易用「紅顏禍水」攻訐貂蟬。而她在你懷裡一邊享受著你的憐惜，一邊笑盈盈地吩咐丫頭去把 {b} 禁足宮院的碳火與飯食減成最低等的殘羹冷炙。"
         },
@@ -336,7 +419,10 @@
             "inf": 6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 4
+            "rel_c": 4,
+            "mist": 10,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "貂蟬聽完微微一僵，隨即綻開一抹比哭還美的笑，直接把那杯苦茶一飲而盡：「夫君竟連奴家演的戲都要拆台……好吧，下次奴家便換一杯真毒酒，看夫君忍不忍心看著我死囉。」"
         }
@@ -363,7 +449,12 @@
             "tyranny": 12,
             "rel_b": 12,
             "rel_c": -35,
-            "flag": "diaochan_silk_cartel"
+            "flag": "diaochan_silk_cartel",
+            "mist": 16,
+            "heat": 6,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "不出半月 {c} 家族商號徹底倒閉，{c} 哭著賣光首飾求饒。貂蟬用分來的第一箱極品西域香料，為自己與你調出了更濃烈、更令人上癮的新款沉水迷情香。"
         },
@@ -374,7 +465,10 @@
             "inf": -6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 16
+            "rel_c": 16,
+            "mist": 10,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "商戰反噬，{b} 賠得血本無歸。貂蟬卻毫不生氣，當夜依然笑吟吟地鑽進你懷裡，只是在你情動最深處時，忽地狠狠咬破了你的肩頭，低笑著說這是「夫君偏心的罰」。"
         }
@@ -401,7 +495,11 @@
             "hedon": 20,
             "corruption": 16,
             "rel_b": -28,
-            "flag": "diaochan_scent_addiction"
+            "flag": "diaochan_scent_addiction",
+            "mist": 16,
+            "crave": 20,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "那一夜寢殿裡沉水香與銷魂喘息徹夜未絕，貂蟬把昔日在郿塢與長安學盡的房中秘術全數施展在你身上。次日清晨，她故意穿著你沾滿紅脂與體香的龍袍走出殿門，當眾對路過的 {b} 掩唇嬌笑。"
         },
@@ -412,7 +510,12 @@
             "hedon": 18,
             "tyranny": 12,
             "corruption": 16,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 16,
+            "crave": 18,
+            "heat": 6,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "越是粗暴的懲罰，貂蟬眼底的迷離與紅暈就越是妖冶，她在你身下軟得像一灘春水，一邊哭喘一邊更加死命地纏住你的腰——這個女人早已把被佔有與操控男人的快感融為一體。"
         },
@@ -422,7 +525,10 @@
             "aff": -20,
             "inf": -10,
             "tyranny": 14,
-            "rel_b": 14
+            "rel_b": 14,
+            "heat": 7,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "貂蟬赤腳跌坐在冰冷地磚上，薄紗滑落露出大片雪膚，她卻沒有哭，只是緩緩拾起一塊碎裂的青銅香爐片，對著你淒豔一笑：「夫君忍得住今夜，可忍得住往後每一夜嗎？」"
         }
@@ -449,7 +555,13 @@
             "tyranny": 16,
             "rel_g": 10,
             "rel_c": 12,
-            "flag": "diaochan_blood_dance_abyss"
+            "flag": "diaochan_blood_dance_abyss",
+            "pv": 1,
+            "pol": 12,
+            "energy": 25,
+            "mist": 24,
+            "crave": 26,
+            "heat": 8
           },
           "outcome": "那一夜閉月花廊絲竹不絕、荒淫無度，彷彿末日狂歡。你與貂蟬在漫天花雨與眾人炙熱扭曲的注視下徹底墜入深淵，從此她成了這座黑霧燈塔裡最豔麗、最毒辣、也最離不開你的亡國妖姬。"
         },
@@ -462,7 +574,12 @@
             "hedon": 18,
             "tyranny": 22,
             "rel_g": -45,
-            "rel_c": -5
+            "rel_c": -5,
+            "mist": 20,
+            "crave": 18,
+            "heat": 11,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "{g} 滿口噴血哀嚎著被拖走。貂蟬沾著他的鮮血在你懷裡笑得花枝亂顫，竟伸指沾血在自己臉頰點出一抹妖豔紅妝：「夫君吃醋殺人的樣子……比呂布當年還要讓奴家心動呢。」"
         }
@@ -489,7 +606,12 @@
             "hedon": 20,
             "tyranny": 18,
             "rel_b": -50,
-            "flag": "diaochan_courtesan_revenge"
+            "flag": "diaochan_courtesan_revenge",
+            "mist": 24,
+            "crave": 20,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "那一夜暗室裡傳來 {b} 徹底崩潰的慘哭與貂蟬嬌媚得令人毛骨悚然的歡愛笑聲。次日 {b} 已經徹底瘋癲失智，逢人便磕頭求饒，成了全後宮最駭人的殺雞儆猴活標本。"
         },
@@ -500,7 +622,11 @@
             "inf": 4,
             "tyranny": 8,
             "corruption": 6,
-            "rel_b": -20
+            "rel_b": -20,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "貂蟬收起腳，臉上的溫柔笑意冷了三分，臨走前卻還是順手拿走了 {b} 頭上最後一支象徵高門身分的玉鳳釵，隨手掰成兩截丟進了痰盂。"
         }
@@ -527,7 +653,12 @@
             "corruption": 18,
             "tyranny": 12,
             "rel_b": -25,
-            "flag": "diaochan_heir_schemer"
+            "flag": "diaochan_heir_schemer",
+            "mist": 18,
+            "heat": 6,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "貂蟬眼底泛起極度滿意的妖光。從此 {heir} 在朝堂與後宮裡成了最可怕的笑面虎，表面仁厚孝順得像個聖人，背地裡與母親聯手不知把多少政敵送上了斷頭台。"
         },
@@ -538,7 +669,12 @@
             "inf": -12,
             "tyranny": 10,
             "corruption": 8,
-            "rel_b": 10
+            "rel_b": 10,
+            "mist": 10,
+            "heat": 5,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "貂蟬沒有哭鬧，只是在 {heir} 被帶走前，含笑替他理了理衣領並在他掌心塞了一小包迷情沉香：「乖，太傅也是男人，娘教你的法子，對男人永遠管用喔。」"
         }
@@ -566,7 +702,14 @@
             "tyranny": 22,
             "rel_b": -50,
             "rel_g": 20,
-            "flag": "diaochan_velvet_cage_regime"
+            "flag": "diaochan_velvet_cage_regime",
+            "mist": 26,
+            "crave": 24,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "玉璽落下，大權旁落。從此閉月花廊成了真正的權力中樞，你日日沉溺於她的赤足紅舞與沉水迷香，而她笑盈盈地握著天下生殺大權，把昔日所有輕賤過她的人踩進了萬丈血泥。"
         },
@@ -577,7 +720,12 @@
             "inf": -15,
             "tyranny": 20,
             "corruption": 16,
-            "rel_g": -30
+            "rel_g": -30,
+            "mist": 16,
+            "heat": 10,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "冰冷劍鋒劃破她喉間肌膚滲出一線鮮紅，貂蟬卻絲毫不懼，反而順勢仰起修長脖頸露出淒美絕倫的微笑：「夫君終於肯對奴家動真格了呢……真好，這才配當讓貂蟬用盡一生心計去攻略的男人呀。」"
         }
@@ -605,7 +753,14 @@
             "corruption": 12,
             "hedon": 10,
             "rel_b": -22,
-            "flag": "diaochan_branch_empire"
+            "flag": "diaochan_branch_empire",
+            "affair": "g",
+            "food": 100,
+            "mist": 12,
+            "crave": 10,
+            "heat": 6,
+            "pv": 1,
+            "wood": 60
           },
           "outcome": "五日後她又快馬送回一件她親手穿過、帶著濃烈體香與沉香的水紅肚兜，字條上只寫了四個字：『洗淨等君。』"
         },
@@ -615,7 +770,10 @@
             "aff": -14,
             "inf": -8,
             "tyranny": 12,
-            "rel_b": 10
+            "rel_b": 10,
+            "heat": 6,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "查案官員剛到分城便在閉月行苑的酒宴裡徹底淪陷，反倒上書替貂蟬大唱讚歌。你收到她寄回的一張空白花箋，上面只印著一個戲謔的鮮紅唇印。"
         }
@@ -641,7 +799,12 @@
             "corruption": 16,
             "tyranny": 10,
             "rel_b": -28,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 16,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "都城後宮徹底陷入對「千里連環計」的恐懼，人人見了閉月花廊留守的丫頭都得低頭讓路。"
         },
@@ -652,7 +815,11 @@
             "inf": -10,
             "tyranny": 14,
             "rel_b": 12,
-            "rel_c": -35
+            "rel_c": -35,
+            "cold": 1,
+            "heat": 7,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "{c} 被打入冷宮前仍對著你淒笑：「陛下以為拔掉我就能逃出她的網嗎？您衣領上現在聞著的，不還是她的沉水香嗎？」"
         }
@@ -677,7 +844,12 @@
             "corruption": 16,
             "hedon": 16,
             "rel_g": 5,
-            "flag": "diaochan_five_stage_bonded"
+            "flag": "diaochan_five_stage_bonded",
+            "mist": 16,
+            "crave": 16,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "貂蟬眼角滑落一滴滾燙而真實的淚水，隨即化為最瘋狂、最無底線的深吻——從此她願為你燒盡整座世界，也絕不容許你再看任何別的女人一眼。"
         },
@@ -687,7 +859,9 @@
             "aff": -6,
             "inf": 8,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "house": 1
           },
           "outcome": "貂蟬指尖輕輕劃過你的心口，笑得又甜又涼：「夫君這顆心可真硬呢……沒關係，鐵石心腸的男人，融化起來才更有意思嘛。」"
         }
@@ -713,7 +887,13 @@
             "hedon": 18,
             "corruption": 14,
             "rel_b": -20,
-            "rel_g": 8
+            "rel_g": 8,
+            "pop": -15,
+            "mist": 14,
+            "crave": 18,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "貂蟬眼波流轉、嬌笑連連，整夜用盡解數在你身上翻雲覆雨，直到東方破曉才軟綿綿地枕著你的手臂沉睡。"
         },
@@ -724,7 +904,11 @@
             "inf": 6,
             "tyranny": 10,
             "rel_b": -10,
-            "rel_g": -20
+            "rel_g": -20,
+            "food": 100,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b"
           },
           "outcome": "貂蟬嘟起紅唇嗔怪地咬了你肩膀一口：「夫君真是鐵公雞……也罷，反正夫君的人和心遲早都是我的，錢放誰庫裡不都一樣？」"
         }
@@ -752,7 +936,12 @@
             "tyranny": 12,
             "rel_b": -30,
             "rel_g": 16,
-            "flag": "diaochan_camp_honeytrap"
+            "flag": "diaochan_camp_honeytrap",
+            "mist": 14,
+            "heat": 6,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "出征前夜，貂蟬在你的中軍帳裡赤足跳了一支極盡魅惑的送行舞，整夜在你身下纏綿不休。開拔後她果然把 {b} 族親當作誘餌送進敵營，借刀引發了敵營大亂。"
         },
@@ -762,7 +951,10 @@
             "aff": 4,
             "inf": 6,
             "rel_b": 6,
-            "rel_g": 8
+            "rel_g": 8,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "貂蟬掩唇輕笑領旨，眼底卻已盤算好回師後要如何從 {b} 身上討回十倍利息。"
         }
@@ -788,7 +980,13 @@
             "hedon": 18,
             "tyranny": 14,
             "rel_g": 12,
-            "flag": "diaochan_burning_tent_triumph"
+            "flag": "diaochan_burning_tent_triumph",
+            "mist": 18,
+            "crave": 18,
+            "heat": 7,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "帳外烈焰吞天、降卒哀嚎，帳內卻是水紅舞紗翻飛、銷魂喘息不絕。此戰過後，天下諸侯聞「閉月妖姬」之名無不膽戰心驚，生怕自家後院也被她點起一把滅族邪火。"
         },
@@ -798,7 +996,10 @@
             "aff": -6,
             "inf": 8,
             "tyranny": 6,
-            "rel_g": 4
+            "rel_g": 4,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "貂蟬裹著你的披風靠在你胸口輕笑，指尖卻早已不老實地鑽進你甲冑縫隙裡輕輕摩挲：「夫君真是口是心非……披風裡頭明明都已經這麼燙了，還裝什麼正人君子呀？」"
         }
@@ -827,7 +1028,12 @@
               "corruption": 14,
               "rel_b": -35,
               "rel_g": 22,
-              "flag": "diaochan_blood_petals_burial"
+              "flag": "diaochan_blood_petals_burial",
+              "mist": 14,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "{b} 外戚滿門抄斬，{g} 誓死效忠於你替她守墓；只是每逢月夜，閉月花廊裡總似還飄著那縷散不去的沉水甜香。"
           },
@@ -837,7 +1043,11 @@
               "inf": -10,
               "tyranny": 12,
               "rel_b": 15,
-              "rel_g": -40
+              "rel_g": -40,
+              "heat": 6,
+              "pol": 15,
+              "mist": 15,
+              "wood": -50
             },
             "outcome": "{g} 在靈堂前悲憤拔刀自刎（或掛印遠遁），而後宮眾妃見連寵冠一時的貂蟬死後都如此淒涼，對你愈發離心離德。"
           }
@@ -863,7 +1073,11 @@
               "inf": 8,
               "corruption": 12,
               "rel_b": -22,
-              "flag": "diaochan_cage_rescue_order"
+              "flag": "diaochan_cage_rescue_order",
+              "mist": 12,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "你當朝掌摑了落井下石的 {b}；消息傳入敵帳，渾身淤青的貂蟬望著都城方向，緩緩舔掉唇角的血跡，露出一抹妖豔而危險的笑。"
           },
@@ -874,7 +1088,11 @@
               "inf": -16,
               "corruption": 24,
               "tyranny": 14,
-              "rel_b": 20
+              "rel_b": 20,
+              "mist": 24,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "當這道棄她如敝屣的聖旨傳到敵帳時，貂蟬笑得眼淚直流——從那一刻起，她徹底放棄對你的最後一絲柔情，發誓要借敵軍之手把你這座皇城也燒成灰。"
           }
@@ -901,7 +1119,14 @@
               "corruption": 14,
               "hedon": 10,
               "rel_b": -28,
-              "flag": "diaochan_scar_kissed"
+              "flag": "diaochan_scar_kissed",
+              "cold": "b",
+              "mist": 14,
+              "crave": 10,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "貂蟬渾身劇烈震顫，瞬間淚如雨下，像溺水之人般發狂地緊緊抱住你——那一夜她在燭火全熄的暗室裡，用比以往更狂野、更卑微也更銷魂的方式把自己徹底獻祭給你。"
           },
@@ -912,7 +1137,12 @@
               "inf": -16,
               "corruption": 26,
               "tyranny": 10,
-              "rel_b": 18
+              "rel_b": 18,
+              "exec": "b",
+              "mist": 26,
+              "heat": 5,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "你那半步退縮徹底殺死了她心底最後一點光。不出十日，後宮接連有三名容貌最豔麗的新寵在睡夢中被無色毒霧毀去整張臉，而戴著金絲面紗的貂蟬每天都在暖閣裡對著炭火輕笑。"
           }
@@ -939,7 +1169,11 @@
               "tyranny": 18,
               "corruption": 18,
               "rel_b": -35,
-              "flag": "diaochan_shame_bloodbath"
+              "flag": "diaochan_shame_bloodbath",
+              "exec": "b",
+              "mist": 18,
+              "heat": 9,
+              "pop": -15
             },
             "outcome": "當夜她在閉月花廊的溫水池裡一遍遍搓洗著身上的墨跡，直到把肌膚搓得滲血，隨即哭笑著拉你入池，要你用最粗暴的吻與齒痕把敵人留下的所有印記徹底覆蓋。"
           },
@@ -950,7 +1184,12 @@
               "inf": -18,
               "corruption": 26,
               "tyranny": 14,
-              "rel_b": 16
+              "rel_b": 16,
+              "ban": 1,
+              "pv": 1,
+              "mist": 26,
+              "heat": 7,
+              "tag": "受辱怨骨"
             },
             "outcome": "被關進偏殿不到七日，她便靠著色誘與沉水迷香把整隊看守侍衛全數收服為裙下之臣，在幽禁之地建起了一座日夜宣淫的暗黑行宮。"
           }
@@ -977,7 +1216,12 @@
               "corruption": 20,
               "hedon": 12,
               "tyranny": 14,
-              "flag": "diaochan_blood_dress_vow"
+              "flag": "diaochan_blood_dress_vow",
+              "mist": 20,
+              "crave": 12,
+              "heat": 7,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "貂蟬在你懷裡發出一聲近乎絕望的嗚咽，緊緊咬住你的肩頭不肯鬆口，彷彿唯有你的體溫與血腥味能把她從無盡噩夢裡拉回來。"
           },
@@ -987,7 +1231,10 @@
               "aff": -26,
               "inf": -16,
               "corruption": 26,
-              "tyranny": 16
+              "tyranny": 16,
+              "mist": 26,
+              "heat": 8,
+              "jail": 1
             },
             "outcome": "她醒來後變得異常安靜溫順，每天笑著對所有探望的人行禮——直到半個月後，當初阻撓發兵的三名朝臣全家二十餘口在一夜之間全數詭異笑死在酒席上。"
           }
@@ -1014,7 +1261,12 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_b": -32,
-              "flag": "diaochan_musk_purge_saved"
+              "flag": "diaochan_musk_purge_saved",
+              "exec": "b",
+              "mist": 20,
+              "heat": 8,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "從鬼門關爬回來的貂蟬變得越發陰柔狠毒。她剛能下床的第一夜，便笑吟吟地把剩餘的濃麝香悄悄縫進了 {b} 最愛抱著睡的軟枕裡。"
           },
@@ -1025,7 +1277,14 @@
               "inf": -12,
               "corruption": 28,
               "tyranny": 20,
-              "rel_b": 12
+              "rel_b": 12,
+              "preg": 1,
+              "mist": 28,
+              "heat": 10,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "貂蟬望著你冷酷無情的背影，徹底看穿天下男人都一個模樣。她強忍屈辱活了下來，卻從此在你的床榻與茶酒裡埋下了最致命的慢性溫柔毒藥。"
           }
@@ -1053,7 +1312,13 @@
               "hedon": 20,
               "tyranny": 14,
               "rel_b": -35,
-              "flag": "diaochan_poison_kiss_widow"
+              "flag": "diaochan_poison_kiss_widow",
+              "mist": 20,
+              "crave": 20,
+              "heat": 7,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "滿朝嘲諷瞬間化為敬畏與恐懼。當夜貂蟬在你身下極盡妖嬈，一邊喘息一邊笑著問你：「夫君，怕不怕奴家這張剛毒死敵帥的紅唇呀？」"
           },
@@ -1064,7 +1329,13 @@
               "inf": -10,
               "corruption": 24,
               "tyranny": 16,
-              "rel_b": 15
+              "rel_b": 15,
+              "exec": "b",
+              "pv": 1,
+              "mist": 24,
+              "heat": 8,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "貂蟬臨走前緩緩塗上一層鮮紅唇脂，對著你遙遙送出一個飛吻，笑得冰冷徹骨：「夫君既然這麼怕死，以後喝的每一杯酒、吻的每一個女人，可都要仔細檢驗囉。」"
           }
@@ -1092,7 +1363,13 @@
               "tyranny": 12,
               "rel_b": -38,
               "rel_g": 18,
-              "flag": "diaochan_rescued_purge"
+              "flag": "diaochan_rescued_purge",
+              "exec": "b",
+              "mist": 14,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "貂蟬這才丟掉金簪軟綿綿地撲進你懷裡哭訴委屈——然而當晚她卻也私下把 {g} 召進閉月花廊的暗閣「親自替將軍上藥」，帳內紅燭亮至天明。"
           },
@@ -1103,7 +1380,11 @@
               "inf": -12,
               "corruption": 20,
               "rel_b": 12,
-              "rel_g": -15
+              "rel_g": -15,
+              "ban": "b",
+              "mist": 20,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "貂蟬望著你悽美一笑，轉身輕輕挽住 {g} 染血的手臂低語：「將軍瞧見了嗎？這深宮裡，只有將軍是真的拿命疼我呢。」從此這對男女徹底成了你後宮裡最致命的暗箭。"
           }
@@ -1131,7 +1412,12 @@
               "hedon": 18,
               "tyranny": 14,
               "rel_g": -50,
-              "flag": "diaochan_mirror_room_burned"
+              "flag": "diaochan_mirror_room_burned",
+              "pv": 1,
+              "mist": 22,
+              "crave": 18,
+              "heat": 7,
+              "exec": "g"
             },
             "outcome": "回到閉月花廊後，貂蟬在床榻上變得極其偏執與病態——她一定要點著最亮的紅燭、擺滿銅鏡看著你徹底沉淪在她身下，才會露出安心的笑意。"
           },
@@ -1141,7 +1427,11 @@
               "aff": -28,
               "inf": -14,
               "corruption": 28,
-              "hedon": 16
+              "hedon": 16,
+              "mist": 28,
+              "crave": 16,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "貂蟬一眼看透了你眼底的嫌棄與潔癖。她笑著不再求你，轉而在閉月花廊地下建起一座一模一樣的鏡室，暗中用沉水迷香囚禁並折磨數名容貌酷似你的俊美少年，徹底化為吃人的紅粉妖魔。"
           }
@@ -1168,7 +1458,12 @@
               "corruption": 16,
               "tyranny": 12,
               "rel_b": -42,
-              "flag": "diaochan_lone_escape_return"
+              "flag": "diaochan_lone_escape_return",
+              "tag": "毀容@b",
+              "mist": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1
             },
             "outcome": "貂蟬笑著戴上凰戒，踮起赤腳吻上你的唇角，指尖卻輕輕掐進你頸側的動脈：「夫君記住了，以後誰敢再碰閉月花廊一草一木，奴家可不會再等夫君點頭才動手囉。」"
           },
@@ -1179,7 +1474,11 @@
               "inf": -14,
               "tyranny": 16,
               "corruption": 24,
-              "rel_b": 10
+              "rel_b": 10,
+              "mist": 24,
+              "heat": 8,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "貂蟬擦掉指間沾染的炭灰，笑得如三月桃花般燦爛卻令人毛骨悚然：「好呀，夫君既要講宮規，那奴家就陪夫君玩一場最大的連環局，看最後是誰先跪下來求饒喔。」"
           }
@@ -1188,3 +1487,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['diaochan'] = DATA;
+  (window.characterPacks ||= {})['diaochan'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

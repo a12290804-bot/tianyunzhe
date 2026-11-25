@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["zhuowenjun"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 15 號 卓文君 (zhuowenjun)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "zhuowenjun",
     "index": 15,
@@ -18,7 +23,8 @@
       "0-34（初染）：帶著富可敵國的傲骨與看透負心男人的冷冽，以遠山眉下的犀利算計與《鳳求凰》琴音迅速拿捏宮中財權與鐵料命脈。",
       "35-69（深蝕）：在黑霧與後宮奪權的腐蝕下，徹底將商業資本與肉體反差玩到極致——一面用高利債契與斷鐵逼破政敵家族、動輒當街賣酒公開逼宮，一面在私設酒壚裡以少婦熟軀與蜀地烈酒收買握兵悍將。",
       "70+（深淵）：徹底黑化為『鐵壚妖婦』——已親手用燒紅的卓氏鐵印在落敗貴妃雪肩烙下奴記並丟給冶鐵壯奴在酒壚當眾揉捏羞辱、已習慣在彈完《白頭吟》後一邊把背叛者的家產拆賣乾淨一邊在酒香中縱情宣淫、已將親兒培養成視皇權為買賣籌碼的冷血鐵業少東，笑看整座漢家江山徹底典當進卓家帳本裡。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -46,7 +52,12 @@
             "hedon": 12,
             "corruption": 8,
             "rel_g": -6,
-            "flag": "zhuowenjun_tavern_counter_entry"
+            "flag": "zhuowenjun_tavern_counter_entry",
+            "mist": 10,
+            "crave": 12,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "耳杯翻倒，濃烈蜀酒潑濕了她的素白深衣，緊貼在飽滿熟美的曲線上透出誘人肉色！卓文君眼底瞬間迸發出當年私奔夜般的狂野炙熱，竟直接用修長雪腿夾住你的腰，當著僵在門外的 {g} 之面激烈回吻。"
         },
@@ -57,7 +68,11 @@
             "inf": -6,
             "tyranny": 10,
             "corruption": 10,
-            "rel_g": 8
+            "rel_g": 8,
+            "mist": 10,
+            "heat": 5,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "卓文君冷冷收回玉手，遠山眉一挑，當場把一隻空酒杯摔碎在地上：「想白嫖我卓家的鐵礦？陛下還真跟當年那個窮書生一樣愛做白日夢。」可她入宮前夜卻已把半數鐵礦悄悄轉到了暗設商號名下。"
         },
@@ -69,7 +84,12 @@
             "hedon": 16,
             "corruption": 14,
             "tyranny": 8,
-            "rel_g": -15
+            "rel_g": -15,
+            "mist": 14,
+            "crave": 16,
+            "heat": 5,
+            "affair": "g",
+            "tag": "桀驁未馴"
           },
           "outcome": "爐火搖曳下，她真的毫無扭捏地解開漢服交領，半裸著圓潤挺翹的雙峰撥動七弦琴，琴音越彈越急、喘息越壓越亂，直到你忍無可忍將她直接壓碎在琴弦之上。"
         }
@@ -96,7 +116,13 @@
             "tyranny": 12,
             "rel_b": -30,
             "rel_c": 14,
-            "flag": "zhuowenjun_debt_foreclosure"
+            "flag": "zhuowenjun_debt_foreclosure",
+            "inj": "b",
+            "mist": 16,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "次日長安城轟動一時，{b} 娘家祖宅被卓家壯奴當街貼上封條，{b} 氣得吐血暈厥、卻因白紙黑字欠債還錢而連告御狀都無從告起。當夜卓文君跨坐在堆滿債契的軟榻上，解開深衣邀你共享這場金錢碾壓的極致快感。"
         },
@@ -107,7 +133,11 @@
             "inf": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_c": 8
+            "rel_c": 8,
+            "mist": 10,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "卓文君撥動一顆算盤珠發出清脆一響，輕笑著貼上你的唇：「陛下心善留他們一口氣，那正好，欠著我每個月三分利滾利，不出半年，{b} 連她頭上那支金步搖都得摘下來當給我。」"
         },
@@ -117,7 +147,10 @@
             "aff": -14,
             "inf": -10,
             "tyranny": 10,
-            "rel_b": 14
+            "rel_b": 14,
+            "heat": 5,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "卓文君面無表情地收起算盤，當夜便飛鴿傳書回臨邛——三天後兵部急報，蜀郡鐵礦「突發塌方」，大漢軍械局所有精鐵供應瞬間斷絕。"
         }
@@ -145,7 +178,13 @@
             "tyranny": 10,
             "rel_b": -38,
             "rel_c": 12,
-            "flag": "zhuowenjun_palace_gate_tavern"
+            "flag": "zhuowenjun_palace_gate_tavern",
+            "ban": "b",
+            "mist": 16,
+            "crave": 14,
+            "heat": 5,
+            "inj": "b",
+            "tag": "立威震宮"
           },
           "outcome": "全朝堂與後宮徹底見識了什麼叫「不要臉面就能無敵」！回到寢宮後，你根本沒等她脫去那件充滿市井反差張力的緊身粗布賣酒短襖，便直接將她按在龍案上撕碎布料狠狠折騰了一整夜。"
         },
@@ -156,7 +195,11 @@
             "inf": 8,
             "tyranny": 8,
             "rel_b": -15,
-            "rel_c": 4
+            "rel_c": 4,
+            "heat": 5,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "雖然酒壚被砸，但「{b} 逼得首富寵妃在宮門外賣酒籌款」的笑話早已傳遍長安酒肆，{b} 顏面盡失，卓文君則贏得了實打實的鐵礦主權。"
         },
@@ -166,7 +209,12 @@
             "aff": -22,
             "inf": -16,
             "tyranny": 16,
-            "rel_b": 16
+            "rel_b": 16,
+            "cold": 1,
+            "heat": 8,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "臨邛卓家早有預案，官兵還沒入川，數千名冶鐵壯奴便已毀爐停產、帶著全部精鐵銀兩逃入深山，導致大漢邊軍半年無新刀可用，朝野上下怨聲載道。"
         }
@@ -194,7 +242,13 @@
             "corruption": 18,
             "tyranny": 14,
             "rel_b": -45,
-            "flag": "zhuowenjun_iron_monopoly"
+            "flag": "zhuowenjun_iron_monopoly",
+            "jail": "b",
+            "food": 100,
+            "mist": 18,
+            "heat": 7,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "{b} 母族一夜之間徹底覆滅，卓家從此真正掌握了大漢軍隊的鐵血命脈。當夜卓文君興致大發，在鋪滿新鑄精鐵契書的錦榻上任你極盡索取。"
         },
@@ -205,7 +259,11 @@
             "inf": 4,
             "corruption": 8,
             "tyranny": 8,
-            "rel_b": -15
+            "rel_b": -15,
+            "mist": 10,
+            "heat": 5,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "卓文君爽快地掏出十萬貫罰金，眼皮都沒眨一下——這點小錢對卓家連九牛一毛都算不上，而 {b} 娘家卻為了賠這筆罰金徹底變賣了最後一座田莊。"
         }
@@ -233,7 +291,13 @@
             "tyranny": 12,
             "rel_g": -15,
             "rel_c": 8,
-            "flag": "zhuowenjun_tavern_affair_caught"
+            "flag": "zhuowenjun_tavern_affair_caught",
+            "mist": 20,
+            "crave": 22,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "酒杯與精鐵契書震落滿地，卓文君在你充滿佔有欲的粗暴衝撞中發出極度壓抑又放浪的少婦哭喘，修長雪腿緊緊盤住你的腰，眼底滿是刺激與得意。那一夜過後，{g} 的兵權與小命徹底被你們夫妻攥死。"
         },
@@ -244,7 +308,11 @@
             "corruption": 14,
             "rel_g": 16,
             "rel_c": 10,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 14,
+            "heat": 6,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "次日 {g} 果然在朝堂上反手參了 {b} 外戚一本，死心塌地成了卓家最鋒利的刀。當夜卓文君洗淨一身酒氣滑進你的被窩：「陛下別酸嘛，那蠢將軍連我衣裙都沒解完就被我套上了債枷，這副身子最深處的銷魂滋味，永遠只留給陛下一個人嚐呀。」"
         },
@@ -256,7 +324,13 @@
             "tyranny": 16,
             "corruption": 12,
             "rel_g": -50,
-            "rel_b": 16
+            "rel_b": 16,
+            "affair": "g",
+            "exec": "g",
+            "mist": 12,
+            "heat": 8,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "酒壚裡鮮血與蜀酒橫流。卓文君裹著沾血的粗布短襖冷冷望著你，遠山眉間再無半分柔情：「陛下殺了 {g}，可全大漢等著卓家精鐵救命的邊將還有十二個——陛下打算把邊防全殺空嗎？」"
         }
@@ -283,7 +357,11 @@
             "corruption": 18,
             "rel_b": -35,
             "rel_g": -50,
-            "flag": "zhuowenjun_iron_chain_execution"
+            "flag": "zhuowenjun_iron_chain_execution",
+            "exec": "b",
+            "pop": -15,
+            "mist": 18,
+            "heat": 9
           },
           "outcome": "{g} 慘死當場，{b} 嚇得徹底失魂落魄。當夜卓文君在爐火旁親手替你彈完後半首《白頭吟》，隨即赤身爬上你的龍榻低語：「負心人已經死了，陛下可千萬別讓我對你也彈這首曲子喔。」"
         },
@@ -295,7 +373,11 @@
             "tyranny": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_g": -22
+            "rel_g": -22,
+            "mist": 10,
+            "heat": 5,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "卓文君淡淡一笑收起古琴。可不過兩日，{g} 便在廷尉大牢裡被「獄卒誤送的蜀地烈酒」毒得七竅流血暴斃，死無對證。"
         }
@@ -323,7 +405,14 @@
             "tyranny": 12,
             "rel_b": -38,
             "rel_c": 14,
-            "flag": "zhuowenjun_money_buys_opinion"
+            "flag": "zhuowenjun_money_buys_opinion",
+            "ban": "b",
+            "mist": 18,
+            "crave": 14,
+            "heat": 6,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "從此長安城再無人敢用私奔與商賈身分攻擊卓文君——誰敢罵她一句，明天全家就別想在長安買到一粒米、一根鐵釘！當夜她在書案上極盡主動狂野，把這場資本大勝的興奮全數宣洩在你身上。"
         },
@@ -335,7 +424,10 @@
             "corruption": 10,
             "tyranny": 8,
             "rel_b": -15,
-            "rel_c": 4
+            "rel_c": 4,
+            "mist": 10,
+            "heat": 5,
+            "ban": 1
           },
           "outcome": "卓文君遠山眉微蹙，眼底掠過一絲冷笑——她明面上順從交出半數商鋪，暗地裡卻已透過白手套商號將長安城全部鹽鐵批發權重新買了回來。"
         }
@@ -362,7 +454,12 @@
             "tyranny": 14,
             "rel_b": 14,
             "rel_c": -40,
-            "flag": "zhuowenjun_salt_iron_merger"
+            "flag": "zhuowenjun_salt_iron_merger",
+            "mist": 18,
+            "heat": 7,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "半月內 {c} 娘家徹底破產流離失所，卓家正式達成「鹽鐵雙霸」。當夜卓文君在滿屋新到手的地契與銀票上赤身邀你共飲，熟婦玉體在紅炭火光下散發著令人窒息的資本誘惑。"
         },
@@ -373,7 +470,10 @@
             "inf": -6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 18
+            "rel_c": 18,
+            "mist": 10,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "併購落空，{b} 氣得半死；卓文君卻只是輕輕撥響了一記算盤珠，當夜在龍榻上用更狂野的索取與咬痕向你討回了這筆「違約金」。"
         }
@@ -400,7 +500,11 @@
             "hedon": 22,
             "corruption": 16,
             "rel_b": -30,
-            "flag": "zhuowenjun_white_hair_bed_claim"
+            "flag": "zhuowenjun_white_hair_bed_claim",
+            "mist": 16,
+            "crave": 22,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "那一夜寢殿裡琴弦震斷、酒香與熟婦高亢失控的嬌喘徹夜不息。次日清晨她饜足地把精鐵契書塞回你手裡，故意穿著你的寬大龍袍走出殿門，對著路過的 {b} 優雅冷笑。"
         },
@@ -411,7 +515,12 @@
             "hedon": 20,
             "tyranny": 12,
             "corruption": 16,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 16,
+            "crave": 20,
+            "heat": 6,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "雙腕被絲帶緊縛、飽滿胸乳壓在冰涼的七弦琴弦上隨著每一次猛烈撞擊發出雜亂的琴音，卓文君竟瞬間崩潰般發出一聲甜膩至極的顫叫——這個外表高傲的首富千金，骨子裡竟如此迷戀在禁忌與壓迫中徹底融化。"
         },
@@ -421,7 +530,10 @@
             "aff": -22,
             "inf": -10,
             "tyranny": 14,
-            "rel_b": 14
+            "rel_b": 14,
+            "heat": 7,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "卓文君赤身披上外袍，回頭冷冷看了你一眼。隔日長安城內卓氏錢莊果然立刻凍結了 {b} 外戚的全部周轉資金，一夜之間逼垮了 {b} 娘家兩座大鹽行。"
         }
@@ -448,7 +560,13 @@
             "tyranny": 16,
             "rel_g": 10,
             "rel_c": 12,
-            "flag": "zhuowenjun_gold_counter_abyss"
+            "flag": "zhuowenjun_gold_counter_abyss",
+            "pol": 12,
+            "energy": 25,
+            "mist": 24,
+            "crave": 28,
+            "heat": 8,
+            "pv": 1
           },
           "outcome": "那一夜金餅四濺、琴弦崩斷，酒壚裡瀰漫著最赤裸的金錢與肉慾氣味。你與卓文君徹底墜入這場用黃金與淫亂鑄成的黑霧深淵，滿朝文武與邊將全成了你們資本肉市裡的忠實奴僕。"
         },
@@ -461,7 +579,12 @@
             "hedon": 20,
             "tyranny": 22,
             "rel_g": -48,
-            "rel_c": -5
+            "rel_c": -5,
+            "mist": 20,
+            "crave": 20,
+            "heat": 11,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "{g} 哀嚎逃竄，鮮血濺滿金餅。卓文君被你粗暴按在琴案上承受暴風驟雨般的掠奪，遠山眉在痛楚與極致快感中蹙起，竟發出一聲近乎瘋狂的暢快大笑：「這才像買得起我卓文君的真君王！」"
         }
@@ -488,7 +611,13 @@
             "hedon": 22,
             "tyranny": 18,
             "rel_b": -50,
-            "flag": "zhuowenjun_iron_brand_revenge"
+            "flag": "zhuowenjun_iron_brand_revenge",
+            "tag": "毀容@b",
+            "mist": 24,
+            "crave": 22,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "那一夜暗室裡焦肉味、壯漢淫笑聲、{b} 絕望的哀嚎與卓文君放浪的嬌喘徹夜交織。天亮時 {b} 已經徹底咬破嘴唇、眼神渙散成了一具行屍走肉，被卓家當作瘋奴丟進了臨邛最暗無天日的礦坑。"
         },
@@ -499,7 +628,11 @@
             "inf": 4,
             "tyranny": 8,
             "corruption": 6,
-            "rel_b": -20
+            "rel_b": -20,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "卓文君淡淡放下鐵印擦了擦手，臨走前卻還是將 {b} 娘家最後一塊祖墳地契撕得粉碎丟進了熊熊燃燒的鐵爐裡。"
         }
@@ -526,7 +659,12 @@
             "corruption": 18,
             "tyranny": 14,
             "rel_b": -28,
-            "flag": "zhuowenjun_heir_tycoon"
+            "flag": "zhuowenjun_heir_tycoon",
+            "mist": 18,
+            "heat": 7,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "卓文君遠山眉間綻放極度滿意的銳光。從此 {heir} 與卓氏商行徹底合流，年紀輕輕便把半數朝臣的經濟命脈攥進掌心，成了 {b} 派系最絕望的噩夢。"
         },
@@ -537,7 +675,12 @@
             "inf": -14,
             "tyranny": 12,
             "corruption": 10,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 10,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "卓文君冷笑著看著碎裂的算盤，臨別前只往 {heir} 袖裡塞了一枚卓氏鐵礦通兌金牌：「留著，大儒教你的書換不來一斤精鐵，只有這塊牌子能救你的命。」"
         }
@@ -565,7 +708,14 @@
             "tyranny": 22,
             "rel_b": -50,
             "rel_g": 22,
-            "flag": "zhuowenjun_capital_empire_regime"
+            "flag": "zhuowenjun_capital_empire_regime",
+            "mist": 26,
+            "crave": 26,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "玉璽落下，整座皇朝正式淪為臨邛卓氏的私產。百官從此只認卓氏金印與算盤，而你日夜沉溺在她的蜀酒香氣、古琴弦音與極致熟美的肉體張力裡，再也不願醒來。"
         },
@@ -576,7 +726,13 @@
             "inf": -15,
             "tyranny": 20,
             "corruption": 16,
-            "rel_g": -35
+            "rel_g": -35,
+            "troops": 60,
+            "mist": 16,
+            "heat": 10,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "劍鋒劃破她精緻鎖骨滲出一線鮮紅，卓文君卻連遠山眉都沒皺一下，反倒迎著劍光露出一抹淒豔而瘋狂的笑：「陛下終於肯掀翻我的算盤了？好啊——只要今夜沒砍斷我這雙撥算盤的手，咱們這筆以江山為注的血帳，才剛開始算呢。」"
         }
@@ -604,7 +760,14 @@
             "corruption": 12,
             "hedon": 12,
             "rel_b": -24,
-            "flag": "zhuowenjun_linqiong_iron_grip"
+            "flag": "zhuowenjun_linqiong_iron_grip",
+            "affair": "g",
+            "mist": 12,
+            "crave": 12,
+            "heat": 6,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "五日後巴蜀大鐵爐重新開火，精鐵源源不絕運往長安，卓文君更隨車附贈了一壇三十年陳蜀酒與一首香豔大膽的邀歡琴詞。"
         },
@@ -614,7 +777,10 @@
             "aff": -14,
             "inf": -8,
             "tyranny": 12,
-            "rel_b": 10
+            "rel_b": 10,
+            "heat": 6,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "大軍剛過劍閣棧道便因補給全被卓氏商行買斷而寸步難行，只收到卓文君寄回的一小塊冰冷廢鐵，上面刻著四個字：『無鐵無君。』"
         }
@@ -640,7 +806,12 @@
             "corruption": 16,
             "tyranny": 10,
             "rel_b": -28,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 16,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "長安城百官從此談「卓氏催債」色變，無論卓文君身在何處，都再無人敢在長安替 {b} 出頭半分。"
         },
@@ -651,7 +822,11 @@
             "inf": -10,
             "tyranny": 14,
             "rel_b": 12,
-            "rel_c": -35
+            "rel_c": -35,
+            "jail": "c",
+            "heat": 7,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "官府接管錢莊後才發現金庫裡早被卓文君提前轉空，反而引發全城商戶恐慌擠兌；臨邛隨即傳來急報，蜀郡商路全面罷市抗議。"
         }
@@ -676,7 +851,12 @@
             "corruption": 16,
             "hedon": 20,
             "rel_g": 5,
-            "flag": "zhuowenjun_five_stage_bonded"
+            "flag": "zhuowenjun_five_stage_bonded",
+            "mist": 16,
+            "crave": 20,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "卓文君眼角滑落一滴滾燙的淚珠，隨即化為極具侵略性的狂野深吻——從此她這座富可敵國的鐵業帝國與這副令人銷魂蝕骨的身軀，徹底只為你一人燃燒。"
         },
@@ -686,7 +866,9 @@
             "aff": -6,
             "inf": 8,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "house": 1
           },
           "outcome": "卓文君指尖輕輕撥動一顆冰冷的算盤珠，笑得既清雅又森冷：「陛下還真是精明呢——沒關係，這世上最有趣的買賣，就是看最後到底是誰買斷了誰的命。」"
         }
@@ -712,7 +894,12 @@
             "hedon": 20,
             "corruption": 14,
             "rel_b": -20,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 14,
+            "crave": 20,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "卓文君在你懷裡發出極致滿足的熟婦嬌笑，整夜用盡解數在你身上翻雲覆雨，直到東方破曉才軟綿綿地枕著你的手臂沉睡。"
         },
@@ -723,7 +910,13 @@
             "inf": 6,
             "tyranny": 10,
             "rel_b": -10,
-            "rel_g": -22
+            "rel_g": -22,
+            "troops": 60,
+            "food": 100,
+            "pop": -15,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b"
           },
           "outcome": "卓文君遠山眉微挑，故意在你的胸口狠狠咬出一圈鮮紅齒印：「陛下真會過日子……這筆帳我先記在小本本上，下回連本帶利一起討回來！」"
         }
@@ -751,7 +944,12 @@
             "tyranny": 12,
             "rel_b": -32,
             "rel_g": 18,
-            "flag": "zhuowenjun_iron_crusade"
+            "flag": "zhuowenjun_iron_crusade",
+            "mist": 14,
+            "heat": 6,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "出征前夜，卓文君穿著貼身獵裝在你的帥帳裡喝得微醺，主動解衣坐在你腿上極盡撩撥，說是要先收一筆「出征定金」。開拔後三軍將士換上削鐵如泥的卓家新刀，士氣瞬間爆棚，而 {b} 胞弟則每天被抽得皮開肉綻。"
         },
@@ -761,7 +959,10 @@
             "aff": 4,
             "inf": 6,
             "rel_b": 6,
-            "rel_g": 8
+            "rel_g": 8,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "卓文君微笑著撥響算盤珠接過軍令，心裡卻已經把這筆「沒撈到的利息」悄悄加進了戰後要向朝廷索取的鐵礦開採年限裡。"
         }
@@ -787,7 +988,13 @@
             "hedon": 20,
             "tyranny": 14,
             "rel_g": 14,
-            "flag": "zhuowenjun_iron_mountain_victory"
+            "flag": "zhuowenjun_iron_mountain_victory",
+            "mist": 18,
+            "crave": 20,
+            "heat": 7,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "帳外是將士們捧著卓家賞銀與烈酒的狂歡呼聲，帳內卻是月白短襖撕裂、熟婦嬌喘與金銀碰撞聲徹夜不絕。此戰過後，三軍上下徹底視卓文君為財神女帥。"
         },
@@ -797,7 +1004,10 @@
             "aff": -6,
             "inf": 8,
             "tyranny": 6,
-            "rel_g": 4
+            "rel_g": 4,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "卓文君裹著你的披風靠在你懷裡輕笑，纖手卻早已悄悄溜進你的戰袍裡輕輕揉捏：「陛下真愛裝正經……可你這心跳聲，早就把你的算盤珠子震散了呢。」"
         }
@@ -826,7 +1036,12 @@
               "corruption": 14,
               "rel_b": -38,
               "rel_g": 22,
-              "flag": "zhuowenjun_iron_funeral_purge"
+              "flag": "zhuowenjun_iron_funeral_purge",
+              "mist": 14,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "{b} 一黨徹底覆滅，卓家感念你替大小姐報仇而繼續誓死供應軍鐵；只是每逢寒夜，空蕩蕩的酒壚暖閣裡再也聽不見那陣清脆的算盤聲與《鳳求凰》。"
           },
@@ -836,7 +1051,13 @@
               "inf": -12,
               "tyranny": 14,
               "rel_b": 16,
-              "rel_g": -40
+              "rel_g": -40,
+              "food": 100,
+              "pop": -15,
+              "heat": 7,
+              "pol": 15,
+              "mist": 15,
+              "wood": -50
             },
             "outcome": "臨邛卓家徹底反水焚毀全部鐵爐逃往海外，{g} 悲憤棄官而去，大漢軍械供應瞬間陷入長達數年的崩潰。"
           }
@@ -862,7 +1083,12 @@
               "inf": 8,
               "corruption": 12,
               "rel_b": -24,
-              "flag": "zhuowenjun_rescue_ordered"
+              "flag": "zhuowenjun_rescue_ordered",
+              "troops": 60,
+              "mist": 12,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "消息傳入敵營，滿身青紫指印與酒漬的卓文君舔掉唇角血絲，遠山眉微微上挑，眼底閃過一抹冰冷到極致的算計。"
           },
@@ -873,7 +1099,12 @@
               "inf": -16,
               "corruption": 24,
               "tyranny": 14,
-              "rel_b": 20
+              "rel_b": 20,
+              "food": 100,
+              "mist": 24,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "敵帥大笑著把你的除籍抄家聖旨唸給縮在酒壚下的她聽。卓文君聽完沒有流一滴淚，反而冷笑著主動替敵帥斟滿一杯烈酒——從那一刻起，她決定用卓家藏在海外的秘財資助敵軍踏平長安。"
           }
@@ -900,7 +1131,14 @@
               "corruption": 14,
               "hedon": 10,
               "rel_b": -30,
-              "flag": "zhuowenjun_burned_arm_kissed"
+              "flag": "zhuowenjun_burned_arm_kissed",
+              "ban": "b",
+              "mist": 14,
+              "crave": 10,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "卓文君渾身劇烈戰慄，終於壓抑不住發出一聲絕望又狂喜的痛哭，用完好的右手死死勾住你的脖頸將你拉倒在軟榻上，以最瘋狂的肉體奉獻鎖死你的心。"
           },
@@ -911,7 +1149,11 @@
               "inf": -16,
               "corruption": 26,
               "tyranny": 12,
-              "rel_b": 18
+              "rel_b": 18,
+              "mist": 26,
+              "heat": 6,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "你那半步退縮徹底冰封了她最後一絲柔情。不到半月，{b} 娘家最後的私產全被卓家收買的惡奴放火燒得片瓦無存，{b} 自己也在睡夢中被毒煙燻壞了半張臉。"
           }
@@ -938,7 +1180,11 @@
               "tyranny": 18,
               "corruption": 18,
               "rel_b": -35,
-              "flag": "zhuowenjun_shame_bloodbath"
+              "flag": "zhuowenjun_shame_bloodbath",
+              "exec": "b",
+              "mist": 18,
+              "heat": 9,
+              "pop": -15
             },
             "outcome": "當夜她在滾燙的酒壚浴桶裡一遍遍搓洗著發寒的身體，隨即哭笑著拉你入水，要你用最粗暴的佔有與齒痕把那些骯髒目光與敵人的污辱徹底洗刷乾淨。"
           },
@@ -949,7 +1195,12 @@
               "inf": -18,
               "corruption": 26,
               "tyranny": 14,
-              "rel_b": 16
+              "rel_b": 16,
+              "ban": 1,
+              "pv": 1,
+              "mist": 26,
+              "heat": 7,
+              "tag": "受辱怨骨"
             },
             "outcome": "荒院根本關不住大漢首富的財力。不到三天，看守荒院的整隊禁軍便被卓家私庫的萬兩黃金徹底買通，將荒院打造成了她暗中遙控長安黑市與日夜宣淫的暗黑行宮。"
           }
@@ -976,7 +1227,12 @@
               "corruption": 20,
               "hedon": 12,
               "tyranny": 14,
-              "flag": "zhuowenjun_iron_ghost_vow"
+              "flag": "zhuowenjun_iron_ghost_vow",
+              "mist": 20,
+              "crave": 12,
+              "heat": 7,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "卓文君在你懷裡發出一聲如同瀕死母獸般的嗚咽，隨即發狂撕扯你的龍袍，在滿地廢鐵與酒香旁與你激烈交纏，彷彿唯有肉體的劇痛與炙熱能將她拉回人間。"
           },
@@ -986,7 +1242,12 @@
               "aff": -26,
               "inf": -16,
               "corruption": 26,
-              "tyranny": 16
+              "tyranny": 16,
+              "exec": "b",
+              "troops": 60,
+              "mist": 26,
+              "heat": 8,
+              "jail": 1
             },
             "outcome": "她醒來後不再哭鬧，只是每天對著空酒盞冷笑。不出一個月，當初阻撓發兵救援的五名重臣接連在自家府中遭重金收買的江湖死士割喉滅門，每人胸口都放著一枚卓氏鐵幣。"
           }
@@ -1013,7 +1274,12 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_b": -32,
-              "flag": "zhuowenjun_poison_wine_purge_saved"
+              "flag": "zhuowenjun_poison_wine_purge_saved",
+              "exec": "b",
+              "mist": 20,
+              "heat": 8,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "從鬼門關爬回來的卓文君徹底褪去了最後一絲對人間的溫情。她剛能下床的第一夜，便把剩餘的半壺絕子毒酒悄悄換進了 {b} 每天必喝的安神甜湯裡，讓 {b} 終身斷絕子嗣。"
           },
@@ -1024,7 +1290,15 @@
               "inf": -12,
               "corruption": 28,
               "tyranny": 20,
-              "rel_b": 12
+              "rel_b": 12,
+              "preg": 1,
+              "food": 100,
+              "mist": 28,
+              "heat": 10,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "卓文君透過模糊血淚看清了你的冷酷無情，徹底對你死心。她強忍無盡屈辱保住性命，卻從此在你每夜飲用的美酒與國庫帳目裡埋下了足以傾覆江山的毒雷。"
           }
@@ -1052,7 +1326,13 @@
               "hedon": 22,
               "tyranny": 14,
               "rel_b": -35,
-              "flag": "zhuowenjun_garrote_widow"
+              "flag": "zhuowenjun_garrote_widow",
+              "mist": 20,
+              "crave": 22,
+              "heat": 7,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "滿朝嘲諷瞬間化為深入骨髓的寒意與敬畏。當夜卓文君在你身下極盡放浪主動，一邊劇烈起伏著飽滿雪峰一邊笑問：「陛下，敢不敢也讓文君用琴弦纏著脖子試試這銷魂滋味呀？」"
           },
@@ -1063,7 +1343,12 @@
               "inf": -10,
               "corruption": 24,
               "tyranny": 16,
-              "rel_b": 15
+              "rel_b": 15,
+              "mist": 24,
+              "crave": 6,
+              "heat": 8,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "卓文君臨走前故意用沾著敵帥血漬的纖細玉指輕輕劃過你的喉結，笑得清冷徹骨：「陛下怕了？放心，只要陛下別負我、別動我卓家祖業，這根精鐵琴弦就永遠只替陛下彈《鳳求凰》喔。」"
           }
@@ -1091,7 +1376,13 @@
               "tyranny": 12,
               "rel_b": -38,
               "rel_g": 18,
-              "flag": "zhuowenjun_rescued_reckoning"
+              "flag": "zhuowenjun_rescued_reckoning",
+              "exec": "b",
+              "mist": 14,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "卓文君這才丟開鐵算盤、帶著一身煙火血氣撲進你懷裡低聲哭喘——然而當晚她卻也私下將負傷的 {g} 召進臨邛暖閣「親自當壚溫酒酬謝救命之恩」，紅燭搖曳直至天明。"
           },
@@ -1102,7 +1393,11 @@
               "inf": -12,
               "corruption": 20,
               "rel_b": 12,
-              "rel_g": -15
+              "rel_g": -15,
+              "ban": "b",
+              "mist": 20,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "卓文君冷笑著丟掉鐵算盤，當著你的面挽住 {g} 染血的手臂轉身離去：「將軍瞧見了嗎？咱們在外頭拿命拼，深宮裡卻有人護著出賣咱們的毒蛇呢。」從此她與 {g} 徹底結成只忠於彼此的暗黑軍財同盟。"
           }
@@ -1130,7 +1425,12 @@
               "hedon": 20,
               "tyranny": 14,
               "rel_g": -50,
-              "flag": "zhuowenjun_tavern_prison_burned"
+              "flag": "zhuowenjun_tavern_prison_burned",
+              "pv": 1,
+              "mist": 22,
+              "crave": 20,
+              "heat": 7,
+              "exec": "g"
             },
             "outcome": "回到長安後，卓文君在床榻上變得極具侵略性與偏執控制欲——她再也不許你壓制她的手腕，唯有由她跨坐在你身上掌控一切、看你徹底沉淪失控時，她眼底的死氣才會短暫散去。"
           },
@@ -1140,7 +1440,11 @@
               "aff": -28,
               "inf": -14,
               "corruption": 28,
-              "hedon": 18
+              "hedon": 18,
+              "mist": 28,
+              "crave": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "卓文君一眼看穿了你骨子裡的潔癖與薄情。她冷笑著不再求寵，轉而在京郊別苑仿照那座地下酒壚，暗中用重金與債契囚禁折磨數名容貌酷似你的俊美落魄書生，徹底化為吞噬男人的鐵壚妖魔。"
           }
@@ -1167,7 +1471,12 @@
               "corruption": 16,
               "tyranny": 12,
               "rel_b": -42,
-              "flag": "zhuowenjun_lone_escape_return"
+              "flag": "zhuowenjun_lone_escape_return",
+              "mist": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "卓文君一把奪過金印，踮起赤腳狠狠咬破你的嘴唇，血腥與酒味在唇齒間炸開：「陛下記住了，以後誰敢再碰我卓文君一文錢、一把琴，我可不會再等陛下點頭才砸爛她的狗頭囉。」"
           },
@@ -1178,7 +1487,11 @@
               "inf": -14,
               "tyranny": 16,
               "corruption": 24,
-              "rel_b": 10
+              "rel_b": 10,
+              "mist": 24,
+              "heat": 8,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "卓文君擦掉烏鐵算盤上的血跡，遠山眉微挑冷笑：「好啊，陛下既要講宮規，那咱們就看看，到底是您的宮規硬，還是我卓家捏著全大漢咽喉的錢袋子與鐵爐子硬！」"
           }
@@ -1187,3 +1500,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['zhuowenjun'] = DATA;
+  (window.characterPacks ||= {})['zhuowenjun'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

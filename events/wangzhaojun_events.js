@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["wangzhaojun"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 16 號 王昭君 (wangzhaojun)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "wangzhaojun",
     "index": 16,
@@ -18,7 +23,8 @@
       "0-34（初染）：帶著遭畫師醜化、被君王錯過的刻骨冷傲與塞外歸來的鋒利，表面懷抱琵琶清冷如雪，暗中卻已把胡漢邊貿與畫院耳目悄悄攥進掌心。",
       "35-69（深蝕）：在黑霧與後宮奪權的腐蝕下，徹底撕去悲情和親美人的偽裝——一面動輒引動漠北胡騎壓境勒索朝堂與碾壓政敵，一面在狼皮暖帳裡以塞外收繼破戒般的禁忌肉慾收買邊關悍將。",
       "70+（深淵）：徹底黑化為『雪狼閼氏』——已親手將嘲諷她失節的政敵剝光鎖在冰窖寒風裡受皮鞭凌虐並看自己在狼皮毯上赤身宣淫、已將胡漢邊關與後宮龍床變成隨時可互換籌碼的狩獵場、已把親兒訓練成同時通曉漢家陰謀與胡族血腥掠奪的雙血脈狼儲，在蒼涼琵琶聲中冷笑看盡中原皇室跪服於她的紅裘之下。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -46,7 +52,12 @@
             "hedon": 14,
             "corruption": 8,
             "rel_g": -6,
-            "flag": "wangzhaojun_wolf_pelt_entry"
+            "flag": "wangzhaojun_wolf_pelt_entry",
+            "mist": 10,
+            "crave": 14,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "王昭君先是冷哼一聲，隨即在你的強勢掠奪中眼底驟然燃起野火——她竟反手雙腿如鐵鉗般緊緊夾住你的腰，冷白的肌膚在短短幾息間便燙得驚人。門外守衛的 {g} 聽著帳內狼皮翻湧與清冷美人壓抑不住的銷魂低喘，幾乎站立不穩。"
         },
@@ -57,7 +68,11 @@
             "inf": -6,
             "tyranny": 10,
             "corruption": 10,
-            "rel_g": 8
+            "rel_g": 8,
+            "mist": 10,
+            "heat": 5,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "王昭君冷冷撥開你的手，慢條斯理地重新披上大紅狐裘：「失節？把女人送出去換平安的是你們漢家男人，如今嫌髒的也是你們。」當夜她表面交出一枚假銅印，暗中卻已放出海東青向漠北單于庭報信。"
         },
@@ -69,7 +84,12 @@
             "hedon": 16,
             "corruption": 14,
             "tyranny": 10,
-            "rel_g": -15
+            "rel_g": -15,
+            "mist": 14,
+            "crave": 16,
+            "heat": 5,
+            "affair": "g",
+            "tag": "桀驁未馴"
           },
           "outcome": "清越蒼涼的琵琶聲中，她冷白挺拔的雙峰隨著急促撥弦劇烈起伏，高傲的眼中泛起屈辱與興奮交織的水霧——那種把孤傲雪狼按在身下折辱馴服的極致張力，讓你徹夜流連忘返。"
         }
@@ -96,7 +116,13 @@
             "tyranny": 14,
             "rel_b": -28,
             "rel_c": 14,
-            "flag": "wangzhaojun_painter_purge"
+            "flag": "wangzhaojun_painter_purge",
+            "exec": "b",
+            "mist": 16,
+            "heat": 7,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "隔日畫師血濺宮門，後宮所有曾經行賄買通畫師的高門妃嬪無不魂飛魄散，{b} 更是被嚇得連夜燒毀全部私帳。當夜王昭君在狼皮毯上卸下紅裘，冷白緊實的身軀罕見地向你徹底敞開。"
         },
@@ -107,7 +133,12 @@
             "inf": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_c": 6
+            "rel_c": 6,
+            "inj": "b",
+            "mist": 10,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "王昭君冷冷勾唇，隨手把沾血的畫筆折成兩段：「陛下想替 {b} 留臉面？沒關係，漠北的風很大，吹著吹著，她的臉皮早晚還是會吹掉的。」"
         },
@@ -117,7 +148,10 @@
             "aff": -14,
             "inf": -10,
             "tyranny": 10,
-            "rel_b": 14
+            "rel_b": 14,
+            "heat": 5,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "王昭君面無表情地看著胡人親衛被帶走，眼底徹底凝結出萬年玄冰。三天後，北疆邊關突傳急報：三萬匈奴輕騎在長城外點燃狼煙示威，點名詢問「寧胡閼氏在漢宮是否受了委屈」。"
         }
@@ -144,7 +178,12 @@
             "tyranny": 12,
             "rel_b": -38,
             "rel_c": 10,
-            "flag": "wangzhaojun_steppe_leverage"
+            "flag": "wangzhaojun_steppe_leverage",
+            "mist": 16,
+            "heat": 6,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "{b} 羞憤欲死地磕下三個響頭，滿座貴女徹底見識了什麼叫「背後站著十萬胡騎的女閻王」！當夜王昭君修書退兵後，竟破天荒地褪去大紅狐裘赤身騎跨在你腰間，像馴服草原烈馬般把你徹底征服。"
         },
@@ -155,7 +194,12 @@
             "inf": -12,
             "tyranny": 16,
             "corruption": 12,
-            "rel_b": 14
+            "rel_b": 14,
+            "food": 100,
+            "mist": 12,
+            "heat": 8,
+            "exile": "b",
+            "crave": 6
           },
           "outcome": "王昭君冷笑著看著侍衛替她戴上鎖鏈，毫不畏懼：「好一個硬氣的天子！那咱們就看看，您的國庫與邊軍，扛得住五萬胡騎燒殺幾個月！」不出十日邊關糧倉連遭突襲，滿朝文武哭求你放人求和。"
         },
@@ -166,7 +210,10 @@
             "inf": 8,
             "tyranny": 6,
             "rel_b": -16,
-            "rel_c": 4
+            "rel_c": 4,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "王昭君微微頷首撤去胡騎，可她已經清楚地讓全後宮明白：動她一根頭髮，北疆就會血流成河。"
         }
@@ -194,7 +241,13 @@
             "corruption": 18,
             "tyranny": 14,
             "rel_b": -45,
-            "flag": "wangzhaojun_horse_smuggling_purge"
+            "flag": "wangzhaojun_horse_smuggling_purge",
+            "cold": "b",
+            "office": 1,
+            "mist": 18,
+            "heat": 7,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "{b} 全族一夜覆滅，連喊冤的機會都沒有。當夜王昭君罕見地展現出野馬般的狂放，在狼皮榻上赤身跨坐於你腰間，冷白肌膚因快感而染上迷人的雪地紅霞。"
         },
@@ -205,7 +258,12 @@
             "inf": 4,
             "corruption": 8,
             "tyranny": 8,
-            "rel_b": -15
+            "rel_b": -15,
+            "exile": "b",
+            "mist": 10,
+            "heat": 5,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "王昭君冷笑著收起狼骨哨，毫不介意——反正那三千匹戰馬已經回到她漠北暗營，而且 {b} 娘家已被她徹底扒掉一層皮。"
         }
@@ -233,7 +291,13 @@
             "tyranny": 12,
             "rel_g": -15,
             "rel_c": 8,
-            "flag": "wangzhaojun_yurt_affair_caught"
+            "flag": "wangzhaojun_yurt_affair_caught",
+            "troops": 60,
+            "mist": 20,
+            "crave": 22,
+            "heat": 6,
+            "pv": 1,
+            "tag": "血盟共犯"
           },
           "outcome": "王昭君在你暴怒而粗暴的懲罰中，冷白緊實的身軀徹底染上迷人的酡紅，竟發出比平日更清越銷魂的病態浪叫，修長雪腿死死盤住你的腰，挑釁地看向跪在炭火旁抖如篩糠的 {g}。那一夜過後，{g} 的命脈與長城關防徹底鎖死在你們夫妻手裡。"
         },
@@ -244,7 +308,11 @@
             "corruption": 14,
             "rel_g": 16,
             "rel_c": 10,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 14,
+            "heat": 6,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "次日 {g} 果然徹底倒戈反咬 {b} 外戚克扣邊餉，死心塌地成了王昭君的鐵血護衛。當夜王昭君洗去一身酒氣赤足爬上你的龍榻：「陛下別介意，草原上的公狼，總得給點帶血的生肉才肯聽話咬人呀。」"
         },
@@ -256,7 +324,12 @@
             "tyranny": 16,
             "corruption": 12,
             "rel_g": -50,
-            "rel_b": 16
+            "rel_b": 16,
+            "exec": "g",
+            "mist": 12,
+            "heat": 8,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "烈火吞沒穹廬大帳，{g} 血濺狼皮。王昭君披著被煙火燻黑的大紅狐裘冷冷望著你，眼底滿是看穿帝王薄情的嘲弄：「陛下燒得了這頂毛氈帳，燒得掉我背後十萬漠北胡騎嗎？」"
         }
@@ -283,7 +356,11 @@
             "corruption": 18,
             "rel_b": -35,
             "rel_g": -50,
-            "flag": "wangzhaojun_steppe_betrayal_kill"
+            "flag": "wangzhaojun_steppe_betrayal_kill",
+            "exec": "b",
+            "pop": -15,
+            "mist": 18,
+            "heat": 9
           },
           "outcome": "{g} 死不瞑目，{b} 嚇得魂飛魄散、徹底失去所有外戚靠山。當夜王昭君洗去指間沾染的血漬，赤身披著大紅狐裘跨坐上你腰間冷笑：「草原上最不缺的就是背叛者的白骨，敢動我王嬙的人，全都得死。」"
         },
@@ -295,7 +372,11 @@
             "tyranny": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_g": -22
+            "rel_g": -22,
+            "mist": 10,
+            "heat": 5,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "王昭君冷冷收回彎刀，毫不在意——審訊前夜，{g} 便已在牢房裡神秘地「畏罪咬斷舌頭失血而亡」，死無對證。"
         }
@@ -323,7 +404,15 @@
             "tyranny": 12,
             "rel_b": -38,
             "rel_c": 14,
-            "flag": "wangzhaojun_broken_strings_win"
+            "flag": "wangzhaojun_broken_strings_win",
+            "exile": "b",
+            "ban": "b",
+            "pop": -15,
+            "mist": 16,
+            "crave": 14,
+            "heat": 6,
+            "jail": "b",
+            "tag": "誣陷成案@b"
           },
           "outcome": "從此長安城再沒人敢拿「胡俗失節」攻訐王昭君半句——誰敢提這四個字，就會被全天下唾罵成忘恩負義的畜生！當夜她在狼皮毯上褪盡衣衫，冷白緊實的身軀在你極致的憐惜與掠奪下徹底融化。"
         },
@@ -334,7 +423,11 @@
             "inf": 6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 4
+            "rel_c": 4,
+            "pop": -15,
+            "mist": 10,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "王昭君微笑著收回流血的手指，眼底閃過一絲冷芒：「陛下果然清醒——只可惜，滿城百姓與三軍將士可沒陛下這麼冷血呢。」"
         }
@@ -361,7 +454,13 @@
             "tyranny": 14,
             "rel_b": 14,
             "rel_c": -40,
-            "flag": "wangzhaojun_border_trade_monopoly"
+            "flag": "wangzhaojun_border_trade_monopoly",
+            "pop": -15,
+            "mist": 18,
+            "heat": 7,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "半月內 {c} 外戚商號全線崩盤，王昭君徹底成為胡漢邊貿的唯一女霸主。當夜她用新進貢的極品雪白銀狐皮鋪滿龍床，赤裸著冷白緊實的胴體在毛皮上邀你共度春宵。"
         },
@@ -372,7 +471,10 @@
             "inf": -6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 18
+            "rel_c": 18,
+            "mist": 10,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "封鎖破局，{b} 氣得半死；王昭君卻只是冷笑一聲收起胡刀，當夜便在狼皮榻上用雙腿死死絞住你的腰，咬破你的肩頭冷聲討回「違約金」。"
         }
@@ -399,7 +501,11 @@
             "hedon": 24,
             "corruption": 16,
             "rel_b": -30,
-            "flag": "wangzhaojun_snow_wolf_bed_claim"
+            "flag": "wangzhaojun_snow_wolf_bed_claim",
+            "mist": 16,
+            "crave": 24,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "那一夜龍榻之上冰火交織、激烈得如同大漠狂風掃過原野，冷白玉體在你的掌心徹底融化成滾燙的春水。次日清晨她饜足地裹回大紅狐裘走出殿門，當眾對著眼圈發黑的 {b} 留下一抹極致冰冷的勝者微笑。"
         },
@@ -410,7 +516,12 @@
             "hedon": 20,
             "tyranny": 12,
             "corruption": 16,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 16,
+            "crave": 20,
+            "heat": 6,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "雙腕高縛、冷白緊實的背脊在你的粗暴掠奪中弓成一道驚心動魄的弧線，王昭君咬著紅唇發出一聲近乎崩潰的清越浪叫——高傲雪狼在被更強者徹底壓制時，反而綻放出最致命的妖冶。"
         },
@@ -420,7 +531,10 @@
             "aff": -22,
             "inf": -10,
             "tyranny": 14,
-            "rel_b": 14
+            "rel_b": 14,
+            "heat": 7,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "王昭君赤足踏著積雪被送回清霜殿，一路上連眼皮都沒顫一下。三日後，{b} 娘家在北疆的三座商隊同時遭到「不明身分馬匪」精準洗劫，顆粒無收。"
         }
@@ -447,7 +561,13 @@
             "tyranny": 16,
             "rel_g": 10,
             "rel_c": 12,
-            "flag": "wangzhaojun_yurt_orgy_abyss"
+            "flag": "wangzhaojun_yurt_orgy_abyss",
+            "pol": 12,
+            "energy": 25,
+            "mist": 24,
+            "crave": 28,
+            "heat": 8,
+            "pv": 1
           },
           "outcome": "那一夜穹廬大帳內胡琵琶聲徹夜未絕，你與王昭君在狼皮、烈酒與胡漢猛將炙熱扭曲的注視下徹底墜入無底深淵，從此她成了這座黑霧宮廷裡最冷豔、最禁忌、也最無法抗拒的塞北狼后。"
         },
@@ -460,7 +580,12 @@
             "hedon": 20,
             "tyranny": 22,
             "rel_g": -48,
-            "rel_c": -5
+            "rel_c": -5,
+            "mist": 20,
+            "crave": 20,
+            "heat": 11,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "雪白狼皮瞬間被鮮血染紅成妖異的猩紅。王昭君沾著飛濺的溫熱敵血，在你的暴怒佔有中反而發出一聲近乎瘋狂的清越尖笑，修長雪腿死死絞住你的腰：「對……草原上的頭狼，本來就該踩著別的公狼屍體來佔有母狼！」"
         }
@@ -487,7 +612,12 @@
             "hedon": 22,
             "tyranny": 18,
             "rel_b": -50,
-            "flag": "wangzhaojun_ice_cellar_revenge"
+            "flag": "wangzhaojun_ice_cellar_revenge",
+            "mist": 24,
+            "crave": 22,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "那一夜冰窖裡皮鞭破空聲、凍徹骨髓的哀嚎與暖閣紅裘裡的熾熱低喘交織成最可怕的夢魘。天亮時 {b} 已經凍壞十根手指、神智徹底失常，被王昭君像凍僵的牲口般丟回了荒涼冷院。"
         },
@@ -498,7 +628,11 @@
             "inf": 4,
             "tyranny": 8,
             "corruption": 6,
-            "rel_b": -20
+            "rel_b": -20,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "王昭君漫不經心地喝完最後一口熱羊乳酒，臨走前卻還是命令胡衛把 {b} 死前最愛穿的雲錦冬裘拿去鋪在了自家牧羊犬的狗窩裡。"
         }
@@ -525,7 +659,12 @@
             "corruption": 18,
             "tyranny": 14,
             "rel_b": -28,
-            "flag": "wangzhaojun_heir_steppe_wolf"
+            "flag": "wangzhaojun_heir_steppe_wolf",
+            "mist": 18,
+            "heat": 7,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "王昭君冷冽的鳳眸中綻放出志在必得的銳光。從此 {heir} 表面溫文爾雅、實則冷血嗜殺，暗中掌握胡漢雙界兵脈，成了 {b} 派系最絕望的陰影。"
         },
@@ -536,7 +675,12 @@
             "inf": -14,
             "tyranny": 12,
             "corruption": 10,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 10,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "王昭君冷冷看著折斷的角弓，只在兒子被帶走前，將一枚狼牙護身符悄悄掛回他頸間：「記住雪地的冷，漢家書本教不出活命的本事，只有這顆狼牙能救你。」"
         }
@@ -564,7 +708,14 @@
             "tyranny": 22,
             "rel_b": -50,
             "rel_g": 22,
-            "flag": "wangzhaojun_steppe_empress_regime"
+            "flag": "wangzhaojun_steppe_empress_regime",
+            "mist": 26,
+            "crave": 26,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "玉璽落下，胡笳聲停。從此長安與漠北徹底合流於她的紅裘之下，滿朝文武在狼騎威懾下戰慄俯首，而你日夜沉醉於她冷白雪膚與禁忌胡俗交織的極致肉慾裡，再也無力掙脫。"
         },
@@ -575,7 +726,13 @@
             "inf": -15,
             "tyranny": 20,
             "corruption": 16,
-            "rel_g": -35
+            "rel_g": -35,
+            "troops": 60,
+            "mist": 16,
+            "heat": 10,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "劍鋒劃破她冷白頸項滲出一線刺目鮮紅，王昭君卻仰起頭在血色中綻開一抹比塞北雪蓮更冰冷狂傲的笑：「陛下終於肯親自拔劍而不是把女人推出去頂罪了……好啊，只要今夜沒砍下我的頭，北疆十萬鐵騎明天就會替我把長安城拆成平地！」"
         }
@@ -603,7 +760,14 @@
             "corruption": 12,
             "hedon": 12,
             "rel_b": -24,
-            "flag": "wangzhaojun_shuofang_frontier_grip"
+            "flag": "wangzhaojun_shuofang_frontier_grip",
+            "affair": "g",
+            "mist": 12,
+            "crave": 12,
+            "heat": 6,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "五日後北疆狼煙頓息，草原各部乖乖奉上三千匹良馬貢品，王昭君更隨馬隊寄回一幅她披著大紅狐裘半裸於雪帳彈琵琶的絕美小像。"
         },
@@ -613,7 +777,11 @@
             "aff": -14,
             "inf": -8,
             "tyranny": 12,
-            "rel_b": 10
+            "rel_b": 10,
+            "pv": 1,
+            "heat": 6,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "派去查辦的欽差剛出長城關口便遭神秘胡騎劫光隨從、光著屁股逃回朔方。你只收到王昭君寄回的一支空狼牙箭，箭羽上綁著四個冷字：『莫試狼牙。』"
         }
@@ -639,7 +807,13 @@
             "corruption": 16,
             "tyranny": 10,
             "rel_b": -28,
-            "rel_c": 14
+            "rel_c": 14,
+            "food": 100,
+            "mist": 16,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "長安城上下從此對「寧胡閼氏的耳朵」恐懼至極，無論王昭君身在何處，後宮與朝堂都再無人敢輕易招惹清霜殿。"
         },
@@ -650,7 +824,12 @@
             "inf": -10,
             "tyranny": 14,
             "rel_b": 12,
-            "rel_c": -35
+            "rel_c": -35,
+            "cold": 1,
+            "pop": -15,
+            "heat": 7,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "驅逐胡商導致長安城珍貴藥材與戰馬價格一夜暴漲三倍，商民怨聲載道；朔方隨即傳來急報，草原三部同時停止向漢廷納貢。"
         }
@@ -675,7 +854,12 @@
             "corruption": 16,
             "hedon": 20,
             "rel_g": 5,
-            "flag": "wangzhaojun_five_stage_bonded"
+            "flag": "wangzhaojun_five_stage_bonded",
+            "mist": 16,
+            "crave": 20,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "王昭君清冷的眼角罕見地滑落一滴滾燙淚珠，旋即化作極具掠奪性的狂野深吻——從此塞北十萬胡騎與她這副冰火交織的極品玉體，徹底只為你一人效忠與發狂。"
         },
@@ -685,7 +869,9 @@
             "aff": -6,
             "inf": 8,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "house": 1
           },
           "outcome": "王昭君敏銳地察覺到你眼底殘存的戒心，緩緩拉緊大紅狐裘冷冷一笑：「陛下果然像極了當年那些漢家天子……沒關係，草原上的雪下得久了，再硬的石頭也會被凍裂的。」"
         }
@@ -711,7 +897,12 @@
             "hedon": 20,
             "corruption": 14,
             "rel_b": -20,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 14,
+            "crave": 20,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "王昭君在你掌心裡從冰冷漸漸融化成滾燙的春水，整夜發出平日絕難聽見的清越銷魂低喘，把你徹底鎖死在她的紅裘溫柔鄉裡。"
         },
@@ -722,7 +913,11 @@
             "inf": 6,
             "tyranny": 10,
             "rel_b": -10,
-            "rel_g": -22
+            "rel_g": -22,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "王昭君冷豔地挑起秀眉，故意在你的鎖骨上狠狠咬出一圈鮮紅血印：「陛下卸磨殺驢的本事倒是一流……只盼下回北疆狼煙再起時，陛下還能這麼硬氣喔。」"
         }
@@ -750,7 +945,12 @@
             "tyranny": 12,
             "rel_b": -32,
             "rel_g": 18,
-            "flag": "wangzhaojun_steppe_cavalry_crusade"
+            "flag": "wangzhaojun_steppe_cavalry_crusade",
+            "mist": 14,
+            "heat": 6,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "出征前夜，王昭君穿著玄黑緊身騎射軟甲在你的帥帳裡大口飲下馬奶烈酒，跨坐上你腰間狂野索歡，說是要帶著漢家天子的熱氣去指揮草原狼騎。開拔後 {b} 表兄果然每天被胡兵抽得滿身血條、生不如死。"
         },
@@ -760,7 +960,10 @@
             "aff": 4,
             "inf": 6,
             "rel_b": 6,
-            "rel_g": 8
+            "rel_g": 8,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "王昭君冷笑著收起金印接過軍令，臨行前卻暗中授意胡人商隊將 {b} 娘家名下所有良馬高價搶空，讓 {b} 外戚慘虧數萬兩。"
         }
@@ -786,7 +989,13 @@
             "hedon": 20,
             "tyranny": 14,
             "rel_g": 14,
-            "flag": "wangzhaojun_snow_blood_victory"
+            "flag": "wangzhaojun_snow_blood_victory",
+            "mist": 18,
+            "crave": 20,
+            "heat": 7,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "帳外大雪紛飛、胡漢將士大口烤肉狂歡，帳內卻是紅裘散落、冷白玉體在炭火下泛起極致迷人的紅暈。此戰過後，天下諸侯聞「紅裘雪狼」之名無不聞風喪膽。"
         },
@@ -796,7 +1005,10 @@
             "aff": -6,
             "inf": 8,
             "tyranny": 6,
-            "rel_g": 4
+            "rel_g": 4,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "王昭君裹著你的披風靠在你胸口冷豔一笑，冰涼的小手卻早已悄悄鑽進你甲冑裡輕輕摩挲：「陛下還是這麼防著我的胡騎……沒關係，今晚進了帳門，陛下可防不住臣妾這副身子喔。」"
         }
@@ -825,7 +1037,12 @@
               "corruption": 14,
               "rel_b": -38,
               "rel_g": 22,
-              "flag": "wangzhaojun_green_tomb_purge"
+              "flag": "wangzhaojun_green_tomb_purge",
+              "mist": 14,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "{b} 一黨徹底覆滅，漠北單于感念你替閼氏報仇而止兵退去；只是從此每逢北疆大雪紛飛，空蕩蕩的清霜殿裡總似還飄著那曲蒼涼徹骨的《出塞》琵琶聲。"
           },
@@ -835,7 +1052,12 @@
               "inf": -12,
               "tyranny": 14,
               "rel_b": 16,
-              "rel_g": -40
+              "rel_g": -40,
+              "troops": 60,
+              "heat": 7,
+              "pol": 15,
+              "mist": 15,
+              "wood": -50
             },
             "outcome": "漠北各部震怒之下徹底撕毀五十年盟約、舉十萬鐵騎全面南下，{g} 悲憤掛印遠遁，北疆從此再無寧日。"
           }
@@ -861,7 +1083,12 @@
               "inf": 8,
               "corruption": 12,
               "rel_b": -24,
-              "flag": "wangzhaojun_rescue_ordered"
+              "flag": "wangzhaojun_rescue_ordered",
+              "troops": 60,
+              "mist": 12,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "消息傳入敵營，滿身青紫鞭傷與凍瘡的王昭君舔掉唇角血絲，望著長安方向露出一抹冰冷徹骨又極具危險的笑。"
           },
@@ -872,7 +1099,11 @@
               "inf": -16,
               "corruption": 24,
               "tyranny": 14,
-              "rel_b": 20
+              "rel_b": 20,
+              "mist": 24,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "敵帥大笑著把你的除籍聖旨唸給赤裸縮在狼皮上的她聽。王昭君聽完竟沒有落一滴淚，反而冷笑著主動解開紅裘跨坐上敵帥膝頭——她發誓要借敵國與草原大軍，把你這座薄情長安城燒成白地。"
           }
@@ -899,7 +1130,14 @@
               "corruption": 14,
               "hedon": 10,
               "rel_b": -30,
-              "flag": "wangzhaojun_crippled_devotion"
+              "flag": "wangzhaojun_crippled_devotion",
+              "cold": "b",
+              "mist": 14,
+              "crave": 10,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "王昭君渾身劇烈戰慄，冰冷的眼眶終於滾落大顆滾燙熱淚，發狂地用完好手臂死死勾住你的脖頸將你拖進大紅狐裘裡，用最絕望也最熾熱的肉體交纏鎖死你的承諾。"
           },
@@ -910,7 +1148,12 @@
               "inf": -16,
               "corruption": 26,
               "tyranny": 12,
-              "rel_b": 18
+              "rel_b": 18,
+              "exec": "b",
+              "mist": 26,
+              "heat": 6,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "你眼底那絲冷淡徹底殺死了她最後一點對漢室的留戀。不到半月，{b} 的貼身宮女便在睡夢中被無聲割喉，{b} 自己也在冰天雪地裡莫名其妙摔斷了雙腿終身殘廢。"
           }
@@ -937,7 +1180,11 @@
               "tyranny": 18,
               "corruption": 18,
               "rel_b": -35,
-              "flag": "wangzhaojun_shame_bloodbath"
+              "flag": "wangzhaojun_shame_bloodbath",
+              "exec": "b",
+              "mist": 18,
+              "heat": 9,
+              "pop": -15
             },
             "outcome": "當夜她在清霜殿滾燙的熱水浴桶裡一遍遍搓洗著滿身屈辱炭字，隨即哭笑著拉你入水，要你用最粗暴的佔有與齒痕把那些骯髒目光與敵人的污辱徹底洗刷乾淨。"
           },
@@ -948,7 +1195,12 @@
               "inf": -18,
               "corruption": 26,
               "tyranny": 14,
-              "rel_b": 16
+              "rel_b": 16,
+              "cold": 1,
+              "mist": 26,
+              "heat": 7,
+              "ban": 1,
+              "tag": "受辱怨骨"
             },
             "outcome": "重新被丟回當年的掖庭冷宮徹底點燃了她毀滅一切的瘋魔。不到十日，她便靠著色誘與漠北重金將整座掖庭的看守侍衛全數收服為肉奴，把冷宮打造成了日夜宣淫與策劃暗殺的魔窟。"
           }
@@ -975,7 +1227,13 @@
               "corruption": 20,
               "hedon": 12,
               "tyranny": 14,
-              "flag": "wangzhaojun_frozen_gorge_vow"
+              "flag": "wangzhaojun_frozen_gorge_vow",
+              "food": 100,
+              "mist": 20,
+              "crave": 12,
+              "heat": 7,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "王昭君在你懷裡發出一聲如同瀕死母狼般的哀嚎，隨即發瘋般咬破你的脖頸、撕扯你的龍袍，在滿地寒雪與熱血之間與你激烈交纏，彷彿唯有你的體溫能把她從冰峽死人堆裡拉回人間。"
           },
@@ -985,7 +1243,11 @@
               "aff": -26,
               "inf": -16,
               "corruption": 26,
-              "tyranny": 16
+              "tyranny": 16,
+              "food": 100,
+              "mist": 26,
+              "heat": 8,
+              "jail": 1
             },
             "outcome": "她醒來後不再哭喊，只是每天安靜地撫摸著那柄斷刀冷笑。不出一個月，當初克扣聯軍糧草的四名重臣接連在冬夜裡被神秘人剝光衣服吊死在自家府門前的雪地裡。"
           }
@@ -1012,7 +1274,13 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_b": -32,
-              "flag": "wangzhaojun_wolf_poison_saved"
+              "flag": "wangzhaojun_wolf_poison_saved",
+              "kidLoss": "b",
+              "exec": "b",
+              "mist": 20,
+              "heat": 8,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "從鬼門關爬回來的王昭君眼神冷得像萬年玄冰。她剛能下床的第一夜，便親手將剩餘的狼毒墮胎藥悄悄混進了 {b} 每天必喝的補氣參湯裡，讓 {b} 終身絕育、每逢冬日痛不欲生。"
           },
@@ -1023,7 +1291,14 @@
               "inf": -12,
               "corruption": 28,
               "tyranny": 20,
-              "rel_b": 12
+              "rel_b": 12,
+              "preg": 1,
+              "mist": 28,
+              "heat": 10,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "王昭君透過模糊血淚看清了你骨子裡的冷血無情，徹底對漢廷最後一絲溫情死心。她強忍無盡屈辱活了下來，卻從此在你每夜飲用的奶茶與御酒裡埋下了最致命的慢性塞外奇毒。"
           }
@@ -1051,7 +1326,14 @@
               "hedon": 22,
               "tyranny": 14,
               "rel_b": -35,
-              "flag": "wangzhaojun_dagger_widow"
+              "flag": "wangzhaojun_dagger_widow",
+              "troops": 60,
+              "mist": 20,
+              "crave": 22,
+              "heat": 7,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "滿朝嘲諷瞬間化為深入骨髓的寒意與敬畏。當夜王昭君在你身下極盡狂野主動，一邊劇烈騎乘一邊冷笑著問你：「陛下，敢不敢也讓臣妾把銀胡刀藏在枕頭底下陪您睡呀？」"
           },
@@ -1062,7 +1344,14 @@
               "inf": -10,
               "corruption": 24,
               "tyranny": 16,
-              "rel_b": 15
+              "rel_b": 15,
+              "exec": "b",
+              "troops": 60,
+              "mist": 24,
+              "crave": 6,
+              "heat": 8,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "王昭君臨走前故意用沾著敵帥血冰的冰涼玉指輕輕劃過你的心口，笑得冰冷徹骨：「陛下怕了？別怕呀，只要陛下不像那頭畜生一樣想拴死我，這把胡刀就永遠只割敵人的肉喔。」"
           }
@@ -1090,7 +1379,13 @@
               "tyranny": 12,
               "rel_b": -38,
               "rel_g": 18,
-              "flag": "wangzhaojun_rescued_reckoning"
+              "flag": "wangzhaojun_rescued_reckoning",
+              "exec": "b",
+              "mist": 14,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "王昭君這才丟開馬鞭、帶著一身寒雪血氣靠進你懷裡低聲喘息——然而當晚她卻也私下將負傷的 {g} 召進穹廬胡帳「親自溫馬奶酒替將軍療傷謝恩」，帳中炭火燒至天明。"
           },
@@ -1101,7 +1396,11 @@
               "inf": -12,
               "corruption": 20,
               "rel_b": 12,
-              "rel_g": -15
+              "rel_g": -15,
+              "ban": "b",
+              "mist": 20,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "王昭君冷笑著收起馬鞭，當著你的面挽起 {g} 染血的手臂轉身離去：「將軍瞧見了嗎？咱們在外頭拿命拼，深宮裡卻有人護著賣國的賤婦呢。」從此她與 {g} 徹底結成只忠於彼此的暗黑邊軍死黨。"
           }
@@ -1129,7 +1428,12 @@
               "hedon": 20,
               "tyranny": 14,
               "rel_g": -50,
-              "flag": "wangzhaojun_yurt_prison_burned"
+              "flag": "wangzhaojun_yurt_prison_burned",
+              "pv": 1,
+              "mist": 22,
+              "crave": 20,
+              "heat": 7,
+              "exec": "g"
             },
             "outcome": "回到清霜殿後，王昭君在床榻上變得極具侵略性與偏執控制欲——她再也不許任何男人從背後壓制她，唯有由她跨坐在你身上如馴馬般掌控一切時，她眼底的死氣才會短暫散去。"
           },
@@ -1139,7 +1443,12 @@
               "aff": -28,
               "inf": -14,
               "corruption": 28,
-              "hedon": 18
+              "hedon": 18,
+              "pv": 1,
+              "mist": 28,
+              "crave": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "王昭君一眼看穿了你骨子裡的潔癖與薄情。她冷笑著不再求寵，轉而在清霜殿地下仿照那座胡帳密室，暗中用迷酒囚禁並折磨數名容貌酷似你的俊美漢家少年，徹底化為吞噬男人的雪狼妖魔。"
           }
@@ -1166,7 +1475,12 @@
               "corruption": 16,
               "tyranny": 12,
               "rel_b": -42,
-              "flag": "wangzhaojun_lone_escape_return"
+              "flag": "wangzhaojun_lone_escape_return",
+              "mist": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "王昭君一把奪過金印，踮起冰涼的赤腳狠狠咬破你的嘴唇，血腥與寒氣在唇齒間炸開：「陛下記住了，以後誰敢再碰我清霜殿一寸狼皮、一根狐毛，我可不會再等陛下點頭才割斷她的喉嚨囉。」"
           },
@@ -1177,7 +1491,11 @@
               "inf": -14,
               "tyranny": 16,
               "corruption": 24,
-              "rel_b": 10
+              "rel_b": 10,
+              "mist": 24,
+              "heat": 8,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "王昭君擦掉銀胡刀上的血跡，大紅狐裘一甩冷笑徹骨：「好啊，陛下既要講漢家宮規，那咱們就看看，到底是您的宮規硬，還是我背後十萬漠北胡騎手裡的彎刀硬！」"
           }
@@ -1186,3 +1504,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['wangzhaojun'] = DATA;
+  (window.characterPacks ||= {})['wangzhaojun'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

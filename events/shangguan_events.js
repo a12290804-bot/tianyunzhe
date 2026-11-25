@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["shangguan"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 11 號 上官婉兒 (shangguan)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "shangguan",
     "index": 11,
@@ -18,7 +23,8 @@
       "0-34（初染）：帶著掖庭罪奴爬出來的極端危機感與驚世文才，謹慎替君王代批奏章，暗中卻已開始透過改字與品評詩文為自己編織文官保護網。",
       "35-69（深蝕）：在黑霧與至高筆權的腐蝕下，徹底將宮外私第化作權色交易的淫靡沙龍——白日以制誥誅殺政敵外戚，夜裡在堆滿奏摺的書案上與權臣悍將翻雲覆雨、交換兵權與官位。",
       "70+（深淵）：徹底黑化為『紅梅墨妖』——已親手在落敗貴妃額頭烙下罪奴黥印逼其赤身跪於書案下為她與情夫研磨、已習慣在篡改誅族聖旨的同時享受男人身下之歡、已將親兒訓練成偽造御筆與兩頭賣主求榮的官場毒蛇，把整座皇朝的法度、文脈與龍床全浸染成她的紅梅血墨。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -46,7 +52,12 @@
             "hedon": 10,
             "corruption": 8,
             "rel_g": -5,
-            "flag": "shangguan_imperial_pen_entry"
+            "flag": "shangguan_imperial_pen_entry",
+            "office": 1,
+            "mist": 10,
+            "crave": 10,
+            "heat": 6,
+            "marry": 1
           },
           "outcome": "上官婉兒眼底驟然亮起極致的野心與妖媚，竟順勢推翻案上的硯台，任由濃墨與硃砂濺濕她的官袍與雪白小腿，在你身下喘息著與你簽下第一筆權色交易。殿外的 {g} 聽見案頭翻倒與壓抑嬌喘聲，嚇得連大氣也不敢出。"
         },
@@ -57,7 +68,11 @@
             "inf": -6,
             "tyranny": 10,
             "corruption": 10,
-            "rel_g": 8
+            "rel_g": 8,
+            "mist": 10,
+            "heat": 5,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "上官婉兒垂眸淺笑，恭順退下。可不過三日，你便發現她靠著替几名翰林學士潤色詩文，已經在暗中悄悄把半數清流言官的嘴全都收進了自己袖子裡。"
         },
@@ -68,7 +83,12 @@
             "inf": 10,
             "corruption": 14,
             "hedon": 6,
-            "rel_g": 10
+            "rel_g": 10,
+            "mist": 14,
+            "crave": 6,
+            "heat": 6,
+            "affair": "g",
+            "tag": "桀驁未馴"
           },
           "outcome": "上官婉兒看著明珠嫣然一笑，提筆蘸墨將 {g} 的罪證抄進自己的私密小冊，隨即親手替你解開玉帶：「陛下比我想的更懂御下之道——既收了錢、又捏死了人，真叫臣妾心動呢。」"
         }
@@ -95,7 +115,13 @@
             "tyranny": 12,
             "rel_b": -25,
             "rel_c": 12,
-            "flag": "shangguan_literary_inquisition"
+            "flag": "shangguan_literary_inquisition",
+            "jail": "b",
+            "mist": 16,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "次日早朝三名御史當場被剝去烏紗帽下獄，{b} 嚇得臉色慘白、連夜遣散府中幕僚。從此滿朝文武見了上官婉兒那支硃筆，比見到劊子手的鬼頭刀還要發抖。"
         },
@@ -106,7 +132,10 @@
             "inf": 8,
             "corruption": 6,
             "rel_b": -12,
-            "rel_c": 6
+            "rel_c": 6,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "上官婉兒挑眉一笑，收起偽造的祝文燒進銅盆：「陛下仁厚不願見血，可這後宮裡的女人最記吃不記打——下回 {b} 再敢碰我額頭這朵紅梅，臣妾可就不會先請示陛下了。」"
         },
@@ -116,7 +145,10 @@
             "aff": -14,
             "inf": -10,
             "tyranny": 10,
-            "rel_b": 12
+            "rel_b": 12,
+            "heat": 5,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "上官婉兒直挺挺地跪在青磚上，額間紅梅在冷光下紅得刺眼。半夜她便託 {c} 悄悄把幾句暗諷你剛愎自用的絕妙打油詩流傳進了長安國子監，三天之內滿城士子議論紛紛。"
         }
@@ -143,7 +175,12 @@
             "tyranny": 12,
             "rel_b": -35,
             "rel_c": 10,
-            "flag": "shangguan_ink_humiliation"
+            "flag": "shangguan_ink_humiliation",
+            "mist": 14,
+            "heat": 6,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "{b} 在滿朝文士的哄笑與鄙夷中羞憤欲死、當場暈厥。當夜上官婉兒光著額頭上那道暗紅刀疤跨坐在你懷裡，拉著你的唇去吻她的傷疤，聲音帶著令人戰慄的興奮：「從今往後，這天下文人的筆桿子，全聽臣妾一個人的囉。」"
         },
@@ -154,7 +191,11 @@
             "inf": 6,
             "tyranny": 6,
             "rel_b": -15,
-            "rel_c": 4
+            "rel_c": 4,
+            "ban": "b",
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "上官婉兒微笑著重新用硃砂點上額間紅梅，可第二天長安城所有青樓與茶館裡，依然把 {b} 寫給表哥的那幾句露骨豔詞譜成了最紅的小曲傳唱全城。"
         },
@@ -164,7 +205,11 @@
             "aff": -16,
             "inf": -12,
             "tyranny": 10,
-            "rel_b": 14
+            "rel_b": 14,
+            "heat": 5,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "上官婉兒冷冷擦掉指間殘墨，退出水閣後立刻修書數封給當科進士們，隔日早朝便有十幾名年輕言官聯名上書諷刺你「偏聽偏信、有失明主氣度」。"
         }
@@ -192,7 +237,13 @@
             "corruption": 18,
             "tyranny": 12,
             "rel_b": -40,
-            "flag": "shangguan_decree_betrayal"
+            "flag": "shangguan_decree_betrayal",
+            "ban": "b",
+            "pop": -15,
+            "mist": 18,
+            "heat": 6,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "整個朝堂都在讚嘆上官昭容公私分明，只有你知道她手腕有多黑。當夜她在書案上替你研墨時，主動褪去半邊肩頭的官袍坐進你懷裡：「盟友嘛，在墨水還沒乾之前，本來就是用來隨時劃掉的呀。」"
         },
@@ -203,7 +254,11 @@
             "inf": 4,
             "corruption": 8,
             "tyranny": 8,
-            "rel_b": -10
+            "rel_b": -10,
+            "mist": 10,
+            "heat": 5,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "上官婉兒跪在地上垂眸領罪，姿態優雅得無懈可擊——但 {b} 兄妹買官的醜聞早已在御史台傳開，{b} 從此元氣大傷，再也無力與她抗衡。"
         }
@@ -231,7 +286,13 @@
             "tyranny": 12,
             "rel_g": -15,
             "rel_c": 8,
-            "flag": "shangguan_desk_affair_caught"
+            "flag": "shangguan_desk_affair_caught",
+            "troops": 60,
+            "mist": 20,
+            "crave": 20,
+            "heat": 6,
+            "pv": 1,
+            "tag": "血盟共犯"
           },
           "outcome": "上官婉兒在你暴怒而粗暴的懲罰中發出近乎瘋狂的甜膩顫音，竟還故意抬起染墨的玉足勾住你的腰，挑釁地看向跪在地上發抖的 {g}。那一夜過後，{g} 的官途與性命徹底攥在你們夫妻手裡，成了最聽話的私兵統領。"
         },
@@ -242,7 +303,11 @@
             "corruption": 14,
             "rel_g": 14,
             "rel_c": 10,
-            "rel_b": -20
+            "rel_b": -20,
+            "mist": 14,
+            "heat": 6,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "次日早朝，{g} 果然反水力挺上官婉兒擬定的全部人事案，把 {b} 派系擠出權力中樞。當夜她洗淨一身龍涎香進宮侍寢，笑得狡黠無比：「夫君瞧見了？有些男人啊，光靠賞官喂不飽，得連皮肉帶官印一起塞進嘴裡，才肯替咱們咬死 {b} 呢。」"
         },
@@ -254,7 +319,12 @@
             "tyranny": 16,
             "corruption": 12,
             "rel_g": -45,
-            "rel_b": 16
+            "rel_b": 16,
+            "exec": "g",
+            "mist": 12,
+            "heat": 8,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "書房裡鮮血與墨汁混流滿地。上官婉兒披著半敞的染血官袍冷冷看著你：「陛下殺了一個 {g}，可長安城裡進過我紅梅別業書房的翰林、侍郎、將軍還有三十幾個呢——陛下今晚殺得完嗎？」"
         }
@@ -281,7 +351,11 @@
             "corruption": 18,
             "rel_b": -35,
             "rel_g": -50,
-            "flag": "shangguan_invisible_ink_kill"
+            "flag": "shangguan_invisible_ink_kill",
+            "ban": "b",
+            "mist": 18,
+            "heat": 9,
+            "exec": "b"
           },
           "outcome": "人頭落地，血洗東閣。當夜上官婉兒靠在你書案邊替你輕揉太陽穴，唇邊噙著殘忍的冷笑：「這就是背叛執筆人的下場——他以為握住了我的豔詩，卻不知道自己握著的是自己的死刑判決書呢。」"
         },
@@ -293,7 +367,11 @@
             "tyranny": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_g": -25
+            "rel_g": -25,
+            "exile": "b",
+            "mist": 10,
+            "heat": 5,
+            "cold": "b"
           },
           "outcome": "上官婉兒盈盈下拜，臉上沒有半點被拆穿的窘迫，反倒帶著一絲棋逢對手的興奮微笑：「陛下果然聖明——不過 {g} 既然已被流放嶺南，路上會不會染上瘴氣死在半途，可就不歸臣妾管囉。」"
         }
@@ -321,7 +399,13 @@
             "tyranny": 12,
             "rel_b": -35,
             "rel_c": 12,
-            "flag": "shangguan_scandal_turned_erotica"
+            "flag": "shangguan_scandal_turned_erotica",
+            "mist": 18,
+            "crave": 16,
+            "heat": 6,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "輿論徹底大逆轉，長安士林紛紛歌頌上官昭容冰清玉潔、遭奸妃嫉妒；而龍案之上墨汁與紅梅花瓣翻飛，她在你身下肆意放浪地嘲笑著滿朝被她玩弄於股掌的書呆子。"
         },
@@ -332,7 +416,12 @@
             "inf": 6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 4
+            "rel_c": 4,
+            "affair": "g",
+            "exec": "b",
+            "mist": 10,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "上官婉兒微笑著合上書冊：「陛下放心，以後進紅梅別業的男人，臣妾都會先讓他們把舌頭管嚴實了再脫衣服。」"
         }
@@ -359,7 +448,13 @@
             "tyranny": 12,
             "rel_b": 14,
             "rel_c": -35,
-            "flag": "shangguan_exam_rigging"
+            "flag": "shangguan_exam_rigging",
+            "inj": "b",
+            "mist": 18,
+            "heat": 6,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "春闈放榜，{b} 草包姪兒高中二甲，{c} 胞弟憤而撞柱重傷。上官婉兒手裡同時捏死了 {b} 全族舞弊的死證，從此 {b} 徹底淪為她隨手使喚的提線木偶。"
         },
@@ -370,7 +465,10 @@
             "inf": -8,
             "corruption": 8,
             "rel_b": -15,
-            "rel_c": 18
+            "rel_c": 18,
+            "inj": "b",
+            "mist": 10,
+            "troops": 50
           },
           "outcome": "{b} 賠了夫人又折兵，氣得吐血；上官婉兒卻只是笑著燒掉廢卷，當夜便用更狂野的服侍把你哄得忘了追究她私拆考卷之罪。"
         }
@@ -397,7 +495,12 @@
             "hedon": 20,
             "corruption": 16,
             "rel_b": -28,
-            "flag": "shangguan_vermilion_body_claim"
+            "flag": "shangguan_vermilion_body_claim",
+            "office": 1,
+            "mist": 16,
+            "crave": 20,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "那一夜滿榻奏摺全沾滿了曖昧的水漬與豔紅硃砂，平日清貴高傲的巾幗宰相在龍榻上卻浪得像個徹底失控的妖精。次日清晨她故意讓侍女把那些印著交歡墨痕的廢紙「不小心」吹進了 {b} 宮門前的院子裡。"
         },
@@ -408,7 +511,12 @@
             "hedon": 18,
             "tyranny": 12,
             "corruption": 16,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 16,
+            "crave": 18,
+            "heat": 6,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "手腕被官帶緊縛、伏在龍案上承受你毫不留情的衝撞，反而喚醒了她深埋骨髓的罪奴受虐與征服快感——她咬著自己的官袖發出支離破碎的浪喘，從此對你越發痴迷。"
         },
@@ -418,7 +526,10 @@
             "aff": -20,
             "inf": -10,
             "tyranny": 14,
-            "rel_b": 14
+            "rel_b": 14,
+            "heat": 7,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "上官婉兒冷笑著拾起官袍披上，光著滿身紅梅硃砂走出殿門。次日早朝，所有關乎 {b} 外戚的請賞奏摺全都「不慎遺失」，一個字也沒能遞到你案頭。"
         }
@@ -445,7 +556,12 @@
             "tyranny": 16,
             "rel_g": 10,
             "rel_c": 12,
-            "flag": "shangguan_ink_pool_orgy"
+            "flag": "shangguan_ink_pool_orgy",
+            "mist": 24,
+            "crave": 26,
+            "heat": 8,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "那一夜紅梅別業墨汁與酒液橫流，整個大唐的權柄與清譽徹底爛在了那張紫檀書案上。從此滿朝文武皆成了你們夫妻手裡最骯髒、也最不敢反叛的共犯。"
         },
@@ -458,7 +574,12 @@
             "hedon": 18,
             "tyranny": 22,
             "rel_g": -45,
-            "rel_c": -5
+            "rel_c": -5,
+            "mist": 20,
+            "crave": 18,
+            "heat": 11,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "眾臣抱頭鼠竄，大廳瞬間狼藉一片。上官婉兒看著你發狂吃醋的模樣反而笑得花枝亂顫，雙腿緊緊盤住你的腰迎合著你的怒火：「對……陛下越是狠狠折騰臣妾，臣妾明天替陛下殺起人來，筆鋒就越利落呢。」"
         }
@@ -485,7 +606,12 @@
             "hedon": 20,
             "tyranny": 18,
             "rel_b": -50,
-            "flag": "shangguan_branded_ink_slave"
+            "flag": "shangguan_branded_ink_slave",
+            "mist": 24,
+            "crave": 20,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "書閣裡壓抑的哀嚎與放浪的嬌喘徹夜未絕。三日後 {b} 徹底精神失常，每天對著牆壁用指甲把額頭的「罪」字抓得血肉模糊，成了紅梅別業最駭人的活死人。"
         },
@@ -496,7 +622,11 @@
             "inf": 4,
             "tyranny": 8,
             "corruption": 6,
-            "rel_b": -20
+            "rel_b": -20,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "上官婉兒冷冷拂了拂衣袖，臨走前卻還是用毛筆沾了濃墨，在死去的 {b} 額頭上畫了一朵扭曲嘲諷的黑梅花。"
         }
@@ -523,7 +653,12 @@
             "corruption": 18,
             "tyranny": 14,
             "rel_b": -25,
-            "flag": "shangguan_heir_forged_hand"
+            "flag": "shangguan_heir_forged_hand",
+            "mist": 18,
+            "heat": 7,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "上官婉兒眼底閃過極度的傲慢與滿意。從此 {heir} 在朝中迅速建立起龐大的文官私黨，表面溫文爾雅、實則比母親更擅長用一紙文書殺人於無形。"
         },
@@ -534,7 +669,12 @@
             "inf": -14,
             "tyranny": 12,
             "corruption": 10,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 10,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "上官婉兒靜靜看著紙灰飄落，臨別前只對著被帶走的 {heir} 輕輕點了點自己額間的紅梅：「記住娘額頭上的疤，這宮裡誰也不能信，包括你父皇。」"
         }
@@ -562,7 +702,15 @@
             "tyranny": 24,
             "rel_b": -50,
             "rel_g": 20,
-            "flag": "shangguan_female_chancellor_regime"
+            "flag": "shangguan_female_chancellor_regime",
+            "office": 1,
+            "mist": 26,
+            "crave": 22,
+            "heat": 12,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "從此紫宸殿裡奏摺全由她批紅、百官升遷全看她臉色，而每逢夜深人靜，這位權傾天下的女宰相便會脫下朝服跨坐龍椅之上，用最極致的荒唐與縱慾牢牢鎖住你的靈魂。"
         },
@@ -573,7 +721,12 @@
             "inf": -15,
             "tyranny": 20,
             "corruption": 16,
-            "rel_g": -30
+            "rel_g": -30,
+            "mist": 16,
+            "heat": 10,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "劍尖刺破她額頭那朵紅梅花鈿，鮮血順著眉心滑落。上官婉兒卻在血色中綻開一抹絕美而瘋狂的笑：「陛下終於肯親自提刀改我的稿子了……好啊，只要今夜沒砍掉我拿筆的右手，這篇史書的結局，還輪不到陛下說了算呢。」"
         }
@@ -601,7 +754,13 @@
             "corruption": 12,
             "hedon": 10,
             "rel_b": -22,
-            "flag": "shangguan_luoyang_literati_network"
+            "flag": "shangguan_luoyang_literati_network",
+            "mist": 12,
+            "crave": 10,
+            "heat": 6,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "五日後那三十封彈劾萬言書全部神奇地「改寫」成了歌頌你聖德的祥瑞賦；而她又寄回一件貼身染過紅梅墨香的絲綢褻衣，邀你秋日行幸東都。"
         },
@@ -611,7 +770,10 @@
             "aff": -14,
             "inf": -8,
             "tyranny": 12,
-            "rel_b": 10
+            "rel_b": 10,
+            "heat": 6,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "東都留守還沒動手，滿洛陽書院便已爆發學子罷考抗議，直指朝廷迫害才女。上官婉兒笑著又寄回一封空信，裡面只夾了一片鮮紅如血的梅花瓣。"
         }
@@ -637,7 +799,12 @@
             "corruption": 16,
             "tyranny": 10,
             "rel_b": -28,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 16,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "長安百官徹底陷入對「洛陽飛箋」的恐懼，凡事必先打聽上官昭容在東都的風向，無人再敢替 {b} 出頭。"
         },
@@ -648,7 +815,11 @@
             "inf": -10,
             "tyranny": 14,
             "rel_b": 12,
-            "rel_c": -35
+            "rel_c": -35,
+            "pv": 1,
+            "heat": 7,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "大清洗雖暫時震懾了言官，卻讓整個天下士林對你怨聲載道；洛陽行宮隨即傳來消息，上官婉兒開始私下資助失意文士編纂諷刺當朝暴政的野史。"
         }
@@ -673,7 +844,12 @@
             "corruption": 16,
             "hedon": 16,
             "rel_g": 5,
-            "flag": "shangguan_five_stage_bonded"
+            "flag": "shangguan_five_stage_bonded",
+            "mist": 16,
+            "crave": 16,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "上官婉兒眼底罕見地泛起一絲滾燙的脆弱與狂喜，反手將你拉進堆滿聖旨的錦榻——從此她這支定奪天下的生花妙筆，徹底只為你一人開殺與綻放。"
         },
@@ -683,7 +859,9 @@
             "aff": -6,
             "inf": 8,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "house": 1
           },
           "outcome": "上官婉兒指尖在宣紙上輕輕點出一滴黑墨，微笑得既溫柔又森冷：「陛下果然聰明——沒關係，臣妾最擅長多邊押寶，只要陛下還離不開我這支筆，咱們就有得玩呢。」"
         }
@@ -709,7 +887,13 @@
             "hedon": 18,
             "corruption": 14,
             "rel_b": -20,
-            "rel_g": -10
+            "rel_g": -10,
+            "food": 100,
+            "mist": 14,
+            "crave": 18,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "上官婉兒在權力與金錢的雙重刺激下徹底卸下清冷偽裝，整夜在你身下嬌啼婉轉，直到天明才心滿意足地替你理好龍袍上早朝。"
         },
@@ -720,7 +904,11 @@
             "inf": 6,
             "tyranny": 10,
             "rel_b": -10,
-            "rel_g": -20
+            "rel_g": -20,
+            "food": 100,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b"
           },
           "outcome": "上官婉兒抿唇輕笑，用沾了墨的指尖點了點你的鼻尖：「陛下還真是算無遺策——不過沒關係，少了個 {g}，長安城裡排隊想進我書房的將軍多得是呢。」"
         }
@@ -748,7 +936,12 @@
             "tyranny": 12,
             "rel_b": -30,
             "rel_g": 16,
-            "flag": "shangguan_war_propaganda_master"
+            "flag": "shangguan_war_propaganda_master",
+            "mist": 14,
+            "heat": 6,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "出征前夜，上官婉兒在行營書案上與你瘋狂纏綿，說是要沾染天子龍氣去寫最毒的殺人檄文。開拔後第三日，{b} 堂兄便被她派去敵營送假降書，當場被暴怒的敵帥剁成肉泥，也恰好引爆了敵軍內亂。"
         },
@@ -758,7 +951,11 @@
             "aff": 4,
             "inf": 6,
             "rel_b": 6,
-            "rel_g": 8
+            "rel_g": 8,
+            "inj": "b",
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "上官婉兒優雅領旨，心中卻已記下這筆帳——等凱旋歸來，她有一百種寫進戰報裡的法子能讓 {b} 娘家吐血三升。"
         }
@@ -784,7 +981,14 @@
             "hedon": 18,
             "tyranny": 14,
             "rel_g": 12,
-            "flag": "shangguan_blood_ink_victory"
+            "flag": "shangguan_blood_ink_victory",
+            "office": 1,
+            "mist": 18,
+            "crave": 18,
+            "heat": 7,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "帳外是數萬俘虜的哀嚎與收屍的火光，帳內卻是緋色官袍散落、銷魂嬌喘不絕。此戰過後，「巾幗宰相一紙破二十萬大軍」的傳說震動天下，朝中再無人敢輕視這支沾血的狼毫。"
         },
@@ -794,7 +998,10 @@
             "aff": -6,
             "inf": 8,
             "tyranny": 6,
-            "rel_g": 4
+            "rel_g": 4,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "上官婉兒靠在你胸口輕笑一聲，指尖卻趁機隔著戰甲輕輕劃過你的腰際：「陛下真掃興……不過沒關係，等晚上回了中軍帳，臣妾有的是辦法讓陛下親手脫下這身冷冰冰的盔甲。」"
         }
@@ -823,7 +1030,12 @@
               "corruption": 14,
               "rel_b": -38,
               "rel_g": 22,
-              "flag": "shangguan_posthumous_purge"
+              "flag": "shangguan_posthumous_purge",
+              "mist": 14,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "{b} 一黨徹底覆滅，{g} 與滿朝寒門文士皆感念你為她復仇；只是紫宸殿的書案從此空落落的，再也沒人能像她那樣一筆寫盡權謀與銷魂。"
           },
@@ -833,7 +1045,11 @@
               "inf": -12,
               "tyranny": 12,
               "rel_b": 16,
-              "rel_g": -40
+              "rel_g": -40,
+              "heat": 6,
+              "pol": 15,
+              "mist": 15,
+              "wood": -50
             },
             "outcome": "{g} 憤而掛印辭官，滿朝曾受她提拔的文士徹底寒心，民間更流傳出數百首諷刺你薄情寡義的哀詩。"
           }
@@ -859,7 +1075,11 @@
               "inf": 8,
               "corruption": 12,
               "rel_b": -22,
-              "flag": "shangguan_rescue_ordered"
+              "flag": "shangguan_rescue_ordered",
+              "mist": 12,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "消息傳入敵帳，滿身墨漬與淤青的上官婉兒望著長安方向，緩緩舔掉嘴角的血絲，眼底浮現出更冰冷、更不擇手段的算計。"
           },
@@ -870,7 +1090,11 @@
               "inf": -16,
               "corruption": 24,
               "tyranny": 14,
-              "rel_b": 20
+              "rel_b": 20,
+              "mist": 24,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "敵帥大笑著把你的削爵聖旨丟在赤裸的上官婉兒臉上。她看了一眼便笑了——從那一刻起，她真的開始幫敵帥起草一份份專戳你心窩的致命奇策，發誓要讓你親眼看著江山易主。"
           }
@@ -897,7 +1121,13 @@
               "corruption": 14,
               "hedon": 8,
               "rel_b": -28,
-              "flag": "shangguan_left_hand_oath"
+              "flag": "shangguan_left_hand_oath",
+              "mist": 14,
+              "crave": 8,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "上官婉兒看著你親吻她殘缺流血的右手紗布，終於崩潰落淚，隨即發狂地撲進你懷裡索歡——那一夜她用僅剩的左手死死摳進你的背脊，誓死把你與權力綁在一起。"
           },
@@ -908,7 +1138,11 @@
               "inf": -16,
               "corruption": 24,
               "tyranny": 12,
-              "rel_b": 18
+              "rel_b": 18,
+              "mist": 24,
+              "heat": 6,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "你拿走紫印的那一刻，上官婉兒臉上所有表情徹底消失。不到一月，{b} 娘家三代所有人的名字全被她用陰森詭異的左手字寫進了十幾封匿名告密信，整個家族瞬間被酷吏抄得片甲不留。"
           }
@@ -935,7 +1169,11 @@
               "tyranny": 18,
               "corruption": 18,
               "rel_b": -35,
-              "flag": "shangguan_ink_shame_bloodwash"
+              "flag": "shangguan_ink_shame_bloodwash",
+              "exec": "b",
+              "mist": 18,
+              "heat": 9,
+              "pop": -15
             },
             "outcome": "當夜在紅梅別業的溫水池裡，她一遍遍把滿身屈辱墨跡搓得皮膚滲血，隨即哭笑著將一支硃筆塞進你手裡，要你親手在她全身重新寫滿你的名字，並在筆墨淋漓中徹底佔有她。"
           },
@@ -946,7 +1184,11 @@
               "inf": -18,
               "corruption": 26,
               "tyranny": 14,
-              "rel_b": 16
+              "rel_b": 16,
+              "mist": 26,
+              "heat": 7,
+              "ban": 1,
+              "tag": "受辱怨骨"
             },
             "outcome": "重新被丟進掖庭的那一刻，她徹底化為最恐怖的復仇妖魔。不到半月，她便靠著色誘與許諾前程收服了整座內廷的酷吏與獄卒，暗中把整個後宮攪成了一座人間地獄。"
           }
@@ -973,7 +1215,12 @@
               "corruption": 20,
               "hedon": 10,
               "tyranny": 14,
-              "flag": "shangguan_blood_elegy_vow"
+              "flag": "shangguan_blood_elegy_vow",
+              "mist": 20,
+              "crave": 10,
+              "heat": 7,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "上官婉兒在你懷裡發出一聲如同幼獸哀鳴般的痛哭，隨即瘋狂撕扯你的龍袍，在滿地碎紙與血墨之間與你激烈交纏，彷彿唯有肉體的劇痛與炙熱能將她拉回人間。"
           },
@@ -983,7 +1230,11 @@
               "aff": -26,
               "inf": -16,
               "corruption": 26,
-              "tyranny": 16
+              "tyranny": 16,
+              "pv": 1,
+              "mist": 26,
+              "heat": 8,
+              "jail": 1
             },
             "outcome": "她醒來後變得異常安靜，甚至開始溫順地抄寫佛經——然而不出一個月，當初拖延援軍的四名重臣全都離奇暴斃於自家書房，每人案頭都放著一張她寫的血字祭文。"
           }
@@ -1010,7 +1261,13 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_b": -32,
-              "flag": "shangguan_mercury_purge_saved"
+              "flag": "shangguan_mercury_purge_saved",
+              "kidLoss": 1,
+              "inj": 1,
+              "mist": 20,
+              "heat": 8,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "從鬼門關爬回來的上官婉兒變得比從前更冷酷百倍。她剛能握筆的第一夜，便親手擬了一道密旨，讓 {b} 剛懷孕的親妹妹「不慎」喝下了一模一樣的水銀落胎湯。"
           },
@@ -1021,7 +1278,13 @@
               "inf": -12,
               "corruption": 28,
               "tyranny": 20,
-              "rel_b": 12
+              "rel_b": 12,
+              "mist": 28,
+              "heat": 10,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "上官婉兒盯著你冷酷的雙眼，徹底明白這世上沒有任何男人值得交心。她強忍屈辱活了下來，卻從此在給你的每一道茶點與奏章裡，都埋下了足以傾覆江山的慢性殺機。"
           }
@@ -1049,7 +1312,13 @@
               "hedon": 20,
               "tyranny": 14,
               "rel_b": -35,
-              "flag": "shangguan_poison_pen_widow"
+              "flag": "shangguan_poison_pen_widow",
+              "mist": 20,
+              "crave": 20,
+              "heat": 7,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "滿朝嘲諷瞬間化為敬畏與毛骨悚然。當夜上官婉兒在你身下瘋狂索歡，一邊劇烈喘息一邊笑著問你：「陛下，臣妾這張替敵帥寫過情書、又捅穿他喉嚨的手，摸在陛下身上是不是格外刺激呀？」"
           },
@@ -1060,7 +1329,11 @@
               "inf": -10,
               "corruption": 24,
               "tyranny": 16,
-              "rel_b": 15
+              "rel_b": 15,
+              "mist": 24,
+              "heat": 8,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "上官婉兒臨走前故意用沾著敵帥血漬的筆尖在龍案上點了一朵鮮紅的梅花，微笑道：「陛下放心，只要陛下別像那個老蠢貨一樣想鎖死臣妾，這支筆永遠只會替陛下寫盛世文章喔。」"
           }
@@ -1088,7 +1361,13 @@
               "tyranny": 12,
               "rel_b": -38,
               "rel_g": 18,
-              "flag": "shangguan_rescued_reckoning"
+              "flag": "shangguan_rescued_reckoning",
+              "exec": "b",
+              "mist": 14,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "上官婉兒這才丟掉銀剪靠進你懷裡低聲哭訴——然而當晚她卻也私下將負傷的 {g} 召進紅梅別業的暖閣「親自替將軍換藥答謝」，書房紅燭燃至天亮。"
           },
@@ -1099,7 +1378,11 @@
               "inf": -12,
               "corruption": 20,
               "rel_b": 12,
-              "rel_g": -15
+              "rel_g": -15,
+              "ban": "b",
+              "mist": 20,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "上官婉兒望著你冷冷一笑，當著你的面挽起 {g} 染血的手臂轉身離去：「將軍瞧見了嗎？咱們在外頭九死一生，深宮裡卻有人護著出賣咱們的毒蛇呢。」從此她與 {g} 徹底結成密不可分的暗黑同盟。"
           }
@@ -1127,7 +1410,12 @@
               "hedon": 18,
               "tyranny": 14,
               "rel_g": -50,
-              "flag": "shangguan_library_prison_burned"
+              "flag": "shangguan_library_prison_burned",
+              "mist": 22,
+              "crave": 18,
+              "heat": 7,
+              "exec": "g",
+              "pv": 1
             },
             "outcome": "回到紫宸殿後，上官婉兒在床榻上變得極其偏執而具有侵略性——她再也不許你從背後壓制她，唯有由她跨坐在你身上掌控一切時，她眼底的瘋狂才會短暫平息。"
           },
@@ -1137,7 +1425,11 @@
               "aff": -28,
               "inf": -14,
               "corruption": 28,
-              "hedon": 16
+              "hedon": 16,
+              "mist": 28,
+              "crave": 16,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "上官婉兒一眼看透了你的嫌棄。她笑著不再求寵，轉而在紅梅別業地下建起一模一樣的秘密書閣，暗中用迷藥囚禁並折磨數名容貌酷似你的落第俊美書生，徹底化為吞噬人心的紅梅妖魔。"
           }
@@ -1164,7 +1456,12 @@
               "corruption": 16,
               "tyranny": 12,
               "rel_b": -42,
-              "flag": "shangguan_lone_escape_return"
+              "flag": "shangguan_lone_escape_return",
+              "mist": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "上官婉兒接過金印，踮起赤腳吻上你的唇角，染墨的指尖卻輕輕點在你的心口：「陛下記住了，以後誰再敢動紅梅別業一紙一墨，臣妾可不會再等陛下硃批才動手殺人囉。」"
           },
@@ -1175,7 +1472,11 @@
               "inf": -14,
               "tyranny": 16,
               "corruption": 24,
-              "rel_b": 10
+              "rel_b": 10,
+              "mist": 24,
+              "heat": 8,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "上官婉兒擦掉玉筆桿上的血跡，笑得清冷又瘋狂：「好啊，陛下既要講宮規，那咱們就看看，到底是您的宮規硬，還是我這支能寫翻半個大唐的筆桿子硬！」"
           }
@@ -1184,3 +1485,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['shangguan'] = DATA;
+  (window.characterPacks ||= {})['shangguan'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

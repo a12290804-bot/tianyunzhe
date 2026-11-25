@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["caiwenji"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 20 號 蔡文姬 (caiwenji)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "caiwenji",
     "index": 20,
@@ -18,7 +23,8 @@
       "0-34（初染）：帶著剛從匈奴贖歸、滿身創傷與書卷清冷的脆弱美感，以過目不忘的文才與哀婉《胡笳十八拍》迅速博得君王憐惜與滿朝士林同情。",
       "35-69（深蝕）：在黑霧與深宮傾軋的侵蝕下，徹底將悲情創傷化作最毒的兵器——一面用默寫偽史與赤足闖宴反殺政敵，一面在焦尾琴閣裡以破碎熟美之軀與催魂胡笳暗中收編握兵武將。",
       "70+（深淵）：徹底黑化為『悲憤琴魔』——已親手將落敗貴妃鎖進漆黑琴閣暗室以晝夜不歇的魔音胡笳逼至精神崩潰、已徹底看破清白虛妄而在琴案上公然以冰冷淚眼與滾燙肉體操控權臣悍將、已把親兒調教成善於以慘痛悲情博取同情並暗記百官死穴的陰鬱幼魔，在淒美琴聲中笑看整座皇朝陪她一同墜入無盡悲憤深淵。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -46,7 +52,12 @@
             "hedon": 14,
             "corruption": 8,
             "rel_g": -6,
-            "flag": "caiwenji_jiaowei_qin_entry"
+            "flag": "caiwenji_jiaowei_qin_entry",
+            "office": 1,
+            "mist": 10,
+            "crave": 14,
+            "heat": 6,
+            "marry": 1
           },
           "outcome": "焦尾琴弦在你將她壓上琴案的瞬間發出雜亂而令人心跳失控的震響！蔡文姬閉上雙眼、淚珠順著雪白頰邊滑落，身軀卻像一灘溫熱融化的春水般毫無保留地徹底綻放迎合，讓門外聽見琴聲驟亂的 {g} 痛苦得幾乎捏碎刀柄。"
         },
@@ -57,7 +68,11 @@
             "inf": -6,
             "tyranny": 10,
             "corruption": 10,
-            "rel_g": 8
+            "rel_g": 8,
+            "mist": 10,
+            "heat": 5,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "蔡文姬平靜地擦掉臉上那滴刻意逼出來的淚水，垂首恭順領命。可不出十日，她便憑著過目不忘的本事，把藏書閣裡所有關乎朝中權貴祖上不光彩的黑史全部默記在了心裡。"
         },
@@ -69,7 +84,12 @@
             "hedon": 16,
             "corruption": 14,
             "tyranny": 8,
-            "rel_g": -15
+            "rel_g": -15,
+            "mist": 14,
+            "crave": 16,
+            "heat": 5,
+            "affair": "g",
+            "tag": "桀驁未馴"
           },
           "outcome": "哀婉淒絕的琴音裡混雜著漸漸破碎壓抑的熟婦低喘，素白衣襟滑落雪肩露出飽滿溫軟的曲線——那種將大儒之女拉下神壇的極致背德快感，讓你從此徹底上癮。"
         }
@@ -96,7 +116,13 @@
             "tyranny": 12,
             "rel_b": -30,
             "rel_c": 14,
-            "flag": "caiwenji_memory_blackmail"
+            "flag": "caiwenji_memory_blackmail",
+            "pop": -15,
+            "mist": 16,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "次日廷尉按圖索驥果然從舊案庫挖出鐵證，{b} 娘家一夜抄沒半數家產，滿朝文武驚駭於蔡文姬「過目不忘能殺人」的恐怖記憶力！當夜她在滿室墨香裡主動解開素白衣帶，用溫軟熟美的身軀報答你的庇護。"
         },
@@ -107,7 +133,11 @@
             "inf": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_c": 6
+            "rel_c": 6,
+            "mist": 10,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "蔡文姬垂眸低眉順眼地應下，眼底卻閃過一抹幽冷的算計——只要她還握著滿朝文武的黑歷史記憶，這後宮就沒人敢真正動她。"
         },
@@ -117,7 +147,10 @@
             "aff": -14,
             "inf": -10,
             "tyranny": 10,
-            "rel_b": 14
+            "rel_b": 14,
+            "heat": 5,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "看著火盆裡化作黑灰的罪卷，蔡文姬唇角浮起一絲令人發寒的淺笑：「紙燒了有什麼用呢，陛下？那四千卷書與滿朝醜事，全都刻在文姬的腦子裡，除非陛下砍掉文姬的頭，否則它們永遠燒不掉。」"
         }
@@ -145,7 +178,13 @@
             "tyranny": 10,
             "rel_b": -38,
             "rel_c": 12,
-            "flag": "caiwenji_barefoot_banquet_win"
+            "flag": "caiwenji_barefoot_banquet_win",
+            "ban": "b",
+            "mist": 16,
+            "crave": 12,
+            "heat": 5,
+            "inj": "b",
+            "tag": "立威震宮"
           },
           "outcome": "從此全朝野上下皆視蔡文姬為不可冒犯的「亂世聖女」，誰敢再提她一句胡地舊事便會遭天下士林口誅筆伐！當夜她在焦尾琴閣裡褪去素白單衣，在燭火與悲情餘韻中徹底向你敞開熟美溫軟的身軀。"
         },
@@ -156,7 +195,10 @@
             "inf": 8,
             "tyranny": 6,
             "rel_b": -16,
-            "rel_c": 4
+            "rel_c": 4,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "蔡文姬含淚柔順領旨，可隔日長安與許昌酒肆裡便已傳遍了她這首泣血《悲憤詩》，全天下讀書人都在同情她、痛罵 {b}，連你也跟著背了幾分冷酷罵名。"
         },
@@ -166,7 +208,12 @@
             "aff": -20,
             "inf": -14,
             "tyranny": 14,
-            "rel_b": 14
+            "rel_b": 14,
+            "ban": 1,
+            "heat": 7,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "蔡文姬赤腳踏過青磚平靜走進冷院，眼底最後一絲對人間的溫情徹底死去。不到五日，幾十名太學生便因讀了她悄悄傳出的新詞而在宮門外聯名哭諫。"
         }
@@ -194,7 +241,11 @@
             "corruption": 18,
             "tyranny": 14,
             "rel_b": -45,
-            "flag": "caiwenji_forged_history_kill"
+            "flag": "caiwenji_forged_history_kill",
+            "mist": 18,
+            "heat": 7,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "{b} 外戚在「蔡大家親筆史證」下百口莫辯、一夜傾覆。當夜焦尾琴閣裡，蔡文姬卸下哀婉面具，赤身靠進你懷裡輕笑：「刀劍只能殺一時，史筆卻能把一個家族永遠釘死在地獄裡呢。」"
         },
@@ -204,7 +255,10 @@
             "aff": -8,
             "inf": 4,
             "corruption": 8,
-            "rel_b": -15
+            "rel_b": -15,
+            "mist": 10,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "蔡文姬溫順地提筆刪去那幾行字，眼底卻毫無波瀾——刪改前的抄本早已悄悄流進了許昌太學，{b} 娘家的名聲早已徹底臭不可聞。"
         }
@@ -232,7 +286,13 @@
             "tyranny": 12,
             "rel_g": -15,
             "rel_c": 8,
-            "flag": "caiwenji_qin_affair_caught"
+            "flag": "caiwenji_qin_affair_caught",
+            "mist": 20,
+            "crave": 22,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "焦尾古琴在你粗暴的衝撞中發出劇烈哀鳴！蔡文姬在你憤怒而霸道的掠奪下，淚眼迷離地咬住下唇發出破碎又銷魂的熟婦低喘，甚至故意迎著跪地發抖的 {g} 露出柔弱絕美的側臉。那一夜過後，{g} 的忠誠與性命徹底鎖死在你們二人手中。"
         },
@@ -243,7 +303,11 @@
             "corruption": 14,
             "rel_g": 16,
             "rel_c": 10,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 14,
+            "heat": 6,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "次日 {g} 果然徹底倒戈清洗了軍中所有 {b} 派系眼線。當夜蔡文姬洗淨一身苦艾香赤足走上龍榻，柔聲低語：「那蠢將軍只聽得懂眼淚，真正懂得文姬骨子裡有多冷、有多渴的，只有陛下一個人呀。」"
         },
@@ -255,7 +319,13 @@
             "tyranny": 16,
             "corruption": 12,
             "rel_g": -50,
-            "rel_b": 16
+            "rel_b": 16,
+            "affair": "g",
+            "exec": "g",
+            "mist": 12,
+            "heat": 8,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "血濺焦尾琴案，{g} 死前甚至還在替她辯解說一切都是自己強迫。蔡文姬披著沾血的素白深衣，緩緩撫過斷裂的琴弦冷笑：「陛下看，連死他都替我頂罪——這就是文姬的本事呢。」"
         }
@@ -282,7 +352,11 @@
             "corruption": 18,
             "rel_b": -35,
             "rel_g": -50,
-            "flag": "caiwenji_forged_letter_purge"
+            "flag": "caiwenji_forged_letter_purge",
+            "food": 100,
+            "mist": 18,
+            "heat": 9,
+            "exec": "b"
           },
           "outcome": "{g} 含冤伏誅，{b} 徹底失去所有靠山與翻身之望。當夜蔡文姬靠在你懷裡輕輕撥動一根染血的琴弦低語：「敢拿我塞外兩個孩子當籌碼威脅我的人，都該沉進無聲的泥底。」"
         },
@@ -294,7 +368,11 @@
             "tyranny": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_g": -22
+            "rel_g": -22,
+            "mist": 10,
+            "heat": 5,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "蔡文姬垂淚低頭認罪，姿態淒美得令人不忍重責——可兩日後 {g} 依然在押送途中「突發舊傷暴斃」，死無對證。"
         }
@@ -322,7 +400,14 @@
             "tyranny": 12,
             "rel_b": -38,
             "rel_c": 14,
-            "flag": "caiwenji_burning_scrolls_win"
+            "flag": "caiwenji_burning_scrolls_win",
+            "ban": "b",
+            "mist": 16,
+            "crave": 14,
+            "heat": 6,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "從此再沒人敢動這位握著大漢文脈命根子的才女半根寒毛！當夜她在那堆空白與寫滿墨字的宣紙之上褪盡素白深衣，以極致柔順又瘋狂的姿態回報你的縱容。"
         },
@@ -333,7 +418,10 @@
             "inf": 6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 4
+            "rel_c": 4,
+            "mist": 10,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "蔡文姬溫柔地垂下長睫，輕聲細語認錯，心底卻冷冷記下：既然你不上士林的當，那下次她便換一套更直接、更讓你無法拒絕的枕邊殺招。"
         }
@@ -360,7 +448,13 @@
             "tyranny": 12,
             "rel_b": 14,
             "rel_c": -40,
-            "flag": "caiwenji_paper_monopoly"
+            "flag": "caiwenji_paper_monopoly",
+            "pop": -15,
+            "mist": 18,
+            "heat": 6,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "半月內 {c} 外戚紙坊全線破產抄沒，蔡文姬徹底掌握了天下文人的筆墨喉舌。當夜她在堆滿潔白新紙的書案上赤身邀你題字，熟美玉體在墨香中泛著致命誘惑。"
         },
@@ -371,7 +465,10 @@
             "inf": -6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 18
+            "rel_c": 18,
+            "inj": "b",
+            "mist": 10,
+            "troops": 50
           },
           "outcome": "圍獵失手，{b} 氣得吐血；蔡文姬卻只是垂淚淺笑，當夜在龍榻上用更極致的破碎順從與哀婉低喘，讓你心軟得隔日便補賞了她十萬貫修書銀兩。"
         }
@@ -398,7 +495,11 @@
             "hedon": 24,
             "corruption": 16,
             "rel_b": -30,
-            "flag": "caiwenji_weeping_bed_claim"
+            "flag": "caiwenji_weeping_bed_claim",
+            "mist": 16,
+            "crave": 24,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "那一夜寢殿裡滿是令人心碎又令人血脈賁張的壓抑哭喘與肉體交纏，她在你極致的掠奪中越是脆弱、越是讓男人欲罷不能。次日清晨她穿著你的大袍赤足走回琴閣，當眾留給氣炸的 {b} 一個無辜淒美的淺笑。"
         },
@@ -409,7 +510,12 @@
             "hedon": 20,
             "tyranny": 12,
             "corruption": 16,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 16,
+            "crave": 20,
+            "heat": 6,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "被你毫不留情地按在床沿粗暴貫穿，蔡文姬眼角滾落真實而灼熱的淚珠，唇角卻在痛楚與快感交織中揚起一抹詭異滿足的弧度——她早已習慣在痛苦與被玷污中確認自己的價值。"
         },
@@ -419,7 +525,11 @@
             "aff": -22,
             "inf": -10,
             "tyranny": 14,
-            "rel_b": 14
+            "rel_b": 14,
+            "ban": 1,
+            "heat": 7,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "蔡文姬赤腳安靜地轉身走進寒風裡，連一聲求饒都沒有。隔日許昌文壇便多了一首暗諷「君王貪歡新寵、冷落悲情孤女」的絕美哀詞，逼得你連著三日被清流言官暗諷。"
         }
@@ -446,7 +556,12 @@
             "tyranny": 16,
             "rel_g": 10,
             "rel_c": 12,
-            "flag": "caiwenji_scroll_orgy_abyss"
+            "flag": "caiwenji_scroll_orgy_abyss",
+            "mist": 24,
+            "crave": 28,
+            "heat": 8,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "那一夜焦尾琴閣內胡笳聲斷、墨汁與淚水灑滿四千卷古籍。你與蔡文姬在最極致的聖潔毀滅與荒淫肉慾中徹底淪為共生妖魔，滿朝清流與猛將全成了她琴聲下的瘋狂奴僕。"
         },
@@ -459,7 +574,13 @@
             "hedon": 20,
             "tyranny": 22,
             "rel_g": -48,
-            "rel_c": -5
+            "rel_c": -5,
+            "inj": "g",
+            "mist": 20,
+            "crave": 20,
+            "heat": 11,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "鮮血濺滿潔白書卷，{g} 慘叫退逃。蔡文姬被你按在沾血的焦尾琴上承受暴風驟雨般的佔有，眼角淚珠不斷滾落，唇角卻揚起一抹極致病態而滿足的笑：「對……只有陛下這般狠心、這般只許我屬於你一個人的掠奪，才讓文姬覺得自己還活著呢。」"
         }
@@ -486,7 +607,12 @@
             "hedon": 22,
             "tyranny": 18,
             "rel_b": -50,
-            "flag": "caiwenji_sound_torture_revenge"
+            "flag": "caiwenji_sound_torture_revenge",
+            "mist": 24,
+            "crave": 22,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "那一夜暗室裡斷斷續續的淒厲琴音、{b} 徹底瘋癲的尖叫與軟榻上壓抑銷魂的熟婦低喘交織至天明。天亮時 {b} 已經徹底咬破嘴唇神智全失、一見到古琴便當場大小便失禁，被丟進了荒涼冷院。"
         },
@@ -497,7 +623,11 @@
             "inf": 4,
             "tyranny": 8,
             "corruption": 6,
-            "rel_b": -20
+            "rel_b": -20,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "蔡文姬溫柔地垂眸收起焦尾琴，臨走前卻還是將一頁寫滿 {b} 醜事的墨紙輕輕覆在了 {b} 冰冷的臉上。"
         }
@@ -524,7 +654,12 @@
             "corruption": 18,
             "tyranny": 12,
             "rel_b": -28,
-            "flag": "caiwenji_heir_memory_vault"
+            "flag": "caiwenji_heir_memory_vault",
+            "mist": 18,
+            "heat": 6,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "蔡文姬眼底閃過病態而深沉的滿足。從此 {heir} 以「悲憫博學」的聖君假象騙盡天下名士，背地裡卻與母親聯手操控著最恐怖的百官黑料庫，將 {b} 派系逼入絕境。"
         },
@@ -535,7 +670,12 @@
             "inf": -14,
             "tyranny": 12,
             "corruption": 10,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 10,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "看到兒子再次被硬生生從懷裡帶走，蔡文姬瞬間發出一聲撕裂靈魂般的淒厲尖叫、當場嘔血昏厥！從那一刻起，她看你的眼神徹底變成了看待當年拆散她骨肉的仇敵。"
         }
@@ -563,7 +703,14 @@
             "tyranny": 22,
             "rel_b": -50,
             "rel_g": 22,
-            "flag": "caiwenji_weeping_empress_regime"
+            "flag": "caiwenji_weeping_empress_regime",
+            "mist": 26,
+            "crave": 26,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "玉璽落下，滿朝士林竟然齊聲頌聖。從此整個皇朝的輿論、史筆與禁軍皆在她一雙染淚玉手之間，而你每夜在她的哀婉琴音與熟美肉體中徹底放棄了清醒。"
         },
@@ -574,7 +721,12 @@
             "inf": -15,
             "tyranny": 20,
             "corruption": 16,
-            "rel_g": -35
+            "rel_g": -35,
+            "mist": 16,
+            "heat": 10,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "冰冷劍鋒劃破她半透明的雪白頸項滲出一線鮮紅，蔡文姬卻露出一抹比哭還淒美、卻令人毛骨悚然的冷笑：「陛下終於也拿刀對準文姬了……真好，這才像我認識的亂世男人呀。」"
         }
@@ -602,7 +754,14 @@
             "corruption": 12,
             "hedon": 12,
             "rel_b": -24,
-            "flag": "caiwenji_academy_network"
+            "flag": "caiwenji_academy_network",
+            "affair": "g",
+            "mist": 12,
+            "crave": 12,
+            "heat": 6,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "五日後中原三千學子立刻由罷課轉為齊聲歌頌聖德，蔡文姬更隨信寄回一曲親手譜寫的香豔閨房琴譜，邀你早日赴陳留共奏。"
         },
@@ -612,7 +771,11 @@
             "aff": -14,
             "inf": -8,
             "tyranny": 12,
-            "rel_b": 10
+            "rel_b": 10,
+            "pop": -15,
+            "heat": 6,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "官兵剛圍住書樓，滿城百姓與書生便齊聲高唱蔡文姬新填的《悲憤續篇》，鬧得朝野沸騰。你只收到她寄回的一截斷裂琴弦，附字：『弦斷音猶在。』"
         }
@@ -638,7 +801,12 @@
             "corruption": 16,
             "tyranny": 10,
             "rel_b": -28,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 16,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "都城百官從此談「蔡大家記性好」色變，人人自危生怕自己陳年醜事被她想起來，再無人敢替 {b} 出頭半分。"
         },
@@ -649,7 +817,11 @@
             "inf": -10,
             "tyranny": 14,
             "rel_b": 12,
-            "rel_c": -35
+            "rel_c": -35,
+            "jail": "c",
+            "heat": 7,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "{c} 入獄前仍含淚高吟《悲憤詩》，引發都城文人強烈不滿；陳留隨即傳來急報，蔡文姬宣布因悲痛過度暫停默寫剩餘三千卷先漢失傳典籍。"
         }
@@ -674,7 +846,12 @@
             "corruption": 16,
             "hedon": 20,
             "rel_g": 5,
-            "flag": "caiwenji_five_stage_bonded"
+            "flag": "caiwenji_five_stage_bonded",
+            "mist": 16,
+            "crave": 20,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "蔡文姬發出一聲積壓半生的破碎嗚咽，隨即化為最瘋狂、最毫無保留的深吻與交纏——從此她這顆裝滿四千卷典籍與天下秘密的頭腦，徹底只為你一人布下天羅地網。"
         },
@@ -684,7 +861,9 @@
             "aff": -6,
             "inf": 8,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "house": 1
           },
           "outcome": "蔡文姬輕輕擦掉眼角淚珠，重新恢復那副冰清玉潔卻冷漠如霜的大儒之女模樣：「陛下果然清醒……也好，這世上本就沒有男人值得文姬交付真心呢。」"
         }
@@ -710,7 +889,12 @@
             "hedon": 20,
             "corruption": 14,
             "rel_b": -20,
-            "rel_g": 8
+            "rel_g": 8,
+            "mist": 14,
+            "crave": 20,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "蔡文姬在你掌心裡褪去所有冰冷偽裝，整夜發出既脆弱又放浪的熟婦嬌喘，把你徹底溺斃在她的書香溫柔鄉裡。"
         },
@@ -721,7 +905,11 @@
             "inf": 6,
             "tyranny": 10,
             "rel_b": -10,
-            "rel_g": -22
+            "rel_g": -22,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "蔡文姬垂眸淺笑，輕輕咬住你的指尖低語：「陛下真是防得滴水不漏……沒關係，只要陛下夜裡還離不開文姬，少一個 {g} 又何妨呢？」"
         }
@@ -749,7 +937,12 @@
             "tyranny": 12,
             "rel_b": -32,
             "rel_g": 18,
-            "flag": "caiwenji_hujia_psyops_crusade"
+            "flag": "caiwenji_hujia_psyops_crusade",
+            "mist": 14,
+            "heat": 6,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "出征前夜，蔡文姬在你的帥帳裡流著淚為你獨奏一曲，隨即褪去素白深衣在你懷裡極盡纏綿。開拔後第三日，{b} 堂兄果然被她派到敵軍箭程邊緣冒死撒傳單，嚇得屁滾尿流。"
         },
@@ -759,7 +952,10 @@
             "aff": 4,
             "inf": 6,
             "rel_b": 6,
-            "rel_g": 8
+            "rel_g": 8,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "蔡文姬垂眸溫順領旨，心裡卻已經把 {b} 娘家另一筆陳年貪腐舊帳從記憶裡翻了出來，只等凱旋回朝便慢慢清算。"
         }
@@ -785,7 +981,13 @@
             "hedon": 20,
             "tyranny": 14,
             "rel_g": 14,
-            "flag": "caiwenji_hujia_slaughter_victory"
+            "flag": "caiwenji_hujia_slaughter_victory",
+            "mist": 18,
+            "crave": 20,
+            "heat": 7,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "帳外是滿營敵屍與收降的火光，帳內卻是素白深衣滑落、淒美破碎的哭喘聲徹夜不絕。此戰過後，天下諸侯聞「悲憤胡笳」之名無不聞風喪膽。"
         },
@@ -795,7 +997,10 @@
             "aff": -6,
             "inf": 8,
             "tyranny": 6,
-            "rel_g": 4
+            "rel_g": 4,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "蔡文姬順從地裹緊披風靠在你胸口輕嘆，帶血的指尖卻悄悄在你的手背上畫了一個圓圈：「陛下總是這麼克制……可文姬知道，進了帳門之後，陛下一定會心疼文姬的。」"
         }
@@ -824,7 +1029,12 @@
               "corruption": 14,
               "rel_b": -38,
               "rel_g": 22,
-              "flag": "caiwenji_scholar_funeral_purge"
+              "flag": "caiwenji_scholar_funeral_purge",
+              "mist": 14,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "{b} 一黨徹底覆滅，天下名士與 {g} 皆感念你為她復仇；只是從此四千卷先漢遺書徹底失傳，空蕩蕩的琴閣裡再也聽不見那曲令人心碎的《胡笳十八拍》。"
           },
@@ -834,7 +1044,11 @@
               "inf": -12,
               "tyranny": 14,
               "rel_b": 16,
-              "rel_g": -40
+              "rel_g": -40,
+              "heat": 7,
+              "pol": 15,
+              "mist": 15,
+              "wood": -50
             },
             "outcome": "{g} 悲憤棄官遠遁，天下讀書人痛斥你毀滅中華文脈、薄情寡義，民間流傳起無數諷刺你冷血無情的哀詩。"
           }
@@ -860,7 +1074,12 @@
               "inf": 8,
               "corruption": 12,
               "rel_b": -24,
-              "flag": "caiwenji_second_ransom_order"
+              "flag": "caiwenji_second_ransom_order",
+              "troops": 60,
+              "mist": 12,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "消息傳入敵營，滿身鞭傷與淚痕的蔡文姬望著都城方向，緩緩擦去嘴角血絲，眼底浮現出比以往更深沉、更冷血的算計。"
           },
@@ -871,7 +1090,11 @@
               "inf": -16,
               "corruption": 24,
               "tyranny": 14,
-              "rel_b": 20
+              "rel_b": 20,
+              "mist": 24,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "敵帥大笑著把你的除籍聖旨唸給縮在帳角的她聽。蔡文姬聽完竟沒有落一滴淚，反而平靜地將腦中記住的大漢所有邊防秘檔與朝臣弱點一字不差地默寫給了敵帥——她發誓要讓這座負心皇朝徹底亡國。"
           }
@@ -898,7 +1121,14 @@
               "corruption": 14,
               "hedon": 10,
               "rel_b": -30,
-              "flag": "caiwenji_broken_fingers_kissed"
+              "flag": "caiwenji_broken_fingers_kissed",
+              "cold": "b",
+              "inj": "b",
+              "mist": 14,
+              "crave": 10,
+              "heat": 6,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "蔡文姬渾身劇烈戰慄，終於壓抑不住發出一聲撕心裂肺的痛哭，用完好的左手死死勾住你的脖頸將你拉倒在素白軟榻上，以最絕望也最熾熱的肉體奉獻鎖死你的心。"
           },
@@ -909,7 +1139,12 @@
               "inf": -16,
               "corruption": 26,
               "tyranny": 12,
-              "rel_b": 18
+              "rel_b": 18,
+              "office": 1,
+              "mist": 26,
+              "heat": 6,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "你收走掌印的那一刻，蔡文姬眼底最後一點光徹底熄滅。不到半月，她口述給忠心宮女傳出去的十幾篇《許昌醜聞錄》便把 {b} 娘家三代所有骯髒罪行全數曝光，引發朝野大獄。"
           }
@@ -936,7 +1171,11 @@
               "tyranny": 18,
               "corruption": 18,
               "rel_b": -35,
-              "flag": "caiwenji_shame_bloodwash"
+              "flag": "caiwenji_shame_bloodwash",
+              "exec": "b",
+              "mist": 18,
+              "heat": 9,
+              "pop": -15
             },
             "outcome": "當夜她在焦尾琴閣滾燙的藥浴裡一遍遍搓洗著發寒的身體，隨即流著淚拉你入水，要你用最粗暴滾燙的佔有與吻痕把那些骯髒目光與敵人的污辱徹底洗刷乾淨。"
           },
@@ -947,7 +1186,13 @@
               "inf": -18,
               "corruption": 26,
               "tyranny": 14,
-              "rel_b": 16
+              "rel_b": 16,
+              "exec": "b",
+              "troops": 60,
+              "mist": 26,
+              "heat": 7,
+              "ban": 1,
+              "tag": "受辱怨骨"
             },
             "outcome": "冷宮根本關不住這朵徹底黑化的白蓮。不到十日，她便靠著破碎淚眼與熟美肉體把整座冷宮的看守侍衛全數收服為裙下死士，在冷宮裡重開暗黑秘閣操控毒殺。"
           }
@@ -974,7 +1219,12 @@
               "corruption": 20,
               "hedon": 12,
               "tyranny": 14,
-              "flag": "caiwenji_ash_scroll_vow"
+              "flag": "caiwenji_ash_scroll_vow",
+              "mist": 20,
+              "crave": 12,
+              "heat": 7,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "蔡文姬在你懷裡發出一聲撕裂心肺的痛哭，隨即發狂咬住你的肩頭不肯鬆口，彷彿唯有吸吮你的體溫與血氣才能將她從無盡死灰裡拉回人間。"
           },
@@ -984,7 +1234,10 @@
               "aff": -26,
               "inf": -16,
               "corruption": 26,
-              "tyranny": 16
+              "tyranny": 16,
+              "mist": 26,
+              "heat": 8,
+              "jail": 1
             },
             "outcome": "她醒來後變得異常溫順安靜，每天笑著替所有探望者沏茶——然而不出半月，當初阻撓發兵救援的四名重臣接連在自家書房中毒暴斃，每人案頭都放著一頁沾血的《悲憤詩》。"
           }
@@ -1011,7 +1264,11 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_b": -32,
-              "flag": "caiwenji_bitter_herbs_saved"
+              "flag": "caiwenji_bitter_herbs_saved",
+              "mist": 20,
+              "heat": 8,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "從鬼門關爬回來的蔡文姬變得比從前冷毒十倍。她剛能下床的第一夜，便笑吟吟地將剩餘的絕子寒藥悄悄混進了 {b} 每天必喝的養顏參湯裡，徹底斷了 {b} 的子嗣之望。"
           },
@@ -1022,7 +1279,13 @@
               "inf": -12,
               "corruption": 28,
               "tyranny": 20,
-              "rel_b": 12
+              "rel_b": 12,
+              "mist": 28,
+              "heat": 10,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "蔡文姬透過模糊淚眼看清了你骨子裡的冷酷無情，徹底對世間最後一點溫情死心。她強忍無盡屈辱活了下來，卻從此在你每夜飲用的清茶裡埋下了最致命的慢性奇毒。"
           }
@@ -1050,7 +1313,13 @@
               "hedon": 22,
               "tyranny": 14,
               "rel_b": -35,
-              "flag": "caiwenji_qin_string_widow"
+              "flag": "caiwenji_qin_string_widow",
+              "mist": 20,
+              "crave": 22,
+              "heat": 7,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "滿朝嘲諷瞬間化為深入骨髓的敬畏與寒意。當夜蔡文姬在你身下極盡破碎放浪，一邊流淚低喘一邊柔聲問你：「陛下，敢不敢也讓文姬用這根琴弦纏住您的手腕呀？」"
           },
@@ -1061,7 +1330,11 @@
               "inf": -10,
               "corruption": 24,
               "tyranny": 16,
-              "rel_b": 15
+              "rel_b": 15,
+              "mist": 24,
+              "heat": 8,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "蔡文姬臨走前故意用纖長冷白的玉指輕輕撫過你的咽喉，笑得淒美徹骨：「陛下怕了？別怕呀，只要陛下別像那頭畜生一樣把文姬關進牢籠，文姬的琴弦永遠只替陛下彈溫柔曲喔。」"
           }
@@ -1089,7 +1362,13 @@
               "tyranny": 12,
               "rel_b": -38,
               "rel_g": 18,
-              "flag": "caiwenji_rescued_reckoning"
+              "flag": "caiwenji_rescued_reckoning",
+              "exec": "b",
+              "mist": 14,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "蔡文姬這才放下胡笳管、帶著一身煙火血氣軟綿綿地撲進你懷裡低聲哭訴——然而當晚她卻也私下將負傷的 {g} 召進焦尾琴閣「親自撫琴敷藥酬謝救命之恩」，紅燭搖曳直至天明。"
           },
@@ -1100,7 +1379,11 @@
               "inf": -12,
               "corruption": 20,
               "rel_b": 12,
-              "rel_g": -15
+              "rel_g": -15,
+              "ban": "b",
+              "mist": 20,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "蔡文姬淚眼冷笑著丟掉胡笳管，當著你的面柔弱地挽住 {g} 染血的手臂轉身離去：「將軍瞧見了嗎？咱們在外頭拿命拼，深宮裡卻有人護著出賣咱們的毒蛇呢。」從此她與 {g} 徹底結成密不可分的暗黑同盟。"
           }
@@ -1128,7 +1411,12 @@
               "hedon": 20,
               "tyranny": 14,
               "rel_g": -50,
-              "flag": "caiwenji_study_prison_burned"
+              "flag": "caiwenji_study_prison_burned",
+              "pv": 1,
+              "mist": 22,
+              "crave": 20,
+              "heat": 7,
+              "exec": "g"
             },
             "outcome": "回到焦尾琴閣後，蔡文姬在床榻上變得極具病態偏執——她一定要親手用素白書帶輕輕纏住你的手腕、由她流著淚掌控一切節奏，眼底的死氣才會短暫消散。"
           },
@@ -1138,7 +1426,11 @@
               "aff": -28,
               "inf": -14,
               "corruption": 28,
-              "hedon": 18
+              "hedon": 18,
+              "mist": 28,
+              "crave": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "蔡文姬一眼看穿了你骨子裡的潔癖與薄情。她含淚冷笑著不再求寵，轉而在焦尾琴閣地下仿照那座書牢，暗中用迷香囚禁並折磨數名容貌酷似你的俊美年輕學子，徹底化為吞噬人心的悲憤妖魔。"
           }
@@ -1165,7 +1457,12 @@
               "corruption": 16,
               "tyranny": 12,
               "rel_b": -42,
-              "flag": "caiwenji_lone_escape_return"
+              "flag": "caiwenji_lone_escape_return",
+              "mist": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "蔡文姬平靜接過金印，踮起冰涼的赤腳輕輕咬破你的下唇，血腥與苦艾清香在唇齒間炸開：「陛下記住了，以後誰敢再碰我焦尾琴閣一卷書、一根弦，文姬可不會再等陛下點頭才送她進音牢囉。」"
           },
@@ -1176,7 +1473,11 @@
               "inf": -14,
               "tyranny": 16,
               "corruption": 24,
-              "rel_b": 10
+              "rel_b": 10,
+              "mist": 24,
+              "heat": 8,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "蔡文姬擦掉短胡刀上的灰塵，眼角含淚卻笑得冰冷徹骨：「好啊，陛下既要講宮規，那咱們就看看，到底是您的宮規硬，還是我蔡文姬記在腦子裡、能掀翻半個朝堂的四千卷秘聞硬！」"
           }
@@ -1185,3 +1486,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['caiwenji'] = DATA;
+  (window.characterPacks ||= {})['caiwenji'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

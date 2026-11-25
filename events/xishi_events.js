@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["xishi"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 13 號 西施 (xishi)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "xishi",
     "index": 13,
@@ -18,7 +23,8 @@
       "0-34（初染）：帶著三年細作特訓刻進骨子裡的冷靜與病弱偽裝，一面以捧心咳血博取君王極致憐惜，一面暗中在宮苑修建中空迴廊佈下耳目。",
       "35-69（深蝕）：在黑霧與宮廷權慾侵蝕下，徹底將『掏空敵國』的細作手段用來掏空後宮與朝堂——一面慫恿大興土木拖垮政敵家族，一面用越國軟骨靡香在溫水花池裡腐化握兵悍將、套取軍政密報。",
       "70+（深淵）：徹底黑化為『溺香妖姬』——已親手將政敵心腹悶死並藏屍於響屧廊中空木板下日日踏屐聽響、已把落敗貴妃綁石沉於採香涇深池反覆拉起溺水並在池邊赤身宣淫、已將親兒調教成善於裝病博憐與暗中出賣國防的雙面細作，笑看整座皇朝在溫熱花露與軟骨毒香中無聲爛透。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -46,7 +52,12 @@
             "hedon": 12,
             "corruption": 8,
             "rel_g": -6,
-            "flag": "xishi_guanwa_palace_entry"
+            "flag": "xishi_guanwa_palace_entry",
+            "mist": 10,
+            "crave": 12,
+            "heat": 6,
+            "marry": 1,
+            "preg": 1
           },
           "outcome": "西施順從地將冰涼的小臉埋進你滾燙的胸膛，唇角在陰影裡無聲勾起——她知道，只要男人一動了憐惜與佔有這副病態肉體的念頭，那這座皇宮的第一道防線就已經徹底淪陷了。"
         },
@@ -57,7 +68,11 @@
             "inf": -6,
             "tyranny": 10,
             "corruption": 10,
-            "rel_g": 6
+            "rel_g": 6,
+            "mist": 10,
+            "heat": 5,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "西施並未辯解，只是眼眶一紅、柔順地咳出一絲血沫垂首應諾。可不過五日，她便靠著幾滴秘香與軟語，讓負責看守她的 {g} 心腹侍衛心甘情願替她把密信送出了宮牆。"
         },
@@ -69,7 +84,12 @@
             "hedon": 16,
             "corruption": 14,
             "tyranny": 8,
-            "rel_g": -15
+            "rel_g": -15,
+            "mist": 14,
+            "crave": 16,
+            "heat": 5,
+            "affair": "g",
+            "tag": "桀驁未馴"
           },
           "outcome": "西施在水聲潺潺中發出細弱卻銷魂蝕骨的病態低喘，雙手緊緊抓著朱紅欄杆任你索取，眼尾泛起一抹極致脆弱又妖冶的潮紅——從此她徹底摸透了你骨子裡的嗜好。"
         }
@@ -97,7 +117,13 @@
             "tyranny": 12,
             "rel_b": -25,
             "rel_c": 10,
-            "flag": "xishi_hollow_corridor_vault"
+            "flag": "xishi_hollow_corridor_vault",
+            "mist": 18,
+            "crave": 10,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "腳下是政敵心腹漸漸腐爛的屍體，頭頂卻是香露溫熱、病態低喘纏綿。次日 {b} 果然因「咒罵君父、私吞修宮銀兩」遭到嚴懲，卻至死也想不通自己關起門說的悄悄話是怎麼洩露的。"
         },
@@ -108,7 +134,11 @@
             "inf": 10,
             "corruption": 10,
             "rel_b": -12,
-            "rel_c": 6
+            "rel_c": 6,
+            "mist": 10,
+            "heat": 6,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "西施溫順地低頭淺笑，親自替你奉上一盞加了微量軟骨香的溫茶：「大王果然英明，這條走廊以後聽見的每一個後宮秘密，夷光都只說給大王一個人聽。」"
         },
@@ -118,7 +148,10 @@
             "aff": -14,
             "inf": -10,
             "tyranny": 10,
-            "rel_b": 12
+            "rel_b": 12,
+            "heat": 5,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "西施捧心哭得梨花帶雨、當場昏厥過去，惹得侍衛們都於心不忍。可等你一離開，她便睜開冰冷無淚的雙眼，命人改從宮苑地底的排水香溝繼續佈置傳音暗線。"
         }
@@ -146,7 +179,12 @@
             "rel_b": -32,
             "rel_g": -30,
             "rel_c": 10,
-            "flag": "xishi_wuzixu_replay"
+            "flag": "xishi_wuzixu_replay",
+            "mist": 16,
+            "heat": 7,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "宮門外 {b} 跪到昏厥、{g} 寒心交印；館娃宮裡西施卻慢條斯理地漱乾淨嘴裡的雞血味，赤裸著身子滑進溫熱的香露池裡朝你柔弱伸手：「大王別氣壞了身子，夷光今夜好好伺候大王消火。」"
         },
@@ -158,7 +196,10 @@
             "tyranny": 4,
             "rel_b": -10,
             "rel_g": 8,
-            "rel_c": 4
+            "rel_c": 4,
+            "food": 100,
+            "exile": "b",
+            "crave": 6
           },
           "outcome": "太醫把脈時西施早就悄悄吞下了一粒令脈象虛浮的越國冷藥，嚇得太醫連呼「娘娘心脈將絕」。當晚她便藉著養病之名，一口氣從國庫又多要走了五萬兩銀子去買南海珍珠。"
         },
@@ -169,7 +210,12 @@
             "inf": -12,
             "tyranny": 10,
             "rel_b": 14,
-            "rel_g": 14
+            "rel_g": 14,
+            "exec": "b",
+            "heat": 5,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "西施被拖走時沒有尖叫，只是靜靜回頭看了你一眼，那眼神裡沒有半點委屈，只有職業細作發現第一套方案失效後、立刻切換更毒殺招的冰冷平靜。"
         }
@@ -197,7 +243,12 @@
             "corruption": 18,
             "tyranny": 12,
             "rel_b": -45,
-            "flag": "xishi_luxury_bankruptcy"
+            "flag": "xishi_luxury_bankruptcy",
+            "food": -80,
+            "mist": 18,
+            "heat": 6,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "{b} 母族一夜之間家破人亡，{b} 本人哭得雙目失明般癱倒在冷院。而西施就在新建的採香涇畫舫裡，點起越國靡香，柔若無骨地把自己奉獻給你當作慶功禮物。"
         },
@@ -207,7 +258,11 @@
             "aff": -8,
             "inf": 4,
             "corruption": 8,
-            "rel_b": -15
+            "rel_b": -15,
+            "food": 100,
+            "mist": 10,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "西施垂眸淺笑，毫不在意——光是賠償那三十萬兩高利貸，就已經足夠把 {b} 娘家吸乾最後一滴血，從此再無翻身之日。"
         }
@@ -235,7 +290,13 @@
             "tyranny": 12,
             "rel_g": -18,
             "rel_c": 8,
-            "flag": "xishi_perfume_pool_caught"
+            "flag": "xishi_perfume_pool_caught",
+            "mist": 20,
+            "crave": 20,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "西施在你暴怒的衝撞中發出極其細弱卻勾魂的病態哭喘，甚至故意抬起無力的雙手勾住你的脖頸，眼神卻冷漠地掃過跪在水中瑟瑟發抖的 {g}。那一夜過後，{g} 徹底成了你們手裡不敢反抗半字的軟骨奴將。"
         },
@@ -246,7 +307,11 @@
             "corruption": 14,
             "rel_g": 12,
             "rel_c": 10,
-            "rel_b": -20
+            "rel_b": -20,
+            "mist": 14,
+            "heat": 6,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "次日 {g} 酒醒後發現自己把命門全交了出去，嚇得連夜向西施與你投誠。當夜西施洗去一身異味赤足走上龍榻：「大王別吃醋，那種被香露泡軟的蠢男人，不過是替大王送情報的活郵差罷了。」"
         },
@@ -258,7 +323,11 @@
             "tyranny": 16,
             "corruption": 12,
             "rel_g": -45,
-            "rel_b": 16
+            "rel_b": 16,
+            "mist": 12,
+            "heat": 8,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "{g} 在花瓣池水裡掙扎窒息而亡，池水染紅。西施赤裸著身子站在血水裡冷靜地看著你，輕輕捧心一笑：「大王殺得了好痛快——只可惜，大王自己每日聞的越國龍涎香裡，也早就添了半錢軟骨露呢。」"
         }
@@ -285,7 +354,10 @@
             "corruption": 18,
             "rel_b": -35,
             "rel_g": -50,
-            "flag": "xishi_silenced_whistleblower"
+            "flag": "xishi_silenced_whistleblower",
+            "mist": 18,
+            "heat": 9,
+            "exec": "b"
           },
           "outcome": "{g} 至死都發不出一點聲音便被沉入湖底，{b} 更是百口莫辯、徹底失去你的信任。當夜西施伏在你胸口輕輕喘息，冰涼的唇印上你的喉結：「知道秘密的人沉進水底，這座宮殿才夠安靜呀。」"
         },
@@ -297,7 +369,11 @@
             "tyranny": 8,
             "corruption": 8,
             "rel_b": -10,
-            "rel_g": -20
+            "rel_g": -20,
+            "mist": 10,
+            "heat": 5,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "{g} 雖然撿回一條命，卻因中了越國毒藥從此口齒不清、成了半個啞巴，連一句完整的指控都說不出來。西施低頭溫順領罰，眼底滿是對凡人無能的嘲弄。"
         }
@@ -325,7 +401,14 @@
             "tyranny": 12,
             "rel_b": -38,
             "rel_c": 14,
-            "flag": "xishi_fake_drowning_win"
+            "flag": "xishi_fake_drowning_win",
+            "ban": "b",
+            "mist": 16,
+            "crave": 14,
+            "heat": 6,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "從此再無人敢輕易質疑她的越國出身——誰再提「亡國細作」，就是逼死冰清玉潔的病美人的奸佞！當夜她在錦被裡赤身貼著你取暖，纖弱卻又極致纏人地把你榨得徹底失魂。"
         },
@@ -336,7 +419,10 @@
             "inf": 4,
             "corruption": 10,
             "rel_b": -12,
-            "rel_c": 4
+            "rel_c": 4,
+            "mist": 10,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "池底暗洞早已借水流將毒香沖得一乾二淨。西施裹著濕衣瑟瑟發抖地看著你，眼底閃過一絲真正的寒意：「大王對夷光這般防備……那下回，夷光可就不跳冷水了呢。」"
         }
@@ -363,7 +449,14 @@
             "tyranny": 12,
             "rel_b": 14,
             "rel_c": -38,
-            "flag": "xishi_pearl_cartel"
+            "flag": "xishi_pearl_cartel",
+            "exec": "c",
+            "pop": -15,
+            "mist": 18,
+            "heat": 6,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "半月內 {c} 外戚商行徹底崩盤抄沒，館娃宮的珠寶庫瞬間堆成小山。當夜西施用新搶來的南海珍珠串成極長的珠鏈，赤身纏繞在自己雪白腰肢與大腿上邀你親手解開。"
         },
@@ -374,7 +467,10 @@
             "inf": -6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 18
+            "rel_c": 18,
+            "mist": 10,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "算計落空，{b} 賠得更慘。西施卻絲毫不動氣，當夜依舊溫柔地替你寬衣沐浴，只是偷偷把你浴湯裡的軟骨靡香加重了兩倍，讓你連續三日渾身酥軟、除了她的床榻哪裡也去不了。"
         }
@@ -401,7 +497,11 @@
             "hedon": 22,
             "corruption": 16,
             "rel_b": -30,
-            "flag": "xishi_frail_seduction_claim"
+            "flag": "xishi_frail_seduction_claim",
+            "mist": 16,
+            "crave": 22,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "那一夜館娃宮內細弱卻極致銷魂的哭喘聲徹夜未斷，西施越是顯得脆弱易碎，越是激起男人最深處的毀滅與掠奪欲。次日清晨她故意派侍女給氣得整夜沒睡的 {b} 送去一碗「壓驚安神湯」，笑稱昨夜勞煩姐姐把大王讓給自己「續命」。"
         },
@@ -412,7 +512,12 @@
             "hedon": 18,
             "tyranny": 12,
             "corruption": 16,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 16,
+            "crave": 18,
+            "heat": 6,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "手腕被薄紗緊縛、伏在冰涼白玉池沿承受你的怒火，西施反而發出一聲近乎崩潰的甜膩顫音——越是粗暴的懲罰，她眼底那抹細作特有的扭曲快感便越是濃烈。"
         },
@@ -422,7 +527,10 @@
             "aff": -20,
             "inf": -10,
             "tyranny": 14,
-            "rel_b": 14
+            "rel_b": 14,
+            "heat": 7,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "西施赤裸著身子靜靜站在冰涼地磚上看著你離去，臉上那層委屈柔弱瞬間褪得一乾二淨，只剩下一雙如死水般冰冷的眼眸。三日後，{b} 便因「無故染上怪異軟骨昏睡症」整整半月起不來床。"
         }
@@ -449,7 +557,12 @@
             "tyranny": 16,
             "rel_g": 10,
             "rel_c": 12,
-            "flag": "xishi_perfume_abyss_pool"
+            "flag": "xishi_perfume_abyss_pool",
+            "mist": 24,
+            "crave": 26,
+            "heat": 8,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "溫熱的香露與她冰涼卻極致柔順的肉體瞬間吞沒了你的最後一絲理智。那一夜採香涇水波翻湧、荒淫無度，整座朝堂的軍心與鬥志從此徹底融化在她這口亡國溫水池裡。"
         },
@@ -462,7 +575,12 @@
             "hedon": 18,
             "tyranny": 22,
             "rel_g": -45,
-            "rel_c": -5
+            "rel_c": -5,
+            "mist": 20,
+            "crave": 18,
+            "heat": 11,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "鮮血瞬間染紅了半池花瓣，{g} 咕嚕咕嚕沉進水底。西施被你按在冰冷的玉磚上狠狠貫穿，竟發出比平日更悽婉、更令人發狂的銷魂哭喘——她愛極了看強者為她沾滿血腥又沉淪慾海的模樣。"
         }
@@ -489,7 +607,13 @@
             "hedon": 20,
             "tyranny": 18,
             "rel_b": -50,
-            "flag": "xishi_drowning_cage_revenge"
+            "flag": "xishi_drowning_cage_revenge",
+            "pv": 1,
+            "mist": 24,
+            "crave": 20,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "那一夜暗水池裡滑輪絞動聲、瀕死嗆水聲與西施柔弱銷魂的低喘交織成人間煉獄。天亮時 {b} 已經徹底失禁瘋癲、一見到水碗便渾身抽搐尖叫，被西施當成「突發恐水瘋症」送進了荒涼別院。"
         },
@@ -500,7 +624,11 @@
             "inf": 4,
             "tyranny": 8,
             "corruption": 6,
-            "rel_b": -20
+            "rel_b": -20,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "西施乖巧地放下茶盞，溫柔地垂下眼睫不再多言——可隔天她便讓細作把 {b} 死前最愛戴的那對玉鐲，悄悄沉進了採香涇池底陪那些被悶死的探子作伴。"
         }
@@ -527,7 +655,12 @@
             "corruption": 18,
             "tyranny": 12,
             "rel_b": -25,
-            "flag": "xishi_heir_spy_prince"
+            "flag": "xishi_heir_spy_prince",
+            "mist": 18,
+            "heat": 6,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "西施眼底閃過深不見底的滿意與算計。從此 {heir} 以「體弱仁厚」的假象騙過了滿朝文武，背地裡卻與母親聯手操控龐大情報暗網，將所有政敵無聲無息地沉進暗流。"
         },
@@ -538,7 +671,12 @@
             "inf": -14,
             "tyranny": 12,
             "corruption": 10,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 10,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "西施沒有哭喊掙扎，只在 {heir} 被帶走前，溫柔地替兒子塞進一顆越國偽病藥丸：「乖，娘在館娃宮等著看你把他們一個個送進水底喔。」"
         }
@@ -566,7 +704,14 @@
             "tyranny": 22,
             "rel_b": -50,
             "rel_g": 20,
-            "flag": "xishi_silent_perfume_regime"
+            "flag": "xishi_silent_perfume_regime",
+            "mist": 26,
+            "crave": 26,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "王印落下，整座皇朝從此在無聲無息中徹底淪為館娃宮的附庸。滿朝權貴日日沉醉於她施捨的越國靡香與花露，而你在她永不枯竭的病態柔情裡，心甘情願地看著江山一步步滑向深淵。"
         },
@@ -577,7 +722,12 @@
             "inf": -15,
             "tyranny": 20,
             "corruption": 16,
-            "rel_g": -30
+            "rel_g": -30,
+            "mist": 16,
+            "heat": 10,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "被你死死掐住咽喉、漲紅小臉幾乎窒息的瞬間，西施眼底卻浮現出一抹詭異的興奮與淚光，沙啞著嗓子對你笑：「大王竟然還咬得破舌頭……比吳王硬氣多了呢。那咱們這場誰先沉進水底的遊戲，就再多玩幾年罷。」"
         }
@@ -605,7 +755,14 @@
             "corruption": 12,
             "hedon": 10,
             "rel_b": -22,
-            "flag": "xishi_gusu_water_monopoly"
+            "flag": "xishi_gusu_water_monopoly",
+            "affair": "g",
+            "pv": 1,
+            "mist": 12,
+            "crave": 10,
+            "heat": 6,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "五日後江南糧船暢通無阻，西施還隨船附贈了一件沾著濃烈體香與花露的貼身透明越羅紗衣，字條上寫著：『池水已溫，靜候大王沉淪。』"
         },
@@ -615,7 +772,10 @@
             "aff": -14,
             "inf": -8,
             "tyranny": 12,
-            "rel_b": 10
+            "rel_b": 10,
+            "heat": 6,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "派去接管的官員才剛到姑蘇三天，便全都迷失在西施的香露畫舫裡不思歸朝。你只收到她寄回的一小瓶清澈太湖水，裡頭泡著一朵已經溺死的紅花。"
         }
@@ -641,7 +801,12 @@
             "corruption": 16,
             "tyranny": 10,
             "rel_b": -28,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 16,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "都城後宮從此人人自危，生怕連睡覺說夢話都會被西施遠在千里的耳朵聽去，對館娃宮留守之人無不敬若鬼神。"
         },
@@ -652,7 +817,12 @@
             "inf": -10,
             "tyranny": 14,
             "rel_b": 12,
-            "rel_c": -35
+            "rel_c": -35,
+            "jail": "c",
+            "food": 100,
+            "heat": 7,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "{c} 服毒自盡前仍柔弱地笑著說：「大王填得平這條走廊，卻填不平越國細作滲進滿城水井的暗渠呢。」姑蘇隨即傳來江南商稅驟減的急報。"
         }
@@ -677,7 +847,12 @@
             "corruption": 16,
             "hedon": 18,
             "rel_g": 5,
-            "flag": "xishi_five_stage_bonded"
+            "flag": "xishi_five_stage_bonded",
+            "mist": 16,
+            "crave": 18,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "西施蒼白的臉頰泛起一抹極少見的真實紅暈，溫順卻又瘋狂地張開雙臂迎接你的吞噬——從此她再無故國使命，只剩把你與天下拉入同一個溫柔深淵的病態執念。"
         },
@@ -687,7 +862,9 @@
             "aff": -6,
             "inf": 8,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "house": 1
           },
           "outcome": "西施垂下長睫遮住眼底一閃而過的冰冷，依舊溫順地替你斟上溫茶：「大王真是鐵石心腸……沒關係，水滴尚能石穿，夷光有的是耐性，一點一點把大王泡軟呢。」"
         }
@@ -713,7 +890,14 @@
             "hedon": 18,
             "corruption": 14,
             "rel_b": -20,
-            "rel_g": -12
+            "rel_g": -12,
+            "wood": -60,
+            "stone": -60,
+            "mist": 14,
+            "crave": 18,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "西施在你懷裡露出柔美得令人心悸的滿足微笑，整夜用最極致、最順從也最銷魂的病態姿態將你徹底吞沒。"
         },
@@ -724,7 +908,12 @@
             "inf": 6,
             "tyranny": 10,
             "rel_b": -10,
-            "rel_g": -22
+            "rel_g": -22,
+            "food": 100,
+            "pop": -15,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b"
           },
           "outcome": "西施溫柔地咬住你的耳垂輕輕嘆氣：「大王真是越來越不捨得花錢哄夷光開心了……看來下次，夷光得換個更讓大王捨不得拒絕的法子了呢。」"
         }
@@ -752,7 +941,12 @@
             "tyranny": 12,
             "rel_b": -32,
             "rel_g": 16,
-            "flag": "xishi_poison_stream_crusade"
+            "flag": "xishi_poison_stream_crusade",
+            "mist": 14,
+            "heat": 6,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "出征前夜，西施在行營暖帳裡點起微弱香露，赤身依偎在你懷裡溫柔索歡，說是要帶著你的餘溫去替你毀掉另一座敵國。開拔後第三日，{b} 胞兄果然被她當場灌下未稀釋的軟骨香原液，癱軟成泥地被推進敵軍前哨當了活體毒餌。"
         },
@@ -762,7 +956,10 @@
             "aff": 4,
             "inf": 6,
             "rel_b": 6,
-            "rel_g": 8
+            "rel_g": 8,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "西施溫順福身領旨，眼底卻已冷靜記下這筆帳——等大軍凱旋，她有一百種無聲無息的方法讓 {b} 娘家付出十倍代價。"
         }
@@ -788,7 +985,13 @@
             "hedon": 18,
             "tyranny": 14,
             "rel_g": 12,
-            "flag": "xishi_fragrant_slaughter_victory"
+            "flag": "xishi_fragrant_slaughter_victory",
+            "mist": 18,
+            "crave": 18,
+            "heat": 7,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "帳外是滿營被軟骨香折磨至死的敵屍，帳內卻是越羅薄紗翻飛、病態低喘纏綿。此戰過後，天下諸侯聞「姑蘇毒香」無不聞風喪膽，連喝一口溪水都要提心吊膽。"
         },
@@ -798,7 +1001,10 @@
             "aff": -6,
             "inf": 8,
             "tyranny": 6,
-            "rel_g": 4
+            "rel_g": 4,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "西施溫順地裹緊你的披風靠在你胸口輕咳了兩聲，纖手卻早已悄悄鑽進你甲冑下撫過你滾燙的腰際：「大王總是這麼克制……可你的心跳，明明比帳外的鼓聲還快呢。」"
         }
@@ -827,7 +1033,12 @@
               "corruption": 14,
               "rel_b": -38,
               "rel_g": 22,
-              "flag": "xishi_lake_burial_purge"
+              "flag": "xishi_lake_burial_purge",
+              "mist": 14,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "{b} 一黨徹底覆滅，{g} 感念你替她報仇而誓死效忠；只是每逢煙雨朦朧之夜，空蕩蕩的響屧廊裡總似還迴盪著那陣輕輕的「咯噔」木屐聲。"
           },
@@ -837,7 +1048,11 @@
               "inf": -12,
               "tyranny": 12,
               "rel_b": 16,
-              "rel_g": -40
+              "rel_g": -40,
+              "heat": 6,
+              "pol": 15,
+              "mist": 15,
+              "wood": -50
             },
             "outcome": "{g} 悲憤棄官歸隱，而後宮眾妃見昔日寵冠一時的館娃宮主死後連座像樣的墳都沒留，對你愈發冷心提防。"
           }
@@ -863,7 +1078,12 @@
               "inf": 8,
               "corruption": 12,
               "rel_b": -22,
-              "flag": "xishi_water_prison_rescue"
+              "flag": "xishi_water_prison_rescue",
+              "troops": 60,
+              "mist": 12,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "消息傳入敵營，泡在寒水裡凍得發紫的西施望著都城方向，緩緩舔掉唇角血跡，眼底浮現出更深沉、更冷血的算計。"
           },
@@ -874,7 +1094,11 @@
               "inf": -16,
               "corruption": 24,
               "tyranny": 14,
-              "rel_b": 20
+              "rel_b": 20,
+              "mist": 24,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "敵帥大笑著把你的除籍聖旨唸給縮在水牢裡的她聽。西施聽完沒有哭，只是輕輕捧心一笑——從那一刻起，她徹底轉向敵營，發誓要像當年毀掉吳國一樣，親手把你的江山也徹底掏空。"
           }
@@ -901,7 +1125,14 @@
               "corruption": 14,
               "hedon": 8,
               "rel_b": -28,
-              "flag": "xishi_crippled_devotion"
+              "flag": "xishi_crippled_devotion",
+              "ban": "b",
+              "mist": 14,
+              "crave": 8,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "西施看著你毫不嫌棄地親吻她腫脹纏紗的左腳踝，終於壓抑不住發出一聲絕望又狂喜的痛哭，緊緊抱住你的脖子用最卑微也最瘋狂的肉體奉獻鎖死你的憐愛。"
           },
@@ -912,7 +1143,11 @@
               "inf": -16,
               "corruption": 24,
               "tyranny": 12,
-              "rel_b": 18
+              "rel_b": 18,
+              "mist": 24,
+              "heat": 6,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "西施被鎖進偏殿後一聲不吭。半個月後，{b} 喝的安神湯裡莫名多出了越國慢性蝕骨散，讓 {b} 的雙腿也在半年內徹底壞死癱瘓。"
           }
@@ -939,7 +1174,11 @@
               "tyranny": 18,
               "corruption": 18,
               "rel_b": -35,
-              "flag": "xishi_wet_shame_bloodwash"
+              "flag": "xishi_wet_shame_bloodwash",
+              "exec": "b",
+              "mist": 18,
+              "heat": 9,
+              "pop": -15
             },
             "outcome": "當夜她在館娃宮滾燙的花露池裡一遍遍搓洗著發寒的肌膚，隨即哭笑著拉你入水，要你用最滾燙的體溫與最粗暴的佔有把那些骯髒目光徹底洗刷乾淨。"
           },
@@ -950,7 +1189,11 @@
               "inf": -18,
               "corruption": 26,
               "tyranny": 14,
-              "rel_b": 16
+              "rel_b": 16,
+              "ban": 1,
+              "mist": 26,
+              "heat": 7,
+              "tag": "受辱怨骨"
             },
             "outcome": "荒院根本關不住受過三年越國秘訓的頂級細作。不到十日，整座荒院的看守侍衛全被她用軟骨靡香與肉體馴化成了死忠水鬼，暗中替她向後宮各處投毒。"
           }
@@ -977,7 +1220,12 @@
               "corruption": 20,
               "hedon": 10,
               "tyranny": 14,
-              "flag": "xishi_cold_pool_vow"
+              "flag": "xishi_cold_pool_vow",
+              "mist": 20,
+              "crave": 10,
+              "heat": 7,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "西施在你懷裡凍得牙齒打顫，卻發瘋般咬住你的肩頭不肯鬆口，彷彿唯有吸吮你的體溫與血腥味，才能把她從冰冷的河底拉回人間。"
           },
@@ -987,7 +1235,10 @@
               "aff": -26,
               "inf": -16,
               "corruption": 26,
-              "tyranny": 16
+              "tyranny": 16,
+              "mist": 26,
+              "heat": 8,
+              "jail": 1
             },
             "outcome": "她醒來後變得異常溫順安靜，每天笑著替你奉茶——然而不出半月，當初阻撓發兵救援的三名朝臣接連在自家府中水池離奇溺亡，死前臉上都帶著詭異的微笑。"
           }
@@ -1014,7 +1265,11 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_b": -32,
-              "flag": "xishi_cold_poison_purge_saved"
+              "flag": "xishi_cold_poison_purge_saved",
+              "mist": 20,
+              "heat": 8,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "從鬼門關爬回來的西施眼神冷得像萬年玄冰。她剛能起身的第一夜，便親手把剩餘的極寒斷根毒露悄悄滴進了 {b} 每天必喝的燕窩裡，讓 {b} 終身絕育、每逢月事痛不欲生。"
           },
@@ -1025,7 +1280,13 @@
               "inf": -12,
               "corruption": 28,
               "tyranny": 20,
-              "rel_b": 12
+              "rel_b": 12,
+              "mist": 28,
+              "heat": 10,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "西施透過模糊血淚望著你冷酷的背影，徹底明白天下帝王皆是薄情寡義之輩。她強忍無盡屈辱活了下來，卻從此在你的茶水與香爐裡種下了最致命的亡國慢性毒。"
           }
@@ -1053,7 +1314,13 @@
               "hedon": 20,
               "tyranny": 14,
               "rel_b": -35,
-              "flag": "xishi_drowned_captor_spouse"
+              "flag": "xishi_drowned_captor_spouse",
+              "mist": 20,
+              "crave": 20,
+              "heat": 7,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "滿朝嘲諷瞬間化為深入骨髓的寒意與敬畏。當夜西施在你身下柔弱卻又瘋狂地迎合，貼著你耳畔輕笑：「大王，怕不怕哪天在溫水池裡，也被夷光按著頭睡過去呀？」"
           },
@@ -1064,7 +1331,11 @@
               "inf": -10,
               "corruption": 24,
               "tyranny": 16,
-              "rel_b": 15
+              "rel_b": 15,
+              "mist": 24,
+              "heat": 8,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "西施臨走前故意用冰涼濕潤的指尖輕輕點過你的咽喉，笑得溫柔徹骨：「大王填平了水池有什麼用呢？夷光要弄死一個男人，有時候只需要一杯溫茶就夠了喔。」"
           }
@@ -1092,7 +1363,13 @@
               "tyranny": 12,
               "rel_b": -38,
               "rel_g": 18,
-              "flag": "xishi_rescued_reckoning"
+              "flag": "xishi_rescued_reckoning",
+              "exec": "b",
+              "mist": 14,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "西施這才鬆手，冰涼的小臉重新靠進你懷裡低聲哭喘——然而當晚她卻也私下將負傷的 {g} 召進館娃宮溫水偏池「親自替將軍泡藥浴療傷」，霧氣裡紅燭亮至天明。"
           },
@@ -1103,7 +1380,11 @@
               "inf": -12,
               "corruption": 20,
               "rel_b": 12,
-              "rel_g": -15
+              "rel_g": -15,
+              "ban": "b",
+              "mist": 20,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "西施靜靜望著你，唇角浮起一絲涼薄至極的笑，轉身輕輕拉起 {g} 染血的手離開：「將軍瞧見了嗎？咱們在外頭九死一生，深宮裡卻有人護著出賣咱們的奸妃呢。」從此她與 {g} 徹底結成只忠於彼此的暗黑死黨。"
           }
@@ -1131,7 +1412,12 @@
               "hedon": 18,
               "tyranny": 14,
               "rel_g": -50,
-              "flag": "xishi_pool_prison_burned"
+              "flag": "xishi_pool_prison_burned",
+              "pv": 1,
+              "mist": 22,
+              "crave": 18,
+              "heat": 7,
+              "exec": "g"
             },
             "outcome": "回到館娃宮後，西施在床榻上變得極其偏執詭異——她一定要在充滿水霧的池邊親手掌控你的呼吸與節奏，看你徹底軟在她身下，眼底那股陰冷的死氣才會短暫散去。"
           },
@@ -1141,7 +1427,11 @@
               "aff": -28,
               "inf": -14,
               "corruption": 28,
-              "hedon": 16
+              "hedon": 16,
+              "mist": 28,
+              "crave": 16,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "西施一眼看透了你的潔癖與冷血。她柔弱地笑著不再求寵，轉而在館娃宮響屧廊地下建起一模一樣的暗池，暗中用軟骨香囚禁並折磨數名眉眼酷似你的年輕俊美樂師，徹底化為吃人的溺香妖魔。"
           }
@@ -1168,7 +1458,12 @@
               "corruption": 16,
               "tyranny": 12,
               "rel_b": -42,
-              "flag": "xishi_lone_escape_return"
+              "flag": "xishi_lone_escape_return",
+              "mist": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "西施接過金印，踮起冰涼的赤腳吻上你的唇角，氣息幽冷如水霧：「大王記住了，以後誰再敢踏進館娃宮一步，夷光可不會再等大王點頭才把她拖進地板底下囉。」"
           },
@@ -1179,7 +1474,11 @@
               "inf": -14,
               "tyranny": 16,
               "corruption": 24,
-              "rel_b": 10
+              "rel_b": 10,
+              "mist": 24,
+              "heat": 8,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "西施輕輕拂去裙襬上的灰塵，捧心笑得淒美又令人毛骨悚然：「好呀，大王既要講宮規，那咱們就看看，到底是您的宮規硬，還是我當年連吳國都能泡爛的越國秘香厲害！」"
           }
@@ -1188,3 +1487,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['xishi'] = DATA;
+  (window.characterPacks ||= {})['xishi'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

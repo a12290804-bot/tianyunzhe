@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["yangguifei"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 14 號 楊貴妃 (yangguifei)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "yangguifei",
     "index": 14,
@@ -18,7 +23,8 @@
       "0-34（初染）：帶著盛唐貴女天生嬌縱、愛美嗜奢的傲氣，憑藉豐腴動人的身段與《霓裳羽衣舞》迅速壟斷聖寵，初露楊門外戚飛揚跋扈之鋒芒。",
       "35-69（深蝕）：在黑霧與無上特權腐蝕下，徹底將華清宮變成賣官鬻爵與感官縱慾的銷金窟——一面借八百里驛馬與外戚酷吏碾壓政敵家族，一面在溫泉內湯裡以『義子洗三』之名大肆挑逗、收編邊鎮猛將。",
       "70+（深淵）：徹底黑化為『凝脂妖妃』——已親手在華清池滾燙硫磺泉邊將落敗貴妃剝衣冰火凌虐、已公然在沉香亭與溫泉湯池裡跟多名『乾兒』猛將及樂師肉帛相見、已把親兒調教成視百姓為草芥的賣官暴儲，在馬嵬坡陰影降臨之前誓要拉著整座江山一起沉醉死在她的石榴裙與豐腴雪峰之間。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -46,7 +52,12 @@
             "hedon": 14,
             "corruption": 8,
             "rel_g": -5,
-            "flag": "yangguifei_huaqing_entry"
+            "flag": "yangguifei_huaqing_entry",
+            "mist": 10,
+            "crave": 14,
+            "heat": 6,
+            "marry": 1,
+            "preg": 1
           },
           "outcome": "溫熱池水被劇烈拍打出白玉池沿，楊玉環飽滿彈軟的身軀在你掌心裡化作一灘滾燙春水，嬌媚放浪的喘息與水聲透過紗簾清晰飄到殿外，直把門外的 {g} 煎熬得雙眼發紅、徹夜難眠。"
         },
@@ -57,7 +68,11 @@
             "inf": 4,
             "tyranny": 10,
             "corruption": 8,
-            "rel_g": -18
+            "rel_g": -18,
+            "mist": 10,
+            "heat": 5,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "楊玉環聽著門外沉悶的板子聲非但沒怕，反而眼眸發亮、覺得男人為自己動怒吃醋簡直刺激極了，軟著身子貼上你的胸口咯咯嬌笑：「三郎吃起醋來真兇……人家好喜歡呢。」"
         },
@@ -68,7 +83,12 @@
             "inf": 16,
             "hedon": 14,
             "corruption": 12,
-            "flag": "yangguifei_yang_clan_summoned"
+            "flag": "yangguifei_yang_clan_summoned",
+            "mist": 12,
+            "crave": 14,
+            "heat": 6,
+            "affair": "g",
+            "tag": "桀驁未馴"
           },
           "outcome": "楊玉環眼底驟然迸發出狂喜與貪婪，當場用紅唇含著荔枝哺進你嘴裡，隨後赤足在霧氣裡旋轉起舞——從這一刻起，盛唐最驕奢腐敗的楊門外戚巨獸正式踏進了你的朝堂。"
         }
@@ -96,7 +116,13 @@
             "tyranny": 12,
             "rel_b": -28,
             "rel_c": 12,
-            "flag": "yangguifei_lychee_privilege"
+            "flag": "yangguifei_lychee_privilege",
+            "mist": 16,
+            "crave": 12,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "「一騎紅塵妃子笑」從此成了壓垮後宮所有政敵的催命符。當晚楊玉環高興得將冰涼甘甜的荔枝汁塗滿自己飽滿的胸乳與腰腹，邀你在沉香亭裡一寸寸親口舔乾淨。"
         },
@@ -106,7 +132,10 @@
             "aff": -14,
             "inf": -10,
             "tyranny": 8,
-            "rel_b": 12
+            "rel_b": 12,
+            "heat": 5,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "楊玉環當場把整盤冰鎮荔枝掃翻在地，紅著眼眶摔門回房絕食哭鬧，惹得滿宮太監手忙腳亂；背地裡她三位姐姐卻立刻在朝堂上把 {b} 外戚私藏鹽引的舊帳捅給了御史台。"
         },
@@ -117,7 +146,12 @@
             "inf": 6,
             "corruption": 8,
             "rel_b": -12,
-            "rel_c": 6
+            "rel_c": 6,
+            "office": 1,
+            "mist": 10,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "楊玉環嘟著紅唇嬌嗔地咬了你的手指一口，卻並沒真正生氣——她知道只要今晚在湯池裡多扭兩下豐滿的腰肢，那道封官聖旨明早一樣會蓋上玉璽。"
         }
@@ -145,7 +179,14 @@
             "tyranny": 14,
             "rel_b": -38,
             "rel_c": 10,
-            "flag": "yangguifei_hair_cut_blackmail"
+            "flag": "yangguifei_hair_cut_blackmail",
+            "pop": -15,
+            "mist": 16,
+            "crave": 12,
+            "heat": 7,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "{b} 被打得口角流血、顏面掃地；全後宮與 {c} 徹底看傻了眼——原來在楊貴妃面前，連「忤逆君王、當眾剪髮」都能反過來把政敵逼進絕路！當夜她在溫泉池裡破涕為笑，用豐滿雪白的大腿死死夾住你的腰，把你折騰得徹底忘了今夕何夕。"
         },
@@ -156,7 +197,12 @@
             "inf": 6,
             "tyranny": 10,
             "rel_b": -15,
-            "rel_c": 4
+            "rel_c": 4,
+            "ban": "b",
+            "heat": 5,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "結果才送走她兩天，你便在空蕩蕩的華清池裡焦躁得食不知味、夜不能寐。第三天還沒亮，你終究還是派人悄悄把她接了回來，她剛一進殿門便驕傲地昂起下巴，讓你替她脫鞋賠罪。"
         },
@@ -166,7 +212,12 @@
             "aff": -22,
             "inf": -16,
             "tyranny": 14,
-            "rel_b": 16
+            "rel_b": 16,
+            "ban": 1,
+            "heat": 7,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "道觀裡哪關得住這隻盛唐金絲雀？不到五日，楊門外戚便在朝堂上聯合半數官員停擺政務，而她更偷偷託內侍送回一幅她只著薄紗在道觀裡含淚沐浴的香豔小像，日夜勾得你心癢難耐。"
         }
@@ -195,7 +246,12 @@
             "hedon": 10,
             "tyranny": 12,
             "rel_b": -42,
-            "flag": "yangguifei_office_selling_purge"
+            "flag": "yangguifei_office_selling_purge",
+            "pop": -15,
+            "mist": 18,
+            "crave": 10,
+            "heat": 6,
+            "affair": "g"
           },
           "outcome": "{b} 哭喊著被拖下玉階，從此徹底失去反抗能力。楊玉環在你掌心裡嬌笑著扭動滾燙滑膩的身子，低聲哄你明日再給她族兄多批三個肥缺刺史。"
         },
@@ -206,7 +262,11 @@
             "inf": 4,
             "corruption": 8,
             "tyranny": 8,
-            "rel_b": -10
+            "rel_b": -10,
+            "mist": 10,
+            "heat": 5,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "楊玉環氣得撅起紅唇整整三天沒讓你碰她那副銷魂身子，直到你耐不住寂寞親自捧著新到的南海大珍珠去華清池哄她，她才得意洋洋地重新張開雙臂。"
         }
@@ -234,7 +294,13 @@
             "tyranny": 12,
             "rel_g": -12,
             "rel_c": 8,
-            "flag": "yangguifei_wash_three_caught"
+            "flag": "yangguifei_wash_three_caught",
+            "mist": 20,
+            "crave": 22,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "楊玉環在你暴怒而粗暴的貫穿與揉捏中發出一陣陣幾乎響徹華清宮的放浪哭喘，豐滿的胸乳隨著劇烈撞擊不斷起伏晃動，竟還故意回頭朝跪在池水裡冷汗淋漓的 {g} 拋去一個帶著水汽的得意媚眼。自此 {g} 把柄被死死捏在你們夫妻手中，不敢有半點異心。"
         },
@@ -246,7 +312,12 @@
             "hedon": 10,
             "rel_g": 16,
             "rel_c": 10,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 16,
+            "crave": 10,
+            "heat": 6,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "次日 {g} 果然在朝堂上怒斥 {b} 黨羽並當眾向楊氏一門表忠心。當夜楊玉環洗得香噴噴地鑽進你的龍榻，豐軟的身軀緊緊貼著你撒嬌：「三郎別氣嘛，那粗鄙番將哪裡比得上三郎半分溫柔？乾娘陪他洗個澡，還不是為了替三郎看住十萬邊軍呀。」"
         },
@@ -258,7 +329,12 @@
             "tyranny": 16,
             "corruption": 12,
             "rel_g": -50,
-            "rel_b": 16
+            "rel_b": 16,
+            "exec": "g",
+            "mist": 12,
+            "heat": 8,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "熱騰騰的蓮花溫泉瞬間被 {g} 的鮮血染成猩紅。楊玉環赤裸著沾滿敵血的豐腴雪軀從池裡走出來，第一次收起嬌憨，冷冷盯著你：「三郎為了吃醋殺了我一個乾兒，可邊鎮上還有三位手握重兵的節度使等著叫我乾娘呢——三郎今晚要不要去全砍了？」"
         }
@@ -285,7 +361,11 @@
             "corruption": 18,
             "rel_b": -35,
             "rel_g": -50,
-            "flag": "yangguifei_boiled_adopted_son"
+            "flag": "yangguifei_boiled_adopted_son",
+            "exec": "b",
+            "food": 100,
+            "mist": 18,
+            "heat": 9
           },
           "outcome": "血濺華清池，{g} 死不瞑目，{b} 嚇得徹底失魂落魄。當夜楊玉環帶著滿身熱泉水汽與殺戮後的亢奮跨坐上你腰間，豐滿胸乳貼著你劇烈摩擦：「不聽話的乾兒殺乾淨了，今晚只剩玉環陪三郎快活囉。」"
         },
@@ -297,7 +377,11 @@
             "tyranny": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_g": -22
+            "rel_g": -22,
+            "mist": 10,
+            "heat": 5,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "楊玉環氣呼呼地甩袖退下。結果當夜大理寺牢房便「意外失火」，{g} 連同所有不利於楊家的口供一夜燒成了焦炭。"
         }
@@ -325,7 +409,15 @@
             "tyranny": 14,
             "rel_b": -38,
             "rel_c": 14,
-            "flag": "yangguifei_dance_crushed_court"
+            "flag": "yangguifei_dance_crushed_court",
+            "exile": "b",
+            "ban": "b",
+            "mist": 18,
+            "crave": 18,
+            "heat": 7,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "從此長安城再無人敢當面彈劾楊貴妃與楊家半句！當夜她連身上那套沾滿香汗的霓裳羽衣都沒脫，便在華清池邊的軟榻上用最極致放浪的姿態犒賞你的偏愛。"
         },
@@ -336,7 +428,11 @@
             "inf": 6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 4
+            "rel_c": 4,
+            "mist": 10,
+            "crave": 6,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "楊玉環氣鼓鼓地哼了一聲轉身離去，可不出三日，她便靠著幾場華清池裡的徹夜纏綿，又把你哄得親自下旨賞了她三位姐姐十萬貫胭脂錢。"
         }
@@ -364,7 +460,13 @@
             "tyranny": 14,
             "rel_b": 14,
             "rel_c": -40,
-            "flag": "yangguifei_silk_plunder"
+            "flag": "yangguifei_silk_plunder",
+            "food": 100,
+            "mist": 18,
+            "crave": 10,
+            "heat": 7,
+            "office": 1,
+            "tag": "毒盟共生"
           },
           "outcome": "不到十天 {c} 外戚商隊徹底被抄得傾家蕩產。楊玉環用新搶來的頂級半透蜀錦裁了一件幾乎等同無物的霓裳睡衣，當夜在沉香亭裡讓你親手一點點撕碎。"
         },
@@ -375,7 +477,11 @@
             "inf": -6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 18
+            "rel_c": 18,
+            "house": 1,
+            "mist": 10,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "吞併失敗，楊玉環氣得一連兩晚把你鎖在門外不讓進華清宮；等你第三晚強行破門而入時，她又委屈又兇狠地在床榻上咬破你的肩膀討回公道。"
         }
@@ -402,7 +508,11 @@
             "hedon": 24,
             "corruption": 16,
             "rel_b": -30,
-            "flag": "yangguifei_lychee_body_feast"
+            "flag": "yangguifei_lychee_body_feast",
+            "mist": 16,
+            "crave": 24,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "那一夜龍榻搖晃欲裂，楊玉環腳踝上的金鈴清脆作響直到黎明，高亢放浪的嬌啼聲連宮牆外的侍衛都聽得面紅耳赤。次日清晨她故意讓侍女端著沾滿荔枝汁與曖昧水漬的床單，耀武揚威地從 {b} 宮門前經過。"
         },
@@ -413,7 +523,12 @@
             "hedon": 20,
             "tyranny": 12,
             "corruption": 16,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 16,
+            "crave": 20,
+            "heat": 6,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "清脆的拍擊聲在雪白豐臀上留下一道道誘人的紅印，楊玉環竟瞬間發出一聲又痛又爽的甜膩浪叫，腰肢軟得徹底塌了下去，哭喘著求你更用力些——極致的驕縱之下，竟藏著渴望被強悍君王徹底征服的瘋狂肉慾。"
         },
@@ -423,7 +538,11 @@
             "aff": -22,
             "inf": -10,
             "tyranny": 14,
-            "rel_b": 14
+            "rel_b": 14,
+            "office": 1,
+            "heat": 7,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "楊玉環氣得在華清宮摔碎了整整三十隻越窯青瓷花瓶，隔日便讓楊氏宰相把 {b} 娘家在京兆府的兩名官員全部貶去了荒涼嶺南。"
         }
@@ -450,7 +569,12 @@
             "tyranny": 16,
             "rel_g": 10,
             "rel_c": 12,
-            "flag": "yangguifei_huaqing_orgy_abyss"
+            "flag": "yangguifei_huaqing_orgy_abyss",
+            "pv": 1,
+            "mist": 24,
+            "crave": 28,
+            "heat": 8,
+            "pol": 15
           },
           "outcome": "那一夜驪山之上絲竹通宵不絕、溫泉水浪翻湧如潮。你與楊玉環在極致的肉體張力與荒淫狂歡中徹底墜入天寶末世的深淵，滿朝權貴與邊鎮悍將全成了你們酒池肉林裡的共犯。"
         },
@@ -463,7 +587,12 @@
             "hedon": 20,
             "tyranny": 22,
             "rel_g": -48,
-            "rel_c": -5
+            "rel_c": -5,
+            "mist": 20,
+            "crave": 20,
+            "heat": 11,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "{g} 捂著斷腕哀嚎逃竄，白玉溫泉瞬間染成紅海。楊玉環滿身沾著飛濺的鮮血與水珠，在你的暴怒佔有中反而發出一聲聲極致亢奮的銷魂尖叫，豐腴的身軀死死纏住你不肯鬆開。"
         }
@@ -490,7 +619,12 @@
             "hedon": 22,
             "tyranny": 18,
             "rel_b": -50,
-            "flag": "yangguifei_boiling_spring_revenge"
+            "flag": "yangguifei_boiling_spring_revenge",
+            "mist": 24,
+            "crave": 22,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "暗洞裡冰水潑濺的尖叫與波斯毯上放浪銷魂的肉體撞擊聲徹夜交織。天亮時 {b} 已經渾身燙傷凍傷、徹底精神崩潰，被楊家以「突發惡疾」的名義丟進了城外亂葬岡旁的破庵。"
         },
@@ -501,7 +635,11 @@
             "inf": 4,
             "tyranny": 8,
             "corruption": 6,
-            "rel_b": -20
+            "rel_b": -20,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "楊玉環氣鼓鼓地嘟起紅唇把整盤冰鎮荔枝踢翻在地上，臨走前卻還是命令宮女把 {b} 生前最珍愛的金鳳冠當場砸扁丟進了滾燙的硫磺泉眼裡。"
         }
@@ -529,7 +667,13 @@
             "tyranny": 14,
             "hedon": 10,
             "rel_b": -28,
-            "flag": "yangguifei_heir_extravagant"
+            "flag": "yangguifei_heir_extravagant",
+            "mist": 18,
+            "crave": 10,
+            "heat": 7,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "楊玉環大喜過望，當夜在華清宮大擺百戲酒宴慶祝。從此 {heir} 與楊氏外戚徹底合流，驕橫跋扈不可一世，將 {b} 母子壓得連大氣都不敢出。"
         },
@@ -540,7 +684,13 @@
             "inf": -14,
             "tyranny": 12,
             "corruption": 10,
-            "rel_b": 12
+            "rel_b": 12,
+            "office": 1,
+            "mist": 10,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "楊玉環瞬間淚如雨下、又鬧起剪髮絕食的老把戲；暗地裡卻讓楊氏宰相暗中把教導 {heir} 的嚴師家屬全數監控起來，逼得那名老儒根本不敢管教半句。"
         }
@@ -568,7 +718,14 @@
             "tyranny": 22,
             "rel_b": -50,
             "rel_g": 22,
-            "flag": "yangguifei_huaqing_eternal_regime"
+            "flag": "yangguifei_huaqing_eternal_regime",
+            "mist": 26,
+            "crave": 28,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "玉璽落下，整座皇朝從此徹底成為華清宮與楊門外戚的私人銷金窟。你日夜沉淪在她的凝脂豐胸與胡旋絲竹之間，而她笑靨如花地踩著萬民血淚，享受著無人敢忤的極致榮華。"
         },
@@ -579,7 +736,12 @@
             "inf": -15,
             "tyranny": 20,
             "corruption": 16,
-            "rel_g": -35
+            "rel_g": -35,
+            "mist": 16,
+            "heat": 10,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "冰冷劍鋒壓進她雪白飽滿的胸乳上方劃出一道鮮紅血痕，楊玉環卻非但沒有哭饒，反而挺起傲人胸膛讓血珠順著深邃雪溝滑落，淚眼妖冶地笑著看你：「三郎終究還是想把我送上馬嵬坡呀……好啊，那你就親手刺進來，看你這輩子離了我這副身子，還活不活得下去！」"
         }
@@ -607,7 +769,13 @@
             "corruption": 12,
             "hedon": 14,
             "rel_b": -24,
-            "flag": "yangguifei_lishan_tribute"
+            "flag": "yangguifei_lishan_tribute",
+            "pv": 1,
+            "food": 100,
+            "mist": 12,
+            "crave": 14,
+            "heat": 6,
+            "wood": 60
           },
           "outcome": "關中糧草隔日立刻暢通無阻，而驪山行宮的溫泉池裡早已為你備好了冰鎮鮮荔枝與赤身相待的絕世凝脂尤物。"
         },
@@ -617,7 +785,10 @@
             "aff": -14,
             "inf": -8,
             "tyranny": 12,
-            "rel_b": 10
+            "rel_b": 10,
+            "heat": 6,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "欽差還沒出長安城門，便已被楊氏姐妹的豪奢宴席與黃金徹底收買。你只收到楊玉環氣呼呼寄回的一縷剪斷烏髮，上面只寫著三個字：『不理你！』"
         }
@@ -643,7 +814,12 @@
             "corruption": 16,
             "tyranny": 10,
             "rel_b": -28,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 16,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "長安後宮徹底陷入對「楊門外戚」的絕望臣服，無論楊玉環在不在長安，都再沒人敢挑戰華清宮的霸權。"
         },
@@ -654,7 +830,12 @@
             "inf": -10,
             "tyranny": 14,
             "rel_b": 12,
-            "rel_c": -30
+            "rel_c": -30,
+            "office": 1,
+            "pv": 1,
+            "heat": 7,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "旨意剛下不到三天，驪山行宮便傳來楊玉環「氣急攻心、滴水未進」的急報，連楊氏宰相都稱病不上朝，逼得你焦頭爛額。"
         }
@@ -679,7 +860,12 @@
             "corruption": 16,
             "hedon": 20,
             "rel_g": 5,
-            "flag": "yangguifei_five_stage_bonded"
+            "flag": "yangguifei_five_stage_bonded",
+            "mist": 16,
+            "crave": 20,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "楊玉環在你懷裡發出近乎崩潰的甜膩歡呼，像一團滾燙融化的白玉凝脂徹底裹住你——從此生死榮辱皆成雲煙，唯餘華清池裡的無盡銷魂。"
         },
@@ -689,7 +875,9 @@
             "aff": -6,
             "inf": 8,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "house": 1
           },
           "outcome": "楊玉環敏銳地察覺到你眼底殘存的理智，氣鼓鼓地在你胸口咬出一排鮮紅牙印：「三郎還真狠心……沒關係，玉環有的是身段和手段，早晚把你這點理智全泡融在華清池裡！」"
         }
@@ -715,7 +903,13 @@
             "hedon": 20,
             "corruption": 14,
             "rel_b": -20,
-            "rel_g": -10
+            "rel_g": -10,
+            "food": -80,
+            "mist": 14,
+            "crave": 20,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "楊玉環在你掌心裡嬌啼婉轉、肉浪翻湧，整夜極盡盛唐妖妃之能事，把你折騰得徹底忘了前朝所有危機。"
         },
@@ -726,7 +920,11 @@
             "inf": 6,
             "tyranny": 10,
             "rel_b": -10,
-            "rel_g": -22
+            "rel_g": -22,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "楊玉環撇著紅唇輕哼一聲，故意光著身子背對你躺著不讓你碰，直到你低聲下氣賠了三盒西域珍珠粉才肯笑著轉過身來。"
         }
@@ -755,7 +953,13 @@
             "tyranny": 12,
             "rel_b": -32,
             "rel_g": 18,
-            "flag": "yangguifei_frontline_gala"
+            "flag": "yangguifei_frontline_gala",
+            "mist": 14,
+            "crave": 12,
+            "heat": 6,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "出征前夜，楊玉環穿著緊身大紅騎裝在你的中軍帳裡極盡撩撥，跨坐在你身上放浪索歡。開拔後三軍將士見絕世貴妃親臨勞軍、賞金如雨，個個雙眼通紅如餓狼般拚命衝殺。"
         },
@@ -765,7 +969,10 @@
             "aff": 4,
             "inf": 6,
             "rel_b": 6,
-            "rel_g": 8
+            "rel_g": 8,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "楊玉環驕傲地哼了一聲接過令箭，臨行前卻還是讓楊家姐妹把 {b} 娘家名下所有良馬全以「軍用徵調」名義強行牽走了一乾二淨。"
         }
@@ -791,7 +998,13 @@
             "hedon": 20,
             "tyranny": 14,
             "rel_g": 14,
-            "flag": "yangguifei_war_drum_orgy"
+            "flag": "yangguifei_war_drum_orgy",
+            "mist": 18,
+            "crave": 20,
+            "heat": 7,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "帳外是將士們大口吃肉喝酒的震天喧囂，帳內卻是凝脂玉肉翻湧、金鈴聲與高亢嬌喘響徹夜空。此戰過後，三軍上下徹底成了楊貴妃石榴裙下的死忠狂徒。"
         },
@@ -801,7 +1014,10 @@
             "aff": -6,
             "inf": 8,
             "tyranny": 6,
-            "rel_g": 4
+            "rel_g": 4,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "楊玉環裹著你的披風靠在你懷裡咯咯嬌笑，小手卻早已鑽進你甲冑縫隙裡輕輕揉捏起來：「三郎又吃醋啦？放心，她們只能看，真正能揉、能吃的，只有三郎一個人嘛。」"
         }
@@ -830,7 +1046,12 @@
               "corruption": 14,
               "rel_b": -38,
               "rel_g": 22,
-              "flag": "yangguifei_mawei_vengeance"
+              "flag": "yangguifei_mawei_vengeance",
+              "mist": 14,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "{b} 一黨徹底覆滅，{g} 誓死效忠於你替乾娘守墓；只是從此華清池水雖依舊溫熱，卻再也沒有那具飽滿滾燙、讓你魂牽夢縈的白玉凝脂。"
           },
@@ -840,7 +1061,13 @@
               "inf": -12,
               "tyranny": 12,
               "rel_b": 16,
-              "rel_g": -40
+              "rel_g": -40,
+              "food": 100,
+              "pop": -15,
+              "heat": 6,
+              "pol": 15,
+              "mist": 15,
+              "wood": -50
             },
             "outcome": "楊氏一門一夜傾覆，{g} 悲憤率部叛逃遠遁，而你每夜獨坐空蕩蕩的沉香亭，總覺得耳邊還迴盪著她腳踝上那串揮之不去的金鈴聲。"
           }
@@ -866,7 +1093,12 @@
               "inf": 8,
               "corruption": 12,
               "rel_b": -24,
-              "flag": "yangguifei_rescue_ordered"
+              "flag": "yangguifei_rescue_ordered",
+              "troops": 60,
+              "food": 100,
+              "mist": 12,
+              "soldiers": -80,
+              "inj": 1
             },
             "outcome": "消息傳入敵營，滿身青紫指印與牙痕的楊玉環咬破紅唇，望著長安方向露出一抹既委屈又森冷徹骨的笑。"
           },
@@ -877,7 +1109,12 @@
               "inf": -16,
               "corruption": 24,
               "tyranny": 14,
-              "rel_b": 20
+              "rel_b": 20,
+              "troops": 60,
+              "mist": 24,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "敵帥大笑著把你的除籍聖旨唸給赤裸縮在床角發抖的她聽。楊玉環聽完竟不再哭泣，反而仰起沾滿淚水的絕美臉龐媚笑著主動勾住了敵帥的脖子——她發誓要借敵軍十萬鐵騎，把你與 {b} 活活踏成肉泥。"
           }
@@ -904,7 +1141,14 @@
               "corruption": 14,
               "hedon": 12,
               "rel_b": -30,
-              "flag": "yangguifei_scarred_body_kissed"
+              "flag": "yangguifei_scarred_body_kissed",
+              "cold": "b",
+              "mist": 14,
+              "crave": 12,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "楊玉環渾身劇烈戰慄，終於爆發出一聲撕心裂肺的痛哭，隨即發狂地將你壓倒在錦被裡，用比以往更狂野、更絕望也更極致的肉體奉獻牢牢鎖死你的心。"
           },
@@ -915,7 +1159,12 @@
               "inf": -16,
               "corruption": 26,
               "tyranny": 12,
-              "rel_b": 18
+              "rel_b": 18,
+              "exec": "b",
+              "mist": 26,
+              "heat": 6,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "你眼底那零點一秒的嫌棄徹底殺死了楊玉環最後一絲嬌憨。不到半月，後宮最年輕貌美的三名新寵接連在沐浴時遭人往熱水裡摻入強鹼腐膚粉，全身潰爛生不如死。"
           }
@@ -942,7 +1191,11 @@
               "tyranny": 18,
               "corruption": 18,
               "rel_b": -35,
-              "flag": "yangguifei_shame_bloodbath"
+              "flag": "yangguifei_shame_bloodbath",
+              "exec": "b",
+              "mist": 18,
+              "heat": 9,
+              "pop": -15
             },
             "outcome": "當夜她在華清宮滾燙的溫泉裡一遍遍搓洗著發紅的肌膚，隨即哭笑著拉你入池，要你用最粗暴、最毫無保留的佔有與齒痕，把那些齷齪目光與敵人的污辱徹底覆蓋。"
           },
@@ -953,7 +1206,12 @@
               "inf": -18,
               "corruption": 26,
               "tyranny": 14,
-              "rel_b": 16
+              "rel_b": 16,
+              "ban": 1,
+              "pv": 1,
+              "mist": 26,
+              "heat": 7,
+              "tag": "受辱怨骨"
             },
             "outcome": "荒廢道觀根本關不住這頭徹底墮落的絕世尤物。不到七天，她便靠著色誘與楊家重金把整隊看守禁軍全數馴化成了裙下肉奴，把道觀變成了一座日夜宣淫的暗黑行宮。"
           }
@@ -980,7 +1238,12 @@
               "corruption": 20,
               "hedon": 12,
               "tyranny": 14,
-              "flag": "yangguifei_blood_pool_vow"
+              "flag": "yangguifei_blood_pool_vow",
+              "mist": 20,
+              "crave": 12,
+              "heat": 7,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "楊玉環在你懷裡發出一聲如同受傷母豹般的淒厲嗚咽，隨即發瘋般撕扯你的龍袍，在血紅池邊與你激烈交纏，彷彿唯有極致的肉體撞擊與痛楚才能把她拉回人間。"
           },
@@ -990,7 +1253,10 @@
               "aff": -26,
               "inf": -16,
               "corruption": 26,
-              "tyranny": 16
+              "tyranny": 16,
+              "mist": 26,
+              "heat": 8,
+              "jail": 1
             },
             "outcome": "她醒來後不再哭鬧，只是每天安靜地對著空湯池搖晃腳踝上的金鈴。不出半月，當初阻撓發兵救援的四名重臣接連在自家浴池裡離奇中毒暴斃，屍體旁都放著一顆鮮紅的嶺南荔枝。"
           }
@@ -1017,7 +1283,11 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_b": -32,
-              "flag": "yangguifei_musk_purge_saved"
+              "flag": "yangguifei_musk_purge_saved",
+              "mist": 20,
+              "heat": 8,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "從鬼門關爬回來的楊玉環徹底褪去了所有天真嬌憨。她剛能起身的第一夜，便親手將剩餘的西域絕子毒湯悄悄換進了 {b} 每天必喝的燕窩裡，讓 {b} 終身斷子絕孫。"
           },
@@ -1028,7 +1298,13 @@
               "inf": -12,
               "corruption": 28,
               "tyranny": 20,
-              "rel_b": 12
+              "rel_b": 12,
+              "mist": 28,
+              "heat": 10,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "楊玉環透過模糊血淚看清了你骨子裡的冷酷無情，徹底對你死心。她強忍無盡屈辱活了下來，卻從此在你每夜飲用的西域葡萄美酒裡，一滴一滴滲進了最致命的慢性毒藥。"
           }
@@ -1056,7 +1332,13 @@
               "hedon": 22,
               "tyranny": 14,
               "rel_b": -35,
-              "flag": "yangguifei_poison_lychee_widow"
+              "flag": "yangguifei_poison_lychee_widow",
+              "mist": 20,
+              "crave": 22,
+              "heat": 7,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "滿朝嘲諷瞬間化為深入骨髓的敬畏與寒意。當夜楊玉環在你身下極盡放浪妖嬈，一邊劇烈晃動著飽滿雙峰一邊笑問：「三郎，敢不敢也嚐嚐玉環胸口這顆剛毒死敵帥的甜荔枝呀？」"
           },
@@ -1067,7 +1349,12 @@
               "inf": -10,
               "corruption": 24,
               "tyranny": 16,
-              "rel_b": 15
+              "rel_b": 15,
+              "exec": "b",
+              "mist": 24,
+              "heat": 8,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "楊玉環臨走前故意用沾著敵帥血漬與荔枝汁的手指輕輕點過你的下唇，笑得妖冶徹骨：「三郎怕了？別怕呀，只要三郎永遠像以前一樣把玉環捧在手心裡疼，玉環身上就永遠只有蜜糖、沒有毒藥喔。」"
           }
@@ -1095,7 +1382,13 @@
               "tyranny": 12,
               "rel_b": -38,
               "rel_g": 18,
-              "flag": "yangguifei_rescued_reckoning"
+              "flag": "yangguifei_rescued_reckoning",
+              "exec": "b",
+              "mist": 14,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "楊玉環這才丟開金剪、帶著一身焦煙與血氣撲進你懷裡大哭撒嬌——然而當晚她卻也私下將負傷的 {g} 召進海棠偏湯「由乾娘親自替乾兒洗傷口酬功」，湯殿紅燭亮至天明。"
           },
@@ -1106,7 +1399,10 @@
               "inf": -12,
               "corruption": 20,
               "rel_b": 12,
-              "rel_g": -15
+              "rel_g": -15,
+              "mist": 20,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "楊玉環冷笑著收起金剪，當著你的面親密地挽住 {g} 滿是鮮血的粗壯手臂轉身離去：「乾兒瞧見了嗎？咱們在外頭拿命拼，深宮裡卻有人護著出賣乾娘的毒蛇呢。」從此她與 {g} 徹底結成只忠於彼此的暗黑軍政同盟。"
           }
@@ -1134,7 +1430,12 @@
               "hedon": 20,
               "tyranny": 14,
               "rel_g": -50,
-              "flag": "yangguifei_secret_bath_burned"
+              "flag": "yangguifei_secret_bath_burned",
+              "mist": 22,
+              "crave": 20,
+              "heat": 7,
+              "exec": "g",
+              "pv": 1
             },
             "outcome": "回到華清宮後，楊玉環在床榻上變得極具侵略性與偏執控制欲——她再也不許任何男人壓制她，唯有由她跨坐在你身上瘋狂索取、看你徹底沉淪失控時，她眼底的瘋狂才會短暫平息。"
           },
@@ -1144,7 +1445,11 @@
               "aff": -28,
               "inf": -14,
               "corruption": 28,
-              "hedon": 18
+              "hedon": 18,
+              "mist": 28,
+              "crave": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "楊玉環一眼看穿了你的潔癖與冷酷。她嬌笑著不再求你，轉而在華清宮地下仿照那座秘湯，暗中用重金與媚藥囚禁折磨數名容貌酷似你的俊美胡人樂師，徹底化為吞噬男人的凝脂妖魔。"
           }
@@ -1171,7 +1476,12 @@
               "corruption": 16,
               "tyranny": 12,
               "rel_b": -42,
-              "flag": "yangguifei_lone_escape_return"
+              "flag": "yangguifei_lone_escape_return",
+              "mist": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "楊玉環一把奪過金印，踮起赤腳狠狠咬破你的嘴唇，血腥與甜膩在唇齒間炸開：「三郎記住了，以後誰敢再碰華清宮一滴溫泉水，玉環可不會再等三郎點頭才把她煮熟囉。」"
           },
@@ -1182,7 +1492,11 @@
               "inf": -14,
               "tyranny": 16,
               "corruption": 24,
-              "rel_b": 10
+              "rel_b": 10,
+              "mist": 24,
+              "heat": 8,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "楊玉環擦掉玉盤上的血跡，笑得驕傲又瘋狂：「好啊，三郎既要講宮規，那咱們就看看，到底是您的宮規硬，還是我楊門外戚與全軍乾兒們手裡的刀子硬！」"
           }
@@ -1191,3 +1505,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['yangguifei'] = DATA;
+  (window.characterPacks ||= {})['yangguifei'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

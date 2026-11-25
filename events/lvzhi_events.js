@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["lvzhi"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 18 號 呂雉 (lvzhi)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "lvzhi",
     "index": 18,
@@ -18,7 +23,8 @@
       "0-34（初染）：帶著歷經亂世與人質苦難的極端冷靜與隱忍，以無懈可擊的正宮威儀執掌長樂宮務，暗中卻已開始安插呂氏宗親與清點政敵把柄。",
       "35-69（深蝕）：在黑霧與至高權柄腐蝕下，徹底撕去賢后外衣——一面在鍾室密殿誘殺不服管束的功臣悍將、大封諸呂外戚架空朝堂，一面在長樂深閣裡釋放壓抑已久的成熟禁忌慾望，以權色牢牢豢養心腹寵臣。",
       "70+（深淵）：徹底黑化為『長樂鐵后』——已親手將落敗貴妃髡髮鎖枷丟進永巷舂米並在鐵窗高臺上冷眼承歡、已用鴆酒毒殺所有威脅儲位的庶子並將親兒死死攥在陰影下當作傀儡、已把玄黑大禮服化為令滿朝文武聞風喪膽的索命壽衣，在森嚴與荒淫的極端反差中獨斷乾坤。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -46,7 +52,12 @@
             "hedon": 12,
             "corruption": 8,
             "rel_g": -5,
-            "flag": "lvzhi_changle_seal_entry"
+            "flag": "lvzhi_changle_seal_entry",
+            "office": 1,
+            "mist": 10,
+            "crave": 12,
+            "heat": 6,
+            "marry": 1
           },
           "outcome": "玄黑禮服在暗啞的摩擦聲中滑落半肩，露出她與冰冷外表截然相反的滾燙飽滿雪膚！呂雉眼中驟然閃過一絲驚愕與壓抑許久的狂熱，竟反手死死扣住你的後頸用力回吻，成熟壓抑的喘息在森嚴大殿裡顯得格外禁忌而致命。"
         },
@@ -57,7 +68,11 @@
             "inf": -6,
             "tyranny": 10,
             "corruption": 10,
-            "rel_g": 8
+            "rel_g": 8,
+            "mist": 10,
+            "heat": 5,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "呂雉面不改色地重新扣好領口金扣，優雅行禮退下。可不過七日，她便已透過呂氏宗親與內廷舊僕，將長樂宮內外所有掌事太監的身家把柄全數攥進了手裡。"
         },
@@ -68,7 +83,12 @@
             "inf": 12,
             "corruption": 14,
             "hedon": 14,
-            "tyranny": 10
+            "tyranny": 10,
+            "mist": 14,
+            "crave": 14,
+            "heat": 5,
+            "affair": "g",
+            "tag": "桀驁未馴"
           },
           "outcome": "呂雉唇角勾起一抹冰冷滿意的弧度。當夜紅燭搖曳下，這位白日裡威嚴得令百官不敢仰視的熟美皇后，竟真的跪在你的龍榻邊親手替你褪靴解帶，眼底卻燃著掌控一切的野火。"
         }
@@ -95,7 +115,12 @@
             "tyranny": 14,
             "rel_b": -30,
             "rel_c": 14,
-            "flag": "lvzhi_lu_clan_installed"
+            "flag": "lvzhi_lu_clan_installed",
+            "office": 1,
+            "mist": 16,
+            "heat": 7,
+            "pv": 1,
+            "food": -60
           },
           "outcome": "次日 {b} 娘家遭酷吏抄罰、哭嚎震天，整個後宮徹底明白：長樂宮裡坐著的不是普通嬪妃，而是一尊說一不二的鐵血女皇。當夜她在長樂深閣主動解開玄黑大袍，讓你在極致的尊卑反差中品嚐她成熟豐盈的胴體。"
         },
@@ -106,7 +131,12 @@
             "inf": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_c": 6
+            "rel_c": 6,
+            "office": 1,
+            "mist": 10,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "呂雉眼底掠過一絲深不見底的冷意，表面卻依舊端莊溫順地領旨——轉頭她便改將呂氏子弟大批塞進了掌管錢糧與御史台的文官要職。"
         },
@@ -116,7 +146,10 @@
             "aff": -14,
             "inf": -10,
             "tyranny": 10,
-            "rel_b": 14
+            "rel_b": 14,
+            "heat": 5,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "呂雉平靜無波地目送你離去，沒有一滴眼淚。三日後，那兩名剛被你放回去的管事便在醉酒後「意外失足」摔死在永巷石階下，嚇得 {b} 整夜不敢熄燈。"
         }
@@ -144,7 +177,12 @@
             "rel_b": -35,
             "rel_g": -50,
             "rel_c": -5,
-            "flag": "lvzhi_bell_chamber_execution"
+            "flag": "lvzhi_bell_chamber_execution",
+            "ban": "b",
+            "mist": 18,
+            "heat": 9,
+            "inj": "b",
+            "tag": "立威震宮"
           },
           "outcome": "鍾室銅門緩緩合上，一代悍將無聲伏誅！次日朝野震駭，滿朝功臣武將從此見了長樂宮那身玄黑大袍無不股慄，{b} 更是嚇得在宮裡日夜燒香求保命。"
         },
@@ -156,7 +194,10 @@
             "tyranny": 6,
             "rel_b": -15,
             "rel_g": -15,
-            "rel_c": 4
+            "rel_c": 4,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "{g} 撿回一條命卻被嚇破了膽，連夜交出兵權逃出長安。呂雉垂眸微笑，毫不在意——她想要的「殺威棒」已經徹底敲進了每個人的骨頭裡。"
         },
@@ -167,7 +208,11 @@
             "inf": -14,
             "tyranny": 12,
             "rel_b": 14,
-            "rel_g": 15
+            "rel_g": 15,
+            "heat": 6,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "呂雉平靜交出衛隊令牌，眼中卻泛起萬年寒霜——從這一刻起，她徹底明白唯有把所有反對者連根拔起、甚至架空君權，她才永遠不會再淪為任人宰割的棋子。"
         }
@@ -195,7 +240,12 @@
             "corruption": 18,
             "tyranny": 16,
             "rel_b": -45,
-            "flag": "lvzhi_poison_frame_purge"
+            "flag": "lvzhi_poison_frame_purge",
+            "pop": -15,
+            "mist": 18,
+            "heat": 8,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "{b} 母族一夜覆滅，呂氏一門勢力達到空前鼎盛。當夜長樂宮裡，呂雉難得主動褪去沉重玄黑禮服，將成熟豐盈、滾燙微顫的玉體毫無保留地獻給你作為謝禮。"
         },
@@ -205,7 +255,10 @@
             "aff": -8,
             "inf": 4,
             "corruption": 8,
-            "rel_b": -15
+            "rel_b": -15,
+            "mist": 10,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "呂雉垂眸淺笑，絲毫不急——失去協理宮權與兵脈的 {b} 如今不過是砧板上的魚肉，她有的是耐心慢慢收拾。"
         }
@@ -233,7 +286,13 @@
             "tyranny": 12,
             "rel_g": -15,
             "rel_c": 8,
-            "flag": "lvzhi_secret_lover_caught"
+            "flag": "lvzhi_secret_lover_caught",
+            "troops": 60,
+            "mist": 20,
+            "crave": 22,
+            "heat": 6,
+            "pv": 1,
+            "tag": "血盟共犯"
           },
           "outcome": "向來泰山崩於前而色不變的呂雉，在你暴怒的壓制與粗暴佔有中竟徹底卸下鐵血面具，成熟豐盈的身軀在你掌心裡劇烈顫抖、發出平生罕見的失控低泣與浪喘！那一夜過後，{g} 的小命與忠誠徹底鎖死在你們二人手中。"
         },
@@ -244,7 +303,11 @@
             "corruption": 14,
             "rel_g": 16,
             "rel_c": 10,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 14,
+            "heat": 6,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "次日 {g} 果然以雷霆手段清洗了衛尉府所有 {b} 派系眼線。當夜呂雉端莊冷豔地步入你的寢殿，主動為你寬衣解帶，用比秘閣裡更熾熱百倍的成熟風情將你徹底吞沒。"
         },
@@ -256,7 +319,13 @@
             "tyranny": 16,
             "corruption": 12,
             "rel_g": -50,
-            "rel_b": 16
+            "rel_b": 16,
+            "affair": "g",
+            "exec": "g",
+            "mist": 12,
+            "heat": 8,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "{g} 一聲不吭地赴死，沒有吐露呂雉半個字。呂雉慢條斯理地拉回玄黑禮服扣好金扣，眼神徹底冷成死水：「陛下殺了我身邊最忠心的一條狗——好，那從今夜起，本宮就只能靠自己手裡的刀來護身了。」"
         }
@@ -283,7 +352,10 @@
             "corruption": 18,
             "rel_b": -38,
             "rel_g": -50,
-            "flag": "lvzhi_poison_cup_frame"
+            "flag": "lvzhi_poison_cup_frame",
+            "exec": "b",
+            "mist": 18,
+            "heat": 9
           },
           "outcome": "死人不會說話，{b} 含冤崩潰被拖進暗無天日的永巷。當夜呂雉站在長樂宮廊下望著冷月輕笑：「這深宮裡最乾淨的滅口法子，就是讓背叛者死在政敵遞過去的酒杯裡。」"
         },
@@ -295,7 +367,11 @@
             "tyranny": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_g": -22
+            "rel_g": -22,
+            "mist": 10,
+            "heat": 5,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "太醫根本不敢指認長樂宮，最後只推給一名早已服毒自盡的小宮女頂罪。呂雉平靜微笑，連眉頭都沒動一下。"
         }
@@ -322,7 +398,14 @@
             "tyranny": 14,
             "rel_b": -38,
             "rel_c": 14,
-            "flag": "lvzhi_hostage_robe_win"
+            "flag": "lvzhi_hostage_robe_win",
+            "exile": "b",
+            "ban": "b",
+            "mist": 16,
+            "heat": 7,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "從此滿朝文武再無一人敢提「廢后」二字！當夜長樂宮裡，呂雉罕見地露出極具掠奪性的成熟風情，在你身上將這場大勝的權力快感徹底釋放。"
         },
@@ -333,7 +416,10 @@
             "inf": 6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 4
+            "rel_c": 4,
+            "mist": 10,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "呂雉垂眸冷笑，恭敬應諾——可她心裡比誰都清楚，從你說出這句話的那一刻起，這段夫妻情分就只剩下赤裸裸的權力博弈了。"
         }
@@ -360,7 +446,13 @@
             "tyranny": 14,
             "rel_b": 14,
             "rel_c": -40,
-            "flag": "lvzhi_fief_plunder"
+            "flag": "lvzhi_fief_plunder",
+            "food": 100,
+            "pop": -15,
+            "mist": 18,
+            "heat": 7,
+            "office": 1,
+            "tag": "毒盟共生"
           },
           "outcome": "半月內 {c} 外戚徹底除爵抄家，諸呂勢力如日中天。當夜呂雉在長樂宮褪去外袍，用極具壓迫感與成熟韻味的身段犒賞你的默許。"
         },
@@ -371,7 +463,10 @@
             "inf": -6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 18
+            "rel_c": 18,
+            "mist": 10,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "吞併失敗，{b} 賠盡臉面；呂雉卻只是平靜地合上輿圖，當夜在龍榻上冷冷望著你，一言不發卻讓你感到前所未有的森寒壓迫。"
         }
@@ -398,7 +493,11 @@
             "hedon": 24,
             "corruption": 16,
             "rel_b": -30,
-            "flag": "lvzhi_empress_robe_bed_claim"
+            "flag": "lvzhi_empress_robe_bed_claim",
+            "mist": 16,
+            "crave": 24,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "那一夜寢殿裡壓抑而深沉的熟婦喘息徹夜不息，向來高不可攀的鐵血皇后在你身下徹底融化成一團滾燙欲火。次日清晨她重新穿上玄黑大禮服端莊走出殿門，路過跪在寒風裡的 {b} 時連眼角都未曾掃過半分。"
         },
@@ -409,7 +508,12 @@
             "hedon": 20,
             "tyranny": 12,
             "corruption": 16,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 16,
+            "crave": 20,
+            "heat": 6,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "衣冠楚楚的玄黑禮服下卻承受著最粗暴失控的貫穿與衝撞，這種極致的尊卑撕裂感讓呂雉眼底泛起罕見的迷離水光，死死咬著嘴唇不肯叫出聲，卻更用力地迎合著你的力道。"
         },
@@ -419,7 +523,10 @@
             "aff": -22,
             "inf": -10,
             "tyranny": 14,
-            "rel_b": 14
+            "rel_b": 14,
+            "heat": 7,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "呂雉緩緩拉上玄黑衣領、重新扣好每一顆金扣，眼神冷得像在看一具死屍。三日後，{b} 便因「御膳房誤用相剋藥材」而整月面生毒瘡、痛不欲生。"
         }
@@ -446,7 +553,13 @@
             "tyranny": 18,
             "rel_g": 10,
             "rel_c": 12,
-            "flag": "lvzhi_changle_orgy_abyss"
+            "flag": "lvzhi_changle_orgy_abyss",
+            "pol": 12,
+            "energy": 25,
+            "mist": 24,
+            "crave": 26,
+            "heat": 9,
+            "pv": 1
           },
           "outcome": "那一夜長樂宮內硃砂濺滿雪白玉體、詔書與玄黑禮服翻飛凌亂。你與呂雉在最森嚴的權力殿堂裡徹底撕碎了最後一絲道德底線，成為這座黑霧帝國最冰冷也最荒淫的共治雙魔。"
         },
@@ -459,7 +572,12 @@
             "hedon": 20,
             "tyranny": 22,
             "rel_g": -48,
-            "rel_c": -5
+            "rel_c": -5,
+            "mist": 20,
+            "crave": 20,
+            "heat": 11,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "鮮血濺上玄黑禮服下擺，{g} 悶哼一聲拖著斷手退下。呂雉盯著地上的血跡，眼底卻反而燃起令人戰慄的興奮暗火，雙臂死死扣住你的脖頸承受你的暴怒：「這才像能壓得住本宮的漢家天子！」"
         }
@@ -486,7 +604,12 @@
             "hedon": 22,
             "tyranny": 18,
             "rel_b": -50,
-            "flag": "lvzhi_yongxiang_prison_revenge"
+            "flag": "lvzhi_yongxiang_prison_revenge",
+            "mist": 24,
+            "crave": 22,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "那一夜永巷石牢裡木杵沉悶的撞擊聲、{b} 徹底崩潰的哭嚎與高臺暖閣裡熟婦壓抑又放浪的喘息交織至天明。沒過十日，{b} 便在永巷裡神智徹底錯亂，淪為一具只會機械舂米的活死人。"
         },
@@ -497,7 +620,11 @@
             "inf": 4,
             "tyranny": 8,
             "corruption": 6,
-            "rel_b": -20
+            "rel_b": -20,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "呂雉平靜地放下茶盞重新扣好衣領，眼神冷酷得沒有一絲波瀾——當夜賜下去的鴆酒裡，被她暗中換成了會令人臨死前劇痛兩個時辰才斷氣的慢性烈毒。"
         }
@@ -524,7 +651,12 @@
             "corruption": 18,
             "tyranny": 16,
             "rel_b": -35,
-            "flag": "lvzhi_heir_iron_control"
+            "flag": "lvzhi_heir_iron_control",
+            "mist": 18,
+            "heat": 8,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "呂雉眼底閃過志在必得的寒光。從此 {heir} 在母親密不透風的鐵血陰影下徹底失去反抗能力，淪為長樂宮臨朝稱制最聽話的傀儡儲君。"
         },
@@ -535,7 +667,12 @@
             "inf": -14,
             "tyranny": 12,
             "corruption": 10,
-            "rel_b": 14
+            "rel_b": 14,
+            "mist": 10,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "呂雉靜靜看著兒子被帶走，沒有發怒哭喊，只是在 {heir} 回頭望她時露出一個冰冷而意味深長的微笑——僅僅那一個眼神，便讓 {heir} 連續三夜噩夢連連、根本不敢違逆母親半句。"
         }
@@ -563,7 +700,14 @@
             "tyranny": 24,
             "rel_b": -50,
             "rel_g": 22,
-            "flag": "lvzhi_regent_empress_regime"
+            "flag": "lvzhi_regent_empress_regime",
+            "mist": 26,
+            "crave": 26,
+            "heat": 12,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "玉璽落下，大漢正式進入「呂后臨朝稱制」的鐵血年代。白日裡她坐於龍椅珠簾後生殺予奪、大封諸呂，夜裡則在未央深殿褪去玄袍，以極致壓抑後的狂熱成熟風情將你徹底馴服在掌心。"
         },
@@ -574,7 +718,13 @@
             "inf": -15,
             "tyranny": 20,
             "corruption": 16,
-            "rel_g": -35
+            "rel_g": -35,
+            "troops": 60,
+            "mist": 16,
+            "heat": 10,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "冰冷劍鋒劃破她冷白咽喉滲出一線鮮紅，呂雉卻連眼睫都未曾顫抖一下，反倒迎著劍光露出一抹淒豔而森寒的冷笑：「這才像當年那個從楚漢血海裡爬出來的漢家天子……好啊，只要今夜你沒砍下本宮的頭，這盤江山棋局，咱們就下到不死不休！」"
         }
@@ -602,7 +752,14 @@
             "corruption": 12,
             "hedon": 12,
             "rel_b": -24,
-            "flag": "lvzhi_guandong_grain_grip"
+            "flag": "lvzhi_guandong_grain_grip",
+            "affair": "g",
+            "mist": 12,
+            "crave": 12,
+            "heat": 6,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "五日後關東百萬石秋糧順利運抵長安，呂雉更隨糧船寄回一盞她親手調配的固本藥酒，言簡意賅地提醒你「養好身子，留著東巡時受用」。"
         },
@@ -612,7 +769,11 @@
             "aff": -14,
             "inf": -8,
             "tyranny": 12,
-            "rel_b": 10
+            "rel_b": 10,
+            "food": 100,
+            "heat": 6,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "派去的宗室大臣才剛到滎陽便被呂氏私軍軟禁在驛館裡進退不得。你只收到呂雉寄回的一方空白玄漆木牘，上面只蓋著一枚鮮紅如血的長樂金印。"
         }
@@ -638,7 +799,12 @@
             "corruption": 16,
             "tyranny": 10,
             "rel_b": -28,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 16,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "長安城百官從此徹底明白：長樂宮的眼睛無處不在，無論呂雉人在何方，都無人敢在長安動她分毫。"
         },
@@ -649,7 +815,12 @@
             "inf": -10,
             "tyranny": 14,
             "rel_b": 12,
-            "rel_c": -35
+            "rel_c": -35,
+            "cold": 1,
+            "troops": 60,
+            "heat": 7,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "旨意剛下，長安城中半數呂氏高官集體稱病罷朝抗議，朝政瞬間陷入半癱瘓；關東隨即傳來急報，呂雉已開始在封地私下擴編玄甲衛隊。"
         }
@@ -674,7 +845,15 @@
             "corruption": 16,
             "hedon": 20,
             "rel_g": 5,
-            "flag": "lvzhi_five_stage_bonded"
+            "flag": "lvzhi_five_stage_bonded",
+            "troops": 60,
+            "pol": 12,
+            "energy": 25,
+            "mist": 16,
+            "crave": 20,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "呂雉冷峻的眼角罕見地泛起一絲灼熱水光，隨即化作極具侵略性的深吻——從此長樂金印與諸呂鐵騎徹底化作你們夫妻共掌生殺的無上利劍。"
         },
@@ -684,7 +863,9 @@
             "aff": -6,
             "inf": 8,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "house": 1
           },
           "outcome": "呂雉指尖輕輕撫過腰間的長樂玉璽，露出一個既端莊又森寒徹骨的淡笑：「陛下防著本宮，本宮也防著陛下——這才叫天家夫妻嘛，看最後到底是誰活得更久囉。」"
         }
@@ -710,7 +891,12 @@
             "hedon": 20,
             "corruption": 14,
             "rel_b": -20,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 14,
+            "crave": 20,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "呂雉在你掌心裡卸下所有防備，發出壓抑又極致銷魂的成熟低喘，整夜用最熾熱的柔情犒賞你的默許。"
         },
@@ -721,7 +907,13 @@
             "inf": 6,
             "tyranny": 10,
             "rel_b": -10,
-            "rel_g": -22
+            "rel_g": -22,
+            "troops": 60,
+            "pop": -15,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "呂雉冷峻的眉梢微不可察地一挑，反手在你肩頭留下一道深深的紅印：「陛下削我的羽翼倒是快手……也好，省得那蠢貨礙了陛下的眼。」"
         }
@@ -749,7 +941,12 @@
             "tyranny": 14,
             "rel_b": -32,
             "rel_g": 18,
-            "flag": "lvzhi_iron_expedition"
+            "flag": "lvzhi_iron_expedition",
+            "mist": 14,
+            "heat": 7,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "出征前夜，呂雉穿著玄黑護心輕甲在你的帥帳裡親自斟酒，褪去肩甲在龍榻上與你進行了一場充滿鐵血與成熟張力的激烈纏綿。開拔後 {b} 胞兄果然被她以「行軍延誤半刻」的罪名抽得皮開肉綻、綁在糧車最前頭冒箭。"
         },
@@ -759,7 +956,10 @@
             "aff": 4,
             "inf": 6,
             "rel_b": 6,
-            "rel_g": 8
+            "rel_g": 8,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "呂雉平靜領旨接過監軍印，臨行前卻已暗中安排御史將 {b} 娘家在長安的三座糧倉全部以「軍用徵調」名義強行封存抽乾。"
         }
@@ -785,7 +985,13 @@
             "hedon": 20,
             "tyranny": 14,
             "rel_g": 14,
-            "flag": "lvzhi_blood_tent_victory"
+            "flag": "lvzhi_blood_tent_victory",
+            "mist": 18,
+            "crave": 20,
+            "heat": 7,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "帳外是三軍大口慶功的喧囂，帳內卻是玄黑輕甲散落、向來端莊威嚴的皇后在你身下發出近乎失控的壓抑嬌喘。此戰過後，天下軍政再無一人敢輕視長樂宮的鐵腕。"
         },
@@ -795,7 +1001,10 @@
             "aff": -6,
             "inf": 8,
             "tyranny": 6,
-            "rel_g": 4
+            "rel_g": 4,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "呂雉平靜地裹上披風，唇角卻浮起一抹瞭然又危險的淺笑：「陛下在軍前倒是克制得很——無妨，等回了長樂宮關上門，有的是長夜讓陛下卸下這身盔甲。」"
         }
@@ -824,7 +1033,12 @@
               "corruption": 14,
               "rel_b": -38,
               "rel_g": 22,
-              "flag": "lvzhi_changle_funeral_purge"
+              "flag": "lvzhi_changle_funeral_purge",
+              "mist": 14,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "{b} 一黨徹底覆滅，{g} 與諸呂感念你替皇后復仇而暫息兵變；只是從此空蕩蕩的長樂宮再無那道玄黑挺拔的冷峻身影。"
           },
@@ -834,7 +1048,11 @@
               "inf": -12,
               "tyranny": 16,
               "rel_b": 16,
-              "rel_g": -45
+              "rel_g": -45,
+              "heat": 8,
+              "pol": 15,
+              "mist": 15,
+              "wood": -50
             },
             "outcome": "長安城爆發慘烈巷戰，諸呂雖遭重創，但 {g} 率殘部焚毀長樂宮遠遁，朝堂元氣大傷，而你午夜夢迴總彷彿看見那襲玄黑大袍正站在床頭冷笑。"
           }
@@ -860,7 +1078,12 @@
               "inf": 8,
               "corruption": 12,
               "rel_b": -24,
-              "flag": "lvzhi_rescue_ordered"
+              "flag": "lvzhi_rescue_ordered",
+              "troops": 60,
+              "food": 100,
+              "mist": 12,
+              "soldiers": -80,
+              "inj": 1
             },
             "outcome": "消息傳入敵營，滿身鞭傷卻脊背挺得筆直的呂雉冷冷勾起唇角，望著長安方向眼底燃起比當年楚營更毒百倍的復仇寒火。"
           },
@@ -871,7 +1094,11 @@
               "inf": -16,
               "corruption": 24,
               "tyranny": 14,
-              "rel_b": 20
+              "rel_b": 20,
+              "mist": 24,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "敵帥大笑著把你的廢后聖旨唸給她聽。呂雉聽完竟沒有落一滴淚，只是平靜地抬起頭——從那一刻起，她決定徹底背棄大漢，發誓要借敵軍之手把你與 {b} 一起送進永巷地獄。"
           }
@@ -898,7 +1125,13 @@
               "corruption": 14,
               "hedon": 10,
               "rel_b": -30,
-              "flag": "lvzhi_wounded_hand_kissed"
+              "flag": "lvzhi_wounded_hand_kissed",
+              "mist": 14,
+              "crave": 10,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "呂雉冷峻的身軀劇烈一顫，眼底罕見地閃過一絲滾燙動搖，隨即用完好的左手死死扣住你的後頸將你拉入玄黑大袍的懷抱，以最熾熱而壓抑的深吻鎖死你的承諾。"
           },
@@ -909,7 +1142,11 @@
               "inf": -16,
               "corruption": 26,
               "tyranny": 12,
-              "rel_b": 18
+              "rel_b": 18,
+              "mist": 26,
+              "heat": 6,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "你收走金印的那一刻，呂雉眼裡所有溫度徹底熄滅。不到半月，{b} 娘家三名核心男丁接連在街頭「意外」墜馬摔斷雙手終身殘廢，而你卻找不到半點證據。"
           }
@@ -936,7 +1173,11 @@
               "tyranny": 18,
               "corruption": 18,
               "rel_b": -35,
-              "flag": "lvzhi_shame_bloodwash"
+              "flag": "lvzhi_shame_bloodwash",
+              "exec": "b",
+              "mist": 18,
+              "heat": 9,
+              "pop": -15
             },
             "outcome": "當夜她在長樂宮滾燙的沉木香湯裡一遍遍搓洗著受辱的肌膚，隨即拉著你走上軟榻，在極致的冰冷與滾燙交織中要你用最強勢的佔有洗刷掉敵人的所有印記。"
           },
@@ -947,7 +1188,11 @@
               "inf": -18,
               "corruption": 26,
               "tyranny": 14,
-              "rel_b": 16
+              "rel_b": 16,
+              "ban": 1,
+              "mist": 26,
+              "heat": 7,
+              "tag": "受辱怨骨"
             },
             "outcome": "偏殿的鐵鎖根本關不住長樂鐵后。不到五天，看守偏殿的整營禁軍便在諸呂重金與她冰冷威壓下全數倒戈，把偏殿變成了她暗中操控長安清洗與夜夜宣淫的暗黑皇宮。"
           }
@@ -974,7 +1219,12 @@
               "corruption": 20,
               "hedon": 12,
               "tyranny": 14,
-              "flag": "lvzhi_blood_robe_vow"
+              "flag": "lvzhi_blood_robe_vow",
+              "mist": 20,
+              "crave": 12,
+              "heat": 7,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "呂雉在你懷裡發出一聲極度壓抑、卻撕心裂肺的低泣，隨即發狂般咬破你的肩頭、撕扯你的龍袍，在漆黑秘閣裡與你激烈交纏，彷彿唯有肉體的劇痛與滾燙能填補心口那個血洞。"
           },
@@ -984,7 +1234,10 @@
               "aff": -26,
               "inf": -16,
               "corruption": 26,
-              "tyranny": 16
+              "tyranny": 16,
+              "mist": 26,
+              "heat": 8,
+              "jail": 1
             },
             "outcome": "她醒來後不再說一句廢話，每天安靜地撫摸那柄斷劍冷笑。不出一個月，當初阻撓發兵救援的四名宗室重臣接連在自家府中離奇中毒暴斃，屍體旁都放著一隻長樂宮的黑金酒盞。"
           }
@@ -1011,7 +1264,11 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_b": -32,
-              "flag": "lvzhi_herb_purge_saved"
+              "flag": "lvzhi_herb_purge_saved",
+              "mist": 20,
+              "heat": 8,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "從鬼門關爬回來的呂雉變得比以往冷毒十倍。她剛能下床的第一夜，便親手將剩餘的絕子寒藥悄悄混進了 {b} 每天必喝的燕窩羹裡，徹底斷了 {b} 的子嗣之望。"
           },
@@ -1022,7 +1279,13 @@
               "inf": -12,
               "corruption": 28,
               "tyranny": 20,
-              "rel_b": 12
+              "rel_b": 12,
+              "mist": 28,
+              "heat": 10,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "呂雉透過模糊汗霧看清了你骨子裡的冷酷算計，徹底對這段夫妻關係死心。她強忍無盡屈辱活了下來，卻從此在你每夜飲用的參湯裡埋下了最致命的慢性長樂奇毒。"
           }
@@ -1050,7 +1313,13 @@
               "hedon": 22,
               "tyranny": 14,
               "rel_b": -35,
-              "flag": "lvzhi_poison_widow_return"
+              "flag": "lvzhi_poison_widow_return",
+              "mist": 20,
+              "crave": 22,
+              "heat": 7,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "滿朝嘲諷瞬間化為深入骨髓的敬畏與寒意。當夜呂雉在你身下極盡成熟狂熱，一邊壓抑喘息一邊冷靜地問你：「陛下，敢不敢也嚐嚐本宮親手斟的合巹酒呀？」"
           },
@@ -1061,7 +1330,12 @@
               "inf": -10,
               "corruption": 24,
               "tyranny": 16,
-              "rel_b": 15
+              "rel_b": 15,
+              "exec": "b",
+              "mist": 24,
+              "heat": 8,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "呂雉臨走前故意用沾著敵帥血漬的冷白玉指輕輕撫過你的茶杯杯沿，笑得端莊又森寒：「陛下放心，只要陛下別像那頭蠢豬一樣想囚禁本宮，本宮斟的茶永遠都是甜的。」"
           }
@@ -1089,7 +1363,13 @@
               "tyranny": 12,
               "rel_b": -38,
               "rel_g": 18,
-              "flag": "lvzhi_rescued_reckoning"
+              "flag": "lvzhi_rescued_reckoning",
+              "exec": "b",
+              "mist": 14,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "呂雉這才放下金剪、帶著一身煙火血氣緩緩靠進你懷裡——然而當晚她卻也私下將負傷的 {g} 召進辟陽秘閣「親自敷藥酬謝救命之恩」，秘閣燭火亮至天明。"
           },
@@ -1100,7 +1380,11 @@
               "inf": -12,
               "corruption": 20,
               "rel_b": 12,
-              "rel_g": -15
+              "rel_g": -15,
+              "ban": "b",
+              "mist": 20,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "呂雉冷笑著丟開金剪，當著你的面挽起 {g} 染血的手臂轉身離去：「將軍瞧見了嗎？咱們在外頭拿命拼，深宮裡卻有人護著出賣國母的賤婦呢。」從此她與 {g} 徹底結成只忠於彼此的暗黑軍政同盟。"
           }
@@ -1128,7 +1412,12 @@
               "hedon": 20,
               "tyranny": 14,
               "rel_g": -50,
-              "flag": "lvzhi_cell_prison_burned"
+              "flag": "lvzhi_cell_prison_burned",
+              "pv": 1,
+              "mist": 22,
+              "crave": 20,
+              "heat": 7,
+              "exec": "g"
             },
             "outcome": "回到長樂宮後，呂雉在床榻上變得極具支配性與偏執控制欲——她再也不許任何男人將她按在身下，唯有由她居高臨下跨坐掌控一切時，她眼底的陰霾才會短暫散去。"
           },
@@ -1138,7 +1427,12 @@
               "aff": -28,
               "inf": -14,
               "corruption": 28,
-              "hedon": 18
+              "hedon": 18,
+              "pv": 1,
+              "mist": 28,
+              "crave": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "呂雉一眼看穿了你骨子裡的潔癖與薄情。她冷笑著不再求你臨幸，轉而在長樂宮地下仿照那座密室，暗中用權勢囚禁並折磨數名容貌酷似你的俊美年輕宗室，徹底化為吞噬人心的長樂妖魔。"
           }
@@ -1165,7 +1459,12 @@
               "corruption": 16,
               "tyranny": 12,
               "rel_b": -42,
-              "flag": "lvzhi_lone_escape_return"
+              "flag": "lvzhi_lone_escape_return",
+              "mist": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "呂雉平靜接過軍印，踮起冰涼的赤腳狠狠咬破你的嘴唇，血腥與沉木冷香在唇齒間炸開：「陛下記住了，以後誰敢再踏進長樂宮一步，本宮可不會再等陛下點頭才把她丟進永巷囉。」"
           },
@@ -1176,7 +1475,12 @@
               "inf": -14,
               "tyranny": 16,
               "corruption": 24,
-              "rel_b": 10
+              "rel_b": 10,
+              "troops": 60,
+              "mist": 24,
+              "heat": 8,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "呂雉擦掉短劍上的血跡，冷峻的眼底閃過瘋狂的寒光：「好啊，陛下既要講漢家宮規，那咱們就看看，到底是您的宮規硬，還是我長樂宮與諸呂十萬鐵騎手裡的刀子硬！」"
           }
@@ -1185,3 +1489,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['lvzhi'] = DATA;
+  (window.characterPacks ||= {})['lvzhi'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["daji"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 17 號 妲己 (daji)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "daji",
     "index": 17,
@@ -18,7 +23,8 @@
       "0-34（初染）：帶著亡國貢女表面柔順、骨子裡卻恨毒了商室的狡黠與魅惑，以狐眸流波與靡靡新聲迅速勾走君王全部心神。",
       "35-69（深蝕）：在黑霧與至高寵愛腐蝕下，徹底放飛毀國本性——一面大興土木建鹿臺、鑿酒池拖垮國庫與政敵家族，一面以酒色夜宴與酷刑威懾把持前朝後宮。",
       "70+（深淵）：徹底黑化為『鹿臺妖后』——已親手在滾燙銅柱與酒池邊將落敗貴妃折磨至精神崩潰、已在靡靡絲竹中公然以魅骨酒色豢養各方悍將與權臣、已把親兒調教成視天下萬民如玩偶的暴虐幼主，笑看黑霧與烈火吞噬朝歌，唯求與君王在極樂深淵中一同毀滅。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -46,7 +52,14 @@
             "hedon": 14,
             "corruption": 10,
             "rel_g": -6,
-            "flag": "daji_deer_terrace_entry"
+            "flag": "daji_deer_terrace_entry",
+            "wood": -60,
+            "stone": -60,
+            "mist": 10,
+            "crave": 14,
+            "heat": 6,
+            "marry": 1,
+            "preg": 1
           },
           "outcome": "赤金腳鈴在紗帳內急促搖響，妲己在你懷裡發出一聲勾魂蝕骨的嬌笑，像藤蔓般緊緊纏住你的脖頸——從這一刻起，朝歌的禮法與理智開始隨著她的笑聲一同崩塌。"
         },
@@ -57,7 +70,11 @@
             "inf": -6,
             "tyranny": 10,
             "corruption": 10,
-            "rel_g": 6
+            "rel_g": 6,
+            "mist": 10,
+            "heat": 5,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "妲己毫不畏懼地用舌尖輕輕舔過你捏著她下巴的指腹，眼底閃過一抹冰冷的趣味：「越是口口聲聲說不怕妖狐的君王，陷進去的時候，叫得越慘呢。」"
         },
@@ -69,7 +86,12 @@
             "hedon": 16,
             "corruption": 14,
             "tyranny": 8,
-            "rel_g": -15
+            "rel_g": -15,
+            "mist": 14,
+            "crave": 16,
+            "heat": 5,
+            "affair": "g",
+            "tag": "桀驁未馴"
           },
           "outcome": "紅紗翻飛、赤足生蓮，她在幽暗燈火下跳著前所未見的妖嬈舞步，每一寸腰肢的擺動都精準撩撥著你的神經，直讓你當夜便將滿朝政務全數拋諸腦後。"
         }
@@ -97,7 +119,16 @@
             "tyranny": 12,
             "rel_b": -28,
             "rel_c": 12,
-            "flag": "daji_wine_pool_founded"
+            "flag": "daji_wine_pool_founded",
+            "pv": 1,
+            "food": 100,
+            "wood": -60,
+            "stone": -60,
+            "pop": -15,
+            "mist": 18,
+            "crave": 12,
+            "heat": 6,
+            "office": 1
           },
           "outcome": "次日 {b} 外戚遭酷吏抄家，滿朝老臣驚駭失色。當夜妲己高興得赤足在酒香四溢的暖閣裡為你獨舞，將鬱鬯酒順著自己雪白脖頸滑進衣襟，邀你親口品嚐勝利的甜美。"
         },
@@ -108,7 +139,14 @@
             "inf": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_c": 6
+            "rel_c": 6,
+            "wood": -60,
+            "stone": -60,
+            "pop": -15,
+            "mist": 10,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "妲己嘟起紅唇在你胸口輕輕畫圈，眼底笑意卻冷了幾分：「大王還捨不得花錢哄奴家開心呀？沒關係，奴家有的是法子，讓大王自己求著替我把鹿臺蓋到天上去。」"
         },
@@ -118,7 +156,11 @@
             "aff": -14,
             "inf": -10,
             "tyranny": 10,
-            "rel_b": 14
+            "rel_b": 14,
+            "affair": "g",
+            "food": 100,
+            "heat": 5,
+            "troops": 60
           },
           "outcome": "看著滿地碎裂的樂器，妲己連眉頭都沒皺一下，只是歪著頭對你妖豔一笑：「砸了琴，我這張嘴還能唱；砸了酒杯，我這副身子還熱著——大王能忍得住幾天呢？」"
         }
@@ -146,7 +188,13 @@
             "hedon": 10,
             "rel_b": -35,
             "rel_c": -10,
-            "flag": "daji_bronze_pillar_terror"
+            "flag": "daji_bronze_pillar_terror",
+            "ban": "b",
+            "mist": 18,
+            "crave": 10,
+            "heat": 8,
+            "inj": "b",
+            "tag": "立威震宮"
           },
           "outcome": "淒厲的求饒哭喊響徹大殿，雖未真取其性命卻已將 {b} 與滿殿嬪妃的膽子徹底嚇破！從此後宮人人談「銅柱」色變，再無一人敢直視妲己那雙笑意盈盈的狐眸。"
         },
@@ -157,7 +205,11 @@
             "inf": 8,
             "tyranny": 6,
             "rel_b": -16,
-            "rel_c": 6
+            "rel_c": 6,
+            "inj": "b",
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "妲己惋惜地嘆了口氣，隨即又笑著靠進你懷裡蹭了蹭：「大王心太軟啦……沒關係，今晚在床上，大王可得把奴家沒看成的熱鬧雙倍補回來喔。」"
         },
@@ -167,7 +219,12 @@
             "aff": -18,
             "inf": -12,
             "tyranny": 10,
-            "rel_b": 14
+            "rel_b": 14,
+            "cold": "b",
+            "heat": 5,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "妲己笑著領罰，背過身眼底卻一片冰冷——當夜她便把那卷先王禮法丟進火盆烤了，連帶把 {b} 派來監視她的兩名宮女灌醉丟進了冷宮枯井旁嚇得魂不附體。"
         }
@@ -196,7 +253,13 @@
             "hedon": 12,
             "tyranny": 14,
             "rel_b": -45,
-            "flag": "daji_deer_terrace_scapegoat"
+            "flag": "daji_deer_terrace_scapegoat",
+            "food": -80,
+            "pop": -15,
+            "mist": 18,
+            "crave": 12,
+            "heat": 7,
+            "affair": "g"
           },
           "outcome": "{b} 母族一夜傾家蕩產、背盡罵名，妲己卻穩穩坐享金碧輝煌的鹿臺與無盡財寶。當夜她在鋪滿金沙與錦緞的鹿臺頂樓徹底放浪形骸，以極致魅骨犒賞你的偏愛。"
         },
@@ -206,7 +269,12 @@
             "aff": -8,
             "inf": 4,
             "corruption": 8,
-            "rel_b": -15
+            "rel_b": -15,
+            "food": 100,
+            "pop": -15,
+            "mist": 10,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "妲己笑著聳聳雪白香肩，絲毫不在乎——吐出全部財產的 {b} 娘家已經徹底破產，再也掀不起半分風浪。"
         }
@@ -234,7 +302,13 @@
             "tyranny": 12,
             "rel_g": -15,
             "rel_c": 8,
-            "flag": "daji_wine_pool_caught"
+            "flag": "daji_wine_pool_caught",
+            "pv": 1,
+            "mist": 20,
+            "crave": 22,
+            "heat": 6,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "妲己在你醋意爆發的強勢佔有中發出近乎瘋狂的銀鈴浪笑，赤紅濕紗緊貼著飽滿起伏的曲線，甚至挑釁地回眸看向跪在酒水裡冷汗涔涔的 {g}。自此 {g} 徹底淪為你們夫妻手裡不敢有二心的禁軍惡犬。"
         },
@@ -245,7 +319,13 @@
             "corruption": 14,
             "rel_g": 16,
             "rel_c": 10,
-            "rel_b": -22
+            "rel_b": -22,
+            "troops": 60,
+            "pv": 1,
+            "mist": 14,
+            "heat": 6,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "次日 {g} 果然乖乖把宮門防務全數倒向鹿臺一派。當夜妲己洗淨一身酒香鑽進你懷裡撒嬌：「大王別酸嘛，那蠢將軍不過聞了兩口酒味就把兵符交出來了，奴家最銷魂的深處，永遠只留給大王一個人呀。」"
         },
@@ -257,7 +337,13 @@
             "tyranny": 16,
             "corruption": 12,
             "rel_g": -50,
-            "rel_b": 16
+            "rel_b": 16,
+            "exec": "g",
+            "pv": 1,
+            "mist": 12,
+            "heat": 8,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "酒池一時染紅，{g} 絕望被拖走。妲己站在血紅酒水邊妖冶一笑：「大王殺了一個 {g}，可朝歌城裡做夢都想進我鹿臺喝一杯酒的將軍與大臣還有幾十個呢——大王殺得完嗎？」"
         }
@@ -284,7 +370,11 @@
             "corruption": 18,
             "rel_b": -35,
             "rel_g": -50,
-            "flag": "daji_bronze_vault_trap"
+            "flag": "daji_bronze_vault_trap",
+            "exec": "b",
+            "food": 100,
+            "mist": 18,
+            "heat": 9
           },
           "outcome": "{g} 含冤伏誅，{b} 徹底失去所有靠山與翻身之望。當夜妲己靠在你懷裡把玩著一縷火光輕笑：「敢背叛狐狸的獵犬，下場本來就該是變成灰燼嘛。」"
         },
@@ -296,7 +386,11 @@
             "tyranny": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_g": -22
+            "rel_g": -22,
+            "mist": 10,
+            "heat": 5,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "妲己歪著頭無辜地眨了眨狐眸。兩日後，{g} 便在牢中「畏罪自盡」，連半句指證妲己的話都沒能留給刑官。"
         }
@@ -324,7 +418,14 @@
             "tyranny": 14,
             "rel_b": -38,
             "rel_c": 14,
-            "flag": "daji_nine_tails_triumph"
+            "flag": "daji_nine_tails_triumph",
+            "ban": "b",
+            "mist": 18,
+            "crave": 16,
+            "heat": 7,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "從此朝歌上下再沒人敢拿「狐妖」二字攻擊妲己——她反倒大大方方地以「九尾妖后」自居。當夜她在鹿臺頂樓的赤紅紗帳裡，用那身九尾紅袍將你纏得徹底失魂。"
         },
@@ -335,7 +436,10 @@
             "inf": 6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 4
+            "rel_c": 4,
+            "mist": 10,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "妲己笑著將紅袍脫下丟進火盆，裡面卻只穿著一件更薄更透的赤紅中衣，歪頭對你眨眼：「衣服燒了，可這副比狐狸還勾人的身子，大王捨得燒嗎？」"
         }
@@ -363,7 +467,15 @@
             "tyranny": 14,
             "rel_b": 14,
             "rel_c": -40,
-            "flag": "daji_jade_mine_plunder"
+            "flag": "daji_jade_mine_plunder",
+            "pv": 1,
+            "food": 100,
+            "pop": -15,
+            "mist": 18,
+            "crave": 10,
+            "heat": 7,
+            "office": 1,
+            "tag": "毒盟共生"
           },
           "outcome": "半月內 {c} 外戚玉礦全數充公抄沒，鹿臺雕欄玉砌更加奢華奪目。當夜妲己用新進貢的溫潤暖玉打磨成貼身玉飾，赤身佩戴著在酒池邊邀你徹夜鑑賞。"
         },
@@ -374,7 +486,10 @@
             "inf": -6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 18
+            "rel_c": 18,
+            "mist": 10,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "算計落空，{b} 賠盡臉面；妲己卻笑得毫不在意，當夜便在龍榻上用更妖嬈無底線的魅術把你哄得暈頭轉向，隔日照樣批了十萬兩銀子給鹿臺添置珍寶。"
         }
@@ -401,7 +516,11 @@
             "hedon": 24,
             "corruption": 16,
             "rel_b": -30,
-            "flag": "daji_fox_bell_bed_claim"
+            "flag": "daji_fox_bell_bed_claim",
+            "mist": 16,
+            "crave": 24,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "那一夜寢殿內腳鈴急促搖響、靡靡喘息徹夜不歇。次日清晨她饜足地披著你的寬大龍袍走出殿門，故意在 {b} 宮門前晃了晃腳踝上的赤金鈴鐺，氣得 {b} 當場暈厥。"
         },
@@ -412,7 +531,12 @@
             "hedon": 20,
             "tyranny": 12,
             "corruption": 16,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 16,
+            "crave": 20,
+            "heat": 6,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "越是被粗暴地按在床柱邊征服，妲己狹長的狐眸就越是閃耀著病態又銷魂的水光，她咬著紅唇發出陣陣勾魂顫喘，從此對你的強勢更加上癮。"
         },
@@ -422,7 +546,11 @@
             "aff": -22,
             "inf": -10,
             "tyranny": 14,
-            "rel_b": 14
+            "rel_b": 14,
+            "ban": "b",
+            "heat": 7,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "妲己赤足被請出殿門時笑得妖豔而冰冷。三日後，{b} 寢殿裡所有用來薰衣的沉香全被暗中換成了令人徹夜噩夢不止的致幻奇草，逼得 {b} 整月精神恍惚。"
         }
@@ -449,7 +577,13 @@
             "tyranny": 16,
             "rel_g": 10,
             "rel_c": 12,
-            "flag": "daji_long_night_abyss"
+            "flag": "daji_long_night_abyss",
+            "pv": 1,
+            "pol": 12,
+            "energy": 25,
+            "mist": 24,
+            "crave": 28,
+            "heat": 8
           },
           "outcome": "那一夜鹿臺之上長夜無晝、絲竹不絕，整座朝歌的法度與威嚴徹底融化在滾燙酒池與妖冶肉慾之中。你與她成了末世黑霧裡最瘋狂、最無法分離的毀國雙魔。"
         },
@@ -462,7 +596,13 @@
             "hedon": 20,
             "tyranny": 22,
             "rel_g": -48,
-            "rel_c": -5
+            "rel_c": -5,
+            "pv": 1,
+            "mist": 20,
+            "crave": 20,
+            "heat": 11,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "眾臣狼狽逃竄，大殿瞬間只剩你們二人。妲己背靠冰冷的青銅柱承受你暴風驟雨般的佔有，竟發出一陣近乎瘋狂的暢快浪笑，蛇腰死死纏住你：「對……大王越是發瘋、越是只許我看著你，這場毀國之舞就跳得越銷魂呢！」"
         }
@@ -489,7 +629,13 @@
             "hedon": 22,
             "tyranny": 18,
             "rel_b": -50,
-            "flag": "daji_pillar_breakdown_revenge"
+            "flag": "daji_pillar_breakdown_revenge",
+            "cold": "b",
+            "mist": 24,
+            "crave": 22,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "那一夜刑閣內鐵鏈嘩啦作響、絕望哭嚎與涼榻上妖媚放浪的喘息交織成最可怕的煉獄。天亮時 {b} 已經徹底神智失常、逢火便尖叫跪地求饒，被妲己丟進了荒涼冷宮自生自滅。"
         },
@@ -500,7 +646,12 @@
             "inf": 4,
             "tyranny": 8,
             "corruption": 6,
-            "rel_b": -20
+            "rel_b": -20,
+            "pv": 1,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "妲己惋惜地嘟起紅唇把酒杯往地上一傾，臨走前卻還是笑著奪走了 {b} 頭上最後一支象徵商室貴女身分的玄玉鳳簪，隨手丟進了殘酒池底。"
         }
@@ -528,7 +679,13 @@
             "tyranny": 16,
             "hedon": 10,
             "rel_b": -28,
-            "flag": "daji_heir_tyrant_prince"
+            "flag": "daji_heir_tyrant_prince",
+            "mist": 18,
+            "crave": 10,
+            "heat": 8,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "妲己眼中閃過極度的得意與殘忍。從此 {heir} 性情日益乖戾暴虐、視人命如草芥，對母親言聽計從，成了滿朝文武與 {b} 派系最窒息的夢魘。"
         },
@@ -539,7 +696,13 @@
             "inf": -14,
             "tyranny": 12,
             "corruption": 10,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 10,
+            "crave": 6,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "妲己沒有哭鬧阻攔，只在 {heir} 被帶走前，笑著把一枚刻著九尾狐紋的黃金令牌塞進兒子掌心：「乖，等娘把那些老頑固全料理乾淨，再接你回鹿臺喝酒。」"
         }
@@ -567,7 +730,15 @@
             "tyranny": 22,
             "rel_b": -50,
             "rel_g": 22,
-            "flag": "daji_deer_terrace_eternal_regime"
+            "flag": "daji_deer_terrace_eternal_regime",
+            "pv": 1,
+            "mist": 26,
+            "crave": 28,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "王印落下，朝歌徹底步入長夜無晝的鹿臺紀元。百官戰慄俯首於銅柱與酒池之前，而你日夜沉醉在她的狐眸、蛇腰與靡靡之音裡，甘願與她一同走向輝煌而腐爛的盡頭。"
         },
@@ -578,7 +749,13 @@
             "inf": -15,
             "tyranny": 20,
             "corruption": 16,
-            "rel_g": -35
+            "rel_g": -35,
+            "troops": 60,
+            "mist": 16,
+            "heat": 10,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "冰冷劍鋒劃破她雪白頸項滲出一線鮮紅，妲己卻在血火中綻開一抹淒豔而瘋魔的妖笑：「大王終於肯拿真劍指著我了……好啊，只要今夜沒砍下奴家的腦袋，奴家就繼續拿這副身子，一點一點把大王拖進火坑裡！」"
         }
@@ -606,7 +783,14 @@
             "corruption": 12,
             "hedon": 14,
             "rel_b": -24,
-            "flag": "daji_branch_palace_tribute"
+            "flag": "daji_branch_palace_tribute",
+            "affair": "g",
+            "pv": 1,
+            "mist": 12,
+            "crave": 14,
+            "heat": 6,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "五日後黃金美玉源源不絕運抵朝歌，而別城行宮的酒池裡早已溫好最烈的鬱鬯酒，只等她赤身相迎。"
         },
@@ -616,7 +800,11 @@
             "aff": -14,
             "inf": -8,
             "tyranny": 12,
-            "rel_b": 10
+            "rel_b": 10,
+            "pv": 1,
+            "heat": 6,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "派去接管的官員才進了行宮兩夜，便全數迷失在她安排的酒池與絕色舞姬之中樂不思蜀。你只收到她寄回的一只空酒爵，爵底刻著四個字：『大王真笨。』"
         }
@@ -642,7 +830,12 @@
             "corruption": 16,
             "tyranny": 10,
             "rel_b": -28,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 16,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "朝歌百官從此徹底明白：得罪誰也不能得罪鹿臺裡的九尾妖后，哪怕她人不在都城，照樣能讓政敵全家顏面掃地。"
         },
@@ -653,7 +846,12 @@
             "inf": -10,
             "tyranny": 14,
             "rel_b": 12,
-            "rel_c": -35
+            "rel_c": -35,
+            "cold": 1,
+            "pv": 1,
+            "heat": 7,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "暗閣雖被封，但沾染了靡靡酒色之癮的朝臣們早已怨聲載道；行宮隨即傳來急報，妲己竟故意裝病臥床、日夜派人送來令人魂不守舍的香豔書信勾你前去探視。"
         }
@@ -678,7 +876,12 @@
             "corruption": 16,
             "hedon": 22,
             "rel_g": 5,
-            "flag": "daji_five_stage_bonded"
+            "flag": "daji_five_stage_bonded",
+            "mist": 16,
+            "crave": 22,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "妲己眼角罕見地泛起一絲滾燙水光，隨即化作最妖冶、最無底線的瘋狂纏綿——從此她不再計較故國舊恨，只剩把你徹底鎖死在鹿臺慾火裡的病態深愛。"
         },
@@ -688,7 +891,9 @@
             "aff": -6,
             "inf": 8,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "house": 1
           },
           "outcome": "妲己指尖輕輕點過你的心口，狐眸裡綻開一抹既失望又越發危險的妖笑：「大王還想當明君呀？真好玩……奴家最喜歡看自以為清醒的明君，是怎麼一點一點在我懷裡爛掉的呢。」"
         }
@@ -714,7 +919,12 @@
             "hedon": 20,
             "corruption": 14,
             "rel_b": -20,
-            "rel_g": -10
+            "rel_g": -10,
+            "mist": 14,
+            "crave": 20,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "妲己在你掌心裡嬌笑連連、妖態百出，整夜用盡九尾妖狐般的魅骨柔情把你徹底淹沒在極樂溫柔鄉中。"
         },
@@ -725,7 +935,11 @@
             "inf": 6,
             "tyranny": 10,
             "rel_b": -10,
-            "rel_g": -22
+            "rel_g": -22,
+            "food": 100,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b"
           },
           "outcome": "妲己抿起紅唇輕咬了你的喉結一口，笑得狡黠妖冶：「大王真是越來越摳門囉……沒關係，少了一條蠢狗，鹿臺的酒香隨時能招來十條更聽話的新狼呢。」"
         }
@@ -754,7 +968,13 @@
             "tyranny": 12,
             "rel_b": -32,
             "rel_g": 18,
-            "flag": "daji_frontline_wine_gala"
+            "flag": "daji_frontline_wine_gala",
+            "mist": 14,
+            "crave": 12,
+            "heat": 6,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "出征前夜，妲己穿著緊身赤紅金甲在你的帥帳裡大口飲酒、極盡撩撥索歡。開拔後三軍見絕色妖妃親臨陣前撒金斟酒，個個殺紅了眼如虎狼般狂猛衝鋒。"
         },
@@ -764,7 +984,10 @@
             "aff": 4,
             "inf": 6,
             "rel_b": 6,
-            "rel_g": 8
+            "rel_g": 8,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "妲己笑盈盈接過令箭，臨行前卻還是暗中讓酷吏以「徵調軍馬」為名，將 {b} 娘家最名貴的幾十匹良駒全數拉進了前線輜重營。"
         }
@@ -790,7 +1013,13 @@
             "hedon": 20,
             "tyranny": 14,
             "rel_g": 14,
-            "flag": "daji_blood_drum_orgy"
+            "flag": "daji_blood_drum_orgy",
+            "mist": 18,
+            "crave": 20,
+            "heat": 7,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "帳外是三軍大口吃肉喝酒的震天喧囂，帳內卻是赤紗翻飛、腳鈴脆響與高亢嬌喘響徹夜空。此戰過後，天下諸侯聞「朝歌妖后」之名無不聞風喪膽。"
         },
@@ -800,7 +1029,10 @@
             "aff": -6,
             "inf": 8,
             "tyranny": 6,
-            "rel_g": 4
+            "rel_g": 4,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "妲己裹著你的披風靠在你懷裡咯咯嬌笑，小手卻早已鑽進你甲冑縫隙裡輕輕打轉：「大王又吃醋啦？放心，他們只配遠遠看著流口水，這副身子只有大王能親口品嚐呢。」"
         }
@@ -829,7 +1061,13 @@
               "corruption": 14,
               "rel_b": -38,
               "rel_g": 22,
-              "flag": "daji_deer_terrace_burial"
+              "flag": "daji_deer_terrace_burial",
+              "pv": 1,
+              "mist": 14,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "{b} 一黨徹底覆滅，{g} 感念你替她報仇而誓死效忠；只是從此鹿臺空蕩、酒池冰冷，再也聽不見那陣令你魂牽夢縈的赤金腳鈴聲。"
           },
@@ -839,7 +1077,13 @@
               "inf": -12,
               "tyranny": 14,
               "rel_b": 16,
-              "rel_g": -40
+              "rel_g": -40,
+              "pol": -8,
+              "energy": -20,
+              "pop": -15,
+              "heat": 7,
+              "mist": 15,
+              "wood": -50
             },
             "outcome": "{g} 悲憤率部遠遁，朝歌雖暫息民怨，可每逢黑霧深重的長夜，你總覺耳邊還飄著她那句「大王離了我，這江山多無聊呀」。"
           }
@@ -865,7 +1109,12 @@
               "inf": 8,
               "corruption": 12,
               "rel_b": -24,
-              "flag": "daji_rescue_ordered"
+              "flag": "daji_rescue_ordered",
+              "troops": 60,
+              "mist": 12,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "消息傳入敵營，滿身鞭痕與淤青的妲己舔掉唇角血絲，望著朝歌方向露出一抹既委屈又森冷徹骨的妖笑。"
           },
@@ -876,7 +1125,11 @@
               "inf": -16,
               "corruption": 24,
               "tyranny": 14,
-              "rel_b": 20
+              "rel_b": 20,
+              "mist": 24,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "敵帥大笑著把你的除籍聖旨唸給她聽。妲己聽完竟沒有落一滴淚，反而妖豔地笑著主動勾住了敵帥的衣領——她發誓要像毀掉商宮一樣，借敵軍之火把你與 {b} 一起燒成焦炭。"
           }
@@ -903,7 +1156,14 @@
               "corruption": 14,
               "hedon": 10,
               "rel_b": -30,
-              "flag": "daji_fire_scar_kissed"
+              "flag": "daji_fire_scar_kissed",
+              "cold": "b",
+              "mist": 14,
+              "crave": 10,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "妲己渾身劇烈戰慄，終於壓抑不住發出一聲絕望又狂喜的嗚咽，緊緊抱住你的脖頸用最瘋狂也最卑微的肉體奉獻鎖死你的憐愛。"
           },
@@ -914,7 +1174,11 @@
               "inf": -16,
               "corruption": 26,
               "tyranny": 12,
-              "rel_b": 18
+              "rel_b": 18,
+              "mist": 26,
+              "heat": 6,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "你眉間那一瞬的嫌棄徹底點燃了九尾妖狐最毒的怨火。不到半月，後宮兩名最年輕貌美的新寵接連在沐浴時遭人往水中混入劇烈致癢奇草，抓爛了整張臉頰。"
           }
@@ -941,7 +1205,11 @@
               "tyranny": 18,
               "corruption": 18,
               "rel_b": -35,
-              "flag": "daji_shame_bloodwash"
+              "flag": "daji_shame_bloodwash",
+              "mist": 18,
+              "heat": 9,
+              "exec": "b",
+              "pop": -15
             },
             "outcome": "當夜她在鹿臺滾燙的香露池裡一遍遍洗去滿身污垢，隨即哭笑著拉你入池，要你用最粗暴滾燙的吻與佔有把那些骯髒目光徹底覆蓋。"
           },
@@ -952,7 +1220,12 @@
               "inf": -18,
               "corruption": 26,
               "tyranny": 14,
-              "rel_b": 16
+              "rel_b": 16,
+              "exec": "b",
+              "mist": 26,
+              "heat": 7,
+              "ban": 1,
+              "tag": "受辱怨骨"
             },
             "outcome": "荒苑根本關不住這頭徹底覺醒的九尾妖狐。不到七天，她便靠著絕世媚術與殘餘私財收服了整隊看守侍衛，在荒苑裡重開靡靡酒宴、暗中遙控毒殺政敵。"
           }
@@ -979,7 +1252,13 @@
               "corruption": 20,
               "hedon": 12,
               "tyranny": 14,
-              "flag": "daji_empty_pool_vow"
+              "flag": "daji_empty_pool_vow",
+              "pv": 1,
+              "mist": 20,
+              "crave": 12,
+              "heat": 7,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "妲己在你懷裡發出一聲如同幼狐瀕死般的嗚咽，隨即發狂撕扯你的王袍，在滿地青銅酒爵旁與你激烈交纏，彷彿唯有你的體溫能把她從孤寂噩夢裡拉回人間。"
           },
@@ -989,7 +1268,11 @@
               "aff": -26,
               "inf": -16,
               "corruption": 26,
-              "tyranny": 16
+              "tyranny": 16,
+              "troops": 60,
+              "mist": 26,
+              "heat": 8,
+              "jail": 1
             },
             "outcome": "她醒來後不再哭笑，只是每天安靜地撫摸那枚斷虎符。不出半月，當初阻撓發兵的三名重臣接連在自家宴席上離奇中毒暴斃，酒杯旁都放著一隻赤金小鈴。"
           }
@@ -1016,7 +1299,11 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_b": -32,
-              "flag": "daji_bitter_herbs_saved"
+              "flag": "daji_bitter_herbs_saved",
+              "mist": 20,
+              "heat": 8,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "從鬼門關爬回來的妲己變得比從前冷毒十倍。她剛能下床的第一夜，便笑吟吟地將剩餘的絕子寒藥悄悄混進了 {b} 每天必喝的安神甜湯裡。"
           },
@@ -1027,7 +1314,13 @@
               "inf": -12,
               "corruption": 28,
               "tyranny": 20,
-              "rel_b": 12
+              "rel_b": 12,
+              "mist": 28,
+              "heat": 10,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "妲己透過模糊淚眼看清了你骨子裡的冷酷無情，徹底對你死心。她強忍無盡屈辱活了下來，卻從此在你每夜飲用的美酒裡埋下了最致命的慢性奇毒。"
           }
@@ -1055,7 +1348,13 @@
               "hedon": 22,
               "tyranny": 14,
               "rel_b": -35,
-              "flag": "daji_poison_wine_widow"
+              "flag": "daji_poison_wine_widow",
+              "mist": 20,
+              "crave": 22,
+              "heat": 7,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "滿朝嘲諷瞬間化為深入骨髓的敬畏與恐懼。當夜妲己在你身下極盡放浪纏綿，一邊搖晃著極細蛇腰一邊妖笑問你：「大王，怕不怕哪天喝了奴家餵的酒，也醒不過來呀？」"
           },
@@ -1066,7 +1365,11 @@
               "inf": -10,
               "corruption": 24,
               "tyranny": 16,
-              "rel_b": 15
+              "rel_b": 15,
+              "mist": 24,
+              "heat": 8,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "妲己臨走前故意用鮮紅唇脂在你臉頰印下一枚妖豔唇印，笑得冰冷徹骨：「大王怕了？別怕呀，只要大王永遠把奴家捧在鹿臺上，奴家的唇就永遠只抹蜜糖不抹毒藥喔。」"
           }
@@ -1094,7 +1397,13 @@
               "tyranny": 12,
               "rel_b": -38,
               "rel_g": 18,
-              "flag": "daji_rescued_reckoning"
+              "flag": "daji_rescued_reckoning",
+              "exec": "b",
+              "mist": 14,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "妲己這才丟開鐵箸、帶著一身煙火血氣軟綿綿地撲進你懷裡撒嬌——然而當晚她卻也私下將負傷的 {g} 召進鹿臺偏閣「親自斟酒撫慰救命之恩」，紅燭搖曳直至天明。"
           },
@@ -1105,7 +1414,11 @@
               "inf": -12,
               "corruption": 20,
               "rel_b": 12,
-              "rel_g": -15
+              "rel_g": -15,
+              "ban": "b",
+              "mist": 20,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "妲己冷笑著丟掉鐵箸，當著你的面挽住 {g} 染血的手臂轉身離去：「將軍瞧見了嗎？咱們在外頭拿命拼，深宮裡卻有人護著出賣咱們的毒蛇呢。」從此她與 {g} 徹底結成密不可分的暗黑同盟。"
           }
@@ -1133,7 +1446,12 @@
               "hedon": 20,
               "tyranny": 14,
               "rel_g": -50,
-              "flag": "daji_secret_room_burned"
+              "flag": "daji_secret_room_burned",
+              "pv": 1,
+              "mist": 22,
+              "crave": 20,
+              "heat": 7,
+              "exec": "g"
             },
             "outcome": "回到鹿臺後，妲己在床榻上變得極具侵略性與偏執控制欲——她一定要由自己跨坐在你身上掌控節奏，看你徹底沉溺失控時，她狐眸裡的陰霾才會短暫消散。"
           },
@@ -1143,7 +1461,12 @@
               "aff": -28,
               "inf": -14,
               "corruption": 28,
-              "hedon": 18
+              "hedon": 18,
+              "pv": 1,
+              "mist": 28,
+              "crave": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "妲己一眼看穿了你骨子裡的潔癖與薄情。她妖笑著不再求寵，轉而在鹿臺地下仿照那座密室，暗中用重金與迷酒囚禁折磨數名容貌酷似你的俊美少年樂師，徹底化為吞噬人心的九尾妖魔。"
           }
@@ -1170,7 +1493,12 @@
               "corruption": 16,
               "tyranny": 12,
               "rel_b": -42,
-              "flag": "daji_lone_escape_return"
+              "flag": "daji_lone_escape_return",
+              "mist": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "妲己一把奪過金印，踮起赤腳狠狠咬破你的嘴唇，血腥與酒味在唇齒間炸開：「大王記住了，以後誰敢再碰鹿臺一盞酒、一寸紅紗，奴家可不會再等大王點頭才動手囉。」"
           },
@@ -1181,7 +1509,12 @@
               "inf": -14,
               "tyranny": 16,
               "corruption": 24,
-              "rel_b": 10
+              "rel_b": 10,
+              "pv": 1,
+              "mist": 24,
+              "heat": 8,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "妲己擦掉青銅短刃上的酒水，狹長狐眸裡閃過瘋狂的冷光：「好啊，大王既要講宮規，那咱們就看看，到底是您的宮規硬，還是我蘇妲己這把能燒光整座朝歌的妖火厲害！」"
           }
@@ -1190,3 +1523,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['daji'] = DATA;
+  (window.characterPacks ||= {})['daji'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

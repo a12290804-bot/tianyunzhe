@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["liqingzhao"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 12 號 李清照 (liqingzhao)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "liqingzhao",
     "index": 12,
@@ -18,7 +23,8 @@
       "0-34（初染）：帶著國破家亡與遭渣男家暴騙財的刻骨寒意，嗜酒毒舌、看不起滿朝軟骨文武，初以宋詞輿論與打馬賭局試探後宮深淺。",
       "35-69（深蝕）：在黑霧與權慾腐蝕下，徹底把歸來堂變成收割財帛與男人的秘密賭場——一面用金石贗品局抄政敵的家、用勾欄豔詞逼瘋對手，一面在醉酒後用脫衣打馬局肆意羞辱與收編武將權臣。",
       "70+（深淵）：徹底黑化為『醉賭詞魔』——已親手將輸光家產的落敗貴妃扒光押上賭桌充當粗鄙賭客的活體籌碼、已習慣在灌滿烈酒與肉慾交纏的賭桌上寫出誅殺政敵的毒詞、已把親兒訓練成出千設局與冷血告發骨肉的賭徒毒蛇，醉眼笑看整座皇朝在骰子滾動與靡靡宋詞中徹底沉淪。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -46,7 +52,12 @@
             "hedon": 12,
             "corruption": 8,
             "rel_g": -5,
-            "flag": "liqingzhao_gamble_bed_entry"
+            "flag": "liqingzhao_gamble_bed_entry",
+            "mist": 10,
+            "crave": 12,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "象牙骰子與金馬棋嘩啦撒落一地！李清照先是一愣，隨即爆發出一陣狂野又暢快的大笑，竟直接翻身反壓住你，將口中滾燙的烈酒狠狠渡進你嘴裡。門外輸光家當的 {g} 聽著屋內翻天覆地的動靜，羞愧得無地自容。"
         },
@@ -57,7 +68,12 @@
             "inf": -6,
             "tyranny": 10,
             "corruption": 10,
-            "rel_g": 10
+            "rel_g": 10,
+            "pop": -15,
+            "mist": 10,
+            "heat": 5,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "李清照冷笑著把佩劍踢回 {g} 腳邊，仰頭又灌了一大口烈酒。可入宮才三天，她便把一首辛辣嘲諷 {g} 「輸劍又輸臉」的小詞賣進了京城瓦肆，唱得滿城百姓都在背地裡笑話 {g}。"
         },
@@ -69,7 +85,12 @@
             "tyranny": 10,
             "corruption": 14,
             "hedon": 8,
-            "rel_g": -22
+            "rel_g": -22,
+            "mist": 14,
+            "crave": 8,
+            "heat": 5,
+            "affair": "g",
+            "tag": "桀驁未馴"
           },
           "outcome": "李清照眼中驟然閃過興奮的狠光，撫摸著剛搶來的寶劍讚嘆不已，當晚便灌著陳酒在賭桌上主動解開褙子，把一身醉後的瘋狂與柔軟全數傾瀉在你身上。"
         }
@@ -96,7 +117,14 @@
             "tyranny": 12,
             "rel_b": -28,
             "rel_c": 10,
-            "flag": "liqingzhao_fake_bronze_trap"
+            "flag": "liqingzhao_fake_bronze_trap",
+            "ban": "b",
+            "pop": -15,
+            "mist": 16,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "次日壽宴 {b} 果然當場被查出「進獻妖銅詛咒君父」，嚇得魂飛魄散、被抄沒半數家產禁足思過；而李清照端著酒杯在席間雲淡風輕地笑著，一夜間奠定了後宮無人敢惹的「毒眼金石后」威名。"
         },
@@ -107,7 +135,11 @@
             "inf": 8,
             "corruption": 8,
             "rel_b": -10,
-            "rel_c": 8
+            "rel_c": 8,
+            "mist": 10,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "李清照撇了撇嘴，仰頭灌完一杯殘酒：「官家真是心善——也罷，既然不抄她的家，那我就改天在賭桌上把她輸得連肚兜都當掉便是。」"
         },
@@ -117,7 +149,10 @@
             "aff": -14,
             "inf": -10,
             "tyranny": 10,
-            "rel_b": 12
+            "rel_b": 12,
+            "heat": 5,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "李清照冷笑著把象牙骰子全倒進炭盆裡燒成灰，轉頭卻用兩支玉簪與幾粒紅豆當籌碼，當晚就在偏殿裡又把兩名掌事女官贏得傾家蕩產。"
         }
@@ -145,7 +180,13 @@
             "tyranny": 10,
             "rel_b": -35,
             "rel_c": -5,
-            "flag": "liqingzhao_viral_scandal_song"
+            "flag": "liqingzhao_viral_scandal_song",
+            "ban": "b",
+            "mist": 16,
+            "crave": 10,
+            "heat": 5,
+            "inj": "b",
+            "tag": "立威震宮"
           },
           "outcome": "那首毒詞一夜之間紅遍大江南北，{b} 羞憤成疾、整整半年不敢踏出宮門半步。當晚歸來閣裡酒香四溢，李清照醉醺醺地跨坐在你膝頭，就著月色一邊唸著香豔豔詞一邊把你徹底拉進她的醉鄉。"
         },
@@ -156,7 +197,10 @@
             "inf": 4,
             "tyranny": 6,
             "rel_b": -12,
-            "rel_c": 6
+            "rel_c": 6,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "越禁唱得越瘋，不到五天連販夫走卒都會哼那兩句嘲諷 {b} 的小調。李清照斜倚在窗邊喝著小酒，對著你的禁令嗤笑不已。"
         },
@@ -166,7 +210,12 @@
             "aff": -18,
             "inf": -12,
             "tyranny": 12,
-            "rel_b": 14
+            "rel_b": 14,
+            "exec": "b",
+            "heat": 6,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "斷酒比殺了她還難受。李清照盯著空空如也的酒罈冷笑了一整夜，隔日便把一首暗諷官家「偏寵蠢婦、酷似南渡庸主」的七絕悄悄流傳進了太學，惹得滿城太學生議論紛紛。"
         }
@@ -194,7 +243,12 @@
             "corruption": 18,
             "tyranny": 14,
             "rel_b": -45,
-            "flag": "liqingzhao_mutually_assured_lawsuit"
+            "flag": "liqingzhao_mutually_assured_lawsuit",
+            "food": 100,
+            "mist": 18,
+            "heat": 7,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "{b} 全族瞬間覆滅，連她本人都被貶得只剩半條命。當夜李清照撫摸著滿屋新搶來的青銅古玉，醉醺醺地爬上你的龍榻，笑得像一隻剛啃乾獵物骨頭的醉狐。"
         },
@@ -205,7 +259,12 @@
             "inf": 4,
             "corruption": 8,
             "tyranny": 8,
-            "rel_b": -15
+            "rel_b": -15,
+            "ban": "b",
+            "mist": 10,
+            "heat": 5,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "李清照痛快地交出銀兩回閣禁足，毫不在乎——反正 {b} 外戚走私鐵器的死穴已經在三司留了底，{b} 從此夜夜做惡夢、再不敢與她作對。"
         }
@@ -233,7 +292,13 @@
             "tyranny": 12,
             "rel_g": -15,
             "rel_c": 8,
-            "flag": "liqingzhao_gamble_table_caught"
+            "flag": "liqingzhao_gamble_table_caught",
+            "mist": 20,
+            "crave": 20,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "骰子與金馬棋震落滿地，李清照在你醋意大發的粗暴佔有中醉笑連連、放浪嬌喘，甚至挑釁地看著跪在桌下冷汗直流的 {g}。那一夜過後，{g} 徹底成了你們手裡連性命帶家產都輸乾淨的死忠惡犬。"
         },
@@ -244,7 +309,11 @@
             "corruption": 14,
             "rel_g": 14,
             "rel_c": 10,
-            "rel_b": -20
+            "rel_b": -20,
+            "mist": 14,
+            "heat": 6,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "次日 {g} 果然乖乖把城防兵權與 {b} 的賄銀帳本雙手奉上。當夜李清照抱著一壇女兒紅鑽進你的被窩：「官家放心，那蠢貨連我抹胸的邊都沒贏到，全便宜官家一個人囉。」"
         },
@@ -256,7 +325,12 @@
             "tyranny": 16,
             "corruption": 12,
             "rel_g": -45,
-            "rel_b": 15
+            "rel_b": 15,
+            "exec": "g",
+            "mist": 12,
+            "heat": 8,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "暖閣一片狼藉，{g} 哭嚎著被拖去砍頭。李清照披著染血的薄褙子仰頭乾了最後一碗酒，冷笑著盯著你：「官家殺了他，可京城裡欠我賭債的將軍與侍郎還有十幾個呢——官家要一個個殺過去嗎？」"
         }
@@ -283,7 +357,12 @@
             "corruption": 16,
             "rel_b": -32,
             "rel_g": -48,
-            "flag": "liqingzhao_debt_execution"
+            "flag": "liqingzhao_debt_execution",
+            "inj": "b",
+            "pop": -15,
+            "mist": 16,
+            "heat": 9,
+            "exec": "b"
           },
           "outcome": "{g} 哀嚎著被拖入大牢，{b} 賠了銀子又丟了半條命。當夜李清照端著酒盞坐在你腿上，將那三根沾血的象牙骰子當戰利品一樣在指尖轉來轉去，笑得魅惑又令人發毛。"
         },
@@ -295,7 +374,12 @@
             "tyranny": 8,
             "corruption": 8,
             "rel_b": -12,
-            "rel_g": -22
+            "rel_g": -22,
+            "inj": "b",
+            "mist": 10,
+            "heat": 5,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "李清照冷哼一聲把殘酒潑在地上。三天後，京城瓦肆便多了一齣名為《斷指賴帳將軍與蠢貴妃》的爆紅雜劇，氣得 {g} 在病榻上當場吐血身亡。"
         }
@@ -323,7 +407,15 @@
             "tyranny": 12,
             "rel_b": -38,
             "rel_c": 12,
-            "flag": "liqingzhao_hypocrites_exposed"
+            "flag": "liqingzhao_hypocrites_exposed",
+            "exile": "b",
+            "ban": "b",
+            "mist": 18,
+            "crave": 14,
+            "heat": 6,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "滿朝道學派從此一蹶不振，再也沒人敢拿婦德去惹這位嘴毒心狠的才女。當夜暖閣裡酒氣與歡愛喘息直衝雲霄，李清照在你身下放聲大笑，寫下了一生中最放蕩露骨的一首香豔詞。"
         },
@@ -334,7 +426,10 @@
             "inf": 6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 4
+            "rel_c": 4,
+            "mist": 10,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "李清照冷笑著擦掉唇角酒漬，轉身走出大殿——可不出兩天，那些老御史逛青樓與 {b} 買春藥的段子依然被她寫成十首爆紅小詞，貼滿了臨安城每一座茶樓的牆壁。"
         }
@@ -361,7 +456,12 @@
             "tyranny": 12,
             "rel_b": 14,
             "rel_c": -38,
-            "flag": "liqingzhao_antique_heist"
+            "flag": "liqingzhao_antique_heist",
+            "mist": 18,
+            "heat": 6,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "不到十天 {c} 外戚家產徹底被洗劫一空，哭著求死。李清照手裡多了一庫稀世珍寶，當晚便在鋪滿名家字畫的軟榻上赤身邀你共飲，放蕩得毫無忌憚。"
         },
@@ -372,7 +472,10 @@
             "inf": -6,
             "corruption": 10,
             "rel_b": -15,
-            "rel_c": 18
+            "rel_c": 18,
+            "mist": 10,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "調包失手，{b} 被反咬一口賠得更慘。李清照卻毫不生氣，當夜醉醺醺地鑽進你懷裡，用牙齒狠狠咬破你的鎖骨笑道：「官家拆我的台，今晚就拿你這副龍體抵債囉！」"
         }
@@ -399,7 +502,11 @@
             "hedon": 20,
             "corruption": 16,
             "rel_b": -28,
-            "flag": "liqingzhao_drunken_bed_usurped"
+            "flag": "liqingzhao_drunken_bed_usurped",
+            "mist": 16,
+            "crave": 20,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "那一夜龍榻酒氣熏天、浪聲不絕，千古才女在酒意與妒火催動下放蕩狂野得超乎想像。次日清晨她宿醉未醒，竟就著龍床上的紅被單寫了一首香豔透頂的詞，故意命丫頭送去給 {b} 鑑賞。"
         },
@@ -410,7 +517,12 @@
             "hedon": 18,
             "tyranny": 12,
             "corruption": 16,
-            "rel_b": -22
+            "rel_b": -22,
+            "mist": 16,
+            "crave": 18,
+            "heat": 6,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "被狠狠按在冰冷的玉几上承受衝撞，酒意與痛感交織讓李清照發出一聲極其銷魂的顫音，嘴裡一邊罵著你粗魯、雙腿卻死死勾住你的腰不肯放開。"
         },
@@ -420,7 +532,10 @@
             "aff": -20,
             "inf": -10,
             "tyranny": 14,
-            "rel_b": 14
+            "rel_b": 14,
+            "heat": 7,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "李清照赤腳被拖出殿門時還在仰頭狂笑，當夜便將一首把 {b} 罵得體無完膚的新詞傳遍了整個後宮，讓 {b} 連門都不敢再出。"
         }
@@ -447,7 +562,13 @@
             "tyranny": 16,
             "rel_g": 10,
             "rel_c": 12,
-            "flag": "liqingzhao_gambling_den_abyss"
+            "flag": "liqingzhao_gambling_den_abyss",
+            "pv": 1,
+            "pol": 12,
+            "energy": 25,
+            "mist": 24,
+            "crave": 26,
+            "heat": 8
           },
           "outcome": "那一夜歸來閣骰聲與浪笑徹夜不息，滿朝清流與武將的尊嚴全爛在了她的酒池賭桌上。你與她徹底墜入這場醉生夢死的黑霧狂歡，成了全天下最放蕩也最可怕的共犯。"
         },
@@ -460,7 +581,12 @@
             "hedon": 18,
             "tyranny": 22,
             "rel_g": -45,
-            "rel_c": -5
+            "rel_c": -5,
+            "mist": 20,
+            "crave": 18,
+            "heat": 11,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "{g} 捂著血耳連滾帶爬逃出歸來閣。李清照沾著飛濺的血珠與滿身酒液，非但不怕，反而醉眼發亮地緊緊勾住你的脖子狂笑：「好！這才像個『生當作人傑』的真男人——狠狠折騰我吧，官家！」"
         }
@@ -487,7 +613,12 @@
             "hedon": 20,
             "tyranny": 18,
             "rel_b": -50,
-            "flag": "liqingzhao_human_chip_revenge"
+            "flag": "liqingzhao_human_chip_revenge",
+            "mist": 24,
+            "crave": 20,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "那一夜地下賭坊成了 {b} 永生難忘的煉獄，天亮時她已經徹底失心瘋、連自己是誰都記不得，被李清照像丟垃圾一樣扔進了荒郊破廟。"
         },
@@ -498,7 +629,11 @@
             "inf": 4,
             "tyranny": 8,
             "corruption": 6,
-            "rel_b": -20
+            "rel_b": -20,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "李清照聳聳肩把骰盅倒扣在桌上，臨走前卻還是順手拔光了 {b} 頭上所有金釵，笑著丟給那群賭客當作今夜的「茶水打賞」。"
         }
@@ -525,7 +660,12 @@
             "corruption": 18,
             "tyranny": 14,
             "rel_b": -25,
-            "flag": "liqingzhao_heir_gambler"
+            "flag": "liqingzhao_heir_gambler",
+            "mist": 18,
+            "heat": 7,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "李清照眼底閃過極致的狂喜與驕傲。從此 {heir} 成了朝堂上最深不可測的少年賭徒，擅長借刀殺人與製造冤案，將 {b} 派系一步步逼入死角。"
         },
@@ -536,7 +676,12 @@
             "inf": -14,
             "tyranny": 12,
             "corruption": 10,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 10,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "李清照冷笑著目送兒子離開，只在臨別前丟給他一枚她最愛用的象牙骰子：「留著吧，等哪天書本救不了你的命，娘教你的千術能救你。」"
         }
@@ -564,7 +709,14 @@
             "tyranny": 22,
             "rel_b": -50,
             "rel_g": 20,
-            "flag": "liqingzhao_gamble_empire_regime"
+            "flag": "liqingzhao_gamble_empire_regime",
+            "mist": 26,
+            "crave": 24,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "玉璽落下，整座皇朝徹底淪為李清照的私人大賭場。百官為了保命紛紛捧著家產進歸來閣輸錢表忠心，而你在酒香、宋詞與她日夜不歇的放浪服侍中徹底交出了理智。"
         },
@@ -575,7 +727,12 @@
             "inf": -15,
             "tyranny": 20,
             "corruption": 16,
-            "rel_g": -30
+            "rel_g": -30,
+            "mist": 16,
+            "heat": 10,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "劍鋒割破她白皙頸項滲出血珠，李清照卻仰天狂笑出聲，毫不在意地又灌了一口酒：「好！好一個掀桌子的官家！只要你今夜沒砍下我的腦袋，明天這把更大更狠的局，咱們繼續賭命！」"
         }
@@ -603,7 +760,15 @@
             "corruption": 12,
             "hedon": 10,
             "rel_b": -22,
-            "flag": "liqingzhao_jiangnan_casino"
+            "flag": "liqingzhao_jiangnan_casino",
+            "affair": "g",
+            "office": 1,
+            "mist": 12,
+            "crave": 10,
+            "heat": 6,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "五日後她又寄回一壇親手釀製、瓶口綁著她貼身月白抹胸的極品花雕，字條上只有七個字：『酒已溫熱，待君解帶。』"
         },
@@ -613,7 +778,10 @@
             "aff": -14,
             "inf": -8,
             "tyranny": 12,
-            "rel_b": 10
+            "rel_b": 10,
+            "heat": 6,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "欽差剛到江南，便在八詠樓的酒宴與打馬局裡輸光了盤纏、反倒成了她的死忠粉。你只收到她寄回的一首辛辣嘲諷朝廷小氣的絕妙新詞。"
         }
@@ -639,7 +807,12 @@
             "corruption": 16,
             "tyranny": 10,
             "rel_b": -28,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 16,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "都城上下從此談「易安新詞」色變，無人再敢在李清照背後使陰招，連 {b} 都被氣得徹底臥病不起。"
         },
@@ -650,7 +823,11 @@
             "inf": -10,
             "tyranny": 14,
             "rel_b": 12,
-            "rel_c": -35
+            "rel_c": -35,
+            "cold": 1,
+            "heat": 7,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "{c} 被貶入冷宮前仍大笑著唱完最後一句毒詞；而江南分城隨即傳來消息，李清照已開始在民間流傳暗諷朝廷昏庸無能的悲憤詞集，士林民心大動。"
         }
@@ -675,7 +852,12 @@
             "corruption": 16,
             "hedon": 16,
             "rel_g": 5,
-            "flag": "liqingzhao_five_stage_bonded"
+            "flag": "liqingzhao_five_stage_bonded",
+            "mist": 16,
+            "crave": 16,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "李清照眼底滾落一滴滾燙的淚水，隨即化為最狂野、最無底線的深吻——從此她這支震古爍今的詞筆與無敵的賭術，徹底只為你一人揮灑與嗜血。"
         },
@@ -685,7 +867,9 @@
             "aff": -6,
             "inf": 8,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "house": 1
           },
           "outcome": "李清照仰頭喝盡殘酒，把空杯往地上一摔，笑得淒美又冷酷：「好一個清醒的官家——沒關係，再清醒的賭客，只要還沒離開我的牌桌，早晚都會輸得精光！」"
         }
@@ -711,7 +895,12 @@
             "hedon": 18,
             "corruption": 14,
             "rel_b": -20,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 14,
+            "crave": 18,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "李清照醉笑連連、豪興大發，整夜在你身上極盡撩撥之能事，直到天明才枕著你的胸膛沉沉睡去。"
         },
@@ -722,7 +911,11 @@
             "inf": 6,
             "tyranny": 10,
             "rel_b": -10,
-            "rel_g": -20
+            "rel_g": -20,
+            "food": 100,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b"
           },
           "outcome": "李清照抱著兩壇御酒冷哼一聲，在你的龍袍下擺悄悄寫下一句嘲諷你「鐵公雞一毛不拔」的俏皮毒詞才肯罷休。"
         }
@@ -750,7 +943,12 @@
             "tyranny": 14,
             "rel_b": -32,
             "rel_g": 18,
-            "flag": "liqingzhao_xiangyu_crusade"
+            "flag": "liqingzhao_xiangyu_crusade",
+            "mist": 12,
+            "heat": 7,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "出征前夜，李清照穿著男裝青衫在你的帥帳裡喝得大醉，主動跨坐上你腰間狂野索歡，說是要帶著最烈的血氣去送敵人上路。開拔後 {b} 族弟果然第一戰便被她當眾綁在戰車最前頭充當擋箭肉盾。"
         },
@@ -760,7 +958,10 @@
             "aff": 4,
             "inf": 6,
             "rel_b": 6,
-            "rel_g": 8
+            "rel_g": 8,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "李清照冷笑著灌下一口酒接過軍令，臨行前卻把 {b} 族弟臨陣嚇得尿褲子的醜事編成了全軍傳唱的軍歌，讓 {b} 娘家徹底抬不起頭。"
         }
@@ -786,7 +987,13 @@
             "hedon": 18,
             "tyranny": 14,
             "rel_g": 14,
-            "flag": "liqingzhao_blood_drum_victory"
+            "flag": "liqingzhao_blood_drum_victory",
+            "mist": 16,
+            "crave": 18,
+            "heat": 7,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "帥帳外將士們高唱著她的壯烈戰詞大口吃肉喝酒，帳內卻是青衫撕裂、酒水與汗水淋漓交融。此戰過後，李清照不僅是千古才女，更成了三軍將士眼中嗜酒嗜血的「賭神女煞」。"
         },
@@ -796,7 +1003,10 @@
             "aff": -6,
             "inf": 8,
             "tyranny": 6,
-            "rel_g": 4
+            "rel_g": 4,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "李清照咂了咂嘴把酒壇往肩頭一扛，回頭朝你狡黠一笑：「官家真是掃興——那咱們就把帳門拉嚴實了，關起門來再放浪個夠囉。」"
         }
@@ -825,7 +1035,12 @@
               "corruption": 14,
               "rel_b": -38,
               "rel_g": 22,
-              "flag": "liqingzhao_ghost_hero_funeral"
+              "flag": "liqingzhao_ghost_hero_funeral",
+              "mist": 14,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "{b} 一黨徹底覆滅，{g} 與三軍將士感念你為她報仇而誓死效忠；只是歸來閣從此再無清脆骰聲與濃郁酒香，滿城只餘她悲壯的遺詞傳唱不絕。"
           },
@@ -835,7 +1050,11 @@
               "inf": -12,
               "tyranny": 12,
               "rel_b": 16,
-              "rel_g": -40
+              "rel_g": -40,
+              "heat": 6,
+              "pol": 15,
+              "mist": 15,
+              "wood": -50
             },
             "outcome": "{g} 悲憤拔刀斬斷披風遠走江湖，天下讀書人痛斥你薄情寡義、連一代才女死後家產都要吞沒，民心大失。"
           }
@@ -861,7 +1080,11 @@
               "inf": 8,
               "corruption": 12,
               "rel_b": -22,
-              "flag": "liqingzhao_rescue_ordered"
+              "flag": "liqingzhao_rescue_ordered",
+              "mist": 12,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "消息傳入敵營，滿身鞭傷與酒污的李清照吐出一口血沫，望著都城方向露出一抹冰冷而瘋狂的笑。"
           },
@@ -872,7 +1095,11 @@
               "inf": -16,
               "corruption": 24,
               "tyranny": 14,
-              "rel_b": 20
+              "rel_b": 20,
+              "mist": 24,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "敵帥大笑著把你的除籍聖旨唸給她聽。李清照聽完竟仰頭大笑到眼淚直流——從那一刻起，她發誓若有一日能活著爬回臨安，定要用最毒的詞與最狠的局把這座皇城徹底掀翻。"
           }
@@ -899,7 +1126,14 @@
               "corruption": 14,
               "hedon": 8,
               "rel_b": -28,
-              "flag": "liqingzhao_broken_wrist_oath"
+              "flag": "liqingzhao_broken_wrist_oath",
+              "ban": "b",
+              "mist": 14,
+              "crave": 8,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "李清照看著你親吻她血跡斑斑的傷腕，終於壓抑不住發出一聲撕心裂肺的痛哭，隨即發瘋般拉著你跌進滿地碎瓷與酒漬旁的軟榻，用最激烈的歡愛確認自己還沒被世界拋棄。"
           },
@@ -910,7 +1144,11 @@
               "inf": -16,
               "corruption": 24,
               "tyranny": 12,
-              "rel_b": 18
+              "rel_b": 18,
+              "mist": 24,
+              "heat": 6,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "斷酒又奪財徹底逼瘋了她。不出半月，她口述給忠心丫頭傳出去的三首絕命毒詞便把 {b} 娘家三代所有骯髒秘密全抖了個底朝天，引發朝野軒然大波。"
           }
@@ -937,7 +1175,11 @@
               "tyranny": 18,
               "corruption": 18,
               "rel_b": -35,
-              "flag": "liqingzhao_shame_bloodwash"
+              "flag": "liqingzhao_shame_bloodwash",
+              "exec": "b",
+              "mist": 18,
+              "heat": 9,
+              "pop": -15
             },
             "outcome": "當夜她在歸來閣的熱水池裡一遍遍擦洗著發冷的身體，隨即醉笑著拉你入水，要你用最滾燙的烈酒與最粗暴的吻將那些齷齪的目光與聲音徹底淹沒。"
           },
@@ -948,7 +1190,12 @@
               "inf": -18,
               "corruption": 26,
               "tyranny": 14,
-              "rel_b": 16
+              "rel_b": 16,
+              "cold": 1,
+              "mist": 26,
+              "heat": 7,
+              "ban": 1,
+              "tag": "受辱怨骨"
             },
             "outcome": "冷宮根本鎖不住這頭徹底發瘋的詞魔。不到七天，她便靠著色誘與賭局把整座冷宮的看守侍衛全數變成自己的奴僕，暗中把冷宮打造成了全皇城最恐怖的淫亂私獄。"
           }
@@ -975,7 +1222,13 @@
               "corruption": 20,
               "hedon": 10,
               "tyranny": 14,
-              "flag": "liqingzhao_three_thousand_vow"
+              "flag": "liqingzhao_three_thousand_vow",
+              "food": 100,
+              "mist": 20,
+              "crave": 10,
+              "heat": 7,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "李清照在你懷裡發出一聲如同瀕死野獸般的哀號，隨即瘋狂撕扯你的衣襟，在滿地碎瓷旁與你激烈交纏，彷彿唯有肉體的劇痛與炙熱能證明她不是一具活屍。"
           },
@@ -985,7 +1238,11 @@
               "aff": -26,
               "inf": -16,
               "corruption": 26,
-              "tyranny": 16
+              "tyranny": 16,
+              "pv": 1,
+              "mist": 26,
+              "heat": 8,
+              "jail": 1
             },
             "outcome": "她醒來後不再哭鬧，只是每天對著空酒盞冷笑。不出一個月，當初在朝堂上主張議和並阻撓發援軍的四名重臣接連被毒死在自家酒席上，每人口中都塞著一張染血的《夏日絕句》。"
           }
@@ -1012,7 +1269,11 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_b": -32,
-              "flag": "liqingzhao_poison_wine_purge_saved"
+              "flag": "liqingzhao_poison_wine_purge_saved",
+              "mist": 20,
+              "heat": 8,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "從鬼門關爬回來的李清照變得比以往冷酷十倍。她剛能下床的第一夜，便把剩餘的半壺絕子毒酒悄悄換進了 {b} 每天必喝的養顏甜酒裡。"
           },
@@ -1023,7 +1284,13 @@
               "inf": -12,
               "corruption": 28,
               "tyranny": 20,
-              "rel_b": 12
+              "rel_b": 12,
+              "mist": 28,
+              "heat": 10,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "李清照透過模糊的血淚看清了你的冷酷無情，徹底對世間最後一點溫情死心。她強忍屈辱保住性命，從此在你每夜飲用的美酒裡都埋下了最毒的殺機。"
           }
@@ -1051,7 +1318,13 @@
               "hedon": 20,
               "tyranny": 14,
               "rel_b": -35,
-              "flag": "liqingzhao_pickled_head_widow"
+              "flag": "liqingzhao_pickled_head_widow",
+              "mist": 20,
+              "crave": 20,
+              "heat": 7,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "滿朝嘲諷瞬間化為敬畏與寒意。當夜李清照在你身下瘋狂索歡，一邊劇烈喘息一邊醉笑著問你：「官家，怕不怕哪天惹惱了易安，也被泡進酒罈裡呀？」"
           },
@@ -1062,7 +1335,11 @@
               "inf": -10,
               "corruption": 24,
               "tyranny": 16,
-              "rel_b": 15
+              "rel_b": 15,
+              "mist": 24,
+              "heat": 8,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "李清照臨走前故意用沾著敵帥血酒的手指劃過你的臉頰，笑得冷豔徹骨：「官家怕了？放心，只要官家別像張汝舟和那畜生一樣想把我鎖進籠子，我的酒永遠只會替官家助興喔。」"
           }
@@ -1090,7 +1367,13 @@
               "tyranny": 12,
               "rel_b": -38,
               "rel_g": 18,
-              "flag": "liqingzhao_rescued_reckoning"
+              "flag": "liqingzhao_rescued_reckoning",
+              "exec": "b",
+              "mist": 14,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "李清照這才放下酒壺撲進你懷裡大口喘息——然而當晚她卻也私下將負傷的 {g} 召進歸來閣「親自陪將軍喝酒賭兩把謝恩」，閣中燈火通宵未熄。"
           },
@@ -1101,7 +1384,11 @@
               "inf": -12,
               "corruption": 20,
               "rel_b": 12,
-              "rel_g": -15
+              "rel_g": -15,
+              "ban": "b",
+              "mist": 20,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "李清照望著你冷笑出聲，當著你的面挽住 {g} 染血的手臂轉身離去：「將軍瞧見了嗎？咱們在外頭拿命拼，深宮裡卻有人護著賣國的賤婦呢。」從此她與 {g} 徹底結成只忠於彼此的暗黑死黨。"
           }
@@ -1129,7 +1416,12 @@
               "hedon": 18,
               "tyranny": 14,
               "rel_g": -50,
-              "flag": "liqingzhao_cellar_prison_burned"
+              "flag": "liqingzhao_cellar_prison_burned",
+              "pv": 1,
+              "mist": 22,
+              "crave": 18,
+              "heat": 7,
+              "exec": "g"
             },
             "outcome": "回到歸來閣後，李清照在床榻上變得極具侵略性與病態控制欲——她再也不許你壓制她的手腕，唯有由她跨坐在你身上灌著烈酒掌控一切時，她眼底的死氣才會短暫散去。"
           },
@@ -1139,7 +1431,11 @@
               "aff": -28,
               "inf": -14,
               "corruption": 28,
-              "hedon": 16
+              "hedon": 16,
+              "mist": 28,
+              "crave": 16,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "李清照一眼看穿了你骨子裡的潔癖與冷酷。她醉笑著不再求寵，轉而在歸來閣地下仿照那座酒窖，暗中用賭債與迷酒囚禁折磨數名容貌酷似你的俊美書生，徹底化為吃人的醉賭妖魔。"
           }
@@ -1166,7 +1462,12 @@
               "corruption": 16,
               "tyranny": 12,
               "rel_b": -42,
-              "flag": "liqingzhao_lone_escape_return"
+              "flag": "liqingzhao_lone_escape_return",
+              "mist": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "李清照接過鹽引，踮起赤腳咬破你的下唇，酒氣與血味在唇齒間炸開：「官家記住了，以後誰敢再碰歸來閣一卷藏書、一塊破銅，我可不會再等官家點頭才砸爛她的腦袋囉。」"
           },
@@ -1177,7 +1478,11 @@
               "inf": -14,
               "tyranny": 16,
               "corruption": 24,
-              "rel_b": 10
+              "rel_b": 10,
+              "mist": 24,
+              "heat": 8,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "李清照擦掉青銅爵上的血跡，醉眼冰冷徹骨地大笑：「好啊，官家既要講宮規，那咱們就看看，到底是您的宮規硬，還是我李清照這張掀翻天下的大賭桌硬！」"
           }
@@ -1186,3 +1491,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['liqingzhao'] = DATA;
+  (window.characterPacks ||= {})['liqingzhao'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();
