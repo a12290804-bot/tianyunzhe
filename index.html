@@ -4488,7 +4488,8 @@ function sedOutTurn(add){if(inWorld())return;const W=spouses().concat(femFree())
   const opts=[];if(SEDO[cr])opts.push(SEDO[cr]);T.forEach(t=>{if(SEDO_T[t])opts.push(SEDO_T[t])});if(!opts.length)opts.push(SEDO.vanity);
   const o=pick(opts);let r=null;try{r=o[1](id,m)}catch(e){}if(!r)return;const bk=bodyKey(id);let extra='';if(bk&&Math.random()<.5){try{extra=SEDO_B[bk](id)}catch(e){}}
   const mn=mutStage(id)>0?(typeof mutName==='function'?mutName(id):''):'';const tags=Object.keys(hs(id).dtag||{}).slice(0,2);
-  const s=T46('SEDUCE_OUT',id,o[0])||T46('SEDUCE_OUT','_'+cr,o[0])||T46('SEDUCE_OUT','_',o[0]);const line=s?T46n(s,id,m):r[0];
+  const s=T46('SEDUCE_OUT',id,o[0])||T46('SEDUCE_OUT','_'+cr,o[0])||T46('SEDUCE_OUT','_',o[0]);const stateLine=extra&&T46('SEDUCE_OUT','_state',bk);
+  const line=(s?T46n(s,id,m):r[0])+(stateLine?' '+T46n(stateLine,id,m):'');
   hs(id).heat=(hs(id).heat||0)+1;(hs(id).acts??=[]).push({t:S.t,s:line,n:'對外誘惑・'+o[0]});
   add(sedOutCard(id,o[0],line,r[1],extra,tags,mn),'neg');
   if(Math.random()<.25)(S.sedCaught??=[]).push({id,o:o[0],line,m})})}
