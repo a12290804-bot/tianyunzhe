@@ -111,18 +111,32 @@ window.makeCharacterEvents = function (game) {
    tragedies:v==='戰敗被俘'?[['立刻籌措贖金（到「將」頁贖回）',{aff:8}],['發兵營救',{aff:5}],['置之不理',{aff:-15,corruption:20}]]:v==='遺體送還'?[['厚葬，誓報此仇',{}],['草草收殮',{}]]:[['好好安慰她',{aff:8,corruption:-10}],['讓她自己走出來',{corruption:10}]]
   };const L=T[k];return L?L.map(([text,effects,path])=>({text,effects,path})):null}
  // 依玩家選項文字，把處置真正落到她身上
- function verdict(id,text){const s=String(text||''),w=wed(id),nm=H(id).n;
-  if(/死牢|下獄|掖庭獄|打入大牢|收押/.test(s)){setHst(id,'jail',4);return'【下獄】'+nm+'被押入大牢四旬'}
-  if(/冷宮/.test(s)&&w){w.cold=true;return'【冷宮】'+nm+'被打入冷宮'}
-  if(/禁足/.test(s)){setHst(id,'ban',3);return'【禁足】'+nm+'禁足三旬'}
-  if(/流放|逐出|趕出|貶出/.test(s)){goneHero(id,'exile',10);return'【流放】'+nm+'被逐出燈塔，十旬後或許會回來'}
-  if(/杖|鞭|軍棍|笞/.test(s)){setHst(id,'inj',2);return'【受刑】'+nm+'受刑負傷兩旬'}
-  return''}
+ // 依選項文字找出被處置的配角（{g}{b}{c}），真正處死／下獄／流放／冷宮
+ const KILL=/處死|處決|問斬|斬首|斬殺|斬了|斬於|賜死|杖斃|凌遲|梟首|腰斬|車裂|絞殺|鴆殺|誅殺|伏誅|正法|殺了|殺掉|殺之|一劍殺/,NEG=/暫緩|禁止|阻止|不許|免死|赦|饒|救下|攔下|不殺|留他|留她/;
+ function castVerdict(text,cast){const s=String(text||'');if(!cast)return{out:[],rest:s};const out=[];let rest=s;
+  ['g','b','c'].forEach(k=>{const x=cast[k];if(!x||!H(x)||!S.order.includes(x))return;const re=new RegExp('\\{'+k+'\\}','g');let m;while(m=re.exec(s)){const pos=m.index,end=pos+m[0].length;
+   let aftW=s.slice(end,end+18).replace(/^\s+/,'');if(/^(的|之)|^(眼線|副官|心腹|府|外戚|黨羽|一黨|手下|親信|家人|族人|奴僕|侍衛|部下|門客|餘黨|舊部|派|宮人|侍女|爪牙)/.test(aftW))continue;const aft=aftW.split(/[，。；！？]|並|、/)[0];
+   const befW=s.slice(Math.max(0,pos-26),pos).split(/[，。；！？]/).pop(),bef=befW.split(/、|並|與|及/).pop();if(NEG.test(bef+aft))continue;
+   const hit=re0=>re0.test(bef)||(re0.test(aft)&&/將|把|命|令|以|交由|押/.test(befW)&&aft.search(re0)<=8);const cut=()=>{};
+   const nm=H(x).n;if(hit(KILL)){goneHero(x,'exec');out.push('【處死】'+nm+'伏誅');cut();break}
+   if(hit(/下獄|收押|打入大牢|打入死牢|死牢|冷牢|囚禁/)){setHst(x,'jail',4);out.push('【下獄】'+nm+'被押入大牢四旬');cut();break}
+   if(hit(/流放|逐出|趕出|貶出|驅逐|放逐|廢為庶人/)){goneHero(x,'exile',10);out.push('【流放】'+nm+'被逐出燈塔');cut();break}
+   if(hit(/冷宮|冷殿/)&&wed(x)){wed(x).cold=true;out.push('【冷宮】'+nm+'被打入冷宮');cut();break}
+   if(hit(/禁足|幽禁/)){setHst(x,'ban',3);out.push('【禁足】'+nm+'禁足三旬');cut();break}}});
+  rest=rest.replace(/[^，。；]*\{[gbc]\}[^，。；]*/g,'');return{out,rest}}
+ function verdict(id,text,cast){const cv=castVerdict(text,cast);const s=cv.rest,w=wed(id),nm=H(id).n;const pre=cv.out.join(' ');const R0=x=>[pre,x].filter(Boolean).join(' ');
+  if(!NEG.test(s)&&/(賜死|處死|處決|杖斃|斬殺|斬首)了?她|將她.{0,4}(處死|處決|賜死|斬首|杖斃)|賜她.{0,3}(白綾|毒酒|鴆酒|自盡)/.test(s)){goneHero(id,'exec');return R0('【處死】'+nm+'被處死')}
+  if(/死牢|下獄|掖庭獄|打入大牢|收押/.test(s)){setHst(id,'jail',4);return R0('【下獄】'+nm+'被押入大牢四旬')}
+  if(/冷宮/.test(s)&&w){w.cold=true;return R0('【冷宮】'+nm+'被打入冷宮')}
+  if(/禁足/.test(s)){setHst(id,'ban',3);return R0('【禁足】'+nm+'禁足三旬')}
+  if(/流放|逐出|趕出|貶出/.test(s)){goneHero(id,'exile',10);return R0('【流放】'+nm+'被逐出燈塔，十旬後或許會回來')}
+  if(/杖|鞭|軍棍|笞/.test(s)){setHst(id,'inj',2);return R0('【受刑】'+nm+'受刑負傷兩旬')}
+  return pre}
  // 劇情結束後還需要你表態的事件
  function follow(e,c,d){const id=e.id,N=H(id).n,G=e.cast&&e.cast.g&&H(e.cast.g)?H(e.cast.g).n:'他',w=wed(id),fv=v=>{if(w)w.fav=Math.max(0,Math.min(100,(w.fav|0)+v));else hs(id).aff=Math.max(0,Math.min(100,(hs(id).aff|0)+v))};
   const mist=v=>{hs(id).mist=String(BigInt(hs(id).mist||0)+BigInt(v)<0n?0n:BigInt(hs(id).mist||0)+BigInt(v))};
   if(e.key==='threeContextsAndConflict'&&c.path){
-   if(d.react)return d.react.map(r=>({text:r.text,run:()=>{apply(id,r.effects,e.cast);const v=verdict(id,r.text);return [r.outcome,v].filter(Boolean).join(' ')}}));
+   if(d.react)return d.react.map(r=>({text:r.text,run:()=>{apply(id,r.effects,e.cast);const v=verdict(id,r.text,e.cast);return [r.outcome,v].filter(Boolean).join(' ')}}));
    return c.path==='duty'?[
     {text:'抱住她，讓她哭出來',run:()=>{fv(8);mist(-10);return N+'在你懷裡第一次失聲痛哭。寵愛 +8、污染 −10'}},
     {text:'論功行賞',run:()=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+10);mist(10);return N+'領了賞，眼神卻更冷了。權勢 +10、污染 +10'}},
@@ -159,7 +173,7 @@ window.makeCharacterEvents = function (game) {
   sheet('<h3>'+esc(fill(d.title))+'</h3>'+d.body.map(s=>'<p>'+esc(fill(s))+'</p>').join('')+choices.map((c,i)=>'<button class="btn" id="packChoice'+i+'">'+esc(fill(c.text))+'</button>').join(''),true);
   choices.forEach((c,i)=>$('#packChoice'+i).onclick=()=>{
    if(S.packQueue[0]!==e)return;
-   S.packQueue.shift();apply(e.id,c.effects,e.cast);consequence(e,i,c);const vd=c.path?'':verdict(e.id,c.text);if(vd)feedPush(vd,'neg');
+   S.packQueue.shift();apply(e.id,c.effects,e.cast);consequence(e,i,c);const vd=c.path?'':verdict(e.id,c.text,e.cast);if(vd)feedPush(vd,'neg');
    if(e.key==='tragedies'&&e.variant==='公開羞辱')(hs(e.id).packFlags??={}).permanentFall=true;
    const permanent=e.key==='tragedies'&&entries[e.id].tragedies[e.variant].permanentState;
    if(permanent)(hs(e.id).packStates??={})[permanent.state]=permanent.effect;
