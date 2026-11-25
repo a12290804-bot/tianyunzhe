@@ -3566,7 +3566,7 @@ const AUTOACT_old=AUTOACT.findIndex(a=>a[0]==='estate');if(AUTOACT_old>=0)AUTOAC
 
 /* ===== 不死之身與永生之約 ===== */
 WISH.immortal=[3,'想要與你一同永生','同命契',1,id=>hs(id).immortal?1:0];
-function immTurn(add){if(inWorld())return null;Object.entries(S.gone||{}).forEach(([id,g])=>{if(g.sleep&&g.u<=S.t){heroBack(id);mistAdd(id,30);add(`【甦醒】${H(id).n}從沉睡中醒來，記得一切（污染 +30）${courtLine('immortal',id,'wake')}`,'neg')}});if(S.t<12)return null;const sp=spouses().filter(id=>S.order.includes(id));
+function immTurn(add){if(inWorld())return null;Object.entries(S.gone||{}).forEach(([id,g])=>{if(g.sleep&&g.u<=S.t){heroBack(id);mistAdd(id,30);add(`【甦醒】${immLine('wakeRevenge',id)||`${H(id).n}從沉睡中醒來，記得一切`}（污染 +30）${courtLine('immortal',id,'wake')}`,'neg')}});if(S.t<12)return null;const sp=spouses().filter(id=>S.order.includes(id));
  if(!S.immMethod&&S.t>=18&&Math.random()<.04){S.immMethod=S.t;return{k:'method'}}
  const u=sp.filter(id=>!hs(id).knowImm);if(u.length&&Math.random()<.07){const id=pick(u);return{k:'know',id}}
  sp.forEach(id=>{const st=hs(id);if(st.immortal||!st.knowImm||!S.immMethod)return;if(!st.wish2||st.wish2.k!=='immortal'){if(Math.random()<.3){st.wish2={k:'immortal',since:S.t,base:0,p:0};hxPush(id,courtLine('immortal',id,'beg'),'渴求永生')}}});return null}
@@ -3846,6 +3846,7 @@ function reqEvent(cb){const q=(S.reqQ||[]).filter(x=>x&&S.order.includes(x.id)&&
   if(k==='y'){s=T.yes(id,r)||'';if(w)w.fav=Math.min(100,w.fav+6);else st.aff=Math.min(100,(st.aff|0)+6);st.app=(st.app||0)+2}
   else if(k==='h'){const o=T.no(id);pen({fav:Math.round((o.fav||0)/2),aff:Math.round((o.aff||0)/2),heat:2});s=`${N}冷笑了一聲`}
   else{pen(T.no(id));s=`${N}被拒絕了${(T.no(id).heat||0)?'，眼神變得很危險':''}`;if(Math.random()<.4)(S.retQ??=[]).push({by:id,vs:pick(spouses().filter(x=>x!==id))||id,at:S.t+1,sev:1})}
+  if(r.k==='eternal'&&k!=='h'){const line=immLine(k==='y'?'eternalYes':'eternalNo',id);if(line)s+=' '+line}
   feedPush(`【請求・${N}】${r.t} → ${s}`);closeSheet();render();step(i+1)})};step(0)}
 {const _hrq=haremEvent;haremEvent=function(cb){try{reqTurn()}catch(e){}return _hrq(()=>reqEvent(cb))}}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-pbb]');if(!b||b.closest('#view'))return;e.stopPropagation();pbBuildSheet(b.dataset.pbb)},true);
@@ -3992,6 +3993,7 @@ function todoSheet(){const L=todoList();sheet(`<h3>📋 本旬待辦</h3>${L.len
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#todoChip');if(!b)return;e.stopPropagation();todoSheet()},true);
 /* ===== v4.6 文本接口：請求、入宮前自主、昏暴、虧空、敵種、變質請求 ===== */
 const T46=(o,...ks)=>{try{let x=globalThis[o];for(const k of ks){if(x==null)return null;x=x[k]}return Array.isArray(x)?(x.length?pick(x):null):(typeof x==='string'?x:null)}catch(e){return null}};
+const immLine=(key,id,b)=>T46n(T46('IMM2_TEXT',key),id,b);
 const T46n=(s,id,b)=>s?s.replaceAll('{a}',H(id)?H(id).n:'').replaceAll('{b}',b&&H(b)?H(b).n:''):s;
 {const _re=reqEvent;reqEvent=function(cb){(S.reqQ||[]).forEach(r=>{if(!r||r._t46)return;r._t46=1;if(!S.heroes[r.id]||!S.order.includes(r.id)||!REQT[r.k])return;const mn=MUT[craveOf(r.id)]?.[mutStage(r.id)-1]?.[0];const s=(mn&&T46('MUTREQ_TEXT',mn,r.k,'ask'))||T46('REQ_TEXT',r.id,r.k,'ask')||T46('REQ_TEXT','_'+craveOf(r.id),r.k,'ask');if(s)r.say=T46n(s,r.id,r.r)});return _re(cb)}}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-rq]');if(!b)return;const box=document.querySelector('#sheetIn');const id=box&&box.dataset.rqid,k=box&&box.dataset.rqk;if(!id)return;const key={y:'yes',h:'half',n:'no'}[b.dataset.rq];const s=T46('REQ_TEXT',id,k,key)||T46('REQ_TEXT','_'+craveOf(id),k,key);if(s)setTimeout(()=>hxPush(id,T46n(s,id,box.dataset.rqr),'請求'),50)},true);
@@ -4067,11 +4069,11 @@ function visitTwist(id){const e=emoOf(id),N=H(id).n,col=EMOC[e]||'#fff',r=Math.r
  let acc=0;for(const[k,p]of P){acc+=p*(k==='sweet'||k==='stay'?1:cut);if(r<acc)return{k,e}}return null}
 function emoDlg(id,title,body,col,btns){sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(id)}.jpg)"></div><div><b style="color:${col}">${H(id).n}・${title}</b><p style="margin:6px 0;font-family:Noto Serif TC,serif;font-size:1.06em;color:${col}">${body}</p></div></div>${btns.map((b,i)=>`<button class="btn ${i?'ghost':''}" style="width:100%;margin-top:6px" data-emo="${i}">${b[0]}</button>`).join('')}`,true);$$('[data-emo]').forEach(x=>x.onclick=()=>{const b=btns[+x.dataset.emo];closeSheet();try{b[1]()}catch(e){}render()})}
 {const _wv=wedVisit;wedVisit=function(id){if(!wed(id)||H(id).sex!=='f'||['inj','jail','ban'].includes(hst(id)))return _wv(id);const tw=visitTwist(id);if(!tw)return _wv(id);const N=H(id).n,e=emoOf(id),col=EMOC[e]||'#ffb0c8',w=wed(id);
- if(tw.k==='sweet'){const r=_wv(id);loveAdd(id,30,true);setTimeout(()=>hxPush(id,`（${e}）她纏著你不放，說今天只准想她一個人。`,'撒嬌'),400);return r}
- if(tw.k==='stay'){const r=_wv(id);S.apPen=(S.apPen||0)+1;setTimeout(()=>hxPush(id,'她抱著你的手臂不讓你走——你在她那裡待了整整一天（下旬行動 −1）','黏人'),400);return r}
+ if(tw.k==='sweet'){const r=_wv(id);loveAdd(id,30,true);setTimeout(()=>hxPush(id,(T46n(T46('SWEET_TEXT',id,'sweet'),id)||`（${e}）她纏著你不放，說今天只准想她一個人。`),'撒嬌'),400);return r}
+ if(tw.k==='stay'){const r=_wv(id);S.apPen=(S.apPen||0)+1;setTimeout(()=>hxPush(id,(((s)=>s?s+'（下旬行動 −1）':null)(T46n(T46('SWEET_TEXT',id,'stay'),id))||'她抱著你的手臂不讓你走——你在她那裡待了整整一天（下旬行動 −1）'),'黏人'),400);return r}
  if(!gwPay())return;
  if(tw.k==='refuse'){const ln={恃寵:'「今天不想見你。明天再來求我。」',吃醋:'「去找你昨晚那位啊，來我這做什麼？」',不滿:'殿門緊閉，宮女說娘娘歇下了。',冷戰:'門開了一條縫，又在你面前關上。',瘋狂:'門後傳來瓷器碎裂的聲音，她尖叫著要你滾。',心灰:'「陛下請回吧。妾已經不等了。」'}[e]||'她不見你。';weiAdd(-2);if(e==='恃寵')w.fav=Math.min(100,w.fav+3);
-  emoDlg(id,`拒絕見你（${e}）`,ln,col,[['轉身離開（威信 −2）',()=>{}],['在門外等她（行動 −1，她心軟）',()=>{S.ap=Math.max(0,(S.ap||0)-1);w.fav=Math.min(100,w.fav+8);loveAdd(id,30,true);hxPush(id,'門終於開了。她瞪著你，眼眶卻是紅的。',e)}],['破門而入（暴虐 +2）',()=>{barAdd('tyranny',2);_wv(id);setMd(id,'委屈')}]]);return}
+  emoDlg(id,`拒絕見你（${e}）`,ln,col,[['轉身離開（威信 −2）',()=>{}],['在門外等她（行動 −1，她心軟）',()=>{S.ap=Math.max(0,(S.ap||0)-1);w.fav=Math.min(100,w.fav+8);loveAdd(id,30,true);hxPush(id,(T46n(T46('SWEET_TEXT',id,'wait'),id)||'門終於開了。她瞪著你，眼眶卻是紅的。'),e)}],['破門而入（暴虐 +2）',()=>{barAdd('tyranny',2);_wv(id);setMd(id,'委屈')}]]);return}
  if(tw.k==='humiliate'){weiAdd(-4);barAdd('hedon',1);emoDlg(id,'羞辱',`她讓你在殿外站了一個時辰，才隔著簾子笑：「天運者也會等人？」滿宮的人都看見了。`,col,[['忍了（威信 −4、昏庸 +1，她更愛你）',()=>{w.fav=Math.min(100,w.fav+6);loveAdd(id,40,true)}],['掀簾子進去（她又驚又喜）',()=>{_wv(id);hs(id).heat=(hs(id).heat||0)+3}],['拂袖而去（她寵愛 −8）',()=>{w.fav=Math.max(0,w.fav-8)}]]);return}
  if(tw.k==='play'){emoDlg(id,'玩心大起','「想見我？先陪我玩一局——輸了，你的印信歸我一天。」',col,[['陪她玩',()=>{if(Math.random()<.55){S.apPen=(S.apPen||0)+1;hxPush(id,'你輸了。她把玉璽掛在腰上，在宮裡晃了一整天（下旬行動 −1）','玩鬧')}else{loveAdd(id,40,true);w.fav=Math.min(100,w.fav+5);hxPush(id,'你贏了，她撲進你懷裡耍賴。','玩鬧')}_wv(id)}],['不陪（她轉頭去找別人玩）',()=>{barAdd('hedon',1);hs(id).heat=(hs(id).heat||0)+2}]]);return}
  if(tw.k==='mad'){emoDlg(id,'瘋狂',`她把你拽進殿裡反鎖了門：「不准走。你再也不准走了。」`,col,[['留下來（下旬被她關著）',()=>{if(!S.house){S.house={by:id,t:S.t};S.houseCD=S.t+10}loveAdd(id,60,true)}],['掙脫（她崩潰：污染 +10、寵愛 −10）',()=>{mistAdd(id,10);w.fav=Math.max(0,w.fav-10)}]]);return}
@@ -4079,12 +4081,14 @@ function emoDlg(id,title,body,col,btns){sheet(`<div class="dlg"><div class="pic"
  if(tw.k==='lover'){flauntEvent(id,tw.m,'撞見');return}
  return _wv(id)}}
 /* 情夫：撞見、帶回炫耀 */
-function flauntEvent(id,m,how){const N=H(id).n,M=H(m).n,w=wed(id),col='#ff9ad0';weiAdd(how==='撞見'?-5:-8);
- emoDlg(id,how==='撞見'?'撞見情夫':'帶情夫回來炫耀',how==='撞見'?`你推開門，${M}衣衫不整地站在她床前。她卻笑了：「怎麼，生氣了？我就是想看你生氣的樣子。」`:`她挽著${M}走進正殿，當著滿朝文武：「這是我的人。陛下不介意吧？」`,col,
-  [[`處死${M}（暴虐 +3，她既痛又喜）`,()=>{goneHero(m,'exec');barAdd('tyranny',3);w.fav=Math.min(100,w.fav+5);loveAdd(id,50,true);hs(id).heat=(hs(id).heat||0)+3;hxPush(id,'她看著屍體，伸手摟住你的脖子：「你果然還是在乎我的。」','炫耀')}],
-   [`把${M}賜給她當面首（威信 −10、昏庸 +3）`,()=>{(hs(id).men??=[]).push(m);weiAdd(-10);barAdd('hedon',3);w.fav=Math.min(100,w.fav+12);hs(m).aff=Math.max(0,(hs(m).aff|0)-20);const k=id+'|'+m;if(S.aff2&&S.aff2[k])S.aff2[k].k=9}],
-   ['默許，裝作沒看見（威信 −5）',()=>{weiAdd(-5);hs(id).heat=(hs(id).heat||0)+4}],
-   ['當眾羞辱她（她寵愛 −15、記恨）',()=>{w.fav=Math.max(0,w.fav-15);setGrudge(id,8);barAdd('tyranny',1)}]])}
+function flauntEvent(id,m,how){const N=H(id).n,M=H(m).n,w=wed(id),col='#ff9ad0';
+ const line=k=>T46n(T46('FLAUNT_TEXT',id,k),id,m)?.replaceAll('{m}',M);
+ const reaction=k=>{const s=line(k);if(s)hxPush(id,s,'炫耀')};weiAdd(how==='撞見'?-5:-8);
+ emoDlg(id,how==='撞見'?'撞見情夫':'帶情夫回來炫耀',line(how==='撞見'?'caught':'bring')||(how==='撞見'?`你推開門，${M}衣衫不整地站在她床前。她卻笑了：「怎麼，生氣了？我就是想看你生氣的樣子。」`:`她挽著${M}走進正殿，當著滿朝文武：「這是我的人。陛下不介意吧？」`),col,
+  [[`處死${M}（暴虐 +3，她既痛又喜）`,()=>{goneHero(m,'exec');barAdd('tyranny',3);w.fav=Math.min(100,w.fav+5);loveAdd(id,50,true);hs(id).heat=(hs(id).heat||0)+3;hxPush(id,(line('kill')||'她看著屍體，伸手摟住你的脖子：「你果然還是在乎我的。」'),'炫耀')}],
+   [`把${M}賜給她當面首（威信 −10、昏庸 +3）`,()=>{(hs(id).men??=[]).push(m);weiAdd(-10);barAdd('hedon',3);w.fav=Math.min(100,w.fav+12);hs(m).aff=Math.max(0,(hs(m).aff|0)-20);const k=id+'|'+m;if(S.aff2&&S.aff2[k])S.aff2[k].k=9;reaction('gift')}],
+   ['默許，裝作沒看見（威信 −5）',()=>{weiAdd(-5);hs(id).heat=(hs(id).heat||0)+4;reaction('ignore')}],
+   ['當眾羞辱她（她寵愛 −15、記恨）',()=>{w.fav=Math.max(0,w.fav-15);setGrudge(id,8);barAdd('tyranny',1);reaction('shame')}]])}
 /* 病態之愛的主動行為 */
 const LOVTACT={
  test:(id,b,add)=>{const L=[()=>{const o=(typeof OFF!=='undefined'?OFF:[]).find(o=>!(S.off&&S.off[o[0]]===id));if(!o)return null;setOff(o[0],id,true);return`沒問你就坐上了${o[1]}，等著看你罰不罰她`},()=>{const n=Math.round(40*MAG(id));S.food-=n;return`把國庫的糧 ${n} 送給了流民，說是替你積德——其實只是想看你會不會心疼`},()=>{const t=(S.trePool||[])[0];return`把你賞她的東西轉手賞給了宮女，故意讓你知道`}];const s=pick(L)();if(s)bigQ(id,'試探',s);return s},
@@ -4106,22 +4110,21 @@ function loveTurnY(add){spouses().concat(femFree()).forEach(id=>{if(!S.order.inc
 {const _rw2=render;render=function(...a){const r=_rw2.apply(this,a);try{const el=document.querySelector('.res.lord');if(el&&!el.dataset.w){el.dataset.w=1;el.insertAdjacentHTML('afterend',`<span class="res" style="color:${wei()<30?'#ff6a6a':wei()>=75?'#9fd0a0':'#d9c690'}">威${wei()}</span>`)}}catch(e){}return r}}
 /* ===== 不死不滅 × 病態之愛 ===== */
 const isImmY=id=>!!(hs(id)&&hs(id).immortal!=null);
-REQT.eternal={who:'wed',w:c=>S.immMethod&&!isImmY(c.id)?(loveTypes(c.id).includes('doom')||c.crave==='immortal'||c.crave==='own'?2:.4):0,ask:id=>({t:'要你給她永生——她不要再看著你一個人活下去'}),yes:(id)=>{if((S.core||0)>=3&&S.energy>=150){immPact(id);return`你與${H(id).n}結下了同命之契`}S.core=(S.core||0)-3;S.energy-=150;const st=hs(id);st.immortal=S.t;(st.dtag??={}).永生=S.t;return`你硬是湊出了代價，國庫被掏空——${H(id).n}從此與你同壽`},no:id=>({fav:-15,app:5,heat:6})};
+REQT.eternal={who:'wed',w:c=>S.immMethod&&!isImmY(c.id)?(loveTypes(c.id).includes('doom')||c.crave==='immortal'||c.crave==='own'?2:.4):0,ask:id=>({say:immLine('eternalAsk',id),t:'要你給她永生——她不要再看著你一個人活下去'}),yes:(id)=>{if((S.core||0)>=3&&S.energy>=150){immPact(id);return`你與${H(id).n}結下了同命之契`}S.core=(S.core||0)-3;S.energy-=150;const st=hs(id);st.immortal=S.t;(st.dtag??={}).永生=S.t;return`你硬是湊出了代價，國庫被掏空——${H(id).n}從此與你同壽`},no:id=>({fav:-15,app:5,heat:6})};
 /* 1. 殉情失敗：她知道你死不了 */
 {const d=LOVTACT.doom;LOVTACT.doom=(id,b,add)=>{if(S.immMethod&&b==='low'){if(!isImmY(id)&&!(S.reqQ||[]).some(q=>q.id===id))(S.reqQ??=[]).push({id,k:'eternal',...REQT.eternal.ask(id),at:S.t});if(!S.house&&Math.random()<.4){S.house={by:id,t:S.t};S.houseCD=S.t+16;return'「你死不了，那我就把你關起來，陪我到我死為止。」'}return'她知道殉情對你沒用。於是她要的，變成了永遠'}return d(id,b,add)}}
 /* 2. 永生者更瘋 */
-{const _lt2=loveTurnY;loveTurnY=function(add){_lt2(add);spouses().filter(x=>isImmY(x)&&S.order.includes(x)&&!hst(x)).forEach(id=>{if(Math.random()<.3){const T=pick(loveTypes(id));let s=null;try{s=LOVTACT[T](id,(wed(id).fav>=70?'high':wed(id).fav>=35?'mid':'low'),add)}catch(e){}if(s)add(`<b style="color:#f0d79a">【永生・${H(id).n}・${LOVTN[T]}】</b>她也死不了了，所以什麼都不怕——${s}`,'neg')}})}}
+{const _lt2=loveTurnY;loveTurnY=function(add){_lt2(add);spouses().filter(x=>isImmY(x)&&S.order.includes(x)&&!hst(x)).forEach(id=>{if(Math.random()<.3){const T=pick(loveTypes(id));let s=null;try{s=LOVTACT[T](id,(wed(id).fav>=70?'high':wed(id).fav>=35?'mid':'low'),add)}catch(e){}if(s)add(`<b style="color:#f0d79a">【永生・${H(id).n}・${LOVTN[T]}】</b>${immLine('immMad',id)||`她也死不了了，所以什麼都不怕——`}${s}`,'neg')}})}}
 /* 3. 搶永生 */
-function immEnvy(add){const im=spouses().filter(x=>isImmY(x)&&S.order.includes(x));if(!im.length)return;spouses().filter(x=>!isImmY(x)&&S.order.includes(x)&&!hst(x)).forEach(id=>{const k=craveOf(id);if(!(k==='immortal'||k==='own'||loveTypes(id).includes('sacrifice')))return;if(Math.random()>.05)return;const v=pick(im);if(Math.random()<.3){delete hs(v).immortal;if(hs(v).dtag)delete hs(v).dtag.永生;const st=hs(id);st.immortal=S.t;(st.dtag??={}).永生=S.t;relAdd(v,id,-50);harm(id,v,3);add(`<b style="color:#ff6a6a">【奪壽】</b>${H(id).n}用了邪法，把${H(v).n}的永生奪了過來——如今會老會死的，換成了${H(v).n}`,'neg')}else{goneHero(v,'exec');relAdd(v,id,-40);setGrudge(id,6);add(`<b style="color:#ff6a6a">【謀害永生者】</b>${H(id).n}對${H(v).n}下了殺手，可${H(v).n}死不了，只是陷入了沉睡……醒來後，她會記得是誰`,'neg')}})}
+function immEnvy(add){const im=spouses().filter(x=>isImmY(x)&&S.order.includes(x));if(!im.length)return;spouses().filter(x=>!isImmY(x)&&S.order.includes(x)&&!hst(x)).forEach(id=>{const k=craveOf(id);if(!(k==='immortal'||k==='own'||loveTypes(id).includes('sacrifice')))return;if(Math.random()>.05)return;const v=pick(im);if(Math.random()<.3){delete hs(v).immortal;if(hs(v).dtag)delete hs(v).dtag.永生;const st=hs(id);st.immortal=S.t;(st.dtag??={}).永生=S.t;relAdd(v,id,-50);harm(id,v,3);add(`<b style="color:#ff6a6a">【奪壽】</b>${immLine('steal',id,v)||`${H(id).n}用了邪法，把${H(v).n}的永生奪了過來——如今會老會死的，換成了${H(v).n}`}`,'neg')}else{goneHero(v,'exec');relAdd(v,id,-40);setGrudge(id,6);add(`<b style="color:#ff6a6a">【謀害永生者】</b>${immLine('murder',id,v)||`${H(id).n}對${H(v).n}下了殺手，可${H(v).n}死不了，只是陷入了沉睡……醒來後，她會記得是誰`}`,'neg')}})}
 /* 4. 用永生互相折磨 */
-{const _hm=harm;harm=function(by,vs,sev){_hm(by,vs,sev);if(vs&&isImmY(vs)&&S.order.includes(vs)){mistAdd(vs,8*sev);relAdd(vs,by,-8);if(Math.random()<.4)feedPush(`【無盡折磨】${H(vs).n}死不了，所以${H(by).n}的手段可以一直、一直繼續下去（${H(vs).n}污染 +${8*sev}）`,'neg')}}}
+{const _hm=harm;harm=function(by,vs,sev){_hm(by,vs,sev);if(vs&&isImmY(vs)&&S.order.includes(vs)){mistAdd(vs,8*sev);relAdd(vs,by,-8);if(Math.random()<.4)feedPush(`【無盡折磨】${immLine('torment',by,vs)||`${H(vs).n}死不了，所以${H(by).n}的手段可以一直、一直繼續下去`}（${H(vs).n}污染 +${8*sev}）`,'neg')}}}
 /* 5. 拿你的不死去炫耀 */
-function immBoast(add){if(!S.immMethod)return;spouses().filter(x=>S.order.includes(x)&&(loveTypes(x).includes('dominate')||craveOf(x)==='power')).forEach(id=>{if(Math.random()>.1)return;weiAdd(3);hp(id).inf=Math.min(100,(hp(id).inf|0)+3);const F=(typeof curFacs==='function'?curFacs():[]).filter(d=>FS(d.id)&&FS(d.id).alive);if(F.length&&S.extort&&Math.random()<.5){S.extort=null;add(`【不死之威】${H(id).n}對來使冷笑：「你們要打一個殺不死的人？」——勒索不了了之（威信 +3）`)}else add(`【不死之威】${H(id).n}在朝堂上拿你的不死震懾群臣（威信 +3、她權勢 +3）`)})}
+function immBoast(add){if(!S.immMethod)return;spouses().filter(x=>S.order.includes(x)&&(loveTypes(x).includes('dominate')||craveOf(x)==='power')).forEach(id=>{if(Math.random()>.1)return;weiAdd(3);hp(id).inf=Math.min(100,(hp(id).inf|0)+3);const F=(typeof curFacs==='function'?curFacs():[]).filter(d=>FS(d.id)&&FS(d.id).alive);if(F.length&&S.extort&&Math.random()<.5){S.extort=null;add(`【不死之威】${H(id).n}對來使冷笑：「你們要打一個殺不死的人？」——勒索不了了之（威信 +3）`)}else add(`【不死之威】${immLine('boast',id)||`${H(id).n}在朝堂上拿你的不死震懾群臣`}（威信 +3、她權勢 +3）`)})}
 {const _him=haremEvent;haremEvent=function(cb){try{immEnvy(feedPush);immBoast(feedPush)}catch(e){}return _him(cb)}}
 /* v4.7 文本接口 */
 {const _ed=emoDlg;emoDlg=function(id,title,body,col,btns){const key=title.replace(/[（(].*$/,'');const emo=(title.match(/（(.+)）/)||[])[1]||emoOf(id);const s=T46('EMO_TEXT',id,key,emo)||T46('EMO_TEXT',id,key)||T46('EMO_TEXT','_'+craveOf(id),key);return _ed(id,title,s?`「${T46n(s,id).replace(/^「|」$/g,'')}」`:body,col,btns)}}
-Object.keys(LOVTACT).forEach(T=>{const f=LOVTACT[T];LOVTACT[T]=(id,b,add)=>{const s=f(id,b,add);if(!s)return s;const t=T46('LOVE_TEXT',id,T,b)||T46('LOVE_TEXT',id,T)||T46('LOVE_TEXT','_',T,b);if(!t)return s;const nums=(s.match(/（[^（）]*）$/)||[''])[0];return T46n(t,id)+nums}});
-{const _fe=flauntEvent;flauntEvent=function(id,m,how){_fe(id,m,how);setTimeout(()=>{const s=T46('FLAUNT_TEXT',id,how==='撞見'?'caught':'bring');if(s){const p=document.querySelector('#sheetIn .dlg p');if(p)p.textContent=T46n(s,id,m).replaceAll('{m}',H(m).n)}},0)}}
+Object.keys(LOVTACT).forEach(T=>{const f=LOVTACT[T];LOVTACT[T]=(id,b,add)=>{const s=f(id,b,add);if(!s)return s;const t=T46('LOVE_TEXT',id,T,b)||T46('LOVE_TEXT',id,T)||T46('LOVE_TEXT','_',T,b);if(T==='doom'&&S.immMethod&&b==='low')return immLine('doomImm',id)||s;if(!t)return s;const nums=(s.match(/（[^（）]*）$/)||[''])[0];return T46n(t,id)+nums}});
 const T48=(o,cat,id,k,fb,b)=>{const s=(k==null?(T46(o,cat,id)||T46(o,cat,'_')):(T46(o,cat,id,k)||T46(o,cat,'_',k)));return s?T46n(s,id,b):fb};
 /* ===== 懷孕重做：珠胎暗結、各人反應、他人行為、生產互動、孩子的去向 ===== */
 const pgOf=id=>hs(id)&&hs(id).pg;
