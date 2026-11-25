@@ -3664,7 +3664,7 @@ const PVKN={affAll:'好感成長',hedon:'昏庸',tyranny:'暴政',fear:'威懾',
 const PVFLAT=['hedon','tyranny','sol','clean','energy','popg','train','talent'];
 const PVIMG={mianshou:'b_harem',sibing:'b_barracks',xingfang:'b_altar',fotang:'b_temple',liandan:'b_alchemy',jinwu:'b_market',mishi:'b_library',jiuchi:'b_tavern',dujiao:'b_herb',jitan:'b_altar',xiulou:'b_harem',jiaochang:'b_drill',yuying:'b_medic',shishe:'b_academy'};
 const pvFx=(k,lv)=>{const c=PVCITY[k];if(!c)return'';const bad=(kk,v)=>kk==='hedon'||kk==='tyranny'?v>0:v<0;return Object.entries(c).map(([kk,v])=>{const x=v*lv;let s=kk==='clean'?(x>0?'污染 −'+Math.round(x):'污染 +'+Math.round(-x)):(PVKN[kk]||kk)+(x>=0?' +':' −')+(PVFLAT.includes(kk)?(kk==='talent'?Math.abs(x).toFixed(2):Math.round(Math.abs(x))):Math.round(Math.abs(x)*1000)/10+'%');if(PVFLAT.includes(kk))s+='／旬';return`<span style="color:${bad(kk,v)?'#ff8a8a':'#9fd0a0'}">${s}</span>`}).join('、')};
-function pvCityEff(key){let v=0;spouses().forEach(id=>{if(!S.order.includes(id))return;pvOf(id).forEach(([k,o])=>{const c=PVCITY[k];if(c&&c[key]&&!['hedon','tyranny','sol'].includes(key))v+=c[key]*(o.lv||1)})});Object.entries(S.myPv||{}).forEach(([k,l])=>{const c=PVCITY[k];if(c&&c[key]>0)v+=c[key]*l});return v}
+function pvCityEff(key){let v=0;spouses().forEach(id=>{if(!S.order.includes(id))return;pvOf(id).forEach(([k,o])=>{const c=PVCITY[k];if(c&&c[key]&&!['hedon','tyranny','sol'].includes(key))v+=c[key]*(o.lv||1)*(c[key]>0?1+mistState(id).band*.1:1)})});Object.entries(S.myPv||{}).forEach(([k,l])=>{const c=PVCITY[k];if(c&&c[key]>0)v+=c[key]*l});return v}
 function pvBadTurn(add){let h=0,ty=0,sol=0;spouses().forEach(id=>{if(!S.order.includes(id))return;pvOf(id).forEach(([k,o])=>{const c=PVCITY[k]||{},l=o.lv||1;h+=(c.hedon||0)*l;ty+=(c.tyranny||0)*l;sol+=(c.sol||0)*l})});if(h)barAdd('hedon',Math.round(h));if(ty)barAdd('tyranny',Math.round(ty));if(sol){const n=Math.min(S.soldiers||0,Math.round(-sol));S.soldiers-=n}}
 {const _hbt=haremEvent;haremEvent=function(cb){try{pvBadTurn(feedPush)}catch(e){}return _hbt(cb)}}
 {const _ppv=polEff;polEff=function(key){return _ppv(key)+pvCityEff(key)}}
@@ -3738,7 +3738,7 @@ function preTurn(add){if(typeof inWorld==='function'&&inWorld())return;femFree()
 /* 盯梢：你去找誰她都知道 */
 {const _wsp=wedVisit;wedVisit=function(id){const r=_wsp(id);try{Object.entries(S.spyOn||{}).forEach(([w,u])=>{if(u>S.t&&w!==id&&wed(w)&&S.order.includes(w)){relAdd(w,id,-5);setMd(w,'吃醋');const ww=wed(w);ww.fav=Math.max(0,ww.fav-2)}})}catch(e){}return r}}
 /* ===== 紅顏全面自主 v2：招牌動作・連鎖報復・介入・後宮大動作・軟禁天運者 ===== */
-const MAG=id=>(wed(id)?2.2:1)*(1+heatTier(id)*.3);
+const MAG=id=>(wed(id)?2.2:1)*(1+heatTier(id)*.3)*(1+(hs(id)&&H(id)?mistState(id).band:0)*.1);
 const foeOf=id=>{const L=S.order.filter(x=>x!==id&&H(x)&&H(x).sex==='f'&&!x.startsWith('kid'));return L.sort((a,b)=>relG(id,a)-relG(id,b))[0]};
 const hurtFav=(x,n)=>{if(wed(x)){const w=wed(x);w.fav=Math.max(0,w.fav-n)}else{const s=hs(x);s.aff=Math.max(0,(s.aff|0)-n)}};
 function harm(by,vs,sev){if(!vs||!S.order.includes(vs))return;(S.retQ??=[]).push({by:vs,vs:by,at:S.t+1,sev});S.order.filter(x=>x!==vs&&x!==by&&relG(vs,x)>=25).forEach(x=>relAdd(x,by,-4))}
@@ -3858,6 +3858,43 @@ function pickView(pool,after){const L=pickCands(pool).sort((a,b)=>(HD[b][3]==='S
  $$('#pools [data-pf]').forEach(b=>b.onclick=()=>{S.pickF=b.dataset.pf;pickView(pool,after)});$('#pkBack').onclick=()=>renderPools();
  $$('#pools [data-pk]').forEach(b=>b.onclick=()=>{const id=b.dataset.pk;if(pool)S.free[pool]=1;else S.energy-=sumCost();__pickId=id;summon(pool,after)})}
 {const _rp=renderPools;renderPools=function(){_rp();if(S.t>0)return;$$('#pools .pool').forEach(b=>b.onclick=()=>{if(S.free[b.dataset.p])return;pickView(b.dataset.p,renderPools)});const es=$('#eSum');if(es)es.onclick=()=>{if(S.energy<sumCost())return;pickView(null,startGame)};const n=$('#pools .sysline');if(n&&POOLS.some(p=>!S.free[p[0]]))n.insertAdjacentHTML('beforeend','<br><span class="small">點職能池，親自挑選要召喚的英靈。</span>')}}
+/* ===== 污染×本性：變質、戰場、傳染、化霧、甜頭、看得見 ===== */
+const bandOf=id=>hs(id)&&H(id)?mistState(id).band:0;
+const MUT={
+ lust:[['淫亂',(id,add)=>{const L=S.order.filter(x=>x!==id&&H(x)&&!x.startsWith('kid'));const x=pick(L);if(!x)return;mistAdd(x,15);if(H(x).sex==='m'){S.aff2=S.aff2||{};const k=id+'|'+x,a=S.aff2[k]=S.aff2[k]||{v:0,k:1};a.v+=15}barAdd('hedon',2);add(`【淫亂・${H(id).n}】把${H(x).n}也拖進了她的床榻與黑霧（${H(x).n}污染 +15、昏庸 +2）`)}],
+       ['魅化',(id,add)=>{const L=S.order.filter(x=>H(x)&&H(x).sex==='m'&&!x.startsWith('kid')&&!busyArmy(x));const x=pick(L);if(!x)return;setHst(x,'inj',2);mistAdd(x,25);mistAdd(id,-10);gainAff(x,5);add(`【魅化・${H(id).n}】${H(x).n}被她吸乾了精氣，臥床兩旬（${H(x).n}污染 +25；她反而更光豔）`)}]],
+ power:[['篡奪',(id,add)=>{const O=(typeof OFF!=='undefined'?OFF:[]).filter(o=>!(S.off&&S.off[o[0]]===id)).slice(0,2);O.forEach(o=>{const old=S.off&&S.off[o[0]];if(old)hurtFav(old,4);setOff(o[0],id,true)});S.apPen=(S.apPen||0)+1;add(`【篡奪・${H(id).n}】一口氣拿下${O.map(o=>o[1]).join('、')}，朝堂已經聽她的（你下旬行動 −1）`)}],
+        ['女帝',(id,add)=>{hp(id).inf=100;const k=pick(Object.keys(POLICY));S.policy={k,until:S.t+8};S.apPen=(S.apPen||0)+2;spouses().filter(x=>x!==id).forEach(x=>hp(x).inf=Math.max(0,(hp(x).inf|0)-5));add(`【女帝・${H(id).n}】登上了你的御座，頒布「${POLICY[k][0]}」八旬不許改（你下旬行動 −2）`);if(wed(id)&&wed(id).fav<50&&Math.random()<.25)rebelFound(id,S.order.filter(x=>x!==id&&relG(id,x)>=30&&!wed(x)).slice(0,3),add,`${H(id).n}自立為帝，與你分庭抗禮。`)}]],
+ greed:[['吞噬',(id,add)=>{S.food-=100;S.wood-=40;S.stone-=40;hs(id).graft=(hs(id).graft||0)+180;add(`【吞噬・${H(id).n}】她的私庫像無底洞（糧 −100、木石各 −40）`)}],
+        ['饕餮',(id,add)=>{S.food-=200;S.energy-=60;hs(id).graft=(hs(id).graft||0)+260;mistAdd(id,10);add(`【饕餮・${H(id).n}】吞下了一整座糧倉和靈晶（糧 −200、能量 −60）`)}]],
+ own:[['囚禁',(id,add)=>{const r=spouses().filter(x=>x!==id&&S.order.includes(x)).sort((a,b)=>wed(b).fav-wed(a).fav)[0];if(r){setHst(r,'ban',4);relAdd(r,id,-15)}if((S.houseCD||0)>S.t)S.houseCD=S.t+3;add(`【囚禁・${H(id).n}】${r?`把${H(r).n}鎖在偏殿四旬，`:''}下一個要關的，是你`)}],
+      ['共墮',(id,add)=>{S.pol=(S.pol||0)+5;barAdd('hedon',3);if(!S.house&&(S.houseCD||0)<=S.t+6){S.house={by:id,t:S.t};S.houseCD=S.t+10}add(`【共墮・${H(id).n}】「我們一起沉下去，好不好？」（據點污染 +5、昏庸 +3）`)}]],
+ blood:[['屠戮',(id,add)=>{S.pop=Math.max(0,(S.pop||0)-10);S.soldiers=Math.max(0,(S.soldiers||0)-20);barAdd('tyranny',3);mistAdd(id,10);add(`【屠戮・${H(id).n}】殺人已經不需要理由（流民 −10、士兵 −20、暴虐 +3）`)}],
+        ['血祭',(id,add)=>{S.pop=Math.max(0,(S.pop||0)-20);S.energy+=80;S.pol=(S.pol||0)+5;mistAdd(id,20);add(`【血祭・${H(id).n}】拿流民獻祭黑霧，換回力量（流民 −20、能量 +80、據點污染 +5）`)}]],
+ immortal:[['邪道',(id,add)=>{S.pop=Math.max(0,(S.pop||0)-8);S.energy+=40;mistAdd(id,10);add(`【邪道・${H(id).n}】丹爐裡燒的是人（流民 −8、能量 +40）`)}],
+           ['化霧',(id,add)=>{S.pol=(S.pol||0)+6;mistAdd(id,30);spouses().filter(x=>x!==id).forEach(x=>{if(Math.random()<.3)mistAdd(x,10)});add(`【化霧・${H(id).n}】她的身體開始散成黑霧，宮裡到處都是她的氣息（據點污染 +6）`)}]],
+ vanity:[['偏執美',(id,add)=>{const r=pick(spouses().filter(x=>x!==id&&S.order.includes(x)));if(!r)return;hurtFav(r,20);(hs(r).dtag??={})['毀容']=S.t;relAdd(r,id,-25);add(`【偏執美・${H(id).n}】${H(r).n}的臉被劃花了（寵愛 −20、留下「毀容」）`)}],
+         ['畫皮',(id,add)=>{const r=spouses().filter(x=>x!==id&&S.order.includes(x)).sort((a,b)=>wed(b).fav-wed(a).fav)[0];if(!r)return;const n=Math.min(20,wed(r).fav);wed(r).fav-=n;wed(id).fav=Math.min(100,wed(id).fav+n);setHst(r,'inj',2);mistAdd(id,15);add(`【畫皮・${H(id).n}】奪走了${H(r).n}的容貌與恩寵（${H(r).n}寵愛 −${n}，全轉到她身上）`)}]]};
+const mutStage=id=>{const b=bandOf(id);return b>=5?2:b>=3?1:0};
+const mutName=id=>{const s=mutStage(id);return s?MUT[craveOf(id)][s-1][0]:''};
+function mutTurn(add){spouses().concat(femFree()).forEach(id=>{if(!S.order.includes(id)||hst(id))return;const s=mutStage(id),st=hs(id),k=craveOf(id);const d=st.dtag||(st.dtag={});MUT[k].forEach((m,i)=>{if(i!==s-1&&d[m[0]])delete d[m[0]]});if(!s){st.mutS=0;return}const nm=MUT[k][s-1][0];if(!d[nm])d[nm]=S.t;
+ if((st.mutS||0)<s){st.mutS=s;add(`<b style="color:#c07aff">【變質】${H(id).n}的${CRAVE[k][0]}在黑霧裡變了形——如今是「${nm}」</b>`,'neg');if(typeof chronAdd==='function')chronAdd(`${H(id).n}的慾望變質為「${nm}」`)}
+ if(Math.random()<(wed(id)?.35:.18)+(s-1)*.2)try{MUT[k][s-1][1](id,add)}catch(e){}})}
+{const _hmt=haremEvent;haremEvent=function(cb){try{mutTurn(feedPush);mistSpread(feedPush);mistLordCheck(feedPush)}catch(e){}return _hmt(cb)}}
+/* C. 傳染 */
+function mistSpread(add){const L=S.order.filter(x=>H(x)&&!x.startsWith('kid'));L.forEach(id=>{const b=bandOf(id);if(b<3)return;const near=L.filter(x=>x!==id&&(relG(id,x)>=20||activePlace(x)===activePlace(id)&&wed(x)&&wed(id)));pick([near])&&near.sort(()=>Math.random()-.5).slice(0,b>=5?2:1).forEach(x=>mistAdd(x,b*2));(S.kids||[]).filter(k=>k.mom===id&&S.heroes[k.id||'']).forEach(k=>mistAdd(k.id,b));if(b>=4&&pvOf(id).length)S.pol=(S.pol||0)+1});if((S.pol||0)>=40)L.filter(x=>H(x).sex==='f').forEach(x=>mistAdd(x,1))}
+/* D. 化為黑霧之主 */
+function mistLordCheck(add){spouses().concat(femFree()).forEach(id=>{if(!S.order.includes(id)||hs(id).mistLord)return;const m=mistState(id);if(m.band<6||m.value<340n||Math.random()>.08)return;hs(id).mistLord=1;add(`<b style="color:#ff4a6a">【化霧為主】${H(id).n}徹底被黑霧吞沒，帶著她的人走進霧裡，成了黑霧的主人。擊敗她，或許還能把她帶回來淨化。</b>`,'neg');try{rebelFound(id,S.order.filter(x=>x!==id&&relG(id,x)>=25).slice(0,3),add,`${H(id).n}化為黑霧之主。`)}catch(e){}})}
+/* B. 戰場：越深越強，也越可能失控或投向黑霧 */
+{const _m0b=mods0;mods0=function(our,en,M0){M0=_m0b(our,en,M0);if(our&&our.gens){const fs=our.gens.filter(g=>S.heroes[g]&&H(g).sex==='f');let up=0;fs.forEach(g=>{const b=bandOf(g);up+=b*.04});M0.atk+=up;window.__mistBt={gens:fs.slice()}}return M0}}
+{const _bv2=battleVoices;battleVoices=function(ids,win){let h=_bv2(ids,win);const B=window.__mistBt;window.__mistBt=null;if(!B)return h;const N=[];B.gens.forEach(g=>{const b=bandOf(g);if(b<4||!S.order.includes(g))return;const r=Math.random();if(r<(b-3)*.08){const n=Math.min(S.soldiers||0,R(15,40));S.soldiers-=n;N.push(`${H(g).n}在黑霧裡失控，殺紅了眼，連自己人也砍（士兵 −${n}）`)}else if(b>=6&&r<(b-3)*.08+.05&&!hs(g).mistLord){hs(g).mistLord=1;N.push(`${H(g).n}在陣前轉身，走進了敵方的黑霧`);try{rebelFound(g,[],feedPush,`${H(g).n}在戰場上投向黑霧。`)}catch(e){}}});
+ if(up0(B))N.unshift(`污染之力：她們的傷害提高了`);return N.length?h+`<div class="small" style="color:#c07aff;margin-top:4px">${N.join('<br>')}</div>`:h}}
+const up0=B=>B.gens.some(g=>bandOf(g)>=2);
+/* F. 甜頭：招牌動作與私宅效果隨污染增強 */
+const MAGX=id=>1+bandOf(id)*.1;
+/* A. 看得見：她面板上的污染影響 */
+function mistFxLine(id){const m=mistState(id),b=m.band;if(!b)return'';const L=[`<b style="color:#c07aff">${m.name}</b>（${m.value}）`];const mn=mutName(id);if(mn)L.push(`慾望變質為「<b style="color:#c07aff">${mn}</b>」`);L.push(`出戰傷害 +${b*4}%`);if(b>=4)L.push(`戰場失控 ${(b-3)*8}%`);L.push(`陰毒行動傾向 +${b*20}%`);L.push(`招牌動作與私宅效果 +${b*10}%`);if(b>=3)L.push('會傳染身邊的人');if(H(id).sex==='f')L.push(`身心負荷 ${mistStrain(id)}/10（四圍 −${mistStrain(id)}）`);L.push(mistStatus(id));if(b>=6)L.push('<span style="color:#ff6a7a">隨時可能化為黑霧之主</span>');return`<div class="frame small" style="padding:6px 8px;margin-bottom:8px;border-color:#6a3a8a;line-height:1.6"><b style="color:#c07aff">污染影響</b>　${L.join('・')}</div>`}
+{const _gs2=gridSheet;gridSheet=function(id){_gs2(id);const fx=mistFxLine(id);if(!fx)return;const f=document.querySelector('#sheetIn .frame.small');if(f)f.insertAdjacentHTML('afterend',fx)}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
