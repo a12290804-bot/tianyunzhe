@@ -442,6 +442,8 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 <script src="events/zhangsun_events.js"></script>
 <script src="events/v4_3_crave_system.js"></script>
 <script src="events/v4_4_sig_house_inter_ret.js"></script>
+<script src="events/v42_text.js"></script>
+<script src="events/v4_5_mutation_system.js"></script>
 <script src="events/engine.js"></script>
 <script src="rewrite_01z_qing_terms.js"></script>
 <script>
@@ -2337,7 +2339,7 @@ function agEvent(cb){const q=S.agQ&&S.agQ.shift();if(!q)return cb();const nx=()=
  if(!S.order.includes(q.id)||unavail(q.id)||!AGE[q.k])return nx();agSheet(q.id,AGE[q.k](q),nx)}
 /* 召回辭官者 */
 function recallBlock(){const L=Object.keys(S.gone||{}).filter(x=>S.gone[x].k==='resign');if(!L.length)return'';return`<div class="frame" style="padding:8px;margin:6px 0"><div class="small" style="color:var(--gold2)">辭官歸隱者（可召回：糧 60、禮物 1）</div>${L.map(x=>`<button class="btn ghost sm" data-rsg="${x}" style="margin:4px 4px 0 0">${H(x).n}</button>`).join('')}</div>`}
-function heroBack(id,aff){if(S.gone)delete S.gone[id];if(!S.order.includes(id))S.order.push(id);const st=hs(id);st.task='idle';st.hst=null;if(aff!=null)st.aff=clamp(aff,0,100);SKC[id]=null}
+function heroBack(id,aff){if(S.gone?.[id]?.k==='rebel'&&hs(id).mistLord){delete hs(id).mistLord;hxPush(id,scriptLine(MISTLORD_TEXT.back),'黑霧之主歸來')}if(S.gone)delete S.gone[id];if(!S.order.includes(id))S.order.push(id);const st=hs(id);st.task='idle';st.hst=null;if(aff!=null)st.aff=clamp(aff,0,100);SKC[id]=null}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-rsg]');if(!b)return;const id=b.dataset.rsg;if(S.food<60||S.gifts<1){sfx('deny');return toast('需要糧 60 與禮物 1')}S.food-=60;S.gifts--;heroBack(id,Math.max(20,hs(id).aff-5));closeSheet();sfx('ssr');sheetDlg(id,agLine(id,'歸來')||'……既然主公親自來請，那我就再陪你走一程。','重返燈塔','');render()});
 /* 私情 */
 const affOf=f=>{const k=Object.keys(S.aff2||{}).find(k=>k.startsWith(f+'|')&&S.aff2[k].v>=40&&S.aff2[k].k!==9);if(!k)return null;const m=k.split('|')[1];return S.order.includes(m)?m:null};
@@ -3534,6 +3536,8 @@ const PV={
  jiaochang:['校場','校場',0,['尚武','剛烈','武勳','果決'],'尚武','練兵：訓練度上升，她的部隊更快升級',(id,l)=>{S.train=Math.min(100,(S.train||0)+l);hs(id).wm=(hs(id).wm||0)+(S.t%3===0?1:0)}],
  yuying:['育嬰堂','育嬰堂',0,['慈母','慈悲','母性'],'慈母','懷孕機率上升、孩子成長加快',(id,l)=>{(S.kids||[]).filter(k=>!k.adult&&k.mom===id&&S.t%3===0).forEach(k=>k.wen=(k.wen||0)+1)}],
  shishe:['詩社書院','書院',0,['才情','才女','清高','詩'],'才情','天賦進度、全宮好感上升',(id,l)=>{S.talentFrac=(S.talentFrac||0)+.05*l;if(S.t%4===0)S.order.forEach(x=>gainAff(x,1))}]};
+function scriptLine(value){return Array.isArray(value)?pick(value):value||''}
+function courtLine(section,id,key){return scriptLine(GD[section]?.[id]?.[key])}
 const mistAdd=(id,v)=>{const x=BigInt(hs(id).mist||0)+BigInt(v);hs(id).mist=String(x<0n?0n:x)};
 const pvOf=id=>Object.entries(hs(id).pv||{});
 const pvSeen=(id,k)=>!PV[k][2]||(hs(id).pv[k]||{}).found||(S.spy||{})[id]>S.t;
@@ -3542,13 +3546,13 @@ function pvBuild(id){const st=hs(id);const cap=3+Math.min(2,Math.floor(heatOf(id
  if(up){const src=pay();if(!src)return null;up[1].lv++;pvSlotSync(id,up[0]);return`擴建了她的${PV[up[0]][0]}（Lv${up[1].lv}，動用${src}）`}
  const k=pvPick(id);if(!k)return null;const src=pay();if(!src)return null;const loc=activePlace(id);(st.pv??={})[k]={lv:1,t:S.t,where:loc,found:!PV[k][2]};(st.dtag??={})[PV[k][4]]=S.t;
  const town=branchCities().find(x=>keyOf(x)===loc);if(town){const bs=bfSlots(town);const i=bs.findIndex(s=>!s);if(i>=0){bs[i]={f:'pv_'+k,lv:1,owner:id};st.pv[k].slot=i}}else{let i=S.slots.findIndex(s=>!s);if(i<0&&S.slots.length<24){S.slots.push(null);i=S.slots.length-1}if(i>=0){S.slots[i]={f:'pv_'+k,lv:1,p:100,owner:id};st.pv[k].hslot=i;st.pv[k].where='home'}}
- return`動用${src}，在${rosterName(loc)}蓋起了${PV[k][2]?PV[k][1]+'（實為'+PV[k][0]+'）':PV[k][0]}`}
-function pvTurn(add){spouses().forEach(id=>{if(!S.order.includes(id))return;pvOf(id).forEach(([k,v])=>{try{PV[k][6](id,v.lv||1)}catch(e){}if(!v.found&&(S.spy||{})[id]>S.t){v.found=1;add(`【密報】${H(id).n}的${PV[k][1]}，其實是${PV[k][0]}！`,'neg')}})})}
+ return courtLine('pv',k,'built')+` 動用${src}，在${rosterName(loc)}蓋起了${PV[k][2]?PV[k][1]+'（實為'+PV[k][0]+'）':PV[k][0]}`}
+function pvTurn(add){spouses().forEach(id=>{if(!S.order.includes(id))return;pvOf(id).forEach(([k,v])=>{try{PV[k][6](id,v.lv||1)}catch(e){}if(pvSeen(id,k)&&S.t%4===0)add(courtLine('pv',k,'daily'));if(!v.found&&(S.spy||{})[id]>S.t){v.found=1;add(`【密報】${H(id).n}的${PV[k][1]}，其實是${PV[k][0]}！${courtLine('pv',id,'exposed')}`,'neg')}})})}
 function pvRemove(id,k,mode){const st=hs(id),v=st.pv[k];if(!v)return;if(v.hslot!=null&&S.slots[v.hslot]&&S.slots[v.hslot].f==='pv_'+k)S.slots[v.hslot]=null;const town=branchCities().find(x=>keyOf(x)===v.where);if(town&&v.slot!=null&&town.bs&&town.bs[v.slot]&&town.bs[v.slot].f==='pv_'+k)town.bs[v.slot]=null;delete st.pv[k];const w=wed(id),N=H(id).n;let r;
  if(mode==='raze'){w.fav=Math.max(0,w.fav-12);setGrudge(id,8);r=`你下令拆了${N}的${PV[k][0]}，她寵愛 −12、記恨`}
  else if(mode==='seize'){const g=st.graft||0;S.food+=g;st.graft=0;const tr=st.pvTroops||0;S.soldiers+=tr;st.pvTroops=0;w.fav=Math.max(0,w.fav-15);setGrudge(id,10);r=`你抄沒了${N}的${PV[k][0]}（糧 +${g}${tr?'、兵 +'+tr:''}），她寵愛 −15、記恨`}
  else{(S.myPv??={})[k]=(S.myPv[k]||0)+(v.lv||1);w.fav=Math.max(0,w.fav-6);r=`你接管了${N}的${PV[k][0]}，從此歸你所用`}
- feedPush('【私宅】'+r);toast(r);render()}
+ feedPush('【私宅】'+r+' '+courtLine('pv',id,mode));toast(r);render()}
 function pvView(){const rows=spouses().flatMap(id=>pvOf(id).filter(([k])=>pvSeen(id,k)).map(([k,v])=>[id,k,v]));const hidden=spouses().reduce((s,id)=>s+pvOf(id).filter(([k])=>!pvSeen(id,k)).length,0);
  return`<div class="orn">紅顏私宅</div><div class="small" style="color:var(--dim);margin:0 2px 6px">她們與你有同等的權力，蓋什麼不必請示。秘密的私宅會偽裝成別的名字，要靠密探才看得穿。${hidden?`<br><b style="color:#ff8a8a">另有 ${hidden} 座身分不明的建築</b>`:''}</div>${rows.map(([id,k,v])=>`<div class="frame" style="padding:7px;margin-bottom:6px"><b>${PV[k][0]}</b> Lv${v.lv} <span class="small">・${H(id).n}・${rosterName(v.where||'home')}</span><div class="small">${PV[k][5]}</div><div class="small">全城：${pvFx(k,v.lv||1)}</div><div style="display:flex;gap:4px;margin-top:4px"><button class="btn ghost sm" data-pvx="${id}|${k}|raze">拆除</button><button class="btn ghost sm" data-pvx="${id}|${k}|seize">抄沒</button><button class="btn ghost sm" data-pvx="${id}|${k}|take">接管</button></div></div>`).join('')||'<p class="small">還沒有人自建私宅。</p>'}`}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-pvx]');if(!b)return;const[id,k,m]=b.dataset.pvx.split('|');pvRemove(id,k,m)},true);
@@ -3566,43 +3570,47 @@ const AUTOX=[
  ['nun','出家修行',0,(c)=>c.has('虔誠','心死')*1.5+(hs(c.id).pv?.fotang?2:0),(id)=>{if(activePlace(id)!=='home')return null;hs(id).nunT=S.t;goneHero(id,'exile',R(6,12));return'落髮出家，住進了城外的庵堂'}]];
 const c0=id=>actCtx(id);
 {const _ac=actCtx;actCtx=function(id){const c=_ac(id);c.id=id;return c}}
+for(const action of AUTOX){
+ if(!['edict','punish','slap','storm','ruin','nun'].includes(action[0]))continue;
+ const perform=action[4];action[4]=(id,...args)=>{const result=perform(id,...args);return result&&[result,courtLine('power',id,action[0])].filter(Boolean).join(' ')};
+}
 AUTOACT.push(...AUTOX);
 AUTOACT.forEach(a=>{const f=a[3];a[3]=c=>{let w=f(c);if(c.cy===1&&['seek','affair','storm'].includes(a[0]))w*=2;if(c.cy===2&&['compete','slap','abuse','punish'].includes(a[0]))w*=1.8;if(c.cy===0&&['seek','affair'].includes(a[0]))w*=.4;return w}});
 const AUTOACT_old=AUTOACT.findIndex(a=>a[0]==='estate');if(AUTOACT_old>=0)AUTOACT.splice(AUTOACT_old,1);
 {const _at=autoTurn;autoTurn=function(add){for(let i=0;i<2;i++)_at(add);pvTurn(add);
- spouses().concat(Object.keys(S.gone||{})).forEach(id=>{const st=hs(id);if(!st||st.nunT==null)return;if(S.order.includes(id)&&!(S.gone&&S.gone[id])){delete st.nunT;const d=st.dtag??={};delete d.心死;d.還俗=S.t;add(`【還俗】${H(id).n}從庵堂回來了，像是放下了什麼`)}})}}
+ spouses().concat(Object.keys(S.gone||{})).forEach(id=>{const st=hs(id);if(!st||st.nunT==null)return;if(S.order.includes(id)&&!(S.gone&&S.gone[id])){delete st.nunT;const d=st.dtag??={};delete d.心死;d.還俗=S.t;add(`【還俗】${H(id).n}從庵堂回來了，像是放下了什麼。${courtLine('power',id,'return')}`)}})}}
 
 /* ===== 不死之身與永生之約 ===== */
 WISH.immortal=[3,'想要與你一同永生','同命契',1,id=>hs(id).immortal?1:0];
-function immTurn(add){if(inWorld())return null;Object.entries(S.gone||{}).forEach(([id,g])=>{if(g.sleep&&g.u<=S.t){heroBack(id);mistAdd(id,30);add(`【甦醒】${H(id).n}從沉睡中醒來，記得一切（污染 +30）`,'neg')}});if(S.t<12)return null;const sp=spouses().filter(id=>S.order.includes(id));
+function immTurn(add){if(inWorld())return null;Object.entries(S.gone||{}).forEach(([id,g])=>{if(g.sleep&&g.u<=S.t){heroBack(id);mistAdd(id,30);add(`【甦醒】${H(id).n}從沉睡中醒來，記得一切（污染 +30）${courtLine('immortal',id,'wake')}`,'neg')}});if(S.t<12)return null;const sp=spouses().filter(id=>S.order.includes(id));
  if(!S.immMethod&&S.t>=18&&Math.random()<.04){S.immMethod=S.t;return{k:'method'}}
  const u=sp.filter(id=>!hs(id).knowImm);if(u.length&&Math.random()<.07){const id=pick(u);return{k:'know',id}}
- sp.forEach(id=>{const st=hs(id);if(st.immortal||!st.knowImm||!S.immMethod)return;if(!st.wish2||st.wish2.k!=='immortal'){if(Math.random()<.3)st.wish2={k:'immortal',since:S.t,base:0,p:0}}});return null}
+ sp.forEach(id=>{const st=hs(id);if(st.immortal||!st.knowImm||!S.immMethod)return;if(!st.wish2||st.wish2.k!=='immortal'){if(Math.random()<.3){st.wish2={k:'immortal',since:S.t,base:0,p:0};hxPush(id,courtLine('immortal',id,'beg'),'渴求永生')}}});return null}
 function immEvent(cb){const e=immTurn(feedPush);if(!e||!evOK(true))return cb();
- if(e.k==='method'){sheet(`<h2>永生之法</h2><p style="margin:8px 0">星盤深處浮現一行古老的銘文——天運者之命，可與所愛之人同契。從此，你能為紅顏舉行「同命契」，讓她與你一同不老不死。</p><div class="small" style="color:var(--gold2)">點開人物面板即可舉行同命契（晶核 3、能量 150；她的情深需達「深愛」）。</div><button class="btn" id="imOk" style="width:100%;margin-top:10px">知道了</button>`,true);feedPush('【永生之法】你在星盤深處找到了同命契');if(typeof chronAdd==='function')chronAdd('【永生之法】你找到了讓紅顏一同永生的方法');$('#imOk').onclick=()=>{closeSheet();cb()};return}
+ if(e.k==='method'){sheet(`<h2>永生之法</h2><p style="margin:8px 0">${GD.immortal.method}</p><div class="small" style="color:var(--gold2)">點開人物面板即可舉行同命契（晶核 3、能量 150；她的情深需達「深愛」）。</div><button class="btn" id="imOk" style="width:100%;margin-top:10px">知道了</button>`,true);feedPush('【永生之法】你在星盤深處找到了同命契');if(typeof chronAdd==='function')chronAdd('【永生之法】你找到了讓紅顏一同永生的方法');$('#imOk').onclick=()=>{closeSheet();cb()};return}
  const id=e.id,st=hs(id),tags=ntagAll(id).concat(PTAG[id]||[]).join(' ');st.knowImm=S.t;const d=st.dtag??={};let r;
  if(/痴魔|虔誠|偏執/.test(tags)){d.狂信=S.t;r='她跪在你面前，像是終於確認了自己信仰的神。'}
  else if(/野心|背盟奪權|跋扈|心機/.test(tags)){d.渴求永生=S.t;hs(id).ambUp=(hs(id).ambUp||0)+5;r='她沉默了很久，然後笑了：「那麼，我要排第一個。」'}
  else if(/心死|冷心|怨懟/.test(tags)){d.渴求永生=S.t;mistAdd(id,30);r='她看著鏡中自己的臉，忽然害怕起老去。'}
  else{d.渴求永生=S.t;r='她握住你的手，指尖在發抖：「帶我一起，好不好？」'}
- sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(id)}.jpg)"></div><div><b style="color:var(--gold2)">她發現了・${H(id).n}</b><p style="margin:6px 0">${H(id).n}終於明白：你不會老，也不會死。<br>${r}</p></div></div><button class="btn" id="imOk" style="width:100%;margin-top:8px">知道了</button>`,true);feedPush(`【發現】${H(id).n}發現你不死不滅`);$('#imOk').onclick=()=>{closeSheet();cb()}}
+ sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(id)}.jpg)"></div><div><b style="color:var(--gold2)">她發現了・${H(id).n}</b><p style="margin:6px 0">${H(id).n}終於明白：你不會老，也不會死。<br>${courtLine('immortal',id,'discover')||r}</p></div></div><button class="btn" id="imOk" style="width:100%;margin-top:8px">知道了</button>`,true);feedPush(`【發現】${H(id).n}發現你不死不滅`);$('#imOk').onclick=()=>{closeSheet();cb()}}
 function immPact(id){const w=wed(id);if(!S.immMethod||hs(id).immortal)return;if(loveLv(id)<2){sfx('deny');return toast('她的情深還不夠')}if((S.core||0)<3||S.energy<150){sfx('deny');return toast('需要晶核 3、能量 150')}S.core-=3;S.energy-=150;const st=hs(id);st.immortal=S.t;(st.dtag??={}).永生=S.t;delete st.dtag.渴求永生;w.fav=100;loveAdd(id,300,true);
- const n=spouses().filter(x=>hs(x).immortal).length;spouses().filter(x=>x!==id&&!hs(x).immortal).forEach(x=>{wed(x).fav=Math.max(0,wed(x).fav-5);relAdd(x,id,-10);if(hs(x).knowImm)(hs(x).dtag??={}).渴求永生=S.t});
- const s=`【同命契】${H(id).n}成為第 ${n} 位與你同命的人，從此不老不死`;feedPush(s);if(typeof chronAdd==='function')chronAdd(s);sfx('ssr');closeSheet();sheetDlg(id,'從今以後，你去哪裡，我就去哪裡——永遠。','好',()=>render())}
-{const _gh=goneHero;goneHero=function(id,k,n){if(k==='exec'&&hs(id)&&hs(id).immortal){_gh(id,'exile',R(3,6));S.gone[id].sleep=1;feedPush(`【沉睡】${H(id).n}倒下了，但永生之身不會死——她將沉睡數旬`,'neg');return}return _gh(id,k,n)}}
+ const n=spouses().filter(x=>hs(x).immortal).length;spouses().filter(x=>x!==id&&!hs(x).immortal).forEach(x=>{wed(x).fav=Math.max(0,wed(x).fav-5);relAdd(x,id,-10);if(hs(x).knowImm){(hs(x).dtag??={}).渴求永生=S.t;hxPush(x,courtLine('immortal',x,'jealous'),'同命契')}});
+ const s=`【同命契】${H(id).n}成為第 ${n} 位與你同命的人，從此不老不死`;feedPush(s);if(typeof chronAdd==='function')chronAdd(s);sfx('ssr');closeSheet();sheetDlg(id,courtLine('immortal',id,'pact')||'從今以後，你去哪裡，我就去哪裡——永遠。','好',()=>render())}
+{const _gh=goneHero;goneHero=function(id,k,n){if(k==='exec'&&hs(id)&&hs(id).immortal){_gh(id,'exile',R(3,6));S.gone[id].sleep=1;feedPush(`【沉睡】${H(id).n}倒下了，但永生之身不會死——她將沉睡數旬。${courtLine('immortal',id,'sleep')}`,'neg');return}return _gh(id,k,n)}}
 /* ===== 子嗣遇害 ===== */
 AUTOACT.push(['killKid','謀害他人子嗣',1,(c)=>{const k=(S.kids||[]).some(k=>!k.adult&&k.mom!==c.id);return k?((c.band>=3?1:0)+c.has('控孕','殘暴','嗜血','善妒')*.8+(c.fav<35?.5:0))*(hs(c.id).pv?.dujiao?2:1):0},(id)=>{const L=(S.kids||[]).filter(k=>!k.adult&&k.mom!==id);if(!L.length)return null;const k=pick(L);kidKilled(k,id);return`暗中害死了${H(k.mom).n}的孩子${k.n}`}]);
 function kidKilled(k,by){S.kids=(S.kids||[]).filter(x=>x!==k);(S.kidDead??=[]).push({id:k.id,n:k.n,mom:k.mom,by,t:S.t});const m=k.mom,st=hs(m);if(!st)return;
  const rivals=spouses().filter(x=>x!==m);const sus=Math.random()<.5?by:pick(rivals)||by;st.suspect={id:sus,kid:k.n,real:by,t:S.t};(st.dtag??={}).喪子=S.t;mistAdd(m,60);setMd(m,'癲狂');if(wed(m))loveAdd(m,-200,true);
- const s=`【喪子】${H(m).n}的孩子${k.n}夭亡。${H(m).n}認定是${H(sus).n}下的手`;feedPush(s,'neg');if(typeof chronAdd==='function')chronAdd(s);(S.revQ??=[]).push(m)}
+ const s=`【喪子】${H(m).n}的孩子${k.n}夭亡。${H(m).n}認定是${H(sus).n}下的手。${courtLine('kidLoss',m,'grief')}`;feedPush(s,'neg');if(typeof chronAdd==='function')chronAdd(s);(S.revQ??=[]).push(m)}
 AUTOACT.push(['revenge','為子復仇',0,(c)=>{const s=hs(c.id).suspect;return s&&S.order.includes(s.id)?6:0},(id)=>{const s=hs(id).suspect,x=s.id;if(Math.random()<.4){setHst(x,'inj',3);mistAdd(id,20);return`為了${s.kid}，在${H(x).n}的湯裡下了毒`}relAdd(id,x,-30);wed(x).fav=Math.max(0,wed(x).fav-10);return`四處蒐證，要把${H(x).n}置於死地`}]);
 function revengeEvent(cb){const q=S.revQ||[];const m=q.shift();if(!m||!S.order.includes(m)||!evOK(true))return cb();const s=hs(m).suspect;if(!s)return cb();const N=H(m).n,X=H(s.id).n;
- sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(m)}.jpg)"></div><div><b style="color:#ff8a8a">血債・${N}</b><p style="margin:6px 0">${N}披頭散髮跪在殿前，懷裡還抱著${s.kid}的小衣裳：「是${X}！求你，殺了她！」</p></div></div>
+ sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(m)}.jpg)"></div><div><b style="color:#ff8a8a">血債・${N}</b><p style="margin:6px 0">${N}披頭散髮跪在殿前，懷裡還抱著${s.kid}的小衣裳：「${courtLine('kidLoss',m,'accuse').replaceAll('{x}',X)}」</p></div></div>
  <button class="btn" style="width:100%;margin-top:6px" data-rv="0">處死${X}</button><button class="btn ghost" style="width:100%;margin-top:6px" data-rv="1">派密探徹查</button><button class="btn ghost" style="width:100%;margin-top:6px" data-rv="2">安撫她，此事不再追究</button>`,true);
- $$('[data-rv]').forEach(b=>b.onclick=()=>{const i=+b.dataset.rv;let r;if(i===0){goneHero(s.id,'exec');const ok=s.id===s.real;wed(m).fav=Math.min(100,wed(m).fav+15);r=`你下令處死${X}。${ok?'':'（多年後你才知道，她是冤枉的）'}`;if(!ok)(S.wrongful??=[]).push({id:s.id,t:S.t});delete hs(m).suspect}
-  else if(i===1){if(S.energy<30){sfx('deny');return toast('能量不足')}S.energy-=30;if(s.id===s.real)r=`密探查實：真兇就是${X}`;else{r=`密探查出：真兇不是${X}，而是${H(s.real).n}！`;s.id=s.real}(S.revQ??=[]).push(m)}
+ $$('[data-rv]').forEach(b=>b.onclick=()=>{const i=+b.dataset.rv;let r;if(i===0){goneHero(s.id,'exec');const ok=s.id===s.real;wed(m).fav=Math.min(100,wed(m).fav+15);r=`你下令處死${X}。${ok?'':'（多年後你才知道，她是冤枉的）'}`;r+=' '+courtLine('kidLoss',m,ok?'revenge':'wrongful');if(!ok)(S.wrongful??=[]).push({id:s.id,t:S.t});delete hs(m).suspect}
+  else if(i===1){if(S.energy<30){sfx('deny');return toast('能量不足')}S.energy-=30;if(s.id===s.real)r=`密探查實：真兇就是${X}`;else{r=`密探查出：真兇不是${X}，而是${H(s.real).n}！`;s.id=s.real}r+=' '+courtLine('kidLoss',s.real,'culprit');(S.revQ??=[]).push(m)}
   else{wed(m).fav=Math.max(0,wed(m).fav-15);(hs(m).dtag??={}).怨懟=S.t;r=`你要${N}放下。她看著你，眼裡最後一點光熄滅了`;hs(m).hateYou=(hs(m).hateYou||0)+1;if(hs(m).hateYou>=2&&(hp(m).inf|0)>=50)rebelFound(m,[],feedPush,`${N}認定你包庇殺子仇人，帶人出走自立。`)}
-  feedPush('【血債】'+r);closeSheet();toast(r);render();cb()})}
+  if(i===2)r+=' '+courtLine('kidLoss',m,'abandoned');feedPush('【血債】'+r);closeSheet();toast(r);render();cb()})}
 {const _hei=haremEvent;haremEvent=function(cb){return _hei(()=>immEvent(()=>revengeEvent(cb)))}}
 /* ===== 勢力：迷霧中可見・天下勢力表・建造掠奪勒索 ===== */
 {const _vi=visible;visible=function(t){if(_vi(t))return true;if(!t||inWorld())return false;return Object.values(S.facs||{}).some(f=>f.alive&&f.seat&&f.seat.r===t.r&&f.seat.c===t.c)}}
@@ -3612,8 +3620,8 @@ function facAI(add){if(inWorld())return;curFacs().forEach(d=>{const f=FS(d.id);i
  if(S.t%5===0&&Math.random()<.25){const town=pick(branchCities());if(town){const st=townStores(town);const n=Math.round(st.food*.3);st.food-=n;add(`【掠奪】${d.n}的游騎劫掠了${cityName(town)}，搶走糧 ${n}`,'neg')}else{const n=Math.min(S.food,R(20,50));S.food-=n;add(`【掠奪】${d.n}劫走了運糧車隊（糧 −${n}）`,'neg')}}
  if(S.t%7===0&&Math.random()<.2&&!S.extort)S.extort={fid:d.id}})}
 function extortEvent(cb){const x=S.extort;S.extort=null;if(!x||!evOK())return cb();const d=FD(x.fid),f=FS(x.fid);if(!d||!f||!f.alive)return cb();const sp=spouses().filter(id=>activePlace(id)==='home'&&!hs(id).immortal);const amt=60+S.t*3;
- sheet(`<h3>${d.n}來使</h3><p style="margin:8px 0">使者昂著頭：「${d.leader||'我主'}說了，送糧 ${amt}，兩家相安無事${sp.length?'；或者，送一位夫人來和親':''}。否則，城下見。」</p><button class="btn" style="width:100%;margin-top:6px" data-ex="pay">送糧 ${amt}</button>${sp.length?`<button class="btn ghost" style="width:100%;margin-top:6px" data-ex="wed">送${H(sp[sp.length-1]).n}去和親</button>`:''}<button class="btn ghost" style="width:100%;margin-top:6px" data-ex="no">趕走使者</button>`,true);
- $$('[data-ex]').forEach(b=>b.onclick=()=>{const k=b.dataset.ex;let r;if(k==='pay'){S.food-=(amt);r=`你送了糧 ${amt}，${d.n}暫時退兵`}else if(k==='wed'){const id=sp[sp.length-1];goneHero(id,'exile',12);S.spouses?.forEach?.(()=>{});spouses().forEach(x=>{if(x!==id)wed(x).fav=Math.max(0,wed(x).fav-8)});r=`${H(id).n}被送去和親。後宮一片死寂，全員寵愛 −8`}else{const tg=pick(ownTiles());if(tg){const sz=150+S.t*6;S.enemies.push({id:'f'+S.uid++,n:`${d.n}・討伐軍`,img:d.img||'fa_rebel',troops:sz,max:sz,atk:55+S.t*2,r:f.seat.r,c:f.seat.c,fac:d.id,tgt:{r:tg.r,c:tg.c}})}r=`你趕走了使者。${d.n}發兵來犯！`}
+ sheet(`<h3>${d.n}來使</h3><p style="margin:8px 0">${scriptLine(GD.extort.grain)} ${sp.length?scriptLine(GD.extort.marry):''}<br>使者昂著頭：「${d.leader||'我主'}說了，送糧 ${amt}，兩家相安無事${sp.length?'；或者，送一位夫人來和親':''}。否則，城下見。」</p><button class="btn" style="width:100%;margin-top:6px" data-ex="pay">送糧 ${amt}</button>${sp.length?`<button class="btn ghost" style="width:100%;margin-top:6px" data-ex="wed">送${H(sp[sp.length-1]).n}去和親</button>`:''}<button class="btn ghost" style="width:100%;margin-top:6px" data-ex="no">趕走使者</button>`,true);
+ $$('[data-ex]').forEach(b=>b.onclick=()=>{const k=b.dataset.ex;let r;if(k==='pay'){S.food-=(amt);r=`你送了糧 ${amt}，${d.n}暫時退兵`}else if(k==='wed'){const id=sp[sp.length-1];goneHero(id,'exile',12);S.spouses?.forEach?.(()=>{});spouses().forEach(x=>{if(x!==id)wed(x).fav=Math.max(0,wed(x).fav-8)});r=`${H(id).n}被送去和親。後宮一片死寂，全員寵愛 −8。${GD.extort.farewell[id]||''}`}else{const tg=pick(ownTiles());if(tg){const sz=150+S.t*6;S.enemies.push({id:'f'+S.uid++,n:`${d.n}・討伐軍`,img:d.img||'fa_rebel',troops:sz,max:sz,atk:55+S.t*2,r:f.seat.r,c:f.seat.c,fac:d.id,tgt:{r:tg.r,c:tg.c}})}r=`你趕走了使者。${d.n}發兵來犯！`}
   feedPush('【勒索】'+r,k==='pay'?'':'neg');closeSheet();toast(r);render();cb()})}
 {const _hef=haremEvent;haremEvent=function(cb){facAI(feedPush);return _hef(()=>extortEvent(cb))}}
 /* ===== 本性・慾壑：永不滿足、越來越重、各具風格 ===== */
@@ -3896,24 +3904,30 @@ const MUT={
  vanity:[['偏執美',(id,add)=>{const r=pick(spouses().filter(x=>x!==id&&S.order.includes(x)));if(!r)return;hurtFav(r,20);(hs(r).dtag??={})['毀容']=S.t;relAdd(r,id,-25);add(`【偏執美・${H(id).n}】${H(r).n}的臉被劃花了（寵愛 −20、留下「毀容」）`)}],
          ['畫皮',(id,add)=>{const r=spouses().filter(x=>x!==id&&S.order.includes(x)).sort((a,b)=>wed(b).fav-wed(a).fav)[0];if(!r)return;const n=Math.min(20,wed(r).fav);wed(r).fav-=n;wed(id).fav=Math.min(100,wed(id).fav+n);setHst(r,'inj',2);mistAdd(id,15);add(`【畫皮・${H(id).n}】奪走了${H(r).n}的容貌與恩寵（${H(r).n}寵愛 −${n}，全轉到她身上）`)}]]};
 const mutStage=id=>{const b=bandOf(id);return b>=5?2:b>=3?1:0};
-const mutName=id=>{const s=mutStage(id);return s?MUT[craveOf(id)][s-1][0]:''};
-function mutTurn(add){spouses().concat(femFree()).forEach(id=>{if(!S.order.includes(id)||hst(id))return;const s=mutStage(id),st=hs(id),k=craveOf(id);const d=st.dtag||(st.dtag={});MUT[k].forEach((m,i)=>{if(i!==s-1&&d[m[0]])delete d[m[0]]});if(!s){st.mutS=0;return}const nm=MUT[k][s-1][0];if(!d[nm])d[nm]=S.t;
- if((st.mutS||0)<s){st.mutS=s;add(`<b style="color:#c07aff">【變質】${H(id).n}的${CRAVE[k][0]}在黑霧裡變了形——如今是「${nm}」</b>`,'neg');if(typeof chronAdd==='function')chronAdd(`${H(id).n}的慾望變質為「${nm}」`)}
- if(Math.random()<(wed(id)?.35:.18)+(s-1)*.2)try{MUT[k][s-1][1](id,add)}catch(e){}})}
+const mutationText=(id,stage)=>MUT_CHAR[id]?.['stage'+stage]||MUT_TEXT[craveOf(id)]?.[stage-1];
+const mutName=id=>{const s=mutStage(id);return s?(mutationText(id,s)?.name||MUT[craveOf(id)][s-1][0]):''};
+function mutTurn(add){spouses().concat(femFree()).forEach(id=>{if(!S.order.includes(id)||hst(id))return;const s=mutStage(id),st=hs(id),k=craveOf(id);const d=st.dtag||(st.dtag={});MUT[k].forEach((m,i)=>{if(i!==s-1||mutationText(id,i+1)?.name!==m[0])delete d[m[0]];if(i!==s-1)delete d[mutationText(id,i+1)?.name]});if(!s){st.mutS=0;return}const text=mutationText(id,s),nm=mutName(id);if(!d[nm])d[nm]=S.t;
+ if((st.mutS||0)<s){st.mutS=s;add(`<b style="color:#c07aff">【變質】${H(id).n}的${CRAVE[k][0]}在黑霧裡變了形——如今是「${nm}」</b> ${text.turn}`,'neg');hxPush(id,scriptLine(text.say),nm);if(typeof chronAdd==='function')chronAdd(`${H(id).n}的慾望變質為「${nm}」`)}
+ st.mutS=s;
+ if(Math.random()<(wed(id)?.35:.18)+(s-1)*.2)try{MUT[k][s-1][1](id,(result,...args)=>{
+  const other=S.order.find(x=>x!==id&&result.includes(H(x).n))||foeOf(id);
+  const lines=text.act.filter(line=>other||!line.includes('{b}'));
+  add((scriptLine(lines)||'').replaceAll('{b}',other?H(other).n:'')+' '+result,...args)
+ })}catch(e){}})}
 {const _hmt=haremEvent;haremEvent=function(cb){try{mutTurn(feedPush);mistSpread(feedPush);mistLordCheck(feedPush)}catch(e){}return _hmt(cb)}}
 /* C. 傳染 */
 function mistSpread(add){const L=S.order.filter(x=>H(x)&&!x.startsWith('kid'));L.forEach(id=>{const b=bandOf(id);if(b<3)return;const near=L.filter(x=>x!==id&&(relG(id,x)>=20||activePlace(x)===activePlace(id)&&wed(x)&&wed(id)));pick([near])&&near.sort(()=>Math.random()-.5).slice(0,b>=5?2:1).forEach(x=>mistAdd(x,b*2));(S.kids||[]).filter(k=>k.mom===id&&S.heroes[k.id||'']).forEach(k=>mistAdd(k.id,b));if(b>=4&&pvOf(id).length)S.pol=(S.pol||0)+1});if((S.pol||0)>=40)L.filter(x=>H(x).sex==='f').forEach(x=>mistAdd(x,1))}
 /* D. 化為黑霧之主 */
-function mistLordCheck(add){spouses().concat(femFree()).forEach(id=>{if(!S.order.includes(id)||hs(id).mistLord)return;const m=mistState(id);if(m.band<6||m.value<340n||Math.random()>.08)return;hs(id).mistLord=1;add(`<b style="color:#ff4a6a">【化霧為主】${H(id).n}徹底被黑霧吞沒，帶著她的人走進霧裡，成了黑霧的主人。擊敗她，或許還能把她帶回來淨化。</b>`,'neg');try{rebelFound(id,S.order.filter(x=>x!==id&&relG(id,x)>=25).slice(0,3),add,`${H(id).n}化為黑霧之主。`)}catch(e){}})}
+function mistLordCheck(add){spouses().concat(femFree()).forEach(id=>{if(!S.order.includes(id)||hs(id).mistLord)return;const m=mistState(id);if(m.band<6||m.value<340n||Math.random()>.08)return;if(!rebelFound(id,S.order.filter(x=>x!==id&&relG(id,x)>=25).slice(0,3),add,`${H(id).n}化為黑霧之主。`))return;hs(id).mistLord=1;add(`<b style="color:#ff4a6a">【化霧為主】${H(id).n}徹底被黑霧吞沒，帶著她的人走進霧裡，成了黑霧的主人。${scriptLine(MISTLORD_TEXT.go)} 「${scriptLine(MISTLORD_TEXT.farewell)}」擊敗她，或許還能把她帶回來淨化。</b>`,'neg');})}
 /* B. 戰場：越深越強，也越可能失控或投向黑霧 */
 {const _m0b=mods0;mods0=function(our,en,M0){M0=_m0b(our,en,M0);if(our&&our.gens){const fs=our.gens.filter(g=>S.heroes[g]&&H(g).sex==='f');let up=0;fs.forEach(g=>{const b=bandOf(g);up+=b*.04});M0.atk+=up;window.__mistBt={gens:fs.slice()}}return M0}}
-{const _bv2=battleVoices;battleVoices=function(ids,win){let h=_bv2(ids,win);const B=window.__mistBt;window.__mistBt=null;if(!B)return h;const N=[];B.gens.forEach(g=>{const b=bandOf(g);if(b<4||!S.order.includes(g))return;const r=Math.random();if(r<(b-3)*.08){const n=Math.min(S.soldiers||0,R(15,40));S.soldiers-=n;N.push(`${H(g).n}在黑霧裡失控，殺紅了眼，連自己人也砍（士兵 −${n}）`)}else if(b>=6&&r<(b-3)*.08+.05&&!hs(g).mistLord){hs(g).mistLord=1;N.push(`${H(g).n}在陣前轉身，走進了敵方的黑霧`);try{rebelFound(g,[],feedPush,`${H(g).n}在戰場上投向黑霧。`)}catch(e){}}});
+{const _bv2=battleVoices;battleVoices=function(ids,win){let h=_bv2(ids,win);const B=window.__mistBt;window.__mistBt=null;if(!B)return h;const N=[];B.gens.forEach(g=>{const b=bandOf(g);if(b<4||!S.order.includes(g))return;const r=Math.random();if(r<(b-3)*.08){const n=Math.min(S.soldiers||0,R(15,40));S.soldiers-=n;N.push(`${scriptLine(BATTLE_MIST_TEXT.rampage).replaceAll('{a}',H(g).n)}（士兵 −${n}）`)}else if(b>=6&&r<(b-3)*.08+.05&&!hs(g).mistLord){if(!rebelFound(g,[],feedPush,`${H(g).n}在戰場上投向黑霧。`))return;hs(g).mistLord=1;N.push(`${scriptLine(BATTLE_MIST_TEXT.defect).replaceAll('{a}',H(g).n)}`);}});
  if(up0(B))N.unshift(`污染之力：她們的傷害提高了`);return N.length?h+`<div class="small" style="color:#c07aff;margin-top:4px">${N.join('<br>')}</div>`:h}}
 const up0=B=>B.gens.some(g=>bandOf(g)>=2);
 /* F. 甜頭：招牌動作與私宅效果隨污染增強 */
 const MAGX=id=>1+bandOf(id)*.1;
 /* A. 看得見：她面板上的污染影響 */
-function mistFxLine(id){const m=mistState(id),b=m.band;if(!b)return'';const L=[`<b style="color:#c07aff">${m.name}</b>（${m.value}）`];const mn=mutName(id);if(mn)L.push(`慾望變質為「<b style="color:#c07aff">${mn}</b>」`);L.push(`出戰傷害 +${b*4}%`);if(b>=4)L.push(`戰場失控 ${(b-3)*8}%`);L.push(`陰毒行動傾向 +${b*20}%`);L.push(`招牌動作與私宅效果 +${b*10}%`);if(b>=3)L.push('會傳染身邊的人');if(H(id).sex==='f')L.push(`身心負荷 ${mistStrain(id)}/10（四圍 −${mistStrain(id)}）`);L.push(mistStatus(id));if(b>=6)L.push('<span style="color:#ff6a7a">隨時可能化為黑霧之主</span>');return`<div class="frame small" style="padding:6px 8px;margin-bottom:8px;border-color:#6a3a8a;line-height:1.6"><b style="color:#c07aff">污染影響</b>　${L.join('・')}</div>`}
+function mistFxLine(id){const m=mistState(id),b=m.band;if(!b)return'';const L=[`<b style="color:#c07aff">${m.name}</b>（${m.value}）`];const mn=mutName(id);if(mn)L.push(`慾望變質為「<b style="color:#c07aff">${mn}</b>」・${mutationText(id,mutStage(id))?.desc||''}`);L.push(`出戰傷害 +${b*4}%`);if(b>=4)L.push(`戰場失控 ${(b-3)*8}%`);L.push(`陰毒行動傾向 +${b*20}%`);L.push(`招牌動作與私宅效果 +${b*10}%`);if(b>=3)L.push('會傳染身邊的人');if(H(id).sex==='f')L.push(`身心負荷 ${mistStrain(id)}/10（四圍 −${mistStrain(id)}）`);L.push(mistStatus(id));if(b>=6)L.push('<span style="color:#ff6a7a">隨時可能化為黑霧之主</span>');return`<div class="frame small" style="padding:6px 8px;margin-bottom:8px;border-color:#6a3a8a;line-height:1.6"><b style="color:#c07aff">污染影響</b>　${L.join('・')}</div>`}
 {const _gs2=gridSheet;gridSheet=function(id){_gs2(id);const fx=mistFxLine(id);if(!fx)return;const f=document.querySelector('#sheetIn .frame.small');if(f)f.insertAdjacentHTML('afterend',fx)}}
 /* ===== 劇情文本 → 真正後果：效果關鍵字與文字推斷 ===== */
 function quietWed(id){if(wed(id)||!H(id)||H(id).sex!=='f')return false;try{onNewSpouse(id)}catch(e){}hs(id).star+=1;hs(id).wed={rank:0,rkMap:"v32",meritTurns:0,fav:70,duty:null,grace:S.t+2,last:S.t,visits:0};hp(id).inf=10;try{charEvents().married(id)}catch(e){}SKC[id]=null;return true}
@@ -4855,7 +4869,7 @@ function personalTurn(add,ids=[...S.order]){
 function hstTurn(report){const add=(msg,c)=>{recordCourt(msg);report(msg,c)};mistTurn(add);charEvents().turn();courtOfficerTurn(add);captiveTurn(add);intrigueTurn(add);rivalTurn(add);schemeTurn(add);localRise(add);personalTurn(add);haremAI(add);ambTurn(add);S.hxN=0;desireTurn(add);facTurn2(add);factionContest(add);factionCouncil(add);cityTurn(add);agendaTurn(add);dutyMigrate();favSync();loveTurn(add);v21Turn(add);dkTurn(add);v23Turn(add);corruptTurn(add);barTurn(add);powerTurn(add);powerEvTurn(add);valEvTurn(add);cycEvTurn(add);pbTurn(add);S.clean0=S.pol===0?(S.clean0||0)+1:0;checkAch2();(T_('h3')&&Math.random()<.3?0:ownEvRoll());S.order.forEach(id=>{const st=hs(id),x=st.hst;if(!x)return;if(x.u<=S.t){add(`${H(id).n}的【${HST[x.k][0]}】狀態解除了`,'pos');st.hst=null;return}const w=wed(id);
   if(x.k==='jail'){if(w)w.fav=Math.max(0,w.fav-3);gainAff(id,-2)}if(x.k==='ban'&&w)w.fav=Math.max(0,w.fav-2);if(x.k==='spoil'){spouses().filter(y=>y!==id).forEach(y=>{wed(y).fav=Math.max(0,wed(y).fav-2)});S.food-=(15)}});
  S.order.forEach(id=>{if(hs(id).traitor&&!unavail(id)&&Math.random()<.14){const f=Math.min(S.food,40),so=Math.min(S.soldiers,30);S.food-=f;S.soldiers-=so;S.lastRaid=-9;add(`【內奸】糧倉帳目出現缺口（糧 −${f}），巡邏路線被敵人摸清（兵力 −${so}），敵襲機率上升……`,'neg')}});
- Object.entries(S.gone||{}).forEach(([id,g])=>{if(g.k==='exile'&&g.u<=S.t){if(Math.random()<.7){delete S.gone[id];S.order.push(id);hs(id).aff=Math.min(hs(id).aff,10);if(wed(id))wed(id).fav=20;add(`${H(id).n}結束流放，風塵僕僕地回到了燈塔`,'pos');hxPush(id,(GD.hstat&&GD.hstat[id]&&GD.hstat[id].exileBack)||'……我回來了。這些日子，我把該想的都想清楚了。','流放歸來')}else{g.k='lost';add(`流放中的${H(id).n}下落不明，再也沒有回來`,'neg')}}})}
+ Object.entries(S.gone||{}).forEach(([id,g])=>{if(g.k==='exile'&&!g.sleep&&g.u<=S.t){if(Math.random()<.7){delete S.gone[id];S.order.push(id);hs(id).aff=Math.min(hs(id).aff,10);if(wed(id))wed(id).fav=20;add(`${H(id).n}結束流放，風塵僕僕地回到了燈塔`,'pos');hxPush(id,(GD.hstat&&GD.hstat[id]&&GD.hstat[id].exileBack)||'……我回來了。這些日子，我把該想的都想清楚了。','流放歸來')}else{g.k='lost';add(`流放中的${H(id).n}下落不明，再也沒有回來`,'neg')}}})}
 function recallExile(id){if(S.ap<1){sfx('deny');return toast('行動力不足')}if(S.energy<60){sfx('deny');return toast('召回需要能量 60')}S.ap--;S.energy-=60;delete S.gone[id];S.order.push(id);hs(id).aff=Math.min(hs(id).aff,15);if(wed(id))wed(id).fav=25;sfx('ok');hxPush(id,'夫君……還記得我。','提前召回');hxShow(()=>render())}
 const stLab=(o,who)=>[o._traitor&&who[o._traitor]?`${H(who[o._traitor]).n}成為內奸`:'',o._affb&&who.b?`${H(who.b).n}好感 ${o._affb>0?'+':''}${o._affb}`:'',...(o._st||[]).map(([r,k,n])=>`${H(who[r]).n}${HST[k][0]} ${n} 旬`),o._exec?`⚠ 處死${H(who[o._exec]).n}（無法挽回、全員好感 −6）`:'',o._exile?`流放${H(who[o._exile[0]]).n} ${o._exile[1]} 旬（可能不再回來）`:'',o._trait?'':''].filter(Boolean);
 function applySt(o,who){if(o._traitor&&who[o._traitor])hs(who[o._traitor]).traitor=true;if(o._affb&&who.b)gainAff(who.b,o._affb);(o._st||[]).forEach(([r,k,n])=>who[r]&&setHst(who[r],k,n));if(o._exec&&who[o._exec])goneHero(who[o._exec],'exec');if(o._exile&&who[o._exile[0]])goneHero(who[o._exile[0]],'exile',o._exile[1]);if(o._clear&&who[o._clear])hs(who[o._clear]).traitor=false}
