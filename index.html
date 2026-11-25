@@ -4063,6 +4063,26 @@ const WACT=[
 function worldAct(id,add){const c=wed(id)?actCtx(id):{...preCtx(id),crave:craveOf(id),ct:craveTier(id)};c.inf=hp(id).inf|0;c.id=id;const L=WACT.map(a=>[a,Math.max(0,a[2](c))]).filter(x=>x[1]>0);const sum=L.reduce((s,x)=>s+x[1],0);if(!sum)return;let r=Math.random()*sum;const[a]=L.find(x=>(r-=x[1])<0)||L[0];let s=null;try{s=a[3](id,MAG(id))}catch(e){s=null}if(!s)return;const st=hs(id);st.heat=(st.heat||0)+1;(st.acts??=[]).push({t:S.t,s,n:a[1],seen:true,world:1});if(st.acts.length>30)st.acts.shift();add(`<b style="color:#8fd0ff">【${H(id).n}・${a[1]}】</b>${s}`,'neg')}
 function worldTurn(add){if(typeof inWorld==='function'&&inWorld())return;spouses().concat(femFree()).forEach(id=>{if(!S.order.includes(id)||hst(id)||busyArmy(id)||activePlace(id)!=='home')return;const n=(wed(id)?1:0)+(Math.random()<(wed(id)?.4:.35)+eraE()*.3?1:0);for(let i=0;i<n;i++)worldAct(id,add)})}
 {const _hwt=haremEvent;haremEvent=function(cb){try{worldTurn(feedPush)}catch(e){}return _hwt(cb)}}
+/* ===== 私兵與私通的實際作用 ===== */
+function pvtTurn(add){let up=0;spouses().concat(femFree()).forEach(id=>{const st=hs(id),n=st.pvTroops||0;if(!n||!S.order.includes(id))return;up+=n;const w=wed(id),fav=w?w.fav:(st.aff|0);
+ const strong=n>=Math.max(50,(S.soldiers||0)*.5),bold=fav<35||(craveOf(id)==='power'&&craveTier(id)>=3)||heatTier(id)>=2;
+ if(strong&&bold&&Math.random()<.08){const clash=Math.min(S.soldiers||0,Math.round(n*.5));S.soldiers-=clash;st.pvTroops=Math.round(n*.7);
+  if(fav<20&&!hs(id).mistLord){add(`<b style="color:#ff6a6a">【兵變・${H(id).n}】</b>帶著 ${n} 名私兵殺出燈塔，自立門戶（我軍在混戰中折損 ${clash}）`,'neg');try{rebelFound(id,S.order.filter(x=>x!==id&&relG(id,x)>=30&&!wed(x)).slice(0,2),add,`${H(id).n}率私兵自立。`);const f=Object.values(S.facs||{}).find(f=>f.lead===id||f.leader===id);if(f)f.troops=(f.troops||0)+n}catch(e){}st.pvTroops=0}
+  else{hp(id).inf=100;S.apPen=(S.apPen||0)+2;const k=pick(Object.keys(POLICY));S.policy={k,until:S.t+6};add(`<b style="color:#ff6a6a">【逼宮・${H(id).n}】</b>私兵圍住了你的寢殿，她拿走了印信，頒布「${POLICY[k][0]}」（你下旬行動 −2、混戰折兵 ${clash}）`,'neg')}}
+ else if(fav>=60&&Math.random()<.15){S.dur=Math.min(S.durMax||100,(S.dur||0)+Math.ceil(n/40));}});
+ if(up){const f=Math.ceil(up/15);S.food-=f;if(Math.random()<.25)add(`【私兵】紅顏們的私兵共 ${up} 人，每旬吃掉糧 ${f}`,'')}
+ /* 私通：分心、洩密、私情之子 */
+ Object.entries(S.aff2||{}).forEach(([k,A])=>{if(!A||A.k===9||A.v<40)return;const[f,m]=k.split('|');if(!S.order.includes(f)||!S.order.includes(m)||!H(m))return;hs(m).aff=Math.max(0,(hs(m).aff|0)-1);if(wed(f)&&S.t%2===0)wed(f).fav=Math.max(0,wed(f).fav-1);relAdd(f,m,1);
+  if(A.v>=80&&Math.random()<.08){const F=(typeof curFacs==='function'?curFacs():[]).filter(d=>FS(d.id)&&FS(d.id).alive);if(F.length){const d=pick(F);FS(d.id).troops=(FS(d.id).troops||0)+60;add(`【洩密】${H(f).n}枕邊的話，經${H(m).n}傳到了${d.n}耳裡（${d.n}兵力 +60）`,'neg')}}})}
+{const _hpt=haremEvent;haremEvent=function(cb){try{pvtTurn(feedPush)}catch(e){}return _hpt(cb)}}
+/* 忠心的私兵幫忙守城 */
+{const _pvd=polEff;polEff=function(key){let v=_pvd(key);if(key==='def'){let n=0;spouses().forEach(id=>{if(S.order.includes(id)&&wed(id).fav>=60)n+=hs(id).pvTroops||0});v+=Math.min(.1,n/2000)}return v}}
+/* 私情之子 */
+INH['私情血脈']=['生父其實是她的情人','魅力 +8；身世一旦揭穿，聲望大跌',{3:8}];
+{const _ki2=kidInh;kidInh=function(k){if(!k.inh&&k.mom&&!k._pc){k._pc=1;const key=Object.keys(S.aff2||{}).find(x=>x.startsWith(k.mom+'|')&&S.aff2[x].v>=50&&S.aff2[x].k!==9);if(key&&Math.random()<.5){const m=key.split('|')[1];k.inh='私情血脈';k.father=m;k.esteem=(k.esteem||0)-10;if(H(m))relAdd(k.mom,m,10);feedPush(`【私情】${H(k.mom).n}生下的孩子，眉眼越看越像${H(m)?H(m).n:'另一個人'}……`,'rum')}}return _ki2(k)}}
+/* 野外清剿先用她自己的私兵 */
+{const W=WACT.find(a=>a[0]==='hunt');if(W){const f=W[3];W[3]=(id,m)=>{const n=hs(id).pvTroops||0;if(n>0){const sv=S.soldiers;S.soldiers=(S.soldiers||0)+n;const r=f(id,m);const used=Math.max(0,(sv+n)-S.soldiers);hs(id).pvTroops=Math.max(0,n-used);S.soldiers=sv-Math.max(0,used-n);return r?r+`（先動用她自己的私兵）`:r}return f(id,m)}}}
+{const _gs3=gridSheet;gridSheet=function(id){_gs3(id);const st=hs(id),L=[];if(st.pvTroops)L.push(`私兵 <b>${st.pvTroops}</b>（每旬吃糧 ${Math.ceil(st.pvTroops/15)}${(wed(id)&&wed(id).fav>=60)?'，忠心時協防燈塔':''}${st.pvTroops>=Math.max(50,(S.soldiers||0)*.5)?'・<span style="color:#ff6a6a">足以逼宮</span>':''}）`);Object.entries(S.aff2||{}).forEach(([k,A])=>{if(k.startsWith(id+'|')&&A.k!==9&&A.v>=30&&((S.spy||{})[id]>S.t||A.k>=1)){const m=k.split('|')[1];if(H(m))L.push(`<span style="color:#ff9ad0">私情：${H(m).n}（${A.v}）${A.v>=80?'・會洩密':''}${A.v>=100?'・可能私奔':''}</span>`)}});if(!L.length)return;const f=document.querySelector('#sheetIn .frame.small');if(f)f.insertAdjacentHTML('afterend',`<div class="frame small" style="padding:6px 8px;margin-bottom:8px;line-height:1.6">${L.join('<br>')}</div>`)}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
