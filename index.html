@@ -3835,6 +3835,15 @@ function reqEvent(cb){const q=(S.reqQ||[]).filter(x=>S.order.includes(x.id));S.r
   feedPush(`【請求・${N}】${r.t} → ${s}`);closeSheet();render();step(i+1)})};step(0)}
 {const _hrq=haremEvent;haremEvent=function(cb){try{reqTurn()}catch(e){}return _hrq(()=>reqEvent(cb))}}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-pbb]');if(!b||b.closest('#view'))return;e.stopPropagation();pbBuildSheet(b.dataset.pbb)},true);
+/* ===== 介面整理：後宮四大分頁＋子分頁；紅顏面板按鈕收納 ===== */
+const HGRP=[['群像',[['群像','卡片'],['總表','表格'],['一覽','名冊'],['冷宮行宮','冷宮行宮']]],['動靜',[['私宅','她們在做什麼'],['動態','宮中動態'],['心願','心願']]],['關係',[['關係','關係'],['勢力圖','勢力圖'],['結義兄弟','結義兄弟']]],['宮產',[['建築','建築私宅'],['珍寶','珍寶']]]];
+const hGrpOf=t=>(HGRP.find(g=>g[1].some(s=>s[0]===t))||HGRP[0])[0];
+{const _hv=haremView;haremView=function(){if(!S.hTab||!HGRP.some(g=>g[1].some(s=>s[0]===S.hTab)))S.hTab='群像';const out=_hv();const g=hGrpOf(S.hTab);(S.hLast??={})[g]=S.hTab;
+ const pvNew=spouses().concat(typeof femFree==='function'?femFree():[]).reduce((s,x)=>s+(hs(x).acts||[]).filter(o=>o.seen!==false&&o.t>(S.pvLook??-1)).length,0);
+ const top=`<div class="ltabs hgrp">${HGRP.map(([n,subs])=>`<button class="${g===n?'on':''}" data-ht="${(S.hLast||{})[n]||subs[0][0]}">${n}${n==='動靜'&&pvNew&&g!=='動靜'?`<b style="color:#ff6a7a"> ●${pvNew>99?'99+':pvNew}</b>`:''}</button>`).join('')}</div><div class="hsub">${HGRP.find(x=>x[0]===g)[1].map(([k,l])=>`<button class="${S.hTab===k?'on':''}" data-ht="${k}">${l}</button>`).join('')}</div>`;
+ return out.replace(/^<div class="ltabs">[\s\S]*?<\/div>/,top)}}
+(()=>{const st=document.createElement('style');st.textContent=`.ltabs.hgrp{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.ltabs.hgrp button{font-size:15px;padding:9px 0}.hsub{display:flex;gap:6px;overflow-x:auto;margin:6px 0 8px;padding-bottom:2px}.hsub button{flex:none;background:transparent;border:1px solid var(--line,#5a4a30);color:var(--dim,#aaa);border-radius:14px;padding:4px 12px;font-size:13px}.hsub button.on{background:var(--gold2,#d9b56a);color:#1a1408;border-color:transparent}.gmore{display:none;grid-column:1/-1}.gmore.on{display:contents}`;document.head.appendChild(st)})();
+{const _gs=gridSheet;gridSheet=function(id){_gs(id);const box=document.querySelector('#sheetIn .gacts');if(!box)return;const keep=['visit','gift','spend','meet'];const more=[...box.querySelectorAll('[data-ga]')].filter(b=>!keep.includes(b.dataset.ga));if(more.length<2)return;const wrap=document.createElement('div');wrap.className='gmore';more.forEach(b=>wrap.appendChild(b));const tg=document.createElement('button');tg.className='btn ghost';tg.textContent='更多 ▾';tg.onclick=()=>{wrap.classList.toggle('on');tg.textContent=wrap.classList.contains('on')?'收起 ▴':'更多 ▾'};box.appendChild(tg);box.appendChild(wrap)}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
