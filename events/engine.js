@@ -60,7 +60,11 @@ window.makeCharacterEvents = function (game) {
    cast.c=rolesText.includes('{c}')?courtier:undefined;
    if(!rolesText.includes('{b}'))cast.b=undefined;
   }
-  if(narrative&&(key==='heirAndFamily'||id==='liji'&&key==='firstPowerMove')){
+  if(narrative&&key==='heirAndFamily'&&['liurushi','zhangsun'].includes(id)){
+   const child=(S.kids||[]).find(k=>k.mom===id&&!k.adult);
+   if(!child)return false;
+   cast.heir=child.id;
+  }else if(narrative&&(key==='heirAndFamily'||id==='liji'&&key==='firstPowerMove')){
    const olderHeir=['liji','xiaji','mibazi'].includes(id);
    const child=(S.kids||[]).find(k=>k.mom!==id&&S.order.includes(k.mom)&&wed(k.mom)&&(id==='jiananfeng'||(olderHeir?!!k.adult:!k.adult)));
    if(!child)return false;
@@ -176,7 +180,7 @@ window.makeCharacterEvents = function (game) {
    S.packQueue.shift();apply(e.id,c.effects,e.cast);consequence(e,i,c);const vd=c.path?'':verdict(e.id,c.text,e.cast);if(vd)feedPush(vd,'neg');
    if(e.key==='tragedies'&&e.variant==='公開羞辱')(hs(e.id).packFlags??={}).permanentFall=true;
    const permanent=e.key==='tragedies'&&entries[e.id].tragedies[e.variant].permanentState;
-   if(permanent)(hs(e.id).packStates??={})[permanent.state]=permanent.effect;
+   if(permanent)(hs(e.id).packStates??={})[permanent.state]=fill(permanent.effect);
    const result=lines([c.outcome,d.follow,permanent?'永久狀態・'+permanent.state+'：'+permanent.effect:null,vd]).map(fill).join(' ');const F=follow(e,c,d);
    feedPush('【'+H(e.id).n+'】'+fill(d.title)+(result?'・'+result:''));save();closeSheet();
    if(!result&&!F)return show(next,n+1);
