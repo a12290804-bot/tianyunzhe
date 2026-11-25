@@ -3737,7 +3737,7 @@ function preTurn(add){if(typeof inWorld==='function'&&inWorld())return;femFree()
 /* 盯梢：你去找誰她都知道 */
 {const _wsp=wedVisit;wedVisit=function(id){const r=_wsp(id);try{Object.entries(S.spyOn||{}).forEach(([w,u])=>{if(u>S.t&&w!==id&&wed(w)&&S.order.includes(w)){relAdd(w,id,-5);setMd(w,'吃醋');const ww=wed(w);ww.fav=Math.max(0,ww.fav-2)}})}catch(e){}return r}}
 /* ===== 紅顏全面自主 v2：招牌動作・連鎖報復・介入・後宮大動作・軟禁天運者 ===== */
-const MAG=id=>Math.min(2.4,(wed(id)?1.5:.8)*(1+heatTier(id)*.2)*(1+(hs(id)&&H(id)?mistState(id).band:0)*.06));
+const MAG=id=>{const h=heatOf(id),ht=h>=80?3+(h-80)/60:heatTier(id);const m=(wed(id)?1.5:.8)*(1+ht*.2)*(1+(hs(id)&&H(id)?mistState(id).band:0)*.06);return m<=2.4?m:2.4+Math.log(m/2.4)*1.5};
 const foeOf=id=>{const L=S.order.filter(x=>x!==id&&H(x)&&H(x).sex==='f'&&!x.startsWith('kid'));return L.sort((a,b)=>relG(id,a)-relG(id,b))[0]};
 const hurtFav=(x,n)=>{if(wed(x)){const w=wed(x);w.fav=Math.max(0,w.fav-n)}else{const s=hs(x);s.aff=Math.max(0,(s.aff|0)-n)}};
 function harm(by,vs,sev){if(!vs||!S.order.includes(vs))return;(S.retQ??=[]).push({by:vs,vs:by,at:S.t+1,sev});S.order.filter(x=>x!==vs&&x!==by&&relG(vs,x)>=25).forEach(x=>relAdd(x,by,-4))}
@@ -4206,7 +4206,7 @@ const JTY={test:['偷取一點',3,3,id=>`你醒來時指尖多了一道細口。
 function jingAct(id){const T=loveTypes(id);for(const t of T)if(JTY[t]&&Math.random()<.5)return JTY[t];return JACT[craveOf(id)]||JTY.test}
 function jingTurn(add){S.jing=jing();jingAdd(6);if(S.immMethod||(S.order.some(isImmY))||(S.t>12&&Math.random()<.04))if(!S.jingKnown){S.jingKnown=S.t;add('<b style="color:#ff6a9a">【流言】</b>宮裡開始傳：天運者的精血能延年益壽，飲得夠多，就能和他一樣不死不滅','neg')}
  if(!S.jingKnown)return;const rule=S.jingRule||'free';let used=0;const W=spouses().concat(femFree().filter(x=>(hs(x).aff|0)>=50)).filter(x=>S.order.includes(x)&&!hst(x));
- W.forEach(id=>{const st=hs(id);if(isImmY(id)&&Math.random()<.6)return;if(Math.random()>.36*Math.min(1.6,MAG(id)))return;const[n,cost,gain,txt]=jingAct(id);
+ W.forEach(id=>{const st=hs(id);if(isImmY(id))return;if(Math.random()>.36*Math.min(1.6,MAG(id)))return;const[n,cost,gain,txt]=jingAct(id);
   let deny=rule==='none'||(rule==='one'&&S.jingOne!==id)||(rule==='limit'&&used+cost>15);
   if(deny){const T=loveTypes(id);if(T.some(t=>['dominate','cage','sacrifice','doom'].includes(t))||craveOf(id)==='own'){add(`<b style="color:#ff6a6a">【精氣・${H(id).n}】</b>你說不給。她就自己來拿——${txt(id).replace(/^.*?。/,'')}`,'neg');weiAdd(-2);if(wed(id))wed(id).fav=Math.min(100,wed(id).fav+2)}else{if(wed(id))wed(id).fav=Math.max(0,wed(id).fav-3);st.emo=pick(['不滿','委屈']);st.emoT=S.t;return}}
   used+=cost;jingAdd(-cost);st.lifeP=Math.min(100,(st.lifeP||0)+gain);(st.acts??=[]).push({t:S.t,s:n,n:'精氣'});add(`<b style="color:#ff6a9a">【精氣・${H(id).n}】</b>${T48('JING_TEXT','act',id,null,txt(id))}（精 −${cost}，她的長生 ${st.lifeP}%）`);
@@ -4234,6 +4234,33 @@ document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest
 {const _rwj=render;render=function(...a){const r=_rwj.apply(this,a);try{let el=document.getElementById('jingS');const lord=document.querySelector('.res.lord');if(lord&&!el){lord.insertAdjacentHTML('afterend','<span class="res" id="jingS" style="cursor:pointer"></span>');el=document.getElementById('jingS')}if(el){el.textContent='精'+jing();el.style.color=jing()<15?'#ff4a6a':jing()<40?'#ff9a6a':'#ff9ad0'}}catch(e){}return r}}
 {const _wvj=wedVisit;wedVisit=function(id){const r=_wvj.apply(this,arguments);if(S.jingKnown)jingAdd(-3);return r}}
 {const _hj=haremEvent;haremEvent=function(cb){try{jingTurn(feedPush)}catch(e){console.error(e)}return _hj(cb)}}
+/* ===== 永不滿足：慾望沒有上限、給滿了還要、不死之後要更多、華彩不斷 ===== */
+const BLOOMD=['','肌膚透出瑩潤的光，氣色像清晨剛開的花','身段越發豐盈曼妙，走起路來像水在流','眉眼一天比一天穠麗，看一眼就移不開','容顏停在最美的那一刻，時間在她身上不再走動','艷光逼人，宮人經過都不敢抬頭直視她'];
+const bloomLv=id=>Math.floor(((hs(id)&&hs(id).bloom)||0)/20);
+const bloomDesc=id=>{const l=bloomLv(id);return T48('BLOOM_TEXT','lv',id,String(Math.min(l,6)),l<=0?'':l<BLOOMD.length?BLOOMD[l]:`美得已經不像人間該有的模樣（第 ${l} 重）`)};
+function bloomAdd(id,n,add){const st=hs(id);if(!st)return;const l0=bloomLv(id);st.bloom=(st.bloom||0)+n;const l1=bloomLv(id);if(l1>l0){st.trained??={};st.trained.cha=(st.trained.cha||0)+2;const k=pick(['cmd','str','int','pol']);st.trained[k]=(st.trained[k]||0)+1;if(wed(id))hp(id).inf=Math.min(100,(hp(id).inf|0)+3);spouses().filter(x=>x!==id&&bloomLv(x)<l1).forEach(x=>{relAdd(x,id,-3);hs(x).heat=(hs(x).heat||0)+1});(add||feedPush)(`<b style="color:#ffd0f0">【華彩・${H(id).n}】</b>${bloomDesc(id)}（魅力 +2、能力提升、其他夫人更嫉妒）`)}}
+const AFTN={excl:'要你只屬於她',kid:'要你的血養她的孩子',hoard:'囤積更多份額',merge:'要和你融為一體',vain:'要更美'};
+function afterOf(id){const st=hs(id);if(st.after)return st.after;const cr=craveOf(id),T=loveTypes(id);let a=['own','blood'].includes(cr)||T.includes('cage')?'excl':(S.kids||[]).some(k=>k.mom===id)&&Math.random()<.6?'kid':['greed','power'].includes(cr)?'hoard':cr==='vanity'?'vain':'merge';st.after=a;feedPush(`<b style="color:#ffd76a">【不死之後・${H(id).n}】</b>不死還不夠。她現在${AFTN[a]}`,'neg');return a}
+function jingAfter(id,add,rule){const st=hs(id),N=H(id).n,a=afterOf(id);const deny=rule==='none'||(rule==='one'&&S.jingOne!==id)||(rule==='limit'&&jing()<60);if(deny&&Math.random()<.5){st.emo='不滿';st.emoT=S.t;return}
+ const cost=R(6,11);jingAdd(-cost);st.lifeP=100;let s='';
+ if(a==='excl'){const o=pick(spouses().filter(x=>x!==id&&(hs(x).lifeP||0)>0&&!isImmY(x)));if(o){hs(o).lifeP=Math.max(0,hs(o).lifeP-15);relAdd(o,id,-10);if(Math.random()<.3){setHst(o,'inj',1);harm(id,o,2)}s=`砸了${H(o).n}的丹爐：「不准別人和你一樣。」（${H(o).n}長生 −15）`}else s='把你按在懷裡，不准任何人再靠近你一步'}
+ else if(a==='kid'){const k=(S.kids||[]).filter(x=>x.mom===id).slice(-1)[0];if(k){k.wen=(k.wen||0)+2;k.wu=(k.wu||0)+2;s=`把你的血一滴一滴餵給${k.n}（${k.n}文武 +2）`}else{if(wed(id)&&!(S.reqQ||[]).some(q=>q.id===id))(S.reqQ??=[]).push({id,k:'child',...REQT.child.ask(id),at:S.t});s='說她要一個流著你的血、也不會死的孩子'}}
+ else if(a==='hoard'){st.hoard=(st.hoard||0)+cost;jingAdd(-3);if(st.hoard>=30&&Math.random()<.4){st.hoard-=30;S.food+=60;const f=pick(Object.keys(S.facs||{}).filter(k=>FS(k)&&FS(k).alive));if(f)FS(f).troops+=40;S.jingSold=(S.jingSold||0)+1;s='把囤了很久的血整批賣了出去（糧 +60，某敵方勢力兵力 +40）'}else s=`又多要了一份，她的私庫裡已經存了 ${st.hoard} 份你的血`}
+ else if(a==='merge'){jingAdd(-4);if(!S.house&&wed(id)&&Math.random()<.15){S.house={by:id,t:S.t};s='說要和你融為一體，把你關進了寢殿'}else s='貼著你的心口說：還不夠，還要更近'}
+ else{bloomAdd(id,4,add);s='用你的血一遍又一遍地洗臉，鏡子裡的她連自己都認不出來'}
+ add(`<b style="color:#ffd76a">【不死者・${N}】</b>${T48('JING_TEXT','after',id,a,s)}（精 −${cost}）`,'neg');bloomAdd(id,R(5,9),add)}
+/* 精氣行為都會帶來華彩；不死者改走「不死之後」 */
+{const _jt=jingTurn;jingTurn=function(add){const pre={};S.order.forEach(x=>{if(hs(x))pre[x]=hs(x).lifeP||0});const imm=S.order.filter(x=>isImmY(x));const keep={};imm.forEach(x=>{keep[x]=hs(x).immortal});
+ _jt(add);S.order.forEach(x=>{const d=(hs(x)&&hs(x).lifeP||0)-(pre[x]||0);if(d>0)bloomAdd(x,Math.ceil(d/2),add)});
+ if(S.jingKnown)imm.forEach(id=>{if(!hst(id)&&Math.random()<.45*Math.min(2,MAG(id)))jingAfter(id,add,S.jingRule||'free')})}}
+/* 給滿了還要：寵愛、權勢、情深、長生到頂就反撲 */
+function notEnoughTurn(add){spouses().filter(x=>S.order.includes(x)&&!hst(x)).forEach(id=>{const w=wed(id),st=hs(id),N=H(id).n;
+ if(w.fav>=100){w.fav=86;st.heat=(st.heat||0)+3;const k=pick(['office','gift','build','troops','night','child'].filter(k=>REQT[k]));if(k&&!(S.reqQ||[]).some(q=>q.id===id))(S.reqQ??=[]).push({id,k,...REQT[k].ask(id),at:S.t});add(`<b style="color:#ff9ad0">【還不夠・${N}】</b>你把所有寵愛都給了她。她摸著你的臉說：「……就這樣？」（寵愛回落、她提出新的要求）`,'neg')}
+ if((hp(id).inf|0)>=100){hp(id).inf=90;st.heat=(st.heat||0)+3;weiAdd(-2);add(`<b style="color:#ff9ad0">【還不夠・${N}】</b>權勢已經到頂，她開始盯著你的位子（威 −2）`,'neg');if(!S.house&&Math.random()<.2)S.house={by:id,t:S.t}}
+ if((w.love||0)>=3600&&(st.loveNE||0)<=S.t-6){st.loveNE=S.t;st.heat=(st.heat||0)+2;add(`<b style="color:#ff9ad0">【還不夠・${N}】</b>她愛你愛到了盡頭，卻說：「我想再多愛你一點，你要給我更多理由。」`,'neg')}})}
+{const _hne=haremEvent;haremEvent=function(cb){try{notEnoughTurn(feedPush)}catch(e){console.error(e)}return _hne(cb)}}
+/* 華彩顯示 */
+{const _gs6=gridSheet;gridSheet=function(id){_gs6(id);const l=bloomLv(id);if(l<=0||!S.order.includes(id))return;const box=document.querySelector('#sheetIn .frame.small');if(!box)return;box.insertAdjacentHTML('afterend',`<div class="frame small" style="padding:6px 8px;margin-bottom:8px;border-color:#ffd0f0"><b style="color:#ffd0f0">華彩 ${l} 階</b>・${bloomDesc(id)}${hs(id).after?`<div style="color:#ffd76a">不死之後：${AFTN[hs(id).after]}</div>`:''}</div>`)}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
