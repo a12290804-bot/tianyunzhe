@@ -2321,8 +2321,8 @@ function agendaCard(id){const h=H(id);if(wed(id)&&h.sex==='f')return'';const st=
 const AGE={
  請戰:q=>({img:'ev_sortie',tag:'私心・請戰',line:agLine(q.id,'請戰')||'末將請命出戰！給我一支兵馬，不出三旬，提敵首來見。',opts:[['准其出征（他率新部隊攻向最近的敵人，好感 +6）',()=>{const r=sortie(q.id,true);if(!r)return'沒有合適的目標或兵力不足';gainAff(q.id,6);return`${H(q.id).n}率 ${r.n} 人出征`}],['駁回（好感 −4、野心 +3）',()=>{gainAff(q.id,-4);const st=hs(q.id);st.ambUp=(st.ambUp||0)+3}]]}),
  貪墨:q=>({img:'ev_graft',tag:'私心・貪墨',col:'var(--blood)',line:agLine(q.id,'貪墨')||'……主公明鑒，那些糧草只是暫時周轉，末將正要補回。',desc:`查實私吞糧草共 ${q.amt}。`,opts:[[`嚴懲（追回 ${q.amt}、好感 −15、野心 −8）`,()=>{const st=hs(q.id);S.food+=st.graft||0;st.graft=0;gainAff(q.id,-15);st.ambUp=(st.ambUp||0)-8}],[`罰俸（追回一半、好感 −5）`,()=>{const st=hs(q.id);S.food+=Math.round((st.graft||0)/2);st.graft=0;gainAff(q.id,-5)}],['罷官下獄（追回全部、關押 4 旬、好感 −20）',()=>{const st=hs(q.id);S.food+=st.graft||0;st.graft=0;if(offOf(q.id))S.off[offOf(q.id)]=null;setHst(q.id,'jail',4);gainAff(q.id,-20)}],['包庇（他好感 +5，其他人好感 −2）',()=>{gainAff(q.id,5);S.order.filter(x=>x!==q.id).forEach(x=>gainAff(x,-2))}]]}),
- 諫言:q=>{const tp=pick(['後宮干政','賦役太重','用兵太急','賞罰不明']);return{img:'ev_remonstrate',tag:'私心・諫言',line:agLine(q.id,'諫言')||`主公近來${tp==='後宮干政'?'太縱著後宮了，枕邊風吹進了朝堂':tp==='賦役太重'?'徵發太重，流民都在怨':tp==='用兵太急'?'用兵太急，將士疲於奔命':'賞罰不明，眾將心裡不服'}。臣不得不言。`,desc:`諫言主題：${tp}`,opts:[['納諫（糧 −20、污染 −4、他好感 +8）',()=>{S.food=Math.max(0,S.food-20);S.pol=Math.max(0,S.pol-4);gainAff(q.id,8);if(tp==='後宮干政')spouses().forEach(x=>{const P=hp(x);P.inf=Math.max(0,P.inf-8)})}],['不予理會（好感 −6）',()=>gainAff(q.id,-6)],['當眾斥責（好感 −12，重名節的人好感 −3）',()=>{gainAff(q.id,-12);S.order.filter(x=>x!==q.id&&hs(x)&&hs(x).goal==='清名').forEach(x=>gainAff(x,-3))}]]}},
- 請辭:q=>({img:'ev_resign',tag:'私心・請辭',col:'var(--blood)',line:agLine(q.id,'請辭')||'這座燈塔已經不需要我了。請主公放我歸去吧。',opts:[[`挽留（${S.gifts>0?'禮物 −1':'糧 −40'}、好感 +10）`,()=>{if(S.gifts>0)S.gifts--;else S.food=Math.max(0,S.food-40);gainAff(q.id,10)}],['准他辭去（之後可在朝堂召回）',()=>{goneHero(q.id,'resign');return`${H(q.id).n}離開了燈塔`}]]})
+ 諫言:q=>{const tp=pick(['後宮干政','賦役太重','用兵太急','賞罰不明']);return{img:'ev_remonstrate',tag:'私心・諫言',line:agLine(q.id,'諫言')||`主公近來${tp==='後宮干政'?'太縱著後宮了，枕邊風吹進了朝堂':tp==='賦役太重'?'徵發太重，流民都在怨':tp==='用兵太急'?'用兵太急，將士疲於奔命':'賞罰不明，眾將心裡不服'}。臣不得不言。`,desc:`諫言主題：${tp}`,opts:[['納諫（糧 −20、污染 −4、他好感 +8）',()=>{S.food-=(20);S.pol=Math.max(0,S.pol-4);gainAff(q.id,8);if(tp==='後宮干政')spouses().forEach(x=>{const P=hp(x);P.inf=Math.max(0,P.inf-8)})}],['不予理會（好感 −6）',()=>gainAff(q.id,-6)],['當眾斥責（好感 −12，重名節的人好感 −3）',()=>{gainAff(q.id,-12);S.order.filter(x=>x!==q.id&&hs(x)&&hs(x).goal==='清名').forEach(x=>gainAff(x,-3))}]]}},
+ 請辭:q=>({img:'ev_resign',tag:'私心・請辭',col:'var(--blood)',line:agLine(q.id,'請辭')||'這座燈塔已經不需要我了。請主公放我歸去吧。',opts:[[`挽留（${S.gifts>0?'禮物 −1':'糧 −40'}、好感 +10）`,()=>{if(S.gifts>0)S.gifts--;else S.food-=(40);gainAff(q.id,10)}],['准他辭去（之後可在朝堂召回）',()=>{goneHero(q.id,'resign');return`${H(q.id).n}離開了燈塔`}]]})
 };
 function agSheet(id,D,nx){sfx('page');sheet(`<div class="evimg" style="background-image:url(img/${D.img}.jpg)"></div><div class="dlg" style="margin-top:-6px"><div class="pic" style="background-image:url(img/${face(id)}.jpg)"></div><div><div class="small" style="letter-spacing:.2em;color:${D.col||'var(--gold2)'}">${D.tag}</div><h3>${D.who||H(id).n}</h3><p style="margin-top:6px">「${D.line}」</p>${D.desc?`<p class="small" style="margin-top:4px">${D.desc}</p>`:''}</div></div><div style="display:grid;gap:8px">${D.opts.map((o,i)=>`<button class="btn ${i?'ghost':''}" data-ao="${i}">${o[0]}</button>`).join('')}</div>`,true);
  $$('#sheetIn [data-ao]').forEach(b=>b.onclick=()=>{const o=D.opts[+b.dataset.ao];closeSheet();const r=o[1]();if(typeof r==='string')toast(r);save();render();setTimeout(nx,250)})}
@@ -2626,7 +2626,7 @@ function doIA(id,k){const w=wed(id),h=H(id);if(!w)return;if(S.ap<1){sfx('deny');
  if(k==='art'){love+=Math.round((cha+int)/25);extra='她的才藝讓你心曠神怡'}
  if(k==='drill'){if(str>=60){S.train=Math.min(100,S.train+3);extra='訓練度 +3'}else{love-=5;fav+=3;extra='她不擅武藝，撒嬌推辭'}}
  if(k==='court'){const f=Math.round(pol/3);S.food+=f;extra=`糧 +${f}`;if(pol>=80){S.talentFrac=(S.talentFrac||0)+.3;extra+='、天賦進度 +0.3'}}
- if(k==='tour'){w.tourN=(w.tourN||0)+1;S.food=Math.max(0,S.food-10);S.pop+=5;S.popIn=(S.popIn||0)+5;extra='糧 −10、流民 +5'}
+ if(k==='tour'){w.tourN=(w.tourN||0)+1;S.food-=(10);S.pop+=5;S.popIn=(S.popIn||0)+5;extra='糧 −10、流民 +5'}
  if(k==='comfort'){const sad=w.fav<50||['幽怨','怨恨','吃醋'].includes(mood(id));if(sad){fav+=12;love+=15;extra='她的心結鬆開了'}else{fav-=2;extra='她覺得你小題大作，卻也有點開心'}}
  if(k==='dress'){love+=5;if(ntagAll(id).includes('虛榮')){love+=10;extra='她最愛這種被捧在手心的感覺'}}
  w.fav=clamp(w.fav+fav,0,100);loveAdd(id,love);gainAff(id,2);
@@ -3248,7 +3248,7 @@ function nemJudge(k,cb){S.nemDone[k]=S.t;const N=NEM[k],her=N.who.find(x=>S.orde
 const FEST={1:['上元燈會','滿城花燈，夫人們提著燈籠在宮道上等你。'],18:['七夕乞巧','鵲橋夜，宮中女子對月穿針，偷偷許願。'],22:['中秋賞月','月滿燈塔，夫人們備好月餅與桂花酒。'],35:['除夕守歲','黑霧外的年關，宮裡仍要守歲迎新。']};
 function festival2(cb){const f=FEST[S.t%36];if(!f||S.festT2===S.t)return cb();S.festT2=S.t;const sp=spouses().filter(id=>activePlace(id)==='home'&&audienceOK(id)&&!wed(id).cold);if(!sp.length)return cb();
  sheet(`<h2>${f[0]}</h2><p style="margin:8px 0">${f[1]}</p><button class="btn" style="width:100%;margin-top:6px" data-fs="all">與眾同樂（糧 40：全員寵愛 +5）</button><div class="small" style="color:var(--gold2);margin-top:8px">只陪一人（她寵愛 +15、情深大增；其他人 −4）</div><div>${sp.map(id=>`<button class="btn ghost sm" style="margin:3px" data-fs="${id}">${H(id).n}</button>`).join('')}</div><button class="btn ghost" style="width:100%;margin-top:6px" data-fs="no">照常理政（能量 +20，全員寵愛 −2）</button>`,true);
- $$('[data-fs]').forEach(b=>b.onclick=()=>{const k=b.dataset.fs;let r;if(k==='all'){S.food=Math.max(0,S.food-40);sp.forEach(x=>wed(x).fav=Math.min(100,wed(x).fav+5));r=`${f[0]}・與眾同樂，全員寵愛 +5`}
+ $$('[data-fs]').forEach(b=>b.onclick=()=>{const k=b.dataset.fs;let r;if(k==='all'){S.food-=(40);sp.forEach(x=>wed(x).fav=Math.min(100,wed(x).fav+5));r=`${f[0]}・與眾同樂，全員寵愛 +5`}
   else if(k==='no'){S.energy+=20;sp.forEach(x=>wed(x).fav=Math.max(0,wed(x).fav-2));r=`${f[0]}・你在書房度過，全員寵愛 −2`}
   else{sp.forEach(x=>{if(x===k){wed(x).fav=Math.min(100,wed(x).fav+15);loveAdd(x,120,true)}else{wed(x).fav=Math.max(0,wed(x).fav-4);relAdd(x,k,-5)}});r=`${f[0]}・你只陪著${H(k).n}，其他人寵愛 −4`}
   feedPush('【節慶】'+r);if(typeof chronAdd==='function')chronAdd('【節慶】'+r);closeSheet();toast(r);render();cb()})}
@@ -3284,7 +3284,7 @@ function spendSheet(id){const sp=wed(id)&&H(id).sex==='f',w=wed(id),c=sp?cyc(id)
   ['教她騎射',()=>{fv(5);hs(id).exp=(hs(id).exp||0)+20;return`${N}在馬背上驚叫著抱住你的腰。寵愛 +5`}],
   ['陪她夜話',()=>{fv(6);const d=typeof desire==='function'?desire(id):null;if(Math.random()<.4){(S.spy??={})[id]=S.t+3;return`${N}靠在你懷裡，說出了心裡藏著的事（密報 3 旬）`}return`${N}說了許多小時候的事${d?'，還提到她'+d[1]:''}。寵愛 +6`}],
   ['微服出巡',()=>{fv(8);S.food+=10;return`你們換了便服混進市集，${N}玩得像個孩子。寵愛 +8`}]]:[
-  ['切磋武藝',()=>{fv(5);hs(id).exp=(hs(id).exp||0)+30;return`${N}和你過了幾招，好感 +5`}],['賜酒',()=>{S.food=Math.max(0,S.food-10);fv(7);return`${N}一飲而盡，好感 +7`}],['論兵',()=>{S.train=Math.min(100,(S.train||0)+3);fv(3);return`你們談到深夜，訓練度 +3、好感 +3`}],['巡營',()=>{fv(4);S.soldiers+=10;return`${N}帶你巡了一圈營帳，兵 +10、好感 +4`}]];
+  ['切磋武藝',()=>{fv(5);hs(id).exp=(hs(id).exp||0)+30;return`${N}和你過了幾招，好感 +5`}],['賜酒',()=>{S.food-=(10);fv(7);return`${N}一飲而盡，好感 +7`}],['論兵',()=>{S.train=Math.min(100,(S.train||0)+3);fv(3);return`你們談到深夜，訓練度 +3、好感 +3`}],['巡營',()=>{fv(4);S.soldiers+=10;return`${N}帶你巡了一圈營帳，兵 +10、好感 +4`}]];
  const CY=sp?(c===0?[['🩸 熬紅糖薑湯',()=>{fv(8);setMd(id,'平靜');return`${N}捧著湯碗，難得對你撒了嬌。寵愛 +8、心境平靜`}],['🩸 讓她好好休息',()=>{fv(4);const v=BigInt(hs(id).mist||0)-5n;hs(id).mist=String(v<0n?0n:v);return`你沒打擾她，只讓人送去暖爐。寵愛 +4、污染 −5`}]]
   :c===1?[['🌸 共度良宵',()=>{fv(8);(S.vh=S.vh||[]).push(id);w.visits=(w.visits||0)+1;loveAdd(id,60,true);if(!w.preg&&w.fav>=60&&Math.random()<.18){w.preg=S.t+6;return`${N}有喜了！寵愛 +8`}return`那一夜燭火很晚才熄。寵愛 +8`}],['🌸 陪她看星',()=>{fv(6);return`她說今夜的星特別亮。寵愛 +6`}]]
   :[['🌙 哄她開心',()=>{setMd(id,'平靜');fv(4);return`${N}的脾氣慢慢消了。心境平靜、寵愛 +4`}],['🌙 任她撒氣',()=>{fv(10);loveAdd(id,40,true);return`她摔了兩個杯子，最後哭著撲進你懷裡。寵愛 +10`}]]):[];
@@ -3429,14 +3429,14 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
 const AUTOACT=[
  // [key,名稱,私密?,權重函式,執行]
  ['seek','主動求見侍寢',0,(c)=>c.fav/40+c.love*.4+(c.cy===1?2:0)+c.has('恃寵','痴魔','多情')*1.5,(id,c)=>{const w=wed(id);w.fav=Math.min(100,w.fav+3);(S.vT??={})[id]=S.t;if(c.cy===1&&!w.preg&&w.fav>=60&&Math.random()<.12){w.preg=S.t+6;return'夜裡主動來侍寢，竟有了身孕'}return'夜裡主動來找你侍寢'}],
- ['charity','開倉救濟流民',0,(c)=>c.has('賢德','慈悲','恤民','感恩')*2+(c.fav>70?.5:0),(id)=>{S.food=Math.max(0,S.food-20);S.pop+=5;hp(id).inf=Math.min(100,(hp(id).inf|0)+3);return'以自己的名義救濟流民（糧 −20、流民 +5）'}],
+ ['charity','開倉救濟流民',0,(c)=>c.has('賢德','慈悲','恤民','感恩')*2+(c.fav>70?.5:0),(id)=>{S.food-=(20);S.pop+=5;hp(id).inf=Math.min(100,(hp(id).inf|0)+3);return'以自己的名義救濟流民（糧 −20、流民 +5）'}],
  ['pray','為你祈福',0,(c)=>c.love*.5+c.has('痴魔','虔誠')*2,(id)=>{S.energy+=10;return'徹夜為你祈福（能量 +10）'}],
  ['nurse','照顧傷兵',0,(c)=>c.has('慈悲','賢德')*1.5+(S.order.some(x=>hst(x)==='inj')?.6:0),(id)=>{const x=S.order.find(x=>hst(x)==='inj');if(x)hs(x).hst.u=S.t;return x?`照顧${H(x).n}，讓他提早痊癒`:'到傷兵營探視'}],
  ['compete','爭寵攔人',0,(c)=>c.has('善妒','恃寵','佔有','嫉妒')*2+(c.cy===2?1:0),(id)=>{const r=spouses().filter(x=>x!==id).sort((a,b)=>wed(b).fav-wed(a).fav)[0];if(r){relAdd(id,r,-6);wed(r).fav=Math.max(0,wed(r).fav-3)}return r?`在半路攔下要去${H(r).n}那裡的你`:'爭寵'}],
  ['frame','構陷對手',1,(c)=>c.has('構陷對手','心機','刻薄','記仇')*1.6+(c.fav<50?1:0)+c.band*.4,(id)=>{const r=spouses().filter(x=>x!==id).sort((a,b)=>relG(id,a)-relG(id,b))[0];if(!r)return null;wed(r).fav=Math.max(0,wed(r).fav-8);relAdd(id,r,-10);return`捏造罪證陷害${H(r).n}（${H(r).n}寵愛 −8）`}],
  ['rumor','散播謠言',1,(c)=>c.has('心機','多疑','刻薄')*1.4+c.band*.3,(id)=>{const r=pick(spouses().filter(x=>x!==id));if(!r)return null;setMd(r,'委屈');const w=wed(r);w.fav=Math.max(0,w.fav-4);hp(r).inf=Math.max(0,(hp(r).inf|0)-3);relAdd(id,r,-6);return`暗中散播關於${H(r).n}的謠言（${H(r).n}寵愛 −4、權勢 −3）`}],
  ['spyYou','派人盯著你',1,(c)=>c.has('多疑','偏執','佔有')*1.5+(c.love>=4?1:0),(id)=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+2);(S.spyOn??={})[id]=S.t+6;return'收買你身邊的內侍，記下你每晚去了哪裡（之後六旬你去找誰，她都會知道）'}],
- ['embezzle','挪用國庫',1,(c)=>c.has('貪婪','享樂','虛榮','奢')*1.8+(c.inf>=50?.8:0),(id)=>{const n=R(20,45);S.food=Math.max(0,S.food-n);hs(id).graft=(hs(id).graft||0)+n;return`挪用了國庫糧 ${n}`}],
+ ['embezzle','挪用國庫',1,(c)=>c.has('貪婪','享樂','虛榮','奢')*1.8+(c.inf>=50?.8:0),(id)=>{const n=R(20,45);S.food-=(n);hs(id).graft=(hs(id).graft||0)+n;return`挪用了國庫糧 ${n}`}],
  ['estate','擴建私邸',0,(c)=>c.has('貪婪','享樂','跋扈','慾壑難填')*1.2+(c.inf>=40?1:0),(id)=>{if(S.wood<40||S.stone<40)return null;S.wood-=40;S.stone-=40;const st=hs(id);st.estate=(st.estate||0)+1;hp(id).inf=Math.min(100,(hp(id).inf|0)+5);return`動用權柄自建私邸（木石各 −40，私邸 ${st.estate} 級）`}],
  ['party','結黨拉攏',1,(c)=>c.has('背盟奪權','兩面下注','心機')*1.5+(c.amb>=70?1.5:0),(id)=>{const g=S.order.filter(x=>H(x).sex==='m'&&!x.startsWith('kid')&&activePlace(x)==='home').sort((a,b)=>stat(b,'cmd')-stat(a,'cmd'))[0];if(!g)return null;relAdd(id,g,12);hp(id).patron=g;hp(id).inf=Math.min(100,(hp(id).inf|0)+4);return`私下拉攏${H(g).n}，結為一黨`}],
  ['affair','私會外男',1,(c)=>c.has('私通','多情','風流','怨懟')*1.8+(c.fav<40?1.5:0)+(c.cy===1?1:0)+c.band*.3-(c.love>=5?1:0),(id)=>{const ex=Object.keys(S.aff2||{}).find(k=>k.startsWith(id+'|')&&S.order.includes(k.split('|')[1]));const m=ex?ex.split('|')[1]:pick(S.order.filter(x=>H(x).sex==='m'&&!wed(x)&&!x.startsWith('kid')&&activePlace(x)===activePlace(id)));if(!m)return null;S.aff2=S.aff2||{};const k=id+'|'+m;const a=S.aff2[k]=S.aff2[k]||{v:0,k:1};a.v+=15;if(a.v>=60&&!wed(id).preg&&Math.random()<.25){bastardMark(id,m);return`與${H(m).n}私會，懷上了他的孩子`}return`與${H(m).n}在夜裡私會`}],
@@ -3521,7 +3521,7 @@ const PV={
  xingfang:['刑房','刑房',0,['殘暴','刻薄','嗜血','記仇'],'殘暴','私刑大增，其他夫人驚恐，她的權勢與污染一起上升',(id,l)=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+l);mistAdd(id,4*l);if(Math.random()<.2)spouses().filter(x=>x!==id).forEach(x=>{(hs(x).dtag??={}).驚弓=hs(x).dtag.驚弓??S.t;hs(x).punT=S.t})}],
  fotang:['佛堂','佛堂',0,['虔誠','慈悲','心死','清冷','恬淡'],'虔誠','污染下降、心境平靜，嗜血墮落慢慢褪去；可能請求出家',(id,l)=>{mistAdd(id,-6*l);setMd(id,'平靜');const d=hs(id).dtag||{};delete d.嗜血;delete d.墮落}],
  liandan:['煉丹房','丹房',0,['求仙','享樂','長生','渴求永生'],'求仙','煉出丹藥（能量），偶爾服丹走火：污染上升、臥病',(id,l)=>{S.energy+=8*l;if(Math.random()<.08){mistAdd(id,25);setHst(id,'inj',2)}}],
- jinwu:['金屋私庫','庫房',0,['貪婪','虛榮','奢','享樂'],'貪婪','貪墨自動累積，私房越來越厚；抄沒時可得一大筆',(id,l)=>{const n=8*l;S.food=Math.max(0,S.food-n);hs(id).graft=(hs(id).graft||0)+n}],
+ jinwu:['金屋私庫','庫房',0,['貪婪','虛榮','奢','享樂'],'貪婪','貪墨自動累積，私房越來越厚；抄沒時可得一大筆',(id,l)=>{const n=8*l;S.food-=(n);hs(id).graft=(hs(id).graft||0)+n}],
  mishi:['密室暗閣','書閣',1,['心機','多疑','構陷對手'],'心機','握有別人的秘密：構陷與告密更易成功，甚至握有你的把柄',(id,l)=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+l);spouses().filter(x=>x!==id).forEach(x=>{if(Math.random()<.1*l)relAdd(id,x,-2)})}],
  jiuchi:['酒池歌舞坊','樂坊',0,['享樂','恃寵','驕縱'],'享樂','夜夜笙歌：你的昏庸上升、全宮好感上升',(id,l)=>{barAdd('hedon',1);S.order.forEach(x=>gainAff(x,1))}],
  dujiao:['毒窖','藥圃',1,['控孕','殘暴','陰毒'],'控孕','下毒頻率與成功率提高；後宮有人懷孕時特別危險',(id,l)=>{mistAdd(id,2*l)}],
@@ -3558,7 +3558,7 @@ const AUTOX=[
  ['grantT','把珍寶轉送心腹',1,(c)=>c.has('心機','兩面下注')*1+(c.inf>=60?.5:0),(id)=>{const k=Object.keys(S.tre||{}).find(k=>S.tre[k]&&!S.tre[k].who);const ally=spouses().filter(x=>x!==id&&relG(id,x)>=25)[0];if(!k||!ally)return null;treGive(k,ally);return`擅自把${TRE[k][0]}送給了心腹${H(ally).n}`}],
  ['slap','當眾掌摑對手',0,(c)=>c.has('善妒','恃寵','驕縱','佔有')*1.5+(c.cy===2?1.5:0)+(c.love>=4?1:0),(id)=>{const r=spouses().filter(x=>x!==id).sort((a,b)=>wed(b).fav-wed(a).fav)[0];if(!r)return null;setHst(r,'inj',1);relAdd(id,r,-15);return`當著眾人的面掌摑了${H(r).n}`}],
  ['storm','闖進你的寢殿',0,(c)=>(c.love>=5?2:0)+c.has('痴魔','佔有','偏執')*1.2+(c.cy===1?1.5:0),(id)=>{wed(id).fav=Math.min(100,wed(id).fav+5);(S.vT??={})[id]=S.t;const o=spouses().filter(x=>x!==id).sort((a,b)=>((S.vT||{})[b]||0)-((S.vT||{})[a]||0))[0];if(o){const w=wed(o);w.fav=Math.max(0,w.fav-5);relAdd(id,o,-8);setMd(o,'委屈')}return`深夜闖進你的寢殿，把${o?H(o).n:'別的女人'}趕了出去${o?`（${H(o).n}寵愛 −5、兩人交情 −8）`:''}`}],
- ['ruin','砸毀庫房洩憤',0,(c)=>(c.fav<25?2:0)+c.has('怨懟','記仇','偏執')*.8+c.band*.3,(id)=>{const n=R(30,60);S.food=Math.max(0,S.food-n);return`在庫房放了一把火，燒掉了糧 ${n}`}],
+ ['ruin','砸毀庫房洩憤',0,(c)=>(c.fav<25?2:0)+c.has('怨懟','記仇','偏執')*.8+c.band*.3,(id)=>{const n=R(30,60);S.food-=(n);return`在庫房放了一把火，燒掉了糧 ${n}`}],
  ['nun','出家修行',0,(c)=>c.has('虔誠','心死')*1.5+(hs(c.id).pv?.fotang?2:0),(id)=>{if(activePlace(id)!=='home')return null;hs(id).nunT=S.t;goneHero(id,'exile',R(6,12));return'落髮出家，住進了城外的庵堂'}]];
 const c0=id=>actCtx(id);
 {const _ac=actCtx;actCtx=function(id){const c=_ac(id);c.id=id;return c}}
@@ -3609,7 +3609,7 @@ function facAI(add){if(inWorld())return;curFacs().forEach(d=>{const f=FS(d.id);i
  if(S.t%7===0&&Math.random()<.2&&!S.extort)S.extort={fid:d.id}})}
 function extortEvent(cb){const x=S.extort;S.extort=null;if(!x||!evOK())return cb();const d=FD(x.fid),f=FS(x.fid);if(!d||!f||!f.alive)return cb();const sp=spouses().filter(id=>activePlace(id)==='home'&&!hs(id).immortal);const amt=60+S.t*3;
  sheet(`<h3>${d.n}來使</h3><p style="margin:8px 0">使者昂著頭：「${d.leader||'我主'}說了，送糧 ${amt}，兩家相安無事${sp.length?'；或者，送一位夫人來和親':''}。否則，城下見。」</p><button class="btn" style="width:100%;margin-top:6px" data-ex="pay">送糧 ${amt}</button>${sp.length?`<button class="btn ghost" style="width:100%;margin-top:6px" data-ex="wed">送${H(sp[sp.length-1]).n}去和親</button>`:''}<button class="btn ghost" style="width:100%;margin-top:6px" data-ex="no">趕走使者</button>`,true);
- $$('[data-ex]').forEach(b=>b.onclick=()=>{const k=b.dataset.ex;let r;if(k==='pay'){S.food=Math.max(0,S.food-amt);r=`你送了糧 ${amt}，${d.n}暫時退兵`}else if(k==='wed'){const id=sp[sp.length-1];goneHero(id,'exile',12);S.spouses?.forEach?.(()=>{});spouses().forEach(x=>{if(x!==id)wed(x).fav=Math.max(0,wed(x).fav-8)});r=`${H(id).n}被送去和親。後宮一片死寂，全員寵愛 −8`}else{const tg=pick(ownTiles());if(tg){const sz=150+S.t*6;S.enemies.push({id:'f'+S.uid++,n:`${d.n}・討伐軍`,img:d.img||'fa_rebel',troops:sz,max:sz,atk:55+S.t*2,r:f.seat.r,c:f.seat.c,fac:d.id,tgt:{r:tg.r,c:tg.c}})}r=`你趕走了使者。${d.n}發兵來犯！`}
+ $$('[data-ex]').forEach(b=>b.onclick=()=>{const k=b.dataset.ex;let r;if(k==='pay'){S.food-=(amt);r=`你送了糧 ${amt}，${d.n}暫時退兵`}else if(k==='wed'){const id=sp[sp.length-1];goneHero(id,'exile',12);S.spouses?.forEach?.(()=>{});spouses().forEach(x=>{if(x!==id)wed(x).fav=Math.max(0,wed(x).fav-8)});r=`${H(id).n}被送去和親。後宮一片死寂，全員寵愛 −8`}else{const tg=pick(ownTiles());if(tg){const sz=150+S.t*6;S.enemies.push({id:'f'+S.uid++,n:`${d.n}・討伐軍`,img:d.img||'fa_rebel',troops:sz,max:sz,atk:55+S.t*2,r:f.seat.r,c:f.seat.c,fac:d.id,tgt:{r:tg.r,c:tg.c}})}r=`你趕走了使者。${d.n}發兵來犯！`}
   feedPush('【勒索】'+r,k==='pay'?'':'neg');closeSheet();toast(r);render();cb()})}
 {const _hef=haremEvent;haremEvent=function(cb){facAI(feedPush);return _hef(()=>extortEvent(cb))}}
 /* ===== 本性・慾壑：永不滿足、越來越重、各具風格 ===== */
@@ -3642,11 +3642,11 @@ function craveTurn(add){spouses().forEach(id=>{if(!S.order.includes(id))return;c
  try{({
   lust:()=>{Object.keys(S.aff2||{}).filter(x=>x.startsWith(id+'|')).forEach(x=>S.aff2[x].v+=2*m*(starve>4?2:1))},
   power:()=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+Math.ceil(m/2));if(tr>=3&&(hp(id).inf|0)>=100&&Math.random()<.15)st.ambUp=(st.ambUp||0)+1},
-  greed:()=>{const n=3*m*(starve>4?2:1);S.food=Math.max(0,S.food-n);st.graft=(st.graft||0)+n},
+  greed:()=>{const n=3*m*(starve>4?2:1);S.food-=(n);st.graft=(st.graft||0)+n},
   own:()=>{const r=spouses().filter(x=>x!==id).sort((a,b)=>((S.vT||{})[b]||0)-((S.vT||{})[a]||0))[0];if(r)relAdd(id,r,-m)},
   blood:()=>{if(tr>=2&&Math.random()<.08*tr){const r=pick(spouses().filter(x=>x!==id&&!hst(x)));if(r){setHst(r,'inj',1);relAdd(id,r,-5);add(`【${H(id).n}】${C[3][tr]}：又有人被她弄傷了（${H(r).n}）`,'neg')}}},
-  immortal:()=>{S.energy=Math.max(0,S.energy-2*m);if(tr>=3&&Math.random()<.06)setHst(id,'inj',1)},
-  vanity:()=>{if(!items&&starve>2&&w)w.fav=Math.max(0,w.fav-Math.ceil(m/2));S.food=Math.max(0,S.food-2*m)}
+  immortal:()=>{S.energy-=(2*m);if(tr>=3&&Math.random()<.06)setHst(id,'inj',1)},
+  vanity:()=>{if(!items&&starve>2&&w)w.fav=Math.max(0,w.fav-Math.ceil(m/2));S.food-=(2*m)}
  })[k]()}catch(e){}})}
 {const _hcv=haremEvent;haremEvent=function(cb){craveTurn(feedPush);return _hcv(cb)}}
 {const _acv=actCtx;actCtx=function(id){const c=_acv(id);c.crave=craveOf(id);c.ct=craveTier(id);return c}}
@@ -3710,7 +3710,7 @@ function lordSheet(){const H0=S.hedon||0,T0=S.tyranny||0,cd=S.lremCD||{};
  sheet(`<h3>天運者的德行</h3><p class="small" style="color:var(--dim)">昏庸與暴虐只會累積，不會自己消退。不會讓你輸掉遊戲，但會讓這座城一步步爛下去。</p>
  ${row('昏庸',H0,[[0,`甜頭：好感成長 +${Math.round(H0/5)}%`],[30,'失德：常常睡過頭，下旬可能少一點行動力'],[60,'昏暴：國庫被掏空，糧食與市集收入打折；紅顏胃口長得更快；昏暴事件大增'],[85,'亡國之象：外部勢力頻頻上門勒索；權勢最高的紅顏會替你頒布政令']])}
  ${row('暴虐',T0,[[0,`甜頭：我軍傷害 +${Math.round(T0/10)}%`],[30,'流民不敢來：流民增長下降'],[60,'將領離心：非後宮英靈好感慢慢下滑；逼宮兵變事件大增'],[85,'人人自危：好感低的英靈會連夜出逃；紅顏更容易自立門戶']])}
- <div class="orn">回頭路</div>${LREM.map(r=>{const c=(cd[r[0]]||0)-S.t;return`<button class="opt frame" data-lrem="${r[0]}" ${c>0?'style="opacity:.5"':''}><span class="t"><b>${r[1]}</b> <span class="small">${r[2]}</span><div class="small">${r[3]}${c>0?`・還要 ${c} 旬`:''}</div></span></button>`}).join('')}`,true);
+ <button class="btn ghost" id="lordX" style="position:sticky;top:0;float:right;z-index:2">✕ 關閉</button><div class="orn">回頭路</div>${LREM.map(r=>{const c=(cd[r[0]]||0)-S.t;return`<button class="opt frame" data-lrem="${r[0]}" ${c>0?'style="opacity:.5"':''}><span class="t"><b>${r[1]}</b> <span class="small">${r[2]}</span><div class="small">${r[3]}${c>0?`・還要 ${c} 旬`:''}</div></span></button>`}).join('')}`);$('#lordX').onclick=closeSheet;
  $$('[data-lrem]').forEach(b=>b.onclick=()=>{const r=LREM.find(x=>x[0]===b.dataset.lrem);if(((S.lremCD||{})[r[0]]||0)>S.t||!r[5]()){sfx('deny');return toast('現在做不到')}r[6]();(S.lremCD??={})[r[0]]=S.t+r[4];feedPush(`【${r[1]}】${r[3]}`);toast(r[1]);render();lordSheet()})}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.res.lord');if(!b)return;e.stopPropagation();lordSheet()},true);
 /* ===== 登用起就自主：未入宮紅顏的行動 ===== */
@@ -3720,7 +3720,7 @@ const PREACT=[
  ['rival','與人爭鋒',0,c=>.6+c.has('善妒','驕縱','好強','嬌貴','爭寵')*1.2,id=>{const r=pick(S.order.filter(x=>x!==id&&H(x)&&H(x).sex==='f'&&!x.startsWith('kid')));if(!r)return null;relAdd(id,r,-8);const rs=hs(r);if(wed(r)){const w=wed(r);w.fav=Math.max(0,w.fav-2)}else rs.aff=Math.max(0,(rs.aff|0)-2);return`當眾給${H(r).n}難堪（兩人交情 −8、${H(r).n}${wed(r)?'寵愛':'好感'} −2）`}],
  ['office','自薦謀職',0,c=>(c.amb>=60?1.5:0)+c.has('權謀','好權','野心','精明','果決')*1,id=>{if(typeof OFF==='undefined')return null;const o=OFF.filter(o=>!(S.off&&S.off[o[0]])).sort((a,b)=>stat(id,b[2])-stat(id,a[2]))[0];if(!o){hp(id).inf=Math.min(100,(hp(id).inf|0)+3);return'四處走動、結交朝臣（權勢 +3）'}setOff(o[0],id,true);return`不等你開口，自己坐上了${o[1]}的位子`}],
  ['seduce','勾搭將領',1,c=>c.has('私通','魅惑','風流','妖媚','多情','享樂')*1.4,id=>{const m=pick(S.order.filter(x=>H(x)&&H(x).sex==='m'&&!x.startsWith('kid')&&activePlace(x)===activePlace(id)));if(!m)return null;relAdd(id,m,12);S.aff2=S.aff2||{};const k=id+'|'+m;const a=S.aff2[k]=S.aff2[k]||{v:0,k:1};a.v+=10;return`和${H(m).n}走得很近（交情 +12、私情 +10）`}],
- ['demand','索要賞賜',0,c=>.5+c.has('貪婪','虛榮','嬌貴','奢','享樂')*1.3,id=>{const n=R(15,35);if(S.food<n)return null;S.food-=n;hs(id).aff=Math.min(100,(hs(id).aff|0)+2);return`開口就要賞（糧 −${n}，好感 +2）`}],
+ ['demand','索要賞賜',0,c=>.5+c.has('貪婪','虛榮','嬌貴','奢','享樂')*1.3,id=>{const n=R(25,60);S.food-=n;hs(id).aff=Math.min(100,(hs(id).aff|0)+2);return`開口就要賞（糧 −${n}，好感 +2）`}],
  ['drill','自行操練',0,c=>c.has('尚武','剛烈','好戰','武勳','火爆','豪爽')*1.5+(H(c.id).pool==='對外'?.8:0),id=>{S.train=Math.min(100,(S.train|0)+2);gainExp(id,15,()=>{});return'帶著兵卒自己操練起來（訓練度 +2、她經驗 +15）'}],
  ['study','閉門自修',0,c=>c.has('才情','清冷','淡泊','精明','敏感')*1.3+(H(c.id).pool==='內政'?.5:0),id=>{gainExp(id,20,()=>{});S.talentFrac=(S.talentFrac||0)+.1;return'閉門讀書（經驗 +20、天賦進度 +0.1）'}],
  ['raid','私掠周邊',1,c=>c.has('殘暴','好戰','火爆','狠辣','嗜血')*1.3,id=>{const n=R(20,50);S.food+=n;S.pol=(S.pol||0)+1;barAdd('tyranny',1);mistAdd(id,5);return`帶人去附近搶了一輪（糧 +${n}、據點污染 +1、暴虐 +1、她的污染 +5）`}],
@@ -3736,7 +3736,7 @@ function preTurn(add){if(typeof inWorld==='function'&&inWorld())return;femFree()
 /* 盯梢：你去找誰她都知道 */
 {const _wsp=wedVisit;wedVisit=function(id){const r=_wsp(id);try{Object.entries(S.spyOn||{}).forEach(([w,u])=>{if(u>S.t&&w!==id&&wed(w)&&S.order.includes(w)){relAdd(w,id,-5);setMd(w,'吃醋');const ww=wed(w);ww.fav=Math.max(0,ww.fav-2)}})}catch(e){}return r}}
 /* ===== 紅顏全面自主 v2：招牌動作・連鎖報復・介入・後宮大動作・軟禁天運者 ===== */
-const MAG=id=>wed(id)?1.5:.7;
+const MAG=id=>(wed(id)?2.2:1)*(1+heatTier(id)*.3);
 const foeOf=id=>{const L=S.order.filter(x=>x!==id&&H(x)&&H(x).sex==='f'&&!x.startsWith('kid'));return L.sort((a,b)=>relG(id,a)-relG(id,b))[0]};
 const hurtFav=(x,n)=>{if(wed(x)){const w=wed(x);w.fav=Math.max(0,w.fav-n)}else{const s=hs(x);s.aff=Math.max(0,(s.aff|0)-n)}};
 function harm(by,vs,sev){if(!vs||!S.order.includes(vs))return;(S.retQ??=[]).push({by:vs,vs:by,at:S.t+1,sev});S.order.filter(x=>x!==vs&&x!==by&&relG(vs,x)>=25).forEach(x=>relAdd(x,by,-4))}
@@ -3748,9 +3748,9 @@ const SIGT={
  sortie:(id,m)=>{const n=Math.round(40*m);if((S.soldiers||0)<n)return null;if(Math.random()<.55){const f=Math.round(60*m);S.food+=f;S.train=Math.min(100,(S.train|0)+Math.round(5*m));gainExp(id,30,()=>{});return`沒等你下令就帶兵出城，搶回糧 ${f}（訓練度 +${Math.round(5*m)}）`}S.soldiers-=n;setHst(id,'inj',2);return`私自帶兵出城，中了埋伏（士兵 −${n}，她負傷兩旬）`},
  sowDiscord:(id,m)=>{const F=(typeof curFacs==='function'?curFacs():[]).filter(d=>FS(d.id)&&FS(d.id).alive);if(F.length<1)return null;const a=pick(F),f=FS(a.id);const loss=Math.round((f.troops||200)*.15*m);f.troops=Math.max(0,(f.troops||0)-loss);hp(id).inf=Math.min(100,(hp(id).inf|0)+3);return`派人潛入${a.n}，挑得他們內鬥（${a.n}兵力 −${loss}）`},
  poisonCup:(id,m)=>{const r=foeOf(id);if(!r)return null;if(wed(r)&&wed(r).preg&&Math.random()<.5){wed(r).preg=0;(S.pregLoss??=[]).push({t:S.t,mom:r});harm(id,r,3);return`在${H(r).n}的湯藥裡下了東西，${H(r).n}失去了孩子`}setHst(r,'inj',Math.round(3*m));hurtFav(r,8);barAdd('tyranny',1);harm(id,r,2);return`一杯鴆酒送到${H(r).n}面前（${H(r).n}臥病 ${Math.round(3*m)} 旬）`},
- salon:(id,m)=>{S.order.forEach(x=>gainAff(x,Math.round(2*m)));S.talentFrac=(S.talentFrac||0)+.2*m;S.food=Math.max(0,S.food-20);return`辦了一場雅集（全員好感 +${Math.round(2*m)}、天賦進度 +${(.2*m).toFixed(1)}、糧 −20）`},
- dance:(id,m)=>{barAdd('hedon',Math.round(2*m));S.order.filter(x=>H(x)&&H(x).sex==='m').forEach(x=>gainAff(x,Math.round(3*m)));S.food=Math.max(0,S.food-30);return`一舞傾城，滿座將領看得失了魂（男將好感 +${Math.round(3*m)}、昏庸 +${Math.round(2*m)}、糧 −30）`},
- siphon:(id,m)=>{const f=Math.round(60*m),w=Math.min(S.wood,Math.round(20*m)),s=Math.min(S.stone,Math.round(20*m));S.food=Math.max(0,S.food-f);S.wood-=w;S.stone-=s;hs(id).graft=(hs(id).graft||0)+f+w+s;return`把國庫掏走一大塊（糧 −${f}、木 −${w}、石 −${s}，全進了她的私房）`},
+ salon:(id,m)=>{S.order.forEach(x=>gainAff(x,Math.round(2*m)));S.talentFrac=(S.talentFrac||0)+.2*m;S.food-=(20);return`辦了一場雅集（全員好感 +${Math.round(2*m)}、天賦進度 +${(.2*m).toFixed(1)}、糧 −20）`},
+ dance:(id,m)=>{barAdd('hedon',Math.round(2*m));S.order.filter(x=>H(x)&&H(x).sex==='m').forEach(x=>gainAff(x,Math.round(3*m)));S.food-=(30);return`一舞傾城，滿座將領看得失了魂（男將好感 +${Math.round(3*m)}、昏庸 +${Math.round(2*m)}、糧 −30）`},
+ siphon:(id,m)=>{const f=Math.round(60*m),w=Math.round(20*m),s=Math.round(20*m);S.food-=(f);S.wood-=w;S.stone-=s;hs(id).graft=(hs(id).graft||0)+f+w+s;return`把國庫掏走一大塊（糧 −${f}、木 −${w}、石 −${s}，全進了她的私房）`},
  spyNet:(id,m)=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+Math.round(5*m));const L=spouses().filter(x=>x!==id);let n=0;L.forEach(x=>{const a=(hs(x).acts||[]).filter(o=>o.secret&&o.seen===false&&S.t-o.t<6);a.forEach(o=>{o.seen=true;n++;(S.caught??=[]).push({id:x,k:'frame',n:o.n,s:o.s,t:S.t})})});return`耳目遍布全宮，把別人的把柄都抓在手裡（權勢 +${Math.round(5*m)}${n?`，揭出 ${n} 件陰私`:''}）`},
  recruitPriv:(id,m)=>{const n=Math.min(S.soldiers||0,Math.round(30*m));S.soldiers-=n;hs(id).pvTroops=(hs(id).pvTroops||0)+n+Math.round(10*m);return`從軍中挖走 ${n} 人，編成她自己的私兵（她的私兵 ${hs(id).pvTroops}）`},
  hunt:(id,m)=>{const f=Math.round(40*m);S.food+=f;S.pop=Math.max(0,(S.pop||0)-2);S.train=Math.min(100,(S.train|0)+Math.round(3*m));return`縱馬圍獵，踏壞了流民的田（糧 +${f}、流民 −2、訓練度 +${Math.round(3*m)}）`},
@@ -3758,8 +3758,8 @@ const SIGT={
  tradeDeal:(id,m)=>{const f=Math.round(50*m);S.food+=f;hs(id).graft=(hs(id).graft||0)+Math.round(20*m);hp(id).inf=Math.min(100,(hp(id).inf|0)+2);return`私開商路（糧 +${f}，她自己抽成 ${Math.round(20*m)}）`},
  heirGambit:(id,m)=>{const mine=(S.kids||[]).filter(k=>k.mom===id&&!k.adult);const other=(S.kids||[]).filter(k=>k.mom&&k.mom!==id&&!k.adult);if(mine.length){mine.forEach(k=>k.esteem=(k.esteem||0)+Math.round(3*m));hp(id).inf=Math.min(100,(hp(id).inf|0)+5);return`四處替${mine[0].n}鋪路爭儲（權勢 +5）`}if(other.length){const k=pick(other);k.esteem=Math.max(0,(k.esteem||0)-Math.round(4*m));relAdd(id,k.mom,-15);harm(id,k.mom,2);return`散布${k.n}並非你親生的流言（${k.n}聲望下降，與${H(k.mom).n}交惡）`}hp(id).inf=Math.min(100,(hp(id).inf|0)+3);return'在朝臣之間打聽儲位的風向（權勢 +3）'},
  marryOff:(id,m)=>{S.extort=null;S.food+=Math.round(30*m);hurtFav(id,5);return`以和親之名出使外邦，換回邊境安寧（勒索解除、糧 +${Math.round(30*m)}；她心裡不痛快）`},
- immortalRite:(id,m)=>{const e=Math.min(S.energy||0,Math.round(30*m));S.energy-=e;mistAdd(id,-10);hs(id).app=(hs(id).app||0)+3;return`拜月求仙，燒掉能量 ${e}（她污染 −10、胃口更大）`},
- orgy:(id,m)=>{barAdd('hedon',Math.round(4*m));S.order.forEach(x=>gainAff(x,1));spouses().forEach(x=>{if(x!==id&&Math.random()<.4)mistAdd(x,10)});mistAdd(id,10);S.food=Math.max(0,S.food-Math.round(40*m));return`大開宮宴，通宵荒淫（昏庸 +${Math.round(4*m)}、糧 −${Math.round(40*m)}，與宴者污染上升）`}};
+ immortalRite:(id,m)=>{const e=Math.round(30*m);S.energy-=e;mistAdd(id,-10);hs(id).app=(hs(id).app||0)+3;return`拜月求仙，燒掉能量 ${e}（她污染 −10、胃口更大）`},
+ orgy:(id,m)=>{barAdd('hedon',Math.round(4*m));S.order.forEach(x=>gainAff(x,1));spouses().forEach(x=>{if(x!==id&&Math.random()<.4)mistAdd(x,10)});mistAdd(id,10);S.food-=(Math.round(40*m));return`大開宮宴，通宵荒淫（昏庸 +${Math.round(4*m)}、糧 −${Math.round(40*m)}，與宴者污染上升）`}};
 const SIGN={mulan:[['sortie','代父出征'],['recruitPriv','收攏邊軍']],change:[['immortalRite','奔月祭儀'],['salon','廣寒清宴']],xiaoqiao:[['tradeDeal','江東奇珍市'],['dance','銅雀春深']],zhenmi:[['salon','洛神雅集'],['sowDiscord','凌波離間']],wuzetian:[['seizeEdict','代君批紅'],['spyNet','銅匭告密'],['heirGambit','廢立太子']],yuji:[['sortie','劍舞帳前・死守'],['dance','霸王別姬舞']],lianghongyu:[['sortie','擂鼓出擊'],['hunt','黃天蕩圍獵']],fuhao:[['sortie','親征鬼方'],['paoluo','人牲大祭']],qinliangyu:[['recruitPriv','白杆兵'],['hunt','石柱圍獵']],diaochan:[['sowDiscord','連環計'],['dance','拜月之舞']],shangguan:[['seizeEdict','代擬詔書'],['spyNet','內舍人密檔']],liqingzhao:[['salon','金石詩社'],['siphon','搜購金石']],xishi:[['sowDiscord','吳宮離間'],['dance','響屧廊舞']],yangguifei:[['orgy','霓裳羽衣宴'],['siphon','一騎紅塵']],zhuowenjun:[['tradeDeal','當壚賣酒'],['salon','白頭吟會']],wangzhaojun:[['marryOff','出塞和親'],['salon','琵琶夜話']],daji:[['paoluo','炮烙之刑'],['orgy','酒池肉林']],lvzhi:[['humanSwine','人彘'],['seizeEdict','臨朝稱制'],['heirGambit','鞏固嫡系']],sunshangxiang:[['sortie','弓腰姬出獵'],['hunt','江東縱馬']],caiwenji:[['salon','胡笳夜宴'],['spyNet','過目不忘']],zhaofeiyan:[['dance','掌上舞'],['heirGambit','斷人子嗣']],huangyueying:[['invent','木牛流馬'],['recruitPriv','機關衛']],jiananfeng:[['poisonCup','鴆殺'],['seizeEdict','矯詔'],['humanSwine','戟擲孕婦']],liuchuyu:[['orgy','面首三十'],['siphon','公主府揮霍']],xuzhaopei:[['orgy','半面妝夜宴'],['poisonCup','妒殺']],wanzhener:[['heirGambit','墮人胎'],['spyNet','昭德宮眼線']],xiaji:[['orgy','株林之會'],['sowDiscord','三夫爭色']],fengxiaolian:[['dance','玉體橫陳'],['hunt','更獵一圍']],liji:[['heirGambit','驪姬之亂'],['poisonCup','胙肉置毒']],pingyang:[['recruitPriv','娘子軍'],['sortie','葦澤關出擊']],huhou:[['orgy','佛寺私會'],['siphon','宮宴索獻']],mibazi:[['seizeEdict','宣太后專政'],['siphon','秦府聚斂']],liurushi:[['salon','絳雲樓雅集'],['tradeDeal','河東私販']],zhangsun:[['salon','女則講學'],['spyNet','內廷耳目']],nvwa:[['immortalRite','煉石補天'],['invent','摶土造物']]};
 const SIGDEF={lust:[['orgy','夜宴']],power:[['seizeEdict','擅改詔令']],greed:[['siphon','掏空國庫']],own:[['poisonCup','除掉情敵']],blood:[['paoluo','酷刑取樂']],immortal:[['immortalRite','求仙']],vanity:[['dance','爭奇鬥豔']]};
 const sigOf=id=>SIGN[id]||SIGDEF[craveOf(id)]||[['salon','雅集']];
@@ -3806,6 +3806,35 @@ function houseCheck(cb){const h=S.house;if(!h)return cb();if(h.done){delete S.ho
  feedPush(`【軟禁】${N}把你關了一旬，替你做了 ${L.length} 件事`,'neg');if(typeof chronAdd==='function')chronAdd(`${N}軟禁天運者一旬`);
  $('#houseOk').onclick=()=>{closeSheet();cb();setTimeout(()=>{try{endTurn()}catch(e){}},400)}}
 {const _mhc=maybeEvent;maybeEvent=function(cb){return _mhc(()=>houseCheck(cb))}}
+/* ===== 虧空：資源可以是負的，債越滾越大 ===== */
+function debtTurn(add){const L=[];
+ if(S.food<0){const d=-S.food;const p=Math.max(1,Math.ceil(d/25)),s=Math.min(S.soldiers||0,Math.ceil(d/8));S.pop=Math.max(0,(S.pop||0)-p);S.soldiers=(S.soldiers||0)-s;S.order.forEach(x=>gainAff(x,-1));S.food-=Math.ceil(d*.06);L.push(`糧倉見底（糧 ${S.food}）：流民 −${p}、士兵逃散 ${s}、全員好感 −1，欠債利滾利`)}
+ ['wood','stone'].forEach(k=>{if(S[k]<0){S[k]-=Math.ceil(-S[k]*.05);S.dur=Math.max(1,(S.dur||0)-2);L.push(`${k==='wood'?'木':'石'}料虧空（${S[k]}）：燈塔失修 −2`)}});
+ if(S.energy<0){S.energy-=Math.ceil(-S.energy*.05);S.pol=(S.pol||0)+2;L.push(`能量透支（${S.energy}）：據點污染 +2`)}
+ if(L.length){add('【虧空】'+L.join('；'),'neg');const top=spouses().concat(femFree()).filter(x=>S.order.includes(x)).sort((a,b)=>(hs(b).graft||0)-(hs(a).graft||0))[0];if(top&&(hs(top).graft||0)>0&&Math.random()<.4)add(`【虧空】國庫是誰掏空的？${H(top).n}的私房裡堆著 ${hs(top).graft} 的財物`,'neg')}}
+{const _hdb=haremEvent;haremEvent=function(cb){try{debtTurn(feedPush)}catch(e){}return _hdb(cb)}}
+/* ===== 她們的請求：當場回應 ===== */
+const REQT={
+ office:{who:'any',w:c=>(c.inf>=40||c.amb>=60?1.5:.3),ask:id=>{const o=(typeof OFF!=='undefined'?OFF:[]).filter(o=>!(S.off&&S.off[o[0]]===id)).sort((a,b)=>stat(id,b[2])-stat(id,a[2]))[0];return o?{t:`想要「${o[1]}」的位子`,o:o[0],on:o[1]}:null},yes:(id,r)=>{setOff(r.o,id,true);return`${H(id).n}坐上了${r.on}`},no:id=>({fav:-6,app:3})},
+ night:{who:'wed',w:c=>(c.cy===1?2:.6)+(c.crave==='lust'||c.crave==='own'?1:0),ask:id=>({t:'今晚要你來，現在就來'}),yes:(id)=>{S.apPen=(S.apPen||0)+1;wedVisit(id);return`你推掉了其他事去陪${H(id).n}（下旬行動 −1）`},no:id=>({fav:-8,app:4})},
+ gift:{who:'any',w:c=>.6+(c.crave==='vanity'||c.crave==='greed'?1.5:0),ask:id=>{const n=R(60,140);return{t:`要一筆賞賜（糧 ${n}）`,n}},yes:(id,r)=>{S.food-=r.n;return`國庫撥出糧 ${r.n} 給${H(id).n}`},no:id=>({fav:-5,app:2})},
+ child:{who:'wed',w:c=>(c.cy===1?1.5:0)+((S.kids||[]).filter(k=>k.mom===c.id).length?0:.8),ask:id=>({t:'想要一個你的孩子'}),yes:(id)=>{const w=wed(id);if(!w.preg&&Math.random()<.5){w.preg=S.t+6;return`${H(id).n}有了身孕`}wedVisit(id);return`你陪了${H(id).n}一整夜`},no:id=>({fav:-10,app:3})},
+ coldOther:{who:'wed',w:c=>(c.crave==='own'?2:0)+c.has('善妒','佔有','偏執')*.8,ask:id=>{const r=spouses().filter(x=>x!==id&&S.order.includes(x)).sort((a,b)=>wed(b).fav-wed(a).fav)[0];return r?{t:`要你從此不再見${H(r).n}`,r}:null},yes:(id,r)=>{const w=wed(r.r);w.fav=Math.max(0,w.fav-25);w.cold=true;relAdd(r.r,id,-30);return`${H(r.r).n}被打入冷宮，${H(id).n}笑了`},no:id=>({fav:-10,app:4,heat:4})},
+ build:{who:'wed',w:c=>(c.crave==='greed'||c.crave==='vanity'?1.2:.4),ask:id=>{const n=R(80,160);return{t:`要錢擴建她的私宅（木石各 ${n}）`,n}},yes:(id,r)=>{S.wood-=r.n;S.stone-=r.n;try{pvBuild(id)}catch(e){}return`${H(id).n}的私宅又擴建了`},no:id=>({fav:-5,app:2})},
+ troops:{who:'any',w:c=>(c.crave==='power'||c.crave==='blood'?1:0)+c.has('尚武','好戰','擁兵')*1,ask:id=>{const n=R(40,90);return{t:`要你撥 ${n} 名士兵給她`,n}},yes:(id,r)=>{S.soldiers=(S.soldiers||0)-r.n;hs(id).pvTroops=(hs(id).pvTroops||0)+r.n;return`${r.n} 名士兵歸${H(id).n}調遣`},no:id=>({fav:-6,heat:3})},
+ marry:{who:'free',w:c=>(c.aff>=90?3:0),ask:id=>({t:'問你什麼時候娶她'}),yes:(id)=>{if(typeof startVow==='function'){setTimeout(()=>startVow(id),300);return`你答應了${H(id).n}`}return''},no:id=>({aff:-15,heat:3})}};
+function reqTurn(){const all=spouses().concat(femFree()).filter(x=>S.order.includes(x)&&!hst(x));all.forEach(id=>{const w=wed(id),c=w&&H(id).sex==='f'?actCtx(id):{...preCtx(id),cy:0,crave:craveOf(id),inf:hp(id).inf|0};c.inf=hp(id).inf|0;
+ const p=(w?.22:.12)*(1+eraE()+heatTier(id)*.3);if(Math.random()>p)return;const L=Object.entries(REQT).filter(([k,r])=>r.who==='any'||(r.who==='wed'&&w)||(r.who==='free'&&!w)).map(([k,r])=>[k,Math.max(0,r.w(c))]).filter(x=>x[1]>0);const sum=L.reduce((s,x)=>s+x[1],0);if(!sum)return;let x=Math.random()*sum;const[k]=L.find(y=>(x-=y[1])<0)||L[0];const a=REQT[k].ask(id);if(a&&!(S.reqQ||[]).some(q=>q.id===id))(S.reqQ??=[]).push({id,k,...a,at:S.t})})}
+function reqEvent(cb){const q=(S.reqQ||[]).filter(x=>S.order.includes(x.id));S.reqQ=[];const L=q.slice(-2);const step=i=>{if(i>=L.length)return cb();const r=L[i],id=r.id,N=H(id).n,T=REQT[r.k];const col=(CRAVE[craveOf(id)]||[0,'#ffb0c8'])[1];
+ sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(id)}.jpg)"></div><div><b style="color:${col}">${N}的請求</b><p style="margin:6px 0;font-family:Noto Serif TC,serif;font-size:1.08em;color:${col}">「${r.t.replace(/^要/,'我要').replace(/^想要/,'我想要').replace(/^問你/,'你說，')}。」</p></div></div>
+ <button class="btn" style="width:100%;margin-top:6px" data-rq="y">答應</button><button class="btn ghost" style="width:100%;margin-top:6px" data-rq="h">敷衍（她看得出來）</button><button class="btn ghost" style="width:100%;margin-top:6px" data-rq="n">拒絕</button>`,true);
+ $$('[data-rq]').forEach(b=>b.onclick=()=>{const k=b.dataset.rq,st=hs(id),w=wed(id);let s='';const pen=o=>{if(o.fav){if(w)w.fav=Math.max(0,w.fav+o.fav);else st.aff=Math.max(0,(st.aff|0)+o.fav)}if(o.aff)st.aff=Math.max(0,(st.aff|0)+o.aff);if(o.app)st.app=(st.app||0)+o.app;if(o.heat)st.heat=(st.heat||0)+o.heat};
+  if(k==='y'){s=T.yes(id,r)||'';if(w)w.fav=Math.min(100,w.fav+6);else st.aff=Math.min(100,(st.aff|0)+6);st.app=(st.app||0)+2}
+  else if(k==='h'){const o=T.no(id);pen({fav:Math.round((o.fav||0)/2),aff:Math.round((o.aff||0)/2),heat:2});s=`${N}冷笑了一聲`}
+  else{pen(T.no(id));s=`${N}被拒絕了${(T.no(id).heat||0)?'，眼神變得很危險':''}`;if(Math.random()<.4)(S.retQ??=[]).push({by:id,vs:pick(spouses().filter(x=>x!==id))||id,at:S.t+1,sev:1})}
+  feedPush(`【請求・${N}】${r.t} → ${s}`);closeSheet();render();step(i+1)})};step(0)}
+{const _hrq=haremEvent;haremEvent=function(cb){try{reqTurn()}catch(e){}return _hrq(()=>reqEvent(cb))}}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-pbb]');if(!b||b.closest('#view'))return;e.stopPropagation();pbBuildSheet(b.dataset.pbb)},true);
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
@@ -3922,7 +3951,7 @@ function dkTurn(add){const sp=spouses().filter(hOK);if(!sp.length)return;S.agQ=S
  if(Math.random()<.19+((S.hedon||0)>=60?.23:0)){const p=dkPick(['dk_tyrant01','dk_tyrant02','dk_tyrant03','dk_tyrant04','dk_tyrant05'],(e,a)=>{if(e.n>=2){const o=sp.filter(x=>x!==a);return o.length?{b:pick(o)}:null}return loveLv(a)>=2||C>=40?{}:null});if(p){S.agQ.push({k:'dk',...p});return}}
  /* 逼宮兵變 */
  if(Math.random()<.11+((S.tyranny||0)>=60?.19:0)){const p=dkPick(['dk_coup01','dk_coup02','dk_coup03','dk_coup04'],(e,a)=>(e.id==='dk_coup02'||e.id==='dk_coup03')?(hp(a).inf>=40||C>=60?{}:null):{});if(p){S.agQ.push({k:'dk',...p});return}}}
-function corruptTurn(add){return;const C=S.corrupt||0;if(C>=60){S.pop=Math.max(0,S.pop-2);S.food=Math.max(0,S.food-Math.round(C/10));if(Math.random()<.3)feedPush(pick(['燈塔外的流民越聚越多，有人在城牆上用血寫了一個「昏」字。','清流老臣已經三旬不肯上朝了。','城中傳唱著一首新的童謠，唱的是歸墟燈塔的天運者夜夜笙歌。']),'rum')}
+function corruptTurn(add){return;const C=S.corrupt||0;if(C>=60){S.pop=Math.max(0,S.pop-2);S.food-=(Math.round(C/10));if(Math.random()<.3)feedPush(pick(['燈塔外的流民越聚越多，有人在城牆上用血寫了一個「昏」字。','清流老臣已經三旬不肯上朝了。','城中傳唱著一首新的童謠，唱的是歸墟燈塔的天運者夜夜笙歌。']),'rum')}
  if(C>=85&&!S.darkEnd){S.darkEnd=S.t;S.agQ=S.agQ||[];S.agQ.push({k:'darkend'})}}
 function darkEndEvent(q,nx){sfx('page');sheet(`<div class="evimg" style="background-image:url(img/ev_fire.jpg)"></div><div class="small" style="letter-spacing:.3em;color:#ff6a6a">朝綱崩壞・末世昏君（遊戲不會結束）</div><h3 style="font-family:Noto Serif TC,serif;margin:6px 0">燈塔不再是燈塔</h3><p style="font-family:Noto Serif TC,serif">黑霧沒有攻破城牆，是你自己打開了城門。<br>宮裡的笙歌一夜不歇，宮外的流民一夜一夜地少下去。那些曾為你擋下黑霧的英靈，有的被你賜死，有的閉門不出，有的已在城外另立旗號。<br>史書若還有人寫，會把這一頁寫成：「天運者晚年，耽於聲色，嬖幸用事，燈塔遂亡。」</p><p class="small" style="color:var(--dim)">你可以繼續沉淪下去，也可以試著把昏暴值降回來。</p><button class="btn" id="deOk" style="width:100%">繼續</button>`,true);unlock('dark_end');$('#deOk').onclick=()=>{closeSheet();nx()}}
 
@@ -3936,8 +3965,8 @@ function bastardMark(id,father){const w=wed(id);if(!w)return;if(!w.preg)w.preg=S
 fx34=function(o,who){if(!o)return;const acts=o._act||[];const punished=acts.some(([r,k])=>r==='a'&&['execute','strip','flog','coldpalace'].includes(k));
  if(o._pregLoss){const t=who[o._pregLoss],w=t&&wed(t);if(w){w.preg=0;w.bastard=null;loveAdd(t,-60,true);S.pregLost=(S.pregLost||0)+1;if(!punished&&who.a&&who.a!==t){setMd(t,'癲狂');S.rel=S.rel||{};S.rel[rk(who.a,t)]=-100}}}
  if(o._bastard){const m=who[o._bastard.mother||'a'];if(m)bastardMark(m,o._bastard.father)}
- if(o._leak){S.energy=Math.max(0,S.energy-o._leak);S.pol=(S.pol||0)+Math.round(o._leak/10);S.leakT=S.t+3}
- if(o._embezzle){S.food=Math.max(0,S.food-o._embezzle);S.energy=Math.max(0,S.energy-Math.round(o._embezzle/2))}
+ if(o._leak){S.energy-=(o._leak);S.pol=(S.pol||0)+Math.round(o._leak/10);S.leakT=S.t+3}
+ if(o._embezzle){S.food-=(o._embezzle);S.energy-=(Math.round(o._embezzle/2))}
  if(o.corrupt)S.corrupt=clamp((S.corrupt||0)+o.corrupt,0,100);
  const o2={...o};delete o2._act;delete o2._pregLoss;delete o2.corrupt;delete o2._bastard;delete o2._leak;delete o2._embezzle;
  acts.forEach(([r,k])=>{const id=who[r];if(id&&k==='resummon_active'&&S.gone&&S.gone[id]&&S.gone[id].k==='strip')stripBack(id)});
@@ -3992,7 +4021,7 @@ function dualTurn(add){barMigrate();const E=GD.hev_dual||[];const sp=spouses().f
  const top=Math.max(S.hedon,S.tyranny);if(Math.random()>.1+top/400)return;const w=ok.map(e=>Object.entries(e.reqBar).reduce((s,[k,v])=>s+(S[k]-v+10),0));let r=Math.random()*w.reduce((s,v)=>s+v,0),e=ok[0];for(let i=0;i<ok.length;i++){r-=w[i];if(r<=0){e=ok[i];break}}
  const a=pick(sp),o=sp.filter(x=>x!==a);S.agQ.push({k:'dk',e,who:{a,b:o.length?pick(o):null}})}
 function barTurn(add){barMigrate();const h=S.hedon,t=S.tyranny;
- if(h>=60){S.food=Math.max(0,S.food-Math.round(h/10));if(Math.random()<.25)feedPush(pick(['清流老臣已經三旬不肯上朝了。','城中傳唱著一首新的童謠，唱的是歸墟燈塔的天運者夜夜笙歌。','宮裡的酒窖又空了一座，前線的糧車卻遲了三日。']),'rum')}
+ if(h>=60){S.food-=(Math.round(h/10));if(Math.random()<.25)feedPush(pick(['清流老臣已經三旬不肯上朝了。','城中傳唱著一首新的童謠，唱的是歸墟燈塔的天運者夜夜笙歌。','宮裡的酒窖又空了一座，前線的糧車卻遲了三日。']),'rum')}
  if(t>=60){S.pop=Math.max(0,S.pop-Math.round(t/20));if(Math.random()<.25)feedPush(pick(['燈塔外的流民越聚越多，有人在城牆上用血寫了一個「暴」字。','刑場的地磚洗了三遍，還是洗不掉那股鐵鏽味。','百官上朝前都會先和家人訣別，誰也不知道今天回不回得來。']),'rum')}
  if(both70()&&!S.dualBadge){S.dualBadge=S.t;add('【末世昏暴・天怒人怨】昏庸與暴虐雙雙突破 70，整座燈塔籠罩在你的陰影之下。遊戲不會結束——你可以繼續沉淪，也可以試著把它們降回來。','neg');unlock('dark_end')}
  /* 獨寵妖姬三旬 → 昏庸 +8 */
@@ -4182,12 +4211,12 @@ function effLine(id){const w=wed(id),P=hp(id),i=P.inf||0,a=P.amb||0,h=(S.hedon||
  out.push(`${MDI[m]}${m}：職司 ×${MDM[m]}`);return out.join('・')}
 /* 權柄令 */
 const EDICT=[
- {k:'賑',t:'開倉賑濟',d:'{a}以自己的名義開倉放糧，城外流民跪地高呼她的封號。',f:()=>{S.food=Math.max(0,S.food-25);S.pop+=6},lab:'糧 −25・流民 +6',w:(h,t,a)=>Math.max(5,40-h-t)},
+ {k:'賑',t:'開倉賑濟',d:'{a}以自己的名義開倉放糧，城外流民跪地高呼她的封號。',f:()=>{S.food-=(25);S.pop+=6},lab:'糧 −25・流民 +6',w:(h,t,a)=>Math.max(5,40-h-t)},
  {k:'徵',t:'加徵脂粉稅',d:'{a}擅自下令向城中商戶加徵「脂粉稅」，銀錢源源流進她的宮裡。',f:()=>{S.food+=30;S.pop=Math.max(0,S.pop-4)},lab:'糧 +30・流民 −4',w:(h,t,a)=>10+h/2},
  {k:'截',t:'截留奏報',d:'{a}讓心腹把今日的軍報與奏摺全截在她宮裡，說要「替夫君先看過」。',f:()=>{S.apPen=(S.apPen||0)+1},lab:'下旬行動 −1',w:(h,t,a)=>10+a/3},
  {k:'兵',t:'私調禁軍',d:'{a}拿著一道「口諭」調走了一隊禁軍，說是要護衛她的宮苑。',f:()=>{S.soldiers=Math.max(0,S.soldiers-40)},lab:'兵 −40',w:(h,t,a)=>5+t/2},
  {k:'練',t:'親點校場',d:'{a}親自登上校場點兵，賞罰分明，將士士氣大振。',f:()=>{S.train=Math.min(100,(S.train||0)+5);S.soldiers+=25},lab:'訓練 +5・兵 +25',w:(h,t,a)=>Math.max(5,30-h)},
- {k:'土',t:'大興土木',d:'{a}下令為自己修建新殿閣，木石一車車運進內廷。',f:()=>{S.wood=Math.max(0,S.wood-30);S.stone=Math.max(0,S.stone-30)},lab:'木 −30・石 −30',w:(h,t,a)=>5+h/2},
+ {k:'土',t:'大興土木',d:'{a}下令為自己修建新殿閣，木石一車車運進內廷。',f:()=>{S.wood-=(30);S.stone-=(30)},lab:'木 −30・石 −30',w:(h,t,a)=>5+h/2},
  {k:'祭',t:'主持祭天',d:'{a}代你主持了一場祭天大典，星盤的光芒壓退了城外的黑霧。',f:()=>{S.pol=Math.max(0,S.pol-4)},lab:'污染 −4',w:(h,t,a)=>Math.max(5,25-t/2)},
  {k:'刑',t:'私設刑堂',d:'{a}在自己宮裡私設刑堂，拷問了幾個「嘴碎」的宮人，六宮噤若寒蟬。',f:id=>{spouses().filter(x=>x!==id).forEach(x=>{if(Math.random()<.4)wed(x).fav=Math.max(0,wed(x).fav-3)})},lab:'其他夫人寵愛下降',w:(h,t,a)=>t},
  {k:'官',t:'安插親信',d:'{a}把自己的親信安插進朝中要職。',f:id=>{harAppoint&&harAppoint(id)},lab:'朝中官職異動',w:(h,t,a)=>10+a/2}];
@@ -4206,7 +4235,7 @@ function powerTurn(add){const sp=spouses();let tithe=0,stip=0;
   if((S.tyranny||0)>=50&&Math.random()<.3){const o=S.order.filter(x=>!wed(x));if(o.length){const x=pick(o);gainAff(x,-2)}}
   const c=cyc(id);if(c===1)w.fav=Math.min(100,w.fav+2);if(c!==1&&Math.random()<(c===0?.3:.25)&&!['癲狂','冷戰'].includes(md2(id)))setMd(id,c===2&&Math.random()<.4?'嫉恨':'焦躁');
   const CL=GD.cycle&&GD.cycle[id]&&GD.cycle[id]['p'+c];if(CL&&Math.random()<.15)hxPush(id,pick(CL),`${CYI[c]}${CYN[c]}`)});
- if(stip){S.food=Math.max(0,S.food-stip)}if(tithe)S.food=Math.max(0,S.food+tithe);
+ if(stip){S.food-=(stip)}if(tithe)S.food=Math.max(0,S.food+tithe);
  if(stip||tithe)add(`【後宮用度】月例糧 −${stip}${tithe?`・夫人權勢${tithe>0?'貢獻':'侵吞'}糧 ${tithe>0?'+':''}${tithe}`:''}`,tithe<0?'neg':'');
  S.fear=Math.min(.5,(S.tyranny||0)/200);edictTurn(add)}
 /* 高權柄頂回處置 */
@@ -4268,7 +4297,7 @@ function pbBuildSheet(f){const d=pbData(f);if(!d)return;const isW=f.startsWith('
  sheet(`<h3 data-nodyn>${d.n}</h3><p class="small" style="margin:4px 0">${d.d}</p><div class="small" style="color:var(--jade)">效果：${facOutText({f,lv:1})}${d.self?`・對${id?H(id).n:'她'}每旬：${lab34(d.self,{a:id})}`:''}${isW&&(d.hedon||d.tyranny)?`・天運者每旬昏庸 ${d.hedon||0}、暴虐 ${d.tyranny||0}`:''}</div>${isW&&d.need?`<div class="small" style="color:var(--gold2)">條件：${d.need}</div>`:''}<div class="small" style="margin:6px 0">${costHtml(C[0],C[1],`・能量 ${C[2]}`)}</div>
  ${W.includes('city')?`<button class="opt frame" data-pw="city" style="margin-bottom:6px"><span class="t"><b>蓋在主城</b><div>佔一格空地，需指派英雄建造，可升級</div></span></button>`:''}
  ${W.includes('branch')?brs.map(t=>`<button class="opt frame" data-pw="branch" data-r="${t.r}" data-c="${t.c}" style="margin-bottom:6px"><span class="t"><b>蓋在${cityName(t)}</b><div>佔分城一格，兩旬後落成</div></span></button>`).join('')||'<p class="small">（沒有空格的分城）</p>':''}
- ${W.includes('tile')?`<p class="small" style="margin-top:6px">領地格${d.tile?`（適合：${d.tile}）`:''}：</p>`+(tl.slice(0,8).map(t=>`<button class="btn ghost sm" data-pw="tile" data-r="${t.r}" data-c="${t.c}" style="margin:2px">${(typeof TERR!=='undefined'&&TERR[t.k])?TERR[t.k][0]:'領地'}（${t.r},${t.c}）</button>`).join('')||'<span class="small">沒有可用的領地格</span>'):''}`,true);
+ ${W.includes('tile')?`<p class="small" style="margin-top:6px">領地格${d.tile?`（適合：${d.tile}）`:''}：</p>`+(tl.slice(0,8).map(t=>`<button class="btn ghost sm" data-pw="tile" data-r="${t.r}" data-c="${t.c}" style="margin:2px">${(typeof TERR!=='undefined'&&TERR[t.k])?TERR[t.k][0]:'領地'}（${t.r},${t.c}）</button>`).join('')||'<span class="small">沒有可用的領地格</span>'):''}${!W.length?'<p class="small">（目前沒有可以蓋的位置）</p>':''}<button class="btn ghost" id="pbX" style="width:100%;margin-top:8px">返回</button>`);$('#pbX').onclick=closeSheet;
  $$('#sheetIn [data-pw]').forEach(b=>b.onclick=()=>{if(S.wood<C[0]||S.stone<C[1]||S.energy<C[2]){sfx('deny');return toast('木、石或能量不足')}const k=b.dataset.pw;
   if(k==='city'){const i=S.slots.findIndex(s=>!s);if(i<0){sfx('deny');return toast('主城沒有空地')}S.wood-=C[0];S.stone-=C[1];S.energy-=C[2];S.slots[i]={f,lv:0,p:0};closeSheet();toast(`${d.n}已在主城動工，記得指派英雄建造`);render();return}
   const t=S.tiles[+b.dataset.r][+b.dataset.c];S.wood-=C[0];S.stone-=C[1];S.energy-=C[2];if(k==='branch'){const bs=bfSlots(t);bs[bs.findIndex(s=>!s)]={f,lv:0,readyAt:S.t+2};closeSheet();save();render();toast(cityName(t)+'已動工，兩旬後落成');return}else{t.pb=f;t.pbl=1}closeSheet();pbDone(f,null);render()})}
@@ -4694,7 +4723,7 @@ function personalTurn(add,ids=[...S.order]){
 }
 
 function hstTurn(report){const add=(msg,c)=>{recordCourt(msg);report(msg,c)};mistTurn(add);charEvents().turn();courtOfficerTurn(add);captiveTurn(add);intrigueTurn(add);rivalTurn(add);schemeTurn(add);localRise(add);personalTurn(add);haremAI(add);ambTurn(add);S.hxN=0;desireTurn(add);facTurn2(add);factionContest(add);factionCouncil(add);cityTurn(add);agendaTurn(add);dutyMigrate();favSync();loveTurn(add);v21Turn(add);dkTurn(add);v23Turn(add);corruptTurn(add);barTurn(add);powerTurn(add);powerEvTurn(add);valEvTurn(add);cycEvTurn(add);pbTurn(add);S.clean0=S.pol===0?(S.clean0||0)+1:0;checkAch2();(T_('h3')&&Math.random()<.3?0:ownEvRoll());S.order.forEach(id=>{const st=hs(id),x=st.hst;if(!x)return;if(x.u<=S.t){add(`${H(id).n}的【${HST[x.k][0]}】狀態解除了`,'pos');st.hst=null;return}const w=wed(id);
-  if(x.k==='jail'){if(w)w.fav=Math.max(0,w.fav-3);gainAff(id,-2)}if(x.k==='ban'&&w)w.fav=Math.max(0,w.fav-2);if(x.k==='spoil'){spouses().filter(y=>y!==id).forEach(y=>{wed(y).fav=Math.max(0,wed(y).fav-2)});S.food=Math.max(0,S.food-15)}});
+  if(x.k==='jail'){if(w)w.fav=Math.max(0,w.fav-3);gainAff(id,-2)}if(x.k==='ban'&&w)w.fav=Math.max(0,w.fav-2);if(x.k==='spoil'){spouses().filter(y=>y!==id).forEach(y=>{wed(y).fav=Math.max(0,wed(y).fav-2)});S.food-=(15)}});
  S.order.forEach(id=>{if(hs(id).traitor&&!unavail(id)&&Math.random()<.14){const f=Math.min(S.food,40),so=Math.min(S.soldiers,30);S.food-=f;S.soldiers-=so;S.lastRaid=-9;add(`【內奸】糧倉帳目出現缺口（糧 −${f}），巡邏路線被敵人摸清（兵力 −${so}），敵襲機率上升……`,'neg')}});
  Object.entries(S.gone||{}).forEach(([id,g])=>{if(g.k==='exile'&&g.u<=S.t){if(Math.random()<.7){delete S.gone[id];S.order.push(id);hs(id).aff=Math.min(hs(id).aff,10);if(wed(id))wed(id).fav=20;add(`${H(id).n}結束流放，風塵僕僕地回到了燈塔`,'pos');hxPush(id,(GD.hstat&&GD.hstat[id]&&GD.hstat[id].exileBack)||'……我回來了。這些日子，我把該想的都想清楚了。','流放歸來')}else{g.k='lost';add(`流放中的${H(id).n}下落不明，再也沒有回來`,'neg')}}})}
 function recallExile(id){if(S.ap<1){sfx('deny');return toast('行動力不足')}if(S.energy<60){sfx('deny');return toast('召回需要能量 60')}S.ap--;S.energy-=60;delete S.gone[id];S.order.push(id);hs(id).aff=Math.min(hs(id).aff,15);if(wed(id))wed(id).fav=25;sfx('ok');hxPush(id,'夫君……還記得我。','提前召回');hxShow(()=>render())}
