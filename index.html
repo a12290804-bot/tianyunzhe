@@ -3797,8 +3797,8 @@ function sigAct(id,add){
  add(`<b style="color:#ffb86a">【${H(id).n}・${n}】</b>${s}`,'neg');if(BIG.includes(k))bigQ(id,n,s,victim);return `${n}：${s}`
 }
 /* A. 頻率拉高＋招牌動作 */
-{const _pt0=preTurn;preTurn=function(add){_pt0(add);femFree().forEach(id=>{if(hst(id)||busyArmy(id)||!S.order.includes(id))return;if(Math.random()<.15+eraE()*.15+Math.min(.15,heatOf(id)*.003))sigAct(id,add)})}}
-{const _at0=autoTurn;autoTurn=function(add){_at0(add);spouses().forEach(id=>{if(!S.order.includes(id)||hst(id)||wed(id).cold||busyArmy(id))return;const n=(Math.random()<.35+eraE()*.25?1:0)+(heatTier(id)>=2&&Math.random()<.5?1:0);for(let i=0;i<n;i++)sigAct(id,add)})}}
+{const _pt0=preTurn;preTurn=function(add){_pt0(add);femFree().forEach(id=>{if(hst(id)||busyArmy(id)||!S.order.includes(id))return;if(Math.random()<.4+eraE()*.25+Math.min(.2,heatOf(id)*.004))sigAct(id,add)})}}
+{const _at0=autoTurn;autoTurn=function(add){_at0(add);spouses().forEach(id=>{if(!S.order.includes(id)||hst(id)||wed(id).cold||busyArmy(id))return;const n=1+(Math.random()<.35+eraE()*.3?1:0)+(heatTier(id)>=2?1:0);for(let i=0;i<n;i++)sigAct(id,add)})}}
 /* D. 後宮專屬大動作 */
 AUTOACT.push(
  ['regency','垂簾聽政',0,c=>(c.inf>=60?2:0)+(c.crave==='power'?c.ct*.5:0),id=>{const k=pick(Object.keys(POLICY));S.policy={k,until:S.t+6};S.apPen=(S.apPen||0)+1;hp(id).inf=Math.min(100,(hp(id).inf|0)+5);bigQ(id,'垂簾聽政',`坐在你身後的簾子裡替你決斷朝政，頒布「${POLICY[k][0]}」`);return`坐在你身後的簾子裡決斷朝政，頒布「${POLICY[k][0]}」（你下旬行動 −1、她權勢 +5）`}],
@@ -4020,6 +4020,14 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
 LREM.forEach(r=>{const f=r[6];r[6]=()=>{f();const s=T46('LORD_TEXT',r[0]);if(s)feedPush(`【${r[1]}】${s}`)}});
 {const _dt=debtTurn;debtTurn=function(add){return _dt(s=>{const k=/糧倉/.test(s)?'food':/木|石/.test(s)?'wood':/能量/.test(s)?'energy':/私房/.test(s)?'blame':'';const t=k&&T46('DEBT_TEXT',k);add(t?s.replace('【虧空】','【虧空】'+t+' '):s,'neg')})}}
 {const _ek=enemyKidTurn;enemyKidTurn=function(add){return _ek((s,...a)=>{const k=/來認/.test(s)?'claim':/質問/.test(s)?'question':/投奔/.test(s)?'defect':'';const t=k&&T46('ENEMYKID_TEXT',k);add(t?s.replace('【敵種】','【敵種】'+t+' '):s,...a)})}}
+/* ===== 本旬她們做了什麼：旬末一張總覽，讓行動被看見 ===== */
+function digestEvent(cb){if(S.digestOff)return cb();const ppl=spouses().concat(femFree()).filter(x=>S.order.includes(x)||(S.gone&&S.gone[x]));const rows=ppl.map(id=>{const a=(hs(id).acts||[]).filter(o=>o.t===S.t&&o.seen!==false);return[id,a]}).filter(x=>x[1].length);
+ if(!rows.length)return cb();const tr=id=>heatTier(id);
+ sheet(`<h3 style="font-family:Noto Serif TC,serif">本旬，她們做了這些事</h3><div class="small" style="color:var(--dim);margin-bottom:6px">共 ${rows.reduce((s,x)=>s+x[1].length,0)} 件・點頭像可直接處理她</div>${rows.map(([id,a])=>`<div class="frame" style="padding:7px;margin-bottom:6px;border-color:${HEATC[tr(id)]}"><div style="display:flex;gap:8px;align-items:flex-start"><span class="pic" data-dg="${id}" style="width:40px;height:40px;flex:none;border-radius:6px;background:url(img/${face(id)}.jpg) center 15%/cover;cursor:pointer"></span><div style="flex:1;min-width:0"><b>${H(id).n}</b> <span class="small" style="color:${HEATC[tr(id)]}">${HEATN[tr(id)]}${wed(id)?'':'・未入宮'}</span>${a.map(o=>`<div class="small" style="margin-top:2px;${o.secret?'color:#ff9a9a':o.sig?'color:#ffcf8a':''}">${o.sig?'★':o.secret?'◆':'・'}<b>${o.n||''}</b> ${String(o.s).replace(/<[^>]+>/g,'')}</div>`).join('')}</div></div></div>`).join('')}
+ <div style="display:flex;gap:6px;margin-top:6px"><button class="btn" id="dgOk" style="flex:1">知道了</button><button class="btn ghost" id="dgOff">之後不再跳出</button></div>`,true);
+ $$('[data-dg]').forEach(b=>b.onclick=()=>{const id=b.dataset.dg;closeSheet();cb();setTimeout(()=>{if(wed(id))gridSheet(id);else openHero(id)},300)});
+ $('#dgOk').onclick=()=>{closeSheet();cb()};$('#dgOff').onclick=()=>{S.digestOff=1;toast('已關閉，可在「動靜」分頁查看');closeSheet();cb()}}
+{const _hdg=haremEvent;haremEvent=function(cb){return _hdg(()=>digestEvent(cb))}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
