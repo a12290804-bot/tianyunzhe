@@ -3915,6 +3915,49 @@ const MAGX=id=>1+bandOf(id)*.1;
 /* A. 看得見：她面板上的污染影響 */
 function mistFxLine(id){const m=mistState(id),b=m.band;if(!b)return'';const L=[`<b style="color:#c07aff">${m.name}</b>（${m.value}）`];const mn=mutName(id);if(mn)L.push(`慾望變質為「<b style="color:#c07aff">${mn}</b>」`);L.push(`出戰傷害 +${b*4}%`);if(b>=4)L.push(`戰場失控 ${(b-3)*8}%`);L.push(`陰毒行動傾向 +${b*20}%`);L.push(`招牌動作與私宅效果 +${b*10}%`);if(b>=3)L.push('會傳染身邊的人');if(H(id).sex==='f')L.push(`身心負荷 ${mistStrain(id)}/10（四圍 −${mistStrain(id)}）`);L.push(mistStatus(id));if(b>=6)L.push('<span style="color:#ff6a7a">隨時可能化為黑霧之主</span>');return`<div class="frame small" style="padding:6px 8px;margin-bottom:8px;border-color:#6a3a8a;line-height:1.6"><b style="color:#c07aff">污染影響</b>　${L.join('・')}</div>`}
 {const _gs2=gridSheet;gridSheet=function(id){_gs2(id);const fx=mistFxLine(id);if(!fx)return;const f=document.querySelector('#sheetIn .frame.small');if(f)f.insertAdjacentHTML('afterend',fx)}}
+/* ===== 劇情文本 → 真正後果：效果關鍵字與文字推斷 ===== */
+function quietWed(id){if(wed(id)||!H(id)||H(id).sex!=='f')return false;try{onNewSpouse(id)}catch(e){}hs(id).star+=1;hs(id).wed={rank:0,rkMap:"v32",meritTurns:0,fav:70,duty:null,grace:S.t+2,last:S.t,visits:0};hp(id).inf=10;try{charEvents().married(id)}catch(e){}SKC[id]=null;return true}
+const fxWho=(id,v,cast)=>v===1||v===true||v==='self'||v==null?id:(cast&&cast[v])||(S.heroes[v]?v:null);
+window.TY_FX={
+ preg:(id,v)=>{let s='';if(!wed(id)){quietWed(id);s=`${H(id).n}未婚先孕，被提早迎入後宮；`}const w=wed(id);if(w&&!w.preg){w.preg=S.t+6;s+=`${H(id).n}有了身孕`}return s},
+ marry:(id)=>quietWed(id)?`${H(id).n}被迎入後宮`:'',
+ affair:(id,v,cast)=>{const m=fxWho(id,v,cast);if(!m||m===id)return'';S.aff2=S.aff2||{};const k=id+'|'+m,a=S.aff2[k]=S.aff2[k]||{v:0,k:1};a.v+=20;return`${H(id).n}與${H(m).n}的私情 +20`},
+ exec:(id,v,cast)=>{const x=fxWho(id,v,cast);if(!x||!S.order.includes(x))return'';goneHero(x,'exec');return`【處死】${H(x).n}`},
+ jail:(id,v,cast)=>{const x=fxWho(id,v,cast);if(!x)return'';setHst(x,'jail',4);return`【下獄】${H(x).n}`},
+ exile:(id,v,cast)=>{const x=fxWho(id,v,cast);if(!x||!S.order.includes(x))return'';goneHero(x,'exile',10);return`【流放】${H(x).n}`},
+ ban:(id,v,cast)=>{const x=fxWho(id,v,cast);if(!x)return'';setHst(x,'ban',3);return`【禁足】${H(x).n}`},
+ inj:(id,v,cast)=>{const x=fxWho(id,v,cast);if(!x)return'';setHst(x,'inj',2);return`【負傷】${H(x).n}`},
+ cold:(id,v,cast)=>{const x=fxWho(id,v,cast);if(!x||!wed(x))return'';wed(x).cold=true;return`【冷宮】${H(x).n}`},
+ kidLoss:(id,v,cast)=>{const x=fxWho(id,v,cast);const w=x&&wed(x);if(!w||!w.preg)return'';w.preg=0;(S.pregLoss??=[]).push({t:S.t,mom:x});return`${H(x).n}失去了腹中的孩子`},
+ mist:(id,n)=>{mistAdd(id,n);return''},
+ crave:(id,n)=>{hs(id).app=(hs(id).app||0)+n;return''},
+ heat:(id,n)=>{hs(id).heat=(hs(id).heat||0)+n;return''},
+ office:(id)=>{const o=(typeof OFF!=='undefined'?OFF:[]).filter(o=>!(S.off&&S.off[o[0]]===id)).sort((a,b)=>stat(id,b[2])-stat(id,a[2]))[0];if(!o)return'';setOff(o[0],id,true);return`${H(id).n}坐上了${o[1]}`},
+ troops:(id,n)=>{const m=Math.min(Math.max(0,S.soldiers||0),n>0?n:0);if(n>0)S.soldiers-=m;hs(id).pvTroops=Math.max(0,(hs(id).pvTroops||0)+(n>0?m:n));return n>0?`${m} 名士兵歸她調遣`:''},
+ food:(id,n)=>{S.food+=n;return''},wood:(id,n)=>{S.wood+=n;return''},stone:(id,n)=>{S.stone+=n;return''},energy:(id,n)=>{S.energy+=n;return''},
+ soldiers:(id,n)=>{S.soldiers=Math.max(0,(S.soldiers||0)+n);return''},pop:(id,n)=>{S.pop=Math.max(0,(S.pop||0)+n);return''},pol:(id,n)=>{S.pol=Math.max(0,(S.pol||0)+n);return''},
+ pv:(id)=>{try{const s=pvBuild(id);return s||''}catch(e){return''}},
+ house:(id)=>{if(!wed(id)||S.house)return'';S.house={by:id,t:S.t};S.houseCD=S.t+14;return`${H(id).n}要把你關起來`},
+ rebel:(id)=>{try{rebelFound(id,S.order.filter(x=>x!==id&&relG(id,x)>=30&&!wed(x)).slice(0,2),feedPush,`${H(id).n}帶著人馬自立門戶。`)}catch(e){}return''},
+ tag:(id,v,cast)=>{const[n,who]=String(v).split('@');const x=fxWho(id,who||'self',cast);if(x)(hs(x).dtag??={})[n]=S.t;return''},
+ mainWife:(id)=>{if(!wed(id))return'';S.mainWife=id;return`${H(id).n}成了主母`}};
+/* 文字推斷：舊文本沒寫關鍵字時，依選項／結果文字判斷 */
+window.TY_INFER=function(id,text,cast,has){const s=String(text||''),out=[];const run=(k,v)=>{if(has&&has[k]!=null)return;const r=TY_FX[k](id,v,cast);if(r)out.push(r)};
+ const ph=k=>new RegExp('\\{'+k+'\\}[^，。；]{0,10}(小產|落胎|流產|墮胎|滑胎)|(打掉|墮掉)[^，。；]{0,6}\\{'+k+'\\}');
+ if(/懷上|有了身孕|珠胎暗結|有喜了|懷了你的|身懷六甲|受孕/.test(s)&&!/假孕|沒有懷|並未懷/.test(s))run('preg',1);
+ else if(/納入後宮|收入後宮|迎入(宮|後宮)|納為妃|冊為|立她為|封她為(妃|嬪|貴人|夫人|美人)|迎她入宮/.test(s))run('marry',1);
+ ['b','c'].forEach(k=>{if(cast&&cast[k]&&ph(k).test(s))run('kidLoss',k)});
+ ['b','c','g'].forEach(k=>{if(cast&&cast[k]&&new RegExp('(毀容|劃花)[^，。；]{0,6}\\{'+k+'\\}|\\{'+k+'\\}[^，。；]{0,6}(毀容|臉被劃)').test(s))run('tag','毀容@'+k)});
+ if(/(兵符|虎符|兵權|親兵)[^，。；]{0,6}(交給|交予|賜給|賞給|歸)她/.test(s))run('troops',50);
+ if(/讓她(執掌|主持|接管|坐上)|拜她為|任她為/.test(s))run('office',1);
+ if(/立她為主母|冊她為後|母儀/.test(s))run('mainWife',1);
+ if(/和\{g\}私奔|隨\{g\}(私奔|出奔)|與\{g\}[^，。；]{0,4}私通/.test(s))run('affair','g');
+ return out};
+window.TY_SCENE=function(e,r){const out=[],id=e.id,c=e.cast||{};const body=(r.body||[]).join('');
+ if(e.key==='tragedies'&&e.variant==='懷孕歸來'){const s=TY_FX.preg(id,1);if(s){out.push(s+'——孩子的父親，不是你');(hs(id).dtag??={})['懷敵種']=S.t}}
+ if(e.key==='heirAndFamily'&&c.b&&wed(c.b)&&!wed(c.b).preg&&!(S.kids||[]).some(k=>k.mom===c.b&&!k.adult)){wed(c.b).preg=S.t+4;out.push(`${H(c.b).n}懷上了孩子`)}
+ if(/未婚先孕|珠胎暗結/.test(body)&&!wed(id)){const s=TY_FX.preg(id,1);if(s)out.push(s)}
+ return out};
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
