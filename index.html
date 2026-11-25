@@ -2920,7 +2920,7 @@ function haremTable(){const sp=[...spouses(),...S.order.filter(id=>H(id).sex==='
  const td=(id,c,v,bad,st)=>`<td class="tc${bad?' bad':''}" data-tc="${id}|${c}"${st?` style="${st}"`:''}>${v}</td>`;
  const tr=id=>{const w=wed(id),l=loveLv(id),m=md2(id),ms=mistState(id),s=mistStrain(id),mo=mother()===id,o=hs(id).wish2;
   return`<tr><th data-gc="${id}"><span class="hpic" style="background-image:url(img/${face(id)}.jpg)"></span>${H(id).n}${mo?'<i>主</i>':''}${w.cold?'<i>冷</i>':w.pal?'<i>行</i>':''}</th>
-  ${td(id,'rk',mo?'主母':RANKN[rankOf(id)])}${td(id,'fav',w.fav,w.fav<25)}${td(id,'love',LOVEN[Math.max(0,l)],0,'color:'+LOVEC[Math.max(0,l)])}${td(id,'md',m,HBAD.includes(m))}${td(id,'inf',hp(id).inf|0,(hp(id).inf|0)>=70)}${td(id,'amb',heroAmb(id),heroAmb(id)>=75)}${td(id,'mist',ms.band?ms.name:'—',ms.band>=3)}${td(id,'str',s?s+'/10':'—',s>=5)}${td(id,'cy',CYI[cyc(id)]+CYN[cyc(id)])}${td(id,'preg',w.preg?Math.max(0,w.preg-S.t)+'旬':'—')}${td(id,'loc',rosterName(activePlace(id)))}${td(id,'st',nowOf(id)+(dtagList(id).length?'・'+dtagList(id).join('・'):''),0,'white-space:nowrap')}${td(id,'tre',treOf(id).map(k=>TRE[k][0]).join('、')||'—')}${td(id,'wish',o?WISH[o.k][1].replace('想要',''):'—')}<td class="tc" data-tc="${id}|more">⋯</td></tr>`};
+  ${td(id,'rk',mo?'主母':RANKN[rankOf(id)])}${td(id,'fav',w.fav,w.fav<25)}${td(id,'love',LOVEN[Math.max(0,l)],0,'color:'+LOVEC[Math.max(0,l)])}${td(id,'md',m,HBAD.includes(m))}${td(id,'inf',hp(id).inf|0,(hp(id).inf|0)>=70)}${td(id,'amb',heroAmb(id),heroAmb(id)>=75)}${td(id,'mist',ms.band?ms.name:'—',ms.band>=3)}${td(id,'str',s?s+'/10':'—',s>=5)}${td(id,'cy',cyLab(id))}${td(id,'preg',w.preg?Math.max(0,w.preg-S.t)+'旬':'—')}${td(id,'loc',rosterName(activePlace(id)))}${td(id,'st',nowOf(id)+(dtagList(id).length?'・'+dtagList(id).join('・'):''),0,'white-space:nowrap')}${td(id,'tre',treOf(id).map(k=>TRE[k][0]).join('、')||'—')}${td(id,'wish',o?WISH[o.k][1].replace('想要',''):'—')}<td class="tc" data-tc="${id}|more">⋯</td></tr>`};
  const pend=sp.filter(id=>!wed(id));
  const al=hAlerts();
  return`<div class="small" style="color:var(--dim);margin:4px 2px 6px">點欄名排序；<b>點格子直接互動</b>（寵＝賞賜、情＝探望、心＝安撫、權＝扶持或敲打、野＝名分、污＝淨化、期＝相處、名字＝詳情）。紅字＝需要留意。${al.length?`<br><b style="color:#ff8a8a">⚠ 需留意：${al.map(x=>H(x).n).join('、')}</b>`:''}</div>
@@ -2962,7 +2962,7 @@ document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest
 
 /* ===== 今夜翻牌（直接進入探望） ===== */
 function flipSheet(){const sp=spouses().filter(id=>activePlace(id)==='home'&&audienceOK(id)&&!['inj','jail','ban'].includes(hst(id)));
- sheet(`<h3>今夜翻牌</h3><div class="small" style="color:var(--dim);margin-bottom:6px">🌸排卵期較易受孕；🩸經期多半只陪你說話。被冷落太久的人會吃醋。</div>${sp.map(id=>{const w=wed(id),c=cyc(id),last=(S.vh||[]).lastIndexOf(id);return`<button class="opt frame" data-flip="${id}" style="margin-bottom:6px"><span class="pic" style="background-image:url(img/${face(id)}.jpg)"></span><span class="t"><b>${H(id).n}</b> <span class="small">${mother()===id?'主母':RANKN[rankOf(id)]}・${CYI[c]}${CYN[c]}${w.preg?'・有喜':''}</span><div class="small">寵愛 ${w.fav}・${md2(id)}・${last<0?'從未侍寢':'上次侍寢在 '+((S.vh||[]).length-last)+' 次前'}</div></span></button>`}).join('')||'<p class="small">今夜沒有人能侍寢。</p>'}`);
+ sheet(`<h3>今夜翻牌</h3><div class="small" style="color:var(--dim);margin-bottom:6px">🌸排卵期較易受孕；🩸經期多半只陪你說話。被冷落太久的人會吃醋。</div>${sp.map(id=>{const w=wed(id),c=cyc(id),last=(S.vh||[]).lastIndexOf(id);return`<button class="opt frame" data-flip="${id}" style="margin-bottom:6px"><span class="pic" style="background-image:url(img/${face(id)}.jpg)"></span><span class="t"><b>${H(id).n}</b> <span class="small">${mother()===id?'主母':RANKN[rankOf(id)]}・${cyLab(id)}</span><div class="small">寵愛 ${w.fav}・${md2(id)}・${last<0?'從未侍寢':'上次侍寢在 '+((S.vh||[]).length-last)+' 次前'}</div></span></button>`}).join('')||'<p class="small">今夜沒有人能侍寢。</p>'}`);
  $$('[data-flip]').forEach(b=>b.onclick=()=>{closeSheet();wedVisit(b.dataset.flip)})}
 
 /* ===== 春秋大典（每 18 旬） ===== */
@@ -3029,7 +3029,7 @@ function gridView(key){key=key||'gridF';const f=S[key]||'全部',L=gridPeople(f)
 function gridSheet(id){const h=H(id),w=wed(id),sp=w&&h.sex==='f',m=mistState(id),home=activePlace(id)==='home'&&!busyArmy(id);
  const row=(k,v)=>`<div><span>${k}</span><b>${v}</b></div>`;
  sheet(`<div style="display:flex;gap:10px;align-items:center"><span class="pic" style="width:64px;height:80px;flex:none;border-radius:8px;background:url(img/${face(id)}.jpg) center 15%/cover"></span><div><h3 style="margin:0">${h.n}</h3><div class="small" style="color:var(--gold2)">${mother()===id?'主母':sp?RANKN[rankOf(id)]:role(id)}・${rosterName(activePlace(id))}${busyArmy(id)?'・出征中':''}</div></div></div>
- <div class="gstat">${sp?row('寵愛',w.fav)+row('情深',LOVEN[Math.max(0,loveLv(id))])+row('心境',md2(id))+row('權勢',hp(id).inf|0)+row('野心',heroAmb(id))+row('週期',CYI[cyc(id)]+CYN[cyc(id)]):row('好感',hs(id).aff)+row('忠誠',typeof loyal==='function'?loyal(id):'?')+row('任務',hs(id).task||'idle')}${row('污染',m.band?m.name:'清明')}${row('負荷',mistStrain(id)+'/10')}</div>
+ <div class="gstat">${sp?row('寵愛',w.fav)+row('情深',LOVEN[Math.max(0,loveLv(id))])+row('心境',md2(id))+row('權勢',hp(id).inf|0)+row('野心',heroAmb(id))+row('週期',cyLab(id)):row('好感',hs(id).aff)+row('忠誠',typeof loyal==='function'?loyal(id):'?')+row('任務',hs(id).task||'idle')}${row('污染',m.band?m.name:'清明')}${row('負荷',mistStrain(id)+'/10')}</div>
  <div class="frame small" style="padding:6px 8px;margin-bottom:8px;line-height:1.6"><b style="color:var(--gold2)">此刻</b>　${nowOf(id)}${(()=>{const o=sp&&hs(id).wish2;if(!o)return'';const [c,n]=wishProg(id);return`<br><b style="color:var(--gold2)">心之所向</b>　${WISH[o.k][1]}${o.foe?'：'+H(o.foe).n:''}（${Math.min(c,n)}/${n}）`})()}${sp&&dtagList(id).length?`<br><b style="color:var(--gold2)">性情</b>　${dtagList(id).join('、')}`:''}${recentOf(id).length?`<br><b style="color:var(--gold2)">近況</b><br>${recentOf(id).map(s=>'・'+s).join('<br>')}`:''}</div>
  ${sp?invHtml(id):''}${troopHtml(id)}
  <div class="gacts">${sp&&home?`<button class="btn" data-ga="visit">探望</button><button class="btn ghost" data-ga="gift">賞賜</button><button class="btn ghost" data-ga="spy">密報・挑撥</button>`:''}${!sp&&home?`<button class="btn" data-ga="meet">召見談心</button>`:''}${home?`<button class="btn" data-ga="spend">相處（宮務）</button>`:''}${sp&&S.immMethod&&!hs(id).immortal?`<button class="btn" data-ga="imm" style="border-color:#f0d79a">✦ 同命契</button>`:''}<button class="btn ghost" data-ga="detail">詳情・處置</button></div>`);
@@ -4122,6 +4122,118 @@ function immBoast(add){if(!S.immMethod)return;spouses().filter(x=>S.order.includ
 {const _ed=emoDlg;emoDlg=function(id,title,body,col,btns){const key=title.replace(/[（(].*$/,'');const emo=(title.match(/（(.+)）/)||[])[1]||emoOf(id);const s=T46('EMO_TEXT',id,key,emo)||T46('EMO_TEXT',id,key)||T46('EMO_TEXT','_'+craveOf(id),key);return _ed(id,title,s?`「${T46n(s,id).replace(/^「|」$/g,'')}」`:body,col,btns)}}
 Object.keys(LOVTACT).forEach(T=>{const f=LOVTACT[T];LOVTACT[T]=(id,b,add)=>{const s=f(id,b,add);if(!s)return s;const t=T46('LOVE_TEXT',id,T,b)||T46('LOVE_TEXT',id,T)||T46('LOVE_TEXT','_',T,b);if(!t)return s;const nums=(s.match(/（[^（）]*）$/)||[''])[0];return T46n(t,id)+nums}});
 {const _fe=flauntEvent;flauntEvent=function(id,m,how){_fe(id,m,how);setTimeout(()=>{const s=T46('FLAUNT_TEXT',id,how==='撞見'?'caught':'bring');if(s){const p=document.querySelector('#sheetIn .dlg p');if(p)p.textContent=T46n(s,id,m).replaceAll('{m}',H(m).n)}},0)}}
+const T48=(o,cat,id,k,fb,b)=>{const s=(k==null?(T46(o,cat,id)||T46(o,cat,'_')):(T46(o,cat,id,k)||T46(o,cat,'_',k)));return s?T46n(s,id,b):fb};
+/* ===== 懷孕重做：珠胎暗結、各人反應、他人行為、生產互動、孩子的去向 ===== */
+const pgOf=id=>hs(id)&&hs(id).pg;
+const isPreg=id=>{const st=hs(id);if(!st)return false;if(wed(id)&&wed(id).preg)return true;return st.pregPre!=null};
+const pgDue=id=>wed(id)&&wed(id).preg?wed(id).preg:hs(id).pregPre;
+function pgFather(id){const st=hs(id);if('懷敵種' in (st.dtag||{}))return'enemy';const k=Object.keys(S.aff2||{}).find(x=>x.startsWith(id+'|')&&S.aff2[x].v>=50&&S.aff2[x].k!==9);if(k&&Math.random()<.5)return k.split('|')[1];return'you'}
+/* 受孕不再直接入宮 */
+TY_FX.preg=(id)=>{const st=hs(id);if(isPreg(id))return'';if(wed(id)){wed(id).preg=S.t+6}else{st.pregPre=S.t+6}st.pg={since:S.t,father:pgFather(id),protect:0};return`${H(id).n}有了身孕${wed(id)?'':'——她還沒有名分'}`};
+const PGPLAN={dominate:'force',test:'hide',flaunt:'flaunt',play:'flaunt',doom:'doom',zealot:'zealot',selfharm:'fear',cage:'possess',sacrifice:'purge'};
+const PGSAY={force:'「給我名分。不然這個孩子，從此和你沒有半點關係。」',hide:'她什麼都沒說，只是把腰帶繫得更緊了。',flaunt:'她在宴席上當眾宣布：「我有了天運者的骨肉。」滿座的夫人臉色都變了。',doom:'「你若不要我們母子，我就帶著他一起走。」',zealot:'她束緊了腹，照樣披甲：「這孩子生在戰場上，才配做你的骨血。」',fear:'她半夜驚醒，抓著你的袖子發抖：「有人要害他……我知道的。」',possess:'「這是我們的。只有我們的。從今以後，你哪裡都不准去。」',purge:'她笑得很溫柔：「誰敢碰這個孩子，我就讓誰的孩子先死。」',leave:'「我想帶著他離開。去一個沒有人認識我們的地方。」',gift:'她把你的手按在自己腹上：「這是我給你的禮物。你要怎麼賞我？」',cold:'她望著窗外，很久才說：「……我還沒想好要不要他。」'};
+function pgPlanOf(id){const T=pick(loveTypes(id));let p=PGPLAN[T]||'gift';const fav=wed(id)?wed(id).fav:(hs(id).aff|0);if(fav<25)p=Math.random()<.5?'leave':'cold';return p}
+function pgDiscover(add){S.order.forEach(id=>{const st=hs(id);if(!st||!isPreg(id)||st.pgSeen===S.t)return;if(!st.pg)st.pg={since:S.t,father:pgFather(id),protect:0};const pg=st.pg;if(pg.plan)return;pg.plan=pgPlanOf(id);st.pgSeen=S.t;(S.pgQ??=[]).push(id)})}
+function pgEvent(cb){const q=(S.pgQ||[]).filter(x=>S.order.includes(x)&&isPreg(x));S.pgQ=[];if(!q.length)return cb();const step=i=>{if(i>=q.length)return cb();const id=q[i],st=hs(id),pg=st.pg,N=H(id).n,col=EMOC[emoOf(id)]||'#ff9ad0';const say=T48('PREG_TEXT','plan',id,pg.plan,PGSAY[pg.plan]||PGSAY.gift);
+ if(wed(id)){const fx={force:()=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+8)},flaunt:()=>{spouses().filter(x=>x!==id).forEach(x=>relAdd(x,id,-6))},possess:()=>{(S.blockV??={})[id]=S.t+3},purge:()=>{hs(id).heat=(hs(id).heat||0)+4},zealot:()=>{},fear:()=>{pg.protect=(pg.protect||0)},cold:()=>{if(Math.random()<.3){wed(id).preg=0;delete st.pg;feedPush(`【${N}】她一個人喝下了那碗藥。孩子沒了，她什麼也沒對你說`,'neg')}},leave:()=>{if(Math.random()<.3){goneHero(id,'exile',12);feedPush(`【${N}】帶著肚子裡的孩子，在夜裡離開了燈塔`,'neg')}},doom:()=>{(S.mustV??={})[id]=S.t+2},hide:()=>{},gift:()=>{}};try{fx[pg.plan]&&fx[pg.plan]()}catch(e){}
+  emoDlg(id,'有喜',say,col,[['……',()=>{}]]);$$('[data-emo]').forEach(b=>b.addEventListener('click',()=>step(i+1)));return}
+ emoDlg(id,'珠胎暗結',`${say}<br><span class="small" style="color:var(--dim)">（她還沒有入宮）</span>`,col,[
+  ['迎她入宮，給孩子名分',()=>{quietWed(id);wed(id).preg=st.pregPre;delete st.pregPre;wed(id).fav=Math.min(100,wed(id).fav+10);loveAdd(id,60,true);feedPush(`【入宮】${N}帶著身孕被迎入後宮`)}],
+  ['收為外室，不入宮',()=>{st.waishi=1;hs(id).aff=Math.max(0,(hs(id).aff|0)-5);spouses().forEach(x=>relAdd(x,id,-4));feedPush(`【外室】${N}被安置在宮外，孩子將是外室之子`)}],
+  ['不認這個孩子',()=>{hs(id).aff=Math.max(0,(hs(id).aff|0)-30);setGrudge(id,12);if(pg.plan==='purge'||pg.plan==='force'||Math.random()<.4){goneHero(id,'exile',20);feedPush(`【不認】${N}帶著你的骨肉走了。總有一天，那個孩子會回來`,'neg');(S.lostKids??=[]).push({n:'未出世的孩子',mom:id,by:'出走',t:S.t})}else feedPush(`【不認】${N}看了你很久，什麼也沒說`,'neg')}],
+  ['打掉（暴虐 +4）',()=>{delete st.pregPre;delete st.pg;barAdd('tyranny',4);mistAdd(id,20);setGrudge(id,20);hs(id).aff=Math.max(0,(hs(id).aff|0)-40);(hs(id).dtag??={})['喪子之恨']=S.t;feedPush(`【墮胎】你逼${N}喝下了那碗藥。她沒有哭，她記住了`,'neg')}]]);
+ $$('[data-emo]').forEach(b=>b.addEventListener('click',()=>step(i+1)))};step(0)}
+/* 懷孕期間：身體與生理 */
+function pgBodyTurn(add){S.order.forEach(id=>{if(!isPreg(id))return;const st=hs(id),pg=st.pg||(st.pg={since:S.t,father:pgFather(id),protect:0});const due=pgDue(id),span=Math.max(1,due-pg.since),stg=(S.t-pg.since)/span;
+ if(mistState(id).band>=3)pg.taint=1;
+ if(stg<.34){if(Math.random()<.25)st.emo='不滿',st.emoT=S.t}else if(stg<.75){if(Math.random()<.2&&!(S.reqQ||[]).some(q=>q.id===id)){(S.reqQ??=[]).push({id,k:'gift',...REQT.gift.ask(id),at:S.t})}}else{if(Math.random()<.3){st.emo=pick(['瘋狂','撒嬌','黏人']);st.emoT=S.t}}
+ if(st.pregPre!=null&&st.pregPre<=S.t){delete st.pregPre;(S.birthQueue??=[]).push(id)}})}
+{const _m0p=mods0;mods0=function(our,en,M0){M0=_m0p(our,en,M0);if(our&&our.gens)our.gens.forEach(g=>{if(S.heroes[g]&&isPreg(g))M0.atk-=.08});return M0}}
+/* 其他人對懷孕者 */
+function pgReactTurn(add){const P=S.order.filter(x=>isPreg(x));if(!P.length)return;const O=spouses().concat(femFree()).filter(x=>S.order.includes(x)&&!hst(x));
+ P.forEach(p=>{const pg=hs(p).pg||{};O.filter(o=>o!==p).forEach(o=>{if(Math.random()>.22)return;const T=loveTypes(o),cr=craveOf(o),rel=relG(o,p),mine=(S.kids||[]).some(k=>k.mom===o),mo=(typeof mother==='function'&&mother()===o)||(hp(o).inf|0)>=60,hostile=rel<0||['own','blood','power'].includes(cr)||T.includes('sacrifice')||T.includes('cage')||(mo&&!mine),friend=rel>=25||T.includes('zealot');const A=[];
+  if(hostile)A.push(['poison',2],['rumor',1.2],['midwife',cr==='greed'||cr==='power'?1:.4]);if(mo||(!mine&&cr==='own'))A.push(['claim',1]);if(friend)A.push(['gift',2]);if(!mine&&!isPreg(o))A.push(['beg',.8]);if(cr==='lust')A.push(['night',1]);if(T.includes('play'))A.push(['prank',.8]);if(!A.length)return;
+  const sum=A.reduce((s,x)=>s+x[1],0);let r=Math.random()*sum;const[k]=A.find(x=>(r-=x[1])<0)||A[0];const NO=H(o).n,NP=H(p).n;let s='';
+  if(k==='poison'){if(pg.protect>0){pg.protect--;s=`在${NP}的安胎藥裡動了手腳——被守在一旁的人攔下了`}else if(Math.random()<.35){if(wed(p))wed(p).preg=0;delete hs(p).pregPre;delete hs(p).pg;(S.pregLoss??=[]).push({t:S.t,mom:p});setHst(p,'inj',2);harm(o,p,3);(hs(p).dtag??={})['喪子之恨']=S.t;s=`送去的那碗補湯，讓${NP}失去了孩子`}else{if(wed(p)&&wed(p).preg)wed(p).preg=Math.max(S.t+1,wed(p).preg-2);if(hs(p).pregPre)hs(p).pregPre=Math.max(S.t+1,hs(p).pregPre-2);setHst(p,'inj',1);harm(o,p,2);s=`在${NP}的飲食裡下了東西，${NP}腹痛如絞，恐怕要早產`}}
+  else if(k==='rumor'){pg.doubt=1;weiAdd(-1);relAdd(p,o,-6);s=`到處說${NP}肚子裡的孩子不是你的`}
+  else if(k==='midwife'){pg.swapBy=o;s=`悄悄收買了將來替${NP}接生的產婆`;hs(o).acts&&0}
+  else if(k==='claim'){pg.claimBy=o;s=`向你進言：孩子生下來，該由她撫養`}
+  else if(k==='gift'){pg.protect=(pg.protect||0)+1;relAdd(o,p,6);s=`日夜守著${NP}，誰送來的東西都要先嘗一口`}
+  else if(k==='beg'){if(wed(o)&&!(S.reqQ||[]).some(q=>q.id===o))(S.reqQ??=[]).push({id:o,k:'child',...REQT.child.ask(o),at:S.t});s=`看著${NP}的肚子，眼神越來越暗——她也想要一個`}
+  else if(k==='night'){if(wed(o))wed(o).fav=Math.min(100,wed(o).fav+4);if(wed(p))wed(p).fav=Math.max(0,wed(p).fav-3);s=`趁${NP}不能侍寢，夜夜把你留在自己那裡`}
+  else if(k==='prank'){setMd(p,'委屈');s=`把${NP}的安胎藥換成了糖水，笑著說只是開個玩笑`}
+  s=T48('PREG_TEXT','react',o,k,s,p);const st=hs(o);(st.acts??=[]).push({t:S.t,s,n:'對懷孕者',seen:k!=='midwife'&&k!=='poison'||Math.random()<.4,secret:k==='poison'||k==='midwife'});add(`<b style="color:#ff9ad0">【${NO}・對${NP}】</b>${s}`,k==='gift'?'':'neg')})})}
+/* 生產互動 */
+{const _ke=kidEvent;kidEvent=function(cb){const id=S.birth||(S.birthQueue||[])[0];if(!id||!H(id))return _ke(cb);const key=id+'@'+S.t;if((S.laborDone??={})[key])return _ke(cb);S.laborDone[key]=1;const N=H(id).n,pg=hs(id).pg||{},col='#ff9ad0';let risk=.12+mistState(id).band*.04+((S.pregLoss||[]).some(x=>x.mom===id)?.1:0);
+ const go=(bonus)=>{risk+=bonus;const r=Math.random();const shift=()=>{if(S.birth===id)S.birth=null;else S.birthQueue.shift()};
+  if(pg.swapBy&&S.order.includes(pg.swapBy)&&Math.random()<.5)(S.kidFate??={})[id]={k:'swap',by:pg.swapBy};
+  else if(pg.father==='enemy'&&Math.random()<.25)(S.kidFate??={})[id]={k:'abduct'};
+  else if(pg.claimBy&&S.order.includes(pg.claimBy)&&Math.random()<.5)(S.kidFate??={})[id]={k:'claim',by:pg.claimBy};
+  if(r<risk){emoDlg(id,'難產',T48('PREG_TEXT','dystocia',id,null,`產房裡的血腥味濃得化不開。穩婆跪在你面前發抖：「大人和孩子……只能保一個。」<br>簾子後面，${N}的聲音已經喊啞了。`),col,[['保大人',()=>{shift();(S.pregLoss??=[]).push({t:S.t,mom:id});setHst(id,'inj',3);(hs(id).dtag??={})['喪子之恨']=S.t;mistAdd(id,15);delete hs(id).pg;feedPush(`【難產】你選了${N}。她活下來了，孩子沒有。她醒來後，很久很久沒有再看你一眼`,'neg');kidEvent(cb)}],['保孩子',()=>{setHst(id,'inj',6);mistAdd(id,25);hs(id).emo='心灰';hs(id).emoT=S.t;if(wed(id))loveAdd(id,-80);feedPush(`【難產】你選了孩子。${N}撐過來了，卻像丟了半條命——她聽見了你的選擇`,'neg');post();_ke(cb)}]]);return}
+  if(Math.random()<.08){S.birthQueue=S.birthQueue||[];S.birthQueue.splice(1,0,id);feedPush(`【雙生】${N}誕下了一對雙生子`)}post();_ke(cb)};
+ const post=()=>{const st=hs(id),T=loveTypes(id),r=Math.random();if(wed(id)&&pg.father&&pg.father!=='you'&&pg.father!=='enemy'&&H(pg.father))wed(id).bastard={f:pg.father};if(pg.taint)st.pgTaint=1;if(st.immortal!=null)st.pgGold=1;
+  if(r<.3){if(wed(id)){wed(id).fav=Math.max(0,wed(id).fav-10);loveAdd(id,-40)}st.momOnly=S.t;feedPush('【產後】'+T48('PREG_TEXT','post',id,'mom',`${N}從此眼裡只有孩子`))}else if(r<.5||T.includes('doom')){mistAdd(id,12);st.heat=(st.heat||0)+5;feedPush('【產後】'+T48('PREG_TEXT','post',id,'mad',`生下孩子後，${N}變得更不對勁了`),'neg')}else if(r<.75){if(wed(id))loveAdd(id,60,true);feedPush('【產後】'+T48('PREG_TEXT','post',id,'cling',`${N}抱著孩子窩在你懷裡，說她從沒這麼滿足過——然後問你，什麼時候再要一個`))}
+  setHst(id,'inj',1);delete st.pg};
+ emoDlg(id,'臨盆',T48('PREG_TEXT','labor',id,null,`夜半，宮人跌跌撞撞地跑來：「${N}要生了！」<br>產房裡傳出撕心裂肺的叫喊，一聲比一聲更像在喊你的名字。`),col,[['守在產房外（行動 −1，風險降低）',()=>{S.ap=Math.max(0,(S.ap||0)-1);if(wed(id))loveAdd(id,40,true);go(-.08)}],['召集所有太醫（糧 −40）',()=>{S.food-=40;go(-.05)}],['不去（她寵愛 −15）',()=>{if(wed(id))wed(id).fav=Math.max(0,wed(id).fav-15);go(.06)}]])}}
+/* 孩子的去向：被抱走、掉包、改名、黑霧與金光 */
+{const _ki3=kidInh;kidInh=function(k){if(!k.inh&&k.mom&&hs(k.mom)){const st=hs(k.mom);if(st.pgTaint){k.inh='黑霧之子';delete st.pgTaint}else if(st.pgGold&&INH['天運血脈']){k.inh='天運血脈';delete st.pgGold}}return _ki3(k)}}
+function kidFateTurn(add){Object.entries(S.kidFate||{}).forEach(([mom,f])=>{const k=(S.kids||[]).filter(x=>x.mom===mom&&!x.fated).slice(-1)[0];if(!k)return;k.fated=1;delete S.kidFate[mom];const N=H(mom)?H(mom).n:'她';
+ if(f.k==='abduct'){S.kids=S.kids.filter(x=>x!==k);(S.lostKids??=[]).push({n:k.n,mom,by:'敵方',t:S.t,sex:k.sex});mistAdd(mom,20);(hs(mom).dtag??={})['喪子之恨']=S.t;add(`<b style="color:#ff6a6a">【孩子被奪】</b>${k.n}出生的第三夜，襁褓空了。窗台上留著敵方的徽記——他們來帶走自己的骨血`,'neg')}
+ else if(f.k==='swap'){const old=k.n;const nn=kidName(k.sex);(S.lostKids??=[]).push({n:old,mom,by:H(f.by)?H(f.by).n:'不明',t:S.t,sex:k.sex,swapped:1});k.n=nn;k.swapped=1;k.trueMom=null;add(`【掉包】產房的燈熄了一瞬。抱出來的孩子很安靜——${N}抱著他，總覺得哪裡不對（真正的${old}已經不知去向）`,'rum')}
+ else if(f.k==='claim'&&S.order.includes(f.by)){const old=k.n,nn=kidName(k.sex);k.n=nn;k.raiser=f.by;relAdd(mom,f.by,-30);add(`【奪子】${H(f.by).n}把孩子抱走撫養，還替他改了名字：${old} → ${nn}。${N}隔著宮牆聽見孩子哭`,'neg')}})}
+function lostKidsHtml(){const L=S.lostKids||[];return L.length?`<div class="frame small" style="padding:6px 8px;margin:6px 0"><b style="color:#ff9ad0">下落不明的孩子</b>${L.map(x=>`<div>・${x.n}（母親 ${H(x.mom)?H(x.mom).n:'—'}，${x.swapped?'被掉包':x.by==='敵方'?'被敵方奪走':x.by}，${ago(x.t)}）</div>`).join('')}</div>`:''}
+{const _bv3=typeof bloodView==='function'?bloodView:null;if(_bv3)bloodView=function(...a){return lostKidsHtml()+_bv3(...a)}}
+/* 介入：守護、宣告、查驗 */
+{const _gs4=gridSheet;gridSheet=function(id){_gs4(id);if(!isPreg(id))return;const pg=hs(id).pg||{};const box=document.querySelector('#sheetIn .frame.small');if(!box)return;const due=pgDue(id);box.insertAdjacentHTML('afterend',`<div class="frame small" style="padding:6px 8px;margin-bottom:8px;border-color:#ff9ad0"><b style="color:#ff9ad0">🤰 懷孕中</b>・約 ${Math.max(0,due-S.t)} 旬後臨盆${pg.protect?`・有人守護 ${pg.protect} 次`:''}${pg.doubt?'・<span style="color:#ff9a9a">血統流言四起</span>':''}${pg.known?`・生父：${pg.father==='you'?'你':pg.father==='enemy'?'敵人':H(pg.father)?H(pg.father).n:'不明'}`:''}<div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap"><button class="btn sm" data-pgx="guard|${id}">派人守護（行動 1）</button><button class="btn ghost sm" data-pgx="declare|${id}">公開宣告</button><button class="btn ghost sm" data-pgx="test|${id}">秘密查驗</button></div></div>`)}}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-pgx]');if(!b)return;e.stopPropagation();const[k,id]=b.dataset.pgx.split('|');const pg=hs(id).pg||(hs(id).pg={since:S.t,father:pgFather(id),protect:0});
+ if(k==='guard'){if((S.ap||0)<1)return toast('行動力不足');S.ap--;pg.protect=(pg.protect||0)+2;toast('已派人日夜守護')}
+ else if(k==='declare'){weiAdd(3);pg.doubt=0;spouses().filter(x=>x!==id).forEach(x=>{hs(x).heat=(hs(x).heat||0)+2;relAdd(x,id,-5)});toast('你當眾宣告：這是我的骨肉')}
+ else{pg.known=1;if(Math.random()<.4){if(wed(id))wed(id).fav=Math.max(0,wed(id).fav-10);else hs(id).aff=Math.max(0,(hs(id).aff|0)-10);toast('她發現你在查她')}else toast('查驗結果出來了')}
+ closeSheet();setTimeout(()=>gridSheet(id),50)},true);
+{const _hpg=haremEvent;haremEvent=function(cb){try{pgDiscover(feedPush);pgBodyTurn(feedPush);pgReactTurn(feedPush);kidFateTurn(feedPush)}catch(e){console.error(e)}return _hpg(()=>pgEvent(cb))}}
+/* ===== 精氣：她們知道你的精血能延年、能靠近不死 ===== */
+const jing=()=>S.jing??100;const jingAdd=n=>{S.jing=Math.max(0,Math.min(100,jing()+n))};
+const JRULE={free:'任她們取',limit:'限量（每旬至多 15）',one:'只許一人',none:'誰都不給'};
+const JACT={
+ lust:['夜夜索取',7,5,id=>`${H(id).n}把你纏到天亮，一夜又一夜。她說這樣才能離你更近`],
+ immortal:['取血煉丹',9,8,id=>`${H(id).n}捧著玉碗跪在你榻前，取了你一碗血。丹爐的火燒了三天三夜`],
+ own:['私藏為己',6,6,id=>`${H(id).n}把你鎖在她的寢殿裡：「你的一切，只能是我的。」`],
+ power:['配給賞人',5,3,id=>`${H(id).n}把你的精血分成一份一份，賞給聽話的人——她在用你收買人心`],
+ greed:['暗中轉賣',6,2,id=>`${H(id).n}把一小瓶你的血賣到了宮外。買家出的價錢很好`],
+ blood:['爭奪份額',6,5,id=>`${H(id).n}為了多分一口和姐妹們打了起來`],
+ vanity:['養顏駐色',5,6,id=>`${H(id).n}用你的精血調了脂膏，鏡子裡的她一天比一天年輕`]};
+const JTY={test:['偷取一點',3,3,id=>`你醒來時指尖多了一道細口。${H(id).n}舔著嘴唇對你笑`],play:['玩鬧偷取',3,3,id=>`${H(id).n}笑嘻嘻地說只是咬一口——咬得很深`],doom:['求你融為一體',8,7,id=>`${H(id).n}抱著你說：「把你的命分我一半，我們就永遠不會分開了。」`],zealot:['表面守護、暗中飲用',4,5,id=>`${H(id).n}替你擋下了所有來討血的人——然後在深夜，自己喝了一口`]};
+function jingAct(id){const T=loveTypes(id);for(const t of T)if(JTY[t]&&Math.random()<.5)return JTY[t];return JACT[craveOf(id)]||JTY.test}
+function jingTurn(add){S.jing=jing();jingAdd(6);if(S.immMethod||(S.order.some(isImmY))||(S.t>12&&Math.random()<.04))if(!S.jingKnown){S.jingKnown=S.t;add('<b style="color:#ff6a9a">【流言】</b>宮裡開始傳：天運者的精血能延年益壽，飲得夠多，就能和他一樣不死不滅','neg')}
+ if(!S.jingKnown)return;const rule=S.jingRule||'free';let used=0;const W=spouses().concat(femFree().filter(x=>(hs(x).aff|0)>=50)).filter(x=>S.order.includes(x)&&!hst(x));
+ W.forEach(id=>{const st=hs(id);if(isImmY(id)&&Math.random()<.6)return;if(Math.random()>.36*Math.min(1.6,MAG(id)))return;const[n,cost,gain,txt]=jingAct(id);
+  let deny=rule==='none'||(rule==='one'&&S.jingOne!==id)||(rule==='limit'&&used+cost>15);
+  if(deny){const T=loveTypes(id);if(T.some(t=>['dominate','cage','sacrifice','doom'].includes(t))||craveOf(id)==='own'){add(`<b style="color:#ff6a6a">【精氣・${H(id).n}】</b>你說不給。她就自己來拿——${txt(id).replace(/^.*?。/,'')}`,'neg');weiAdd(-2);if(wed(id))wed(id).fav=Math.min(100,wed(id).fav+2)}else{if(wed(id))wed(id).fav=Math.max(0,wed(id).fav-3);st.emo=pick(['不滿','委屈']);st.emoT=S.t;return}}
+  used+=cost;jingAdd(-cost);st.lifeP=Math.min(100,(st.lifeP||0)+gain);(st.acts??=[]).push({t:S.t,s:n,n:'精氣'});add(`<b style="color:#ff6a9a">【精氣・${H(id).n}】</b>${T48('JING_TEXT','act',id,null,txt(id))}（精 −${cost}，她的長生 ${st.lifeP}%）`);
+  const cr=craveOf(id);
+  if(cr==='greed'){S.food+=R(20,50);const f=pick(Object.keys(S.facs||{}).filter(k=>FS(k)&&FS(k).alive));if(f){FS(f).troops+=R(20,40);S.jingSold=(S.jingSold||0)+1}}
+  if(cr==='power'){W.filter(x=>x!==id).slice(0,2).forEach(x=>relAdd(x,id,4));hp(id).inf=Math.min(100,(hp(id).inf|0)+3)}
+  if(cr==='blood'){const o=pick(W.filter(x=>x!==id));if(o&&Math.random()<.4){setHst(o,'inj',1);harm(id,o,2);add(`　└ ${H(id).n}為了份額傷了${H(o).n}`,'neg')}}
+  if(cr==='own'&&Math.random()<.25&&!S.house){S.house={by:id,t:S.t};S.houseCD=S.t+14}
+  if(st.lifeP>=100&&!isImmY(id)){st.immortal=S.t;add(`<b style="color:#ffd76a">【長生・${H(id).n}】</b>${T48('JING_TEXT','immortal',id,null,'她喝下最後一口，傷口在眼前癒合。從今天起，她和你一樣，不會死了')}`)}});
+ /* 黑市與結盟 */
+ if(W.length>=3&&Math.random()<.12){const a=pick(W),b2=pick(W.filter(x=>x!==a));if(b2){relAdd(a,b2,10);(hs(a).acts??=[]).push({t:S.t,s:`和${H(b2).n}私下約好平分你的精血`,n:'精氣同盟',secret:1});jingAdd(-4)}}
+ /* 敵方刺客 */
+ if((S.jingSold||0)>=2&&Math.random()<.15){S.jingSold--;const g=W.find(x=>loveTypes(x).some(t=>['zealot','cage','sacrifice'].includes(t)));if(g){setHst(g,'inj',2);add(`<b style="color:#ff6a6a">【刺客】</b>敵方聽說了你的血，派人夜襲寢殿想把你活捉。${H(g).n}擋在你身前，渾身是血也沒有退`,'neg')}else{jingAdd(-25);S.apPen=(S.apPen||0)+1;weiAdd(-5);add('<b style="color:#ff6a6a">【刺客】</b>敵方的刺客摸進寢殿，在你身上割了三刀取血才被趕走（精 −25、威 −5）','neg')}}
+ /* 精氣過低 */
+ if(jing()<15){const top=W.slice().sort((a,b)=>(hs(b).lifeP||0)-(hs(a).lifeP||0))[0];if(top&&!S.house){S.house={by:top,t:S.t};add(`<b style="color:#ff9ad0">【精竭】</b>你倒在榻上起不來。${H(top).n}說，接下來的事她替你處理`,'neg')}}
+ else if(jing()<40){S.apPen=(S.apPen||0)+1;add('【精氣不足】你虛弱得連站都站不穩（下旬行動 −1）','neg')}}
+function jingSheet(){const L=spouses().concat(femFree()).filter(x=>S.order.includes(x)&&hs(x).lifeP).sort((a,b)=>hs(b).lifeP-hs(a).lifeP);
+ sheet(`<h3>精氣・${jing()}</h3><p class="small" style="color:var(--dim)">${S.jingKnown?'她們都知道了：你的精血能讓人靠近不死。':'還沒有人知道你精血的秘密。'}每旬回復 6。低於 40 行動 −1；低於 15 會被人接管。</p><div class="small" style="margin:6px 0">你的規矩：</div>${Object.entries(JRULE).map(([k,v])=>`<button class="btn ${(S.jingRule||'free')===k?'':'ghost'} sm" style="margin:2px" data-jr="${k}">${v}</button>`).join('')}${(S.jingRule==='one')?`<div class="small" style="margin:6px 0">只許誰：</div>${spouses().map(x=>`<button class="btn ${S.jingOne===x?'':'ghost'} sm" style="margin:2px" data-j1="${x}">${H(x).n}</button>`).join('')}`:''}<div class="frame small" style="padding:6px 8px;margin-top:8px"><b>長生進度</b>${L.length?L.map(x=>`<div>・${H(x).n} ${isImmY(x)?'<span style="color:#ffd76a">已不死</span>':hs(x).lifeP+'%'}</div>`).join(''):'<div>尚無</div>'}</div><button class="btn ghost" style="width:100%;margin-top:8px" data-sheetx>關閉</button>`)}
+document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('[data-jr],[data-j1],[data-jgive],#jingS');if(!t)return;e.stopPropagation();
+ if(t.id==='jingS')return jingSheet();
+ if(t.dataset.jr){S.jingRule=t.dataset.jr;if(t.dataset.jr==='none')spouses().forEach(x=>{if(['own','immortal','lust'].includes(craveOf(x)))hs(x).heat=(hs(x).heat||0)+1});jingSheet();return}
+ if(t.dataset.j1){S.jingOne=t.dataset.j1;spouses().filter(x=>x!==S.jingOne).forEach(x=>relAdd(x,S.jingOne,-8));jingSheet();return}
+ if(t.dataset.jgive){const id=t.dataset.jgive;if(jing()<20)return toast('你已經虛弱得給不起了');jingAdd(-15);const st=hs(id);st.lifeP=Math.min(100,(st.lifeP||0)+15);if(wed(id)){wed(id).fav=Math.min(100,wed(id).fav+10);loveAdd(id,50,true)}spouses().filter(x=>x!==id).forEach(x=>{relAdd(x,id,-5);hs(x).heat=(hs(x).heat||0)+1});if(st.lifeP>=100&&!isImmY(id))st.immortal=S.t;toast(`你親手餵了${H(id).n}一口血（精 −15）`);closeSheet();setTimeout(()=>gridSheet(id),50)}},true);
+{const _gs5=gridSheet;gridSheet=function(id){_gs5(id);if(!S.jingKnown||!S.order.includes(id))return;const box=document.querySelector('#sheetIn .frame.small');if(!box)return;box.insertAdjacentHTML('afterend',`<div class="frame small" style="padding:6px 8px;margin-bottom:8px;border-color:#ff6a9a"><b style="color:#ff6a9a">長生</b> ${isImmY(id)?'已不死':(hs(id).lifeP||0)+'%'}　<button class="btn sm" data-jgive="${id}">賜精血（精 −15）</button></div>`)}}
+{const _rwj=render;render=function(...a){const r=_rwj.apply(this,a);try{let el=document.getElementById('jingS');const lord=document.querySelector('.res.lord');if(lord&&!el){lord.insertAdjacentHTML('afterend','<span class="res" id="jingS" style="cursor:pointer"></span>');el=document.getElementById('jingS')}if(el){el.textContent='精'+jing();el.style.color=jing()<15?'#ff4a6a':jing()<40?'#ff9a6a':'#ff9ad0'}}catch(e){}return r}}
+{const _wvj=wedVisit;wedVisit=function(id){const r=_wvj.apply(this,arguments);if(S.jingKnown)jingAdd(-3);return r}}
+{const _hj=haremEvent;haremEvent=function(cb){try{jingTurn(feedPush)}catch(e){console.error(e)}return _hj(cb)}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
@@ -4485,7 +4597,7 @@ function courtOfficerTurn(add){
 const INFT=[[0,'無權'],[30,'有聲'],[50,'掌權'],[70,'權傾後宮'],[90,'垂簾聽政']];
 const MDM={平靜:1,歡喜:1.1,甜蜜:1.15,委屈:.9,嫉恨:.8,焦躁:.85,冷戰:.7,癲狂:.6};
 const CYN=['經期','排卵期','經前'],CYI=['🩸','🌸','🌙'],CYM=[.85,1.1,.95];
-const cyc=id=>{const w=wed(id);if(!w)return 0;if(w.cyo==null)w.cyo=R(0,2);return(S.t+w.cyo)%3};
+const cyc=id=>{const w=wed(id);if(!w)return 0;if(w.cyo==null)w.cyo=R(0,2);return(S.t+w.cyo)%3};const cyLab=id=>{const w=wed(id),st=hs(id);if((w&&w.preg)||(st&&st.pregPre!=null)){const due=(w&&w.preg)||st.pregPre,left=Math.max(0,due-S.t);return'🤰'+(left<=2?'臨盆將近':left<=4?'孕中':'初孕')}return CYI[cyc(id)]+CYN[cyc(id)]};
 function cMult(id){const w=wed(id);if(!w)return 1;const P=hp(id);return(1-mistStrain(id)*.025)*(1+.06*Math.max(0,loveLv(id)))*(1+rankOf(id)*.05)*(MDM[md2(id)]||1)*CYM[cyc(id)]*(1+(P.inf||0)/200)}
 {const _w=wedEff;wedEff=function(id,key){const v=_w(id,key);if(!v||H(id).sex!=='f')return v;return v*cMult(id)}}
 function effLine(id){const w=wed(id),P=hp(id),i=P.inf||0,a=P.amb||0,h=(S.hedon||0),t=(S.tyranny||0),c=cyc(id),r=rankOf(id),m=md2(id);const out=[];
@@ -5410,7 +5522,7 @@ function ending(win){if(!win){if(typeof towerBreach==='function')towerBreach();r
 </script>
 <script>
 /* 背景載入角色事件與文本包：封面先能按，文本隨後補上 */
-(function(){var L=["events/mulan_events.js", "events/change_events.js", "events/xiaoqiao_events.js", "events/wuzetian_events.js", "events/zhenmi_events.js", "events/lianghongyu_events.js", "events/yuji_events.js", "events/fuhao_events.js", "events/qinliangyu_events.js", "events/diaochan_events.js", "events/shangguan_events.js", "events/liqingzhao_events.js", "events/xishi_events.js", "events/yangguifei_events.js", "events/zhuowenjun_events.js", "events/wangzhaojun_events.js", "events/daji_events.js", "events/lvzhi_events.js", "events/sunshangxiang_events.js", "events/caiwenji_events.js", "events/zhaofeiyan_events.js", "events/huangyueying_events.js", "events/jiananfeng_events.js", "events/liuchuyu_events.js", "events/xuzhaopei_events.js", "events/wanzhener_events.js", "events/xiaji_events.js", "events/liji_events.js", "events/fengxiaolian_events.js", "events/mibazi_events.js", "events/nvwa_events.js", "events/pingyang_events.js", "events/huhou_events.js", "events/liurushi_events.js", "events/zhangsun_events.js", "events/v40_text.js", "events/v41_text.js", "events/v4_4_sig_house_inter_ret.js", "events/v42_text.js", "events/v4_5_mutation_system.js", "events/v4_6_text.js", "events/engine.js"],i=0,el=null;window.characterPacks=window.characterPacks||{};
+(function(){var L=["events/mulan_events.js", "events/change_events.js", "events/xiaoqiao_events.js", "events/wuzetian_events.js", "events/zhenmi_events.js", "events/lianghongyu_events.js", "events/yuji_events.js", "events/fuhao_events.js", "events/qinliangyu_events.js", "events/diaochan_events.js", "events/shangguan_events.js", "events/liqingzhao_events.js", "events/xishi_events.js", "events/yangguifei_events.js", "events/zhuowenjun_events.js", "events/wangzhaojun_events.js", "events/daji_events.js", "events/lvzhi_events.js", "events/sunshangxiang_events.js", "events/caiwenji_events.js", "events/zhaofeiyan_events.js", "events/huangyueying_events.js", "events/jiananfeng_events.js", "events/liuchuyu_events.js", "events/xuzhaopei_events.js", "events/wanzhener_events.js", "events/xiaji_events.js", "events/liji_events.js", "events/fengxiaolian_events.js", "events/mibazi_events.js", "events/nvwa_events.js", "events/pingyang_events.js", "events/huhou_events.js", "events/liurushi_events.js", "events/zhangsun_events.js", "events/v40_text.js", "events/v41_text.js", "events/v4_4_sig_house_inter_ret.js", "events/v42_text.js", "events/v4_5_mutation_system.js", "events/v4_6_text.js", "events/v4_7_text.js", "events/v4_8_text.js", "events/engine.js"],i=0,el=null;window.characterPacks=window.characterPacks||{};
 function tip(){if(!el){el=document.createElement('div');el.id='packTip';el.style.cssText='position:fixed;right:8px;top:8px;z-index:9999;background:#1a1408cc;color:#d9b56a;border:1px solid #6a5a30;border-radius:10px;padding:3px 9px;font:12px sans-serif;pointer-events:none';document.body.appendChild(el)}el.textContent='劇情載入中 '+Math.round(i/L.length*100)+'%'}
 function next(){if(i>=L.length){window.__packsReady=true;if(window.__packReset)window.__packReset();if(el)el.remove();return}tip();var s=document.createElement('script');s.src=L[i];s.onload=s.onerror=function(){i++;next()};document.body.appendChild(s)}
 if(document.readyState==='complete')setTimeout(next,50);else window.addEventListener('load',function(){setTimeout(next,50)});})();
