@@ -4158,6 +4158,10 @@ function immEnvy(add){const im=spouses().filter(x=>isImmY(x)&&S.order.includes(x
 /* 5. 拿你的不死去炫耀 */
 function immBoast(add){if(!S.immMethod)return;spouses().filter(x=>S.order.includes(x)&&(loveTypes(x).includes('dominate')||craveOf(x)==='power')).forEach(id=>{if(Math.random()>.1)return;weiAdd(3);hp(id).inf=Math.min(100,(hp(id).inf|0)+3);const F=(typeof curFacs==='function'?curFacs():[]).filter(d=>FS(d.id)&&FS(d.id).alive);if(F.length&&S.extort&&Math.random()<.5){S.extort=null;add(`【不死之威】${H(id).n}對來使冷笑：「你們要打一個殺不死的人？」——勒索不了了之（威信 +3）`)}else add(`【不死之威】${H(id).n}在朝堂上拿你的不死震懾群臣（威信 +3、她權勢 +3）`)})}
 {const _him=haremEvent;haremEvent=function(cb){try{immEnvy(feedPush);immBoast(feedPush)}catch(e){}return _him(cb)}}
+/* v4.7 文本接口 */
+{const _ed=emoDlg;emoDlg=function(id,title,body,col,btns){const key=title.replace(/[（(].*$/,'');const emo=(title.match(/（(.+)）/)||[])[1]||emoOf(id);const s=T46('EMO_TEXT',id,key,emo)||T46('EMO_TEXT',id,key)||T46('EMO_TEXT','_'+craveOf(id),key);return _ed(id,title,s?`「${T46n(s,id).replace(/^「|」$/g,'')}」`:body,col,btns)}}
+Object.keys(LOVTACT).forEach(T=>{const f=LOVTACT[T];LOVTACT[T]=(id,b,add)=>{const s=f(id,b,add);if(!s)return s;const t=T46('LOVE_TEXT',id,T,b)||T46('LOVE_TEXT',id,T)||T46('LOVE_TEXT','_',T,b);if(!t)return s;const nums=(s.match(/（[^（）]*）$/)||[''])[0];return T46n(t,id)+nums}});
+{const _fe=flauntEvent;flauntEvent=function(id,m,how){_fe(id,m,how);setTimeout(()=>{const s=T46('FLAUNT_TEXT',id,how==='撞見'?'caught':'bring');if(s){const p=document.querySelector('#sheetIn .dlg p');if(p)p.textContent=T46n(s,id,m).replaceAll('{m}',H(m).n)}},0)}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
