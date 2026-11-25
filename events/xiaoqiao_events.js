@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["xiaoqiao"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 03 號 小喬 (xiaoqiao)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "xiaoqiao",
     "index": 3,
@@ -18,7 +23,8 @@
       "低侵蝕(0-34)：初離江東，仍帶著周郎早逝後的惶恐，但已深知國色若無毒刺便只會淪為銅雀台上的玩物。",
       "中侵蝕(35-69)：在黑霧與宮鬥侵蝕下，開始熟練運用眼淚嫁禍、以江南春香與肉身收買前朝武將，笑吟吟看政敵慘死。",
       "高侵蝕(70-100)：徹底黑化為『笑面火狐』——已親手在後宮私設薰香暗室折磨情敵、已在花舫裡與多名俊俏江東舊部暗行淫樂、已能一邊嬌泣喊疼一邊把燒紅的火箸按進仇敵嘴裡。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -46,7 +52,11 @@
             "corruption": 10,
             "rel_b": -25,
             "rel_g": 10,
-            "flag": "xiaoqiao_tears_win"
+            "flag": "xiaoqiao_tears_win",
+            "mist": 10,
+            "heat": 6,
+            "marry": 1,
+            "preg": 1
           },
           "outcome": "小喬埋在你胸口輕聲抽泣，指尖卻極隱密地在你心口畫了個圓圈，轉頭隔著你的肩膀對臉色慘白的 {b} 露出一抹極甜、極毒的微笑。"
         },
@@ -56,7 +66,10 @@
             "aff": 4,
             "corruption": 18,
             "tyranny": 6,
-            "flag": "xiaoqiao_exposed_start"
+            "flag": "xiaoqiao_exposed_start",
+            "mist": 18,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "小喬臉上的淚瞬間停在眼眶裡，反倒破涕為笑，直接把柔軟滾燙的身子貼上你的腰胯低語：「哎呀，主公比周郎眼睛還毒呢。既然被主公抓住了把柄……今晚人家在偏院備好了江東花酒，主公親自來搜一搜奴家身上，還藏了什麼壞東西好不好？」"
         }
@@ -81,7 +94,12 @@
           "effects": {
             "aff": 12,
             "corruption": 20,
-            "hedon": 12
+            "hedon": 12,
+            "mist": 20,
+            "crave": 12,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "小喬被你按在古琴上壓得琴弦嗡嗡亂響，雪白裙襬捲到腰際，卻仰起含淚的臉主動勾住你的脖子喘笑：「奴家還沒入宮門，沒人撐腰嘛……這些消息全都是替主公打聽的。主公要罰，就在這琴案上把奴家彈碎吧……」"
         },
@@ -90,7 +108,14 @@
           "effects": {
             "aff": -14,
             "corruption": 26,
-            "tyranny": 8
+            "tyranny": 8,
+            "affair": "g",
+            "exile": 1,
+            "pol": 12,
+            "energy": 25,
+            "mist": 26,
+            "heat": 5,
+            "troops": 60
           },
           "outcome": "小喬臉色一白，乖順叩首認錯；轉身回屋後卻已經把那把沾過你手溫的琵琶弦絞斷，暗中決定往後下藥要直接下在主公身邊的茶裡。"
         }
@@ -114,7 +139,12 @@
             "aff": 18,
             "inf": 16,
             "corruption": 15,
-            "rel_b": -45
+            "rel_b": -45,
+            "ban": "b",
+            "mist": 15,
+            "heat": 6,
+            "inj": "b",
+            "tag": "立威震宮"
           },
           "outcome": "小喬叩頭謝恩時淚光閃閃，起身經過昏厥過去的 {b} 身邊，用只有兩人聽得見的軟糯嗓音輕笑：「姐姐，周郎當年一把火燒了赤壁八十萬大軍，妹妹燒妳一間破庫房，不算過分吧？」"
         },
@@ -122,7 +152,11 @@
           "text": "命工部細查火場灰燼，查出赤壁猛火油殘留後私下把焦黑油塊拍在小喬妝台上",
           "effects": {
             "aff": 6,
-            "corruption": 20
+            "corruption": 20,
+            "mist": 20,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "小喬看著那塊焦黑油渣，非但不慌，反倒赤足踩上軟榻從背後抱住你的腰，把臉貼在你背上輕笑：「主公果然什麼都瞞不住。可妳既沒在朝堂上揭穿我，不就說明——主公也覺得，留著我這把好用的火，比留著 {b} 那個蠢貨划算嗎？」"
         }
@@ -165,7 +199,11 @@
             "aff": 10,
             "hedon": 18,
             "corruption": 30,
-            "flag": "xiaoqiao_corpse_punish"
+            "flag": "xiaoqiao_corpse_punish",
+            "mist": 30,
+            "crave": 18,
+            "exec": "b",
+            "heat": 8
           },
           "outcome": "水榭裡傳出一整夜撕心裂肺又夾雜著失控嬌吟的動靜，門外侍衛聽得頭皮發麻。天亮時她滿身青紫齒印卻滿意地笑開——她徹底確信，這副國色肉身就是她永遠死不了的免死金牌。"
         },
@@ -174,7 +212,11 @@
           "effects": {
             "aff": -30,
             "corruption": 38,
-            "tyranny": 14
+            "tyranny": 14,
+            "mist": 38,
+            "heat": 7,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "她在深牢裡挨了夾指之刑，雙手再也彈不了從前的清雅古琴，卻徹底變成一隻滿腦子只想著把主城一把火燒光陪葬的毒狐。"
         }
@@ -393,3 +435,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['xiaoqiao'] = DATA;
+  (window.characterPacks ||= {})['xiaoqiao'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

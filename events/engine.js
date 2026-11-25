@@ -14,7 +14,7 @@ window.makeCharacterEvents = function (game) {
   const g=S.order.filter(x=>H(x).sex==='m'&&!x.startsWith('kid')).sort((x,y)=>Number(activePlace(y)===activePlace(id))-Number(activePlace(x)===activePlace(id))||relG(id,y)-relG(id,x)||x.localeCompare(y))[0];
   return {b,c,g,heir:(S.kids||[]).find(k=>k.mom===id&&k.adult)?.id};
  }
- function textOf(e){const r=textOf0(e);if(!e._sx&&window.TY_SCENE){e._sx=1;try{const nt=TY_SCENE(e,r);if(nt&&nt.length)feedPush('【劇情後果】'+nt.join('；'),'neg')}catch(err){}}if(!r.choices||!r.choices.length){const D=defaults(e);if(D)r.choices=D}return r}
+ function textOf(e,display=false){const r=textOf0(e);if(display&&!e._sx&&window.TY_SCENE){e._sx=1;try{const nt=TY_SCENE(e,r);if(nt&&nt.length)feedPush('【劇情後果】'+nt.join('；'),'neg')}catch(err){}}if(!r.choices||!r.choices.length){const D=defaults(e);if(D)r.choices=D}return r}
  function textOf0(e) {
   const d=entries[e.id][e.key], v=e.variant;
   if(e.key==='tragedies'){const t=d[v];return {title:t.title,choices:t.choices,body:lines([t.scene,Object.values(t.variants||{})[Number(e.high)],t.dialogue,t.aftermath]).map(s=>s.replace(/侵蝕度直接鎖定(?:深淵| 95\+)/g,'永久留下惡墮印記'))}}
@@ -51,7 +51,7 @@ window.makeCharacterEvents = function (game) {
   const narrative=typeof event.trigger==='string';
   const st=hs(id), stamp=JSON.stringify(event.trigger?.once||narrative&&!event.stages?[key,'',null]:[key,variant,peer]);
   if(st.packSeen?.[stamp])return false;
-  const cast=roles(id);if(peer)cast.peer=peer;
+  const cast={...roles(id),a:id};if(peer)cast.peer=peer;
   if(narrative||typeof event[variant]?.trigger==='string'){
    // 這批劇本以 g 表示宮中盟友、c 表示朝臣。只為本場有戲份的角色配對。
    const rolesText=event.roles||event[variant]?.roles||'';
@@ -77,6 +77,7 @@ window.makeCharacterEvents = function (game) {
   if([...raw.matchAll(/\{(\w+)\}/g)].some(m=>!cast[m[1]])||[...raw.matchAll(/"rel_([bgc])"/g)].some(m=>!cast[m[1]]))return false;
   (S.packQueue??=[]).push(e);(st.packSeen??={})[stamp]=true;return true;
  }
+ function explicit(id,fx){return packs[id].meta.effectsSchemaVersion==='v4.6_real_consequences'&&Object.keys(fx||{}).some(k=>Object.hasOwn(window.TY_FX||{},k))}
  function apply(id,fx,cast) {
   const st=hs(id),w=wed(id);
   for(const [key,n] of Object.entries(fx||{})){
@@ -86,7 +87,8 @@ window.makeCharacterEvents = function (game) {
     if(!w){const pending=st.packPending??={};pending[key]=(pending[key]||0)+n;continue}
     const dest=key==='aff'?w:hp(id),field=key==='aff'?'fav':'inf';
     dest[field]=Math.max(0,Math.min(100,(dest[field]||0)+n));
-   }else if(key==='corruption'){const v=BigInt(st.mist||0)+BigInt(n);st.mist=String(v<0n?0n:v)}
+   }else if(key==='corruption'&&fx.mist!=null&&explicit(id,fx)){continue}
+   else if(key==='corruption'){const v=BigInt(st.mist||0)+BigInt(n);st.mist=String(v<0n?0n:v)}
    else if(key==='hedon'||key==='tyranny')barAdd(key,n);
    else if(key.startsWith('rel_'))relAdd(id,cast[key.slice(4)],n);
    else if(window.TY_FX&&TY_FX[key]){try{const r=TY_FX[key](id,n,cast);if(r)(apply.notes??=[]).push(r)}catch(err){}}
@@ -96,6 +98,14 @@ window.makeCharacterEvents = function (game) {
 
  // 文本沒附選項時，依事件類型補上會改變數值的選項
  function defaults(e){const k=e.key,v=e.variant;
+  if(packs[e.id].meta.effectsSchemaVersion==='v4.6_real_consequences'){
+   if(k==='tragedies'&&v==='懷孕歸來')return [
+    {text:'接她回宮，留下孩子',effects:{preg:1,tag:'懷敵種'}},
+    {text:'逼她落胎，打入冷宮',effects:{kidLoss:1,inj:1,cold:1}}];
+   if(k==='heirAndFamily')return [
+    {text:'縱容她對{b}的胎兒下手',effects:{kidLoss:'b',inj:'b'}},
+    {text:'冊她為主母，讓她另育皇嗣',effects:{preg:1,mainWife:1}}];
+  }
   const T={
    bondAndDrift:[['成全這段情誼',{rel_g:15,aff:3}],['提防兩人走得太近',{rel_g:-12,inf:-3}],['把兩人拆到不同的城',{rel_g:-20,aff:-5},'split']],
    factionRecruit:[['默許她招兵買馬',{inf:10,corruption:5}],['敲打她，別結黨',{inf:-10,aff:-5}],['把那些人收編到你麾下',{rel_g:-10,aff:-3},'absorb']],
@@ -141,7 +151,7 @@ window.makeCharacterEvents = function (game) {
  function follow(e,c,d){const id=e.id,N=H(id).n,G=e.cast&&e.cast.g&&H(e.cast.g)?H(e.cast.g).n:'他',w=wed(id),fv=v=>{if(w)w.fav=Math.max(0,Math.min(100,(w.fav|0)+v));else hs(id).aff=Math.max(0,Math.min(100,(hs(id).aff|0)+v))};
   const mist=v=>{hs(id).mist=String(BigInt(hs(id).mist||0)+BigInt(v)<0n?0n:BigInt(hs(id).mist||0)+BigInt(v))};
   if(e.key==='threeContextsAndConflict'&&c.path){
-   if(d.react)return d.react.map(r=>({text:r.text,run:()=>{apply(id,r.effects,e.cast);const v=[verdict(id,r.text,e.cast)].concat(window.TY_INFER?TY_INFER(id,[r.text,r.outcome].filter(Boolean).join('。'),e.cast,r.effects):[],apply.notes||[]).filter(Boolean).join(' ');apply.notes=[];return [r.outcome,v].filter(Boolean).join(' ')}}));
+   if(d.react)return d.react.map(r=>({text:r.text,run:()=>{apply(id,r.effects,e.cast);const v=[explicit(id,r.effects)?'':verdict(id,r.text,e.cast)].concat(!explicit(id,r.effects)&&window.TY_INFER?TY_INFER(id,[r.text,r.outcome].filter(Boolean).join('。'),e.cast,r.effects):[],apply.notes||[]).filter(Boolean).join(' ');apply.notes=[];return [r.outcome,v].filter(Boolean).join(' ')}}));
    return c.path==='duty'?[
     {text:'抱住她，讓她哭出來',run:()=>{fv(8);mist(-10);return N+'在你懷裡第一次失聲痛哭。寵愛 +8、污染 −10'}},
     {text:'論功行賞',run:()=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+10);mist(10);return N+'領了賞，眼神卻更冷了。權勢 +10、污染 +10'}},
@@ -172,13 +182,13 @@ window.makeCharacterEvents = function (game) {
  function show(next,n=0) {
   if(S.packQueue)S.packQueue=S.packQueue.filter(x=>entries[x.id]?.[x.key]&&S.heroes[x.id]&&(x.key==='tragedies'||(!(S.gone&&S.gone[x.id])&&['b','c','g','peer'].every(k=>!x.cast?.[k]||!(S.gone&&S.gone[x.cast[k]])))));
   const e=S.packQueue?.[0];if(!e||n>=SHOW_MAX)return next();
-  const d=textOf(e), names=k=>k==='heir'?(S.kids||[]).find(x=>x.id===e.cast[k])?.n:H(e.cast[k])?.n;
+  const d=textOf(e,true), names=k=>k==='a'?H(e.id).n:k==='heir'?(S.kids||[]).find(x=>x.id===e.cast[k])?.n:e.cast?.[k]&&S.heroes[e.cast[k]]?H(e.cast[k]).n:null;
   const fill=s=>String(s||'').replace(/\{(\w+)\}/g,(_,k)=>names(k)||'故人');
   const choices=d.choices||[{text:'知道了'}];
   sheet('<h3>'+esc(fill(d.title))+'</h3>'+d.body.map(s=>'<p>'+esc(fill(s))+'</p>').join('')+choices.map((c,i)=>'<button class="btn" id="packChoice'+i+'">'+esc(fill(c.text))+'</button>').join(''),true);
   choices.forEach((c,i)=>$('#packChoice'+i).onclick=()=>{
    if(S.packQueue[0]!==e)return;
-   S.packQueue.shift();apply(e.id,c.effects,e.cast);consequence(e,i,c);const vd=c.path?'':verdict(e.id,c.text,e.cast);if(vd)feedPush(vd,'neg');try{const inf=window.TY_INFER?TY_INFER(e.id,[c.text,c.outcome].filter(Boolean).join('。'),e.cast,c.effects):[];const nt=(apply.notes||[]).concat(inf);apply.notes=[];if(nt.length)feedPush('【劇情後果】'+nt.join('；'),'neg')}catch(err){}
+   S.packQueue.shift();apply(e.id,c.effects,e.cast);const defined=explicit(e.id,c.effects);if(!defined)consequence(e,i,c);const vd=defined||c.path?'':verdict(e.id,c.text,e.cast);if(vd)feedPush(vd,'neg');try{const inf=!defined&&window.TY_INFER?TY_INFER(e.id,[c.text,c.outcome].filter(Boolean).join('。'),e.cast,c.effects):[];const nt=(apply.notes||[]).concat(inf);apply.notes=[];if(nt.length)feedPush('【劇情後果】'+nt.join('；'),'neg')}catch(err){}
    if(e.key==='tragedies'&&e.variant==='公開羞辱')(hs(e.id).packFlags??={}).permanentFall=true;
    const permanent=e.key==='tragedies'&&entries[e.id].tragedies[e.variant].permanentState;
    if(permanent)(hs(e.id).packStates??={})[permanent.state]=fill(permanent.effect);

@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["fuhao"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 08 號 婦好 (fuhao)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "fuhao",
     "index": 8,
@@ -18,7 +23,8 @@
       "0-34（初染）：帶著殷商尚武重祭的原始血性與王后霸氣，誰敢在宗廟或軍議上質疑她，她當場便拎起大銅鉞與龜甲替對方『問卜定生死』。",
       "35-69（深蝕）：在黑霧與後宮奪權的腐蝕下，徹底將宗廟神諭化為私有屠刀——刻意鑿改龜甲兆紋陷害政敵、用人血溫酒辦玄室荒宴、以封邑青銅兵器與肉身狂歡私蓄悍將。",
       "70+（深淵）：徹底黑化為『血壇妖后』——已親手將政敵的心腹活埋為宮門奠基人牲、已在供奉先王的青銅祭壇上塗滿朱砂公然宣淫換取兵權、已將親兒烙上封邑血徽鍛造成只認神權屠刀的繼承機器，連君王與滿朝貞人都成了她鼎中待烹的祭品。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -46,7 +52,14 @@
             "hedon": 8,
             "corruption": 6,
             "rel_g": 5,
-            "flag": "fuhao_blood_oath_entry"
+            "flag": "fuhao_blood_oath_entry",
+            "troops": 80,
+            "pol": 12,
+            "energy": 25,
+            "crave": 8,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "婦好眼中驟然燃起狂喜的野火，竟不退反進，將沾滿朱砂與血酒的身軀整個人壓進你懷裡，舌尖帶著辛辣酒氣與你狠狠交纏。她喘著氣貼在你耳邊低笑，已當場反手抽出青銅匕首割破掌心，將血滴進你們共飲的酒爵，從此把你的後宮當成她新的血祭獵場。"
         },
@@ -57,7 +70,11 @@
             "inf": -5,
             "tyranny": 12,
             "corruption": 10,
-            "rel_g": -10
+            "rel_g": -10,
+            "troops": 80,
+            "mist": 10,
+            "heat": 6,
+            "office": 1
           },
           "outcome": "婦好盯著你看了三息，忽然大笑著把大銅鉞重重砸在青銅地磚上，震碎了兩塊磚石。她表面交出一枚空殼銅符，轉身卻已暗中用指甲在牛骨上刻下你的生辰咒紋，並密令 {g} 將真正的精銳私兵化整為零潛伏於王城外圍。"
         },
@@ -68,7 +85,14 @@
             "inf": 8,
             "tyranny": 10,
             "corruption": 14,
-            "hedon": 6
+            "hedon": 6,
+            "pol": 12,
+            "energy": 25,
+            "mist": 14,
+            "crave": 6,
+            "heat": 5,
+            "affair": "g",
+            "tag": "桀驁未馴"
           },
           "outcome": "祭壇上瞬間血霧沖天。婦好舔去唇角血珠，拉著你的手按在自己劇烈起伏的胸口，笑得像一頭剛嚐到血腥味的母豹——她已經認定，這座王宮裡只有你配與她一同在屍骨上縱情享樂。"
         }
@@ -96,7 +120,14 @@
             "hedon": 10,
             "rel_b": -15,
             "rel_c": 8,
-            "flag": "fuhao_foundation_sacrifice"
+            "flag": "fuhao_foundation_sacrifice",
+            "exec": "b",
+            "mist": 14,
+            "crave": 10,
+            "heat": 5,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "婦好在灑滿朱砂粉的祭案上放聲大笑，雙腿直接勾住你的腰，任由門外填土壓實活人的悶響成為你們歡愛的配樂。次日太廟貞人見了那塊偽造的龜甲，竟無一人敢拆穿，{b} 的半數用度當場被削。"
         },
@@ -107,7 +138,10 @@
             "inf": 6,
             "corruption": 6,
             "rel_b": -8,
-            "rel_c": 5
+            "rel_c": 5,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "被拖出來的兩人早已斷氣其一、瘋癲其一。婦好嗤笑一聲，毫不介意地把另一塊備用牛骨塞進你袖中，知道你其實比她更懂什麼叫借刀殺人。"
         },
@@ -117,7 +151,12 @@
             "aff": -10,
             "inf": -8,
             "tyranny": 6,
-            "rel_b": 8
+            "rel_b": 8,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6,
+            "mist": 20,
+            "rebel": 1
           },
           "outcome": "婦好冷冷盯著你，當夜便將被削下的衛隊盡數改換商賈服色，直接安插進王城內所有供應宮中酒肉與炭火的商鋪，反而在你眼皮底下織出一張更密的暗網。"
         }
@@ -145,7 +184,13 @@
             "hedon": 8,
             "rel_b": -25,
             "rel_c": -5,
-            "flag": "fuhao_shrine_execution"
+            "flag": "fuhao_shrine_execution",
+            "ban": "b",
+            "mist": 12,
+            "crave": 8,
+            "heat": 7,
+            "inj": "b",
+            "tag": "立威震宮"
           },
           "outcome": "滿殿嬪妃無不股慄，從此見了婦好手中的龜甲如同見到催命符。當晚玄鳥殿內紅燭通宵未滅，婦好渾身還帶著那名女官未洗淨的血氣，便在青銅榻上將你折騰得直到天明。"
         },
@@ -156,7 +201,11 @@
             "inf": 4,
             "tyranny": 6,
             "rel_b": -10,
-            "rel_c": 6
+            "rel_c": 6,
+            "ban": "b",
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "婦好挑眉一笑，乖乖回殿禁足，卻在七日內派人將那名女官的頭骨漆成酒器，悄悄擺在了 {b} 每天必經的迴廊石燈座上，把 {b} 嚇得一連半月高燒說胡話。"
         },
@@ -167,7 +216,12 @@
             "inf": -10,
             "tyranny": 10,
             "corruption": 8,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 10,
+            "heat": 5,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "婦好鬆手放開銅鉞，眼神卻徹底冷了下去。隔日太廟便傳出「大王違逆先王卜辭，致北疆星象大凶」的流言，連朝中老貞人都在她暗中授意下上書諫言。"
         }
@@ -195,7 +249,12 @@
             "corruption": 14,
             "tyranny": 10,
             "rel_b": -30,
-            "flag": "fuhao_rain_betrayal"
+            "flag": "fuhao_rain_betrayal",
+            "office": 1,
+            "mist": 14,
+            "heat": 5,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "婦好接過沉甸甸的青銅鑰匙串，當場在你懷裡解開祭袍繫帶，帶著滿身雨水與毒草冷香索求賞賜。從此後宮再無人敢輕信她的結盟，卻也無人敢拒絕她的勒索。"
         },
@@ -205,7 +264,10 @@
             "aff": -6,
             "inf": 4,
             "corruption": 8,
-            "rel_b": -12
+            "rel_b": -12,
+            "mist": 10,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "婦好聽聞 {b} 沒死成，只冷哼一聲，轉頭便把剩餘的毒酒全潑進了 {b} 宮中的水井旁，雖未毒死人，卻讓 {b} 殿裡的宮婢一夜之間逃散過半。"
         }
@@ -233,7 +295,13 @@
             "tyranny": 10,
             "rel_g": -15,
             "rel_c": 5,
-            "flag": "fuhao_shrine_orgy_caught"
+            "flag": "fuhao_shrine_orgy_caught",
+            "mist": 16,
+            "crave": 16,
+            "heat": 5,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "婦好非但沒有驚慌，反而在你粗暴的佔有中發出一聲帶著痛楚與狂喜的尖笑，甚至挑釁地回頭看著跪在地上不敢抬頭的 {g}。那一夜過後，{g} 徹底被捏死把柄，死心塌地成了你們夫妻手裡最聽話的惡犬。"
         },
@@ -244,7 +312,11 @@
             "corruption": 12,
             "rel_g": 12,
             "rel_c": 10,
-            "rel_b": -15
+            "rel_b": -15,
+            "mist": 12,
+            "heat": 6,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "次日早朝，{g} 果然帶著禁軍重甲列陣殿外，把 {b} 派系的文臣嚇得不敢出聲。婦好在後宮隔著珠簾對你微微一笑——她早就察覺密道裡有人，這場戲本來就是做給你看、逼你認清誰才握著刀柄的。"
         },
@@ -256,7 +328,12 @@
             "tyranny": 16,
             "corruption": 10,
             "rel_g": -35,
-            "rel_b": 15
+            "rel_b": 15,
+            "jail": "g",
+            "troops": 80,
+            "mist": 10,
+            "heat": 8,
+            "food": 100
           },
           "outcome": "玄室裡血濺神壇，{g} 當場被亂刀砍死。婦好披著沾滿他鮮血的薄紗冷笑著看你：「大王殺得了好痛快，只可惜他臨死前把虎符咽進肚子裡了——大王要不要親自剖開來找？」自此她與你的裂痕深如血海。"
         }
@@ -283,7 +360,11 @@
             "corruption": 18,
             "rel_b": -35,
             "rel_g": -40,
-            "flag": "fuhao_burned_traitors"
+            "flag": "fuhao_burned_traitors",
+            "troops": 80,
+            "mist": 18,
+            "heat": 10,
+            "exec": "b"
           },
           "outcome": "烈焰沖天而起，慘叫聲持續了整整一炷香。婦好在火光映照下瞳孔發亮，竟當著滿牆死士的面直接跨坐到你懷裡，隔著冰冷的青銅甲片緊緊抱住你，低聲嘶語：「這才配做我婦好的男人。」"
         },
@@ -295,7 +376,11 @@
             "tyranny": 12,
             "corruption": 10,
             "rel_b": -25,
-            "rel_g": -30
+            "rel_g": -30,
+            "cold": "b",
+            "mist": 10,
+            "heat": 6,
+            "exile": "g"
           },
           "outcome": "兩人滿身煙灰、半死不活地爬出祭庫。婦好蹲在哀嚎的 {g} 身邊，用靴尖碾著他斷腕處的鮮血，笑著把那截斷掌裝進木匣，說要拿去餵她封邑裡的獵犬。"
         }
@@ -323,7 +408,14 @@
             "tyranny": 12,
             "rel_b": -30,
             "rel_c": 10,
-            "flag": "fuhao_blood_bath_reversal"
+            "flag": "fuhao_blood_bath_reversal",
+            "inj": "b",
+            "pop": -15,
+            "mist": 16,
+            "crave": 10,
+            "heat": 6,
+            "jail": "b",
+            "tag": "誣陷成案@b"
           },
           "outcome": "流言一夜之間反轉成「婦好赤身血浴感動天神」。當夜她連身上的牛血與朱砂都未洗淨，便徑直闖入你的龍榻，將滿身腥甜與滾燙的體溫盡數抹在你身上，肆意狂笑。"
         },
@@ -334,7 +426,10 @@
             "inf": 6,
             "corruption": 8,
             "rel_b": -15,
-            "rel_c": -10
+            "rel_c": -10,
+            "mist": 10,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "婦好甩開鐵鉗，舔掉唇角一滴血湯，冷冷看著你：「大王總愛留活口，可別怪我下次連大王的臉面也一起燙壞了。」"
         }
@@ -361,7 +456,13 @@
             "tyranny": 14,
             "rel_b": 10,
             "rel_c": -35,
-            "flag": "fuhao_copper_cartel"
+            "flag": "fuhao_copper_cartel",
+            "food": 100,
+            "pop": -15,
+            "mist": 16,
+            "heat": 7,
+            "office": 1,
+            "tag": "毒盟共生"
           },
           "outcome": "三日後 {c} 全族被羅織謀反罪抄家，南邊銅礦日夜趕鑄新兵器。婦好送來一尊用新銅鑄造的合歡雙人爵，上面刻的正是她與你交纏的裸影。"
         },
@@ -372,7 +473,10 @@
             "inf": -6,
             "corruption": 10,
             "rel_b": -10,
-            "rel_c": 15
+            "rel_c": 15,
+            "troops": 80,
+            "mist": 10,
+            "inj": "c"
           },
           "outcome": "吞併行動中途生變，婦好折了二十名私兵。她當夜拎著滴血的馬鞭衝進你的寢殿，一句廢話也沒說，直接撕碎你的龍袍用牙齒狠狠咬破你的肩頭報復。"
         }
@@ -399,7 +503,11 @@
             "hedon": 18,
             "corruption": 14,
             "rel_b": -25,
-            "flag": "fuhao_bed_usurped"
+            "flag": "fuhao_bed_usurped",
+            "mist": 14,
+            "crave": 18,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "玉榻的青銅欄杆幾乎被震斷，整座寢殿徹夜迴盪著她毫不掩飾的放浪喘息與笑聲。次日清晨，她故意穿著你的寬大中衣走出殿門，當著所有宮婢的面把 {b} 昨晚遺落的肚兜直接扔進了炭盆燒毀。"
         },
@@ -410,7 +518,12 @@
             "hedon": 16,
             "tyranny": 12,
             "corruption": 16,
-            "rel_b": -20
+            "rel_b": -20,
+            "mist": 16,
+            "crave": 16,
+            "heat": 6,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "窒息感反而讓婦好興奮得渾身戰慄，她指甲狠狠摳進你的背脊，在你耳邊沙啞地笑：「對……就是這樣，大王越狠，臣妾越喜歡。」"
         },
@@ -420,7 +533,10 @@
             "aff": -20,
             "inf": -10,
             "tyranny": 14,
-            "rel_b": 12
+            "rel_b": 12,
+            "inj": "b",
+            "heat": 7,
+            "house": 1
           },
           "outcome": "婦好赤腳被拖出大殿時，回頭對你露出一抹森冷刺骨的笑。不到三日，{b} 便在御膳中吃出一截刻著她自己生辰八字的死人指骨，從此徹底失心瘋。"
         }
@@ -447,7 +563,13 @@
             "tyranny": 16,
             "rel_g": 10,
             "rel_c": 10,
-            "flag": "fuhao_abyss_blood_altar"
+            "flag": "fuhao_abyss_blood_altar",
+            "pol": 12,
+            "energy": 25,
+            "mist": 24,
+            "crave": 24,
+            "heat": 8,
+            "pv": 1
           },
           "outcome": "那一夜宗廟的青銅鐘無風自鳴。你與婦好在血酒、迷煙與滿地跪伏的悍將注視下徹底墜入深淵，從此她不再有任何底線，成了你手中最狂亂、最殘忍、也最離不開你的血壇妖后。"
         },
@@ -460,7 +582,13 @@
             "hedon": 18,
             "tyranny": 22,
             "rel_g": -40,
-            "rel_c": -5
+            "rel_c": -5,
+            "pol": 12,
+            "energy": 25,
+            "mist": 20,
+            "crave": 18,
+            "heat": 11,
+            "ban": 1
           },
           "outcome": "{g} 的鮮血濺了婦好滿臉，她非但不懼，反而發出歇斯底里的狂笑，緊緊纏住你滿是血腥的雙臂——她愛極了這種只有鮮血才能餵飽的病態獨佔。"
         }
@@ -487,7 +615,12 @@
             "hedon": 20,
             "tyranny": 18,
             "rel_b": -40,
-            "flag": "fuhao_branded_rival_flesh"
+            "flag": "fuhao_branded_rival_flesh",
+            "mist": 22,
+            "crave": 20,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "石室裡慘叫、哭嚎與放浪的喘息交織成最可怕的夢魘。天亮時 {b} 已經徹底咬舌自殘未遂、神智崩潰，被婦好當作「瘋癲人牲」鎖進了宗廟柴房。"
         },
@@ -498,7 +631,12 @@
             "inf": 4,
             "tyranny": 8,
             "corruption": 6,
-            "rel_b": -20
+            "rel_b": -20,
+            "exec": "b",
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "婦好冷哼一聲，臨走前卻還是順手扯下了 {b} 的一絡長髮與耳墜，說是拿去做鎮邪巫偶，連死人也不肯放過。"
         }
@@ -525,7 +663,12 @@
             "tyranny": 16,
             "corruption": 16,
             "rel_b": -25,
-            "flag": "fuhao_heir_blood_forged"
+            "flag": "fuhao_heir_blood_forged",
+            "mist": 16,
+            "heat": 8,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "婦好眼中閃過極度的傲慢與滿足。從此 {heir} 性情日益陰鷙嗜血，對母親言聽計從，成了後宮與朝堂上最令人聞風喪膽的少主。"
         },
@@ -536,7 +679,12 @@
             "inf": -12,
             "tyranny": 10,
             "corruption": 8,
-            "rel_b": 10
+            "rel_b": 10,
+            "mist": 10,
+            "heat": 5,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "婦好站在血泊裡沒有攔你，只是對著被帶走的 {heir} 輕聲說了一句：「記住你肩上的疤，誰拆散咱們母子，長大後就拿他的血來洗疤。」那眼神讓太傅當場冷汗直流。"
         }
@@ -564,7 +712,14 @@
             "tyranny": 25,
             "rel_b": -50,
             "rel_g": 20,
-            "flag": "fuhao_blood_coregime"
+            "flag": "fuhao_blood_coregime",
+            "mist": 25,
+            "crave": 20,
+            "heat": 12,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "太廟門外屍骨未寒，門內王座上已是衣衫盡褪、荒淫瘋狂。次日晨光灑落，大邑商正式進入「王與血后共主神權」的恐怖紀元，滿朝文武無不匍匐在她的雙柄銅鉞之下。"
         },
@@ -575,7 +730,13 @@
             "inf": -15,
             "tyranny": 20,
             "corruption": 15,
-            "rel_g": -20
+            "rel_g": -20,
+            "exec": "b",
+            "mist": 15,
+            "heat": 10,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "刀鋒刺破她胸口肌膚，滲出一道血線。婦好非但不退，反而挺起胸膛讓刀尖再進半分，笑得瘋魔又淒豔：「大王終於肯對我動真刀子了？好啊，只要你今天沒殺死我，咱們這筆帳，咱們慢慢用命來算。」"
         }
@@ -603,7 +764,14 @@
             "corruption": 10,
             "hedon": 6,
             "rel_b": -20,
-            "flag": "fuhao_mineral_monopoly"
+            "flag": "fuhao_mineral_monopoly",
+            "affair": "g",
+            "food": 100,
+            "mist": 10,
+            "crave": 6,
+            "heat": 6,
+            "pv": 1,
+            "wood": 60
           },
           "outcome": "五日後青銅礦道重新暢通，婦好還附贈了一塊貼身戴過的血玉佩，上面沾著她濃烈的體香與朱砂，邀你秋獵時在她的封邑玄室私會。"
         },
@@ -613,7 +781,10 @@
             "aff": -14,
             "inf": -8,
             "tyranny": 12,
-            "rel_b": 10
+            "rel_b": 10,
+            "heat": 6,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "新派去的監軍剛過黃河便「意外」跌落山谷全軍覆沒。婦好又寄回一塊乾淨的空白龜甲，上面只刻了四個字：『大凶，勿試。』"
         }
@@ -639,7 +810,12 @@
             "corruption": 14,
             "tyranny": 10,
             "rel_b": -25,
-            "rel_c": 12
+            "rel_c": 12,
+            "mist": 14,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "整個朝堂從此陷入對「太廟天罰」的集體恐懼，沒人敢再動婦好一根汗毛，連 {c} 都在她的遙控下步步高升。"
         },
@@ -650,7 +826,12 @@
             "inf": -10,
             "tyranny": 14,
             "rel_b": 12,
-            "rel_c": -30
+            "rel_c": -30,
+            "exec": "c",
+            "pv": 1,
+            "heat": 7,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "{c} 咬毒自盡前仍狂笑著詛咒你不得好死。北方封邑隨即傳來消息，婦好已經開始私下擴編戰車營，不再向都城報備兵數。"
         }
@@ -675,7 +856,12 @@
             "corruption": 16,
             "hedon": 14,
             "rel_g": 8,
-            "flag": "fuhao_five_stage_bonded"
+            "flag": "fuhao_five_stage_bonded",
+            "mist": 16,
+            "crave": 14,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "婦好眼中浮現出極少見的炙熱柔情，旋即化為更狂野的吻——從此她就是你手中最鋒利、也最瘋狂的血色利刃。"
         },
@@ -685,7 +871,9 @@
             "aff": -6,
             "inf": 8,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "house": 1
           },
           "outcome": "婦好敏銳地察覺到你眼底的保留，冷笑一聲鬆開你的手：「無妨，反正大王這副皮囊與這張王座，遲早會徹底染上我的血味。」"
         }
@@ -711,7 +899,13 @@
             "hedon": 16,
             "corruption": 14,
             "rel_b": -20,
-            "rel_g": -15
+            "rel_g": -15,
+            "soldiers": 60,
+            "mist": 14,
+            "crave": 16,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "婦好在烈酒與激戰後的亢奮中徹底失控，整夜拉著你翻雲覆雨，直到東方既白才饜足地咬著你耳垂沉沉睡去。"
         },
@@ -722,7 +916,11 @@
             "inf": 6,
             "tyranny": 10,
             "rel_b": -10,
-            "rel_g": -20
+            "rel_g": -20,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "婦好嗤笑一聲，用沾酒的指尖點了點你的心口：「大王越來越會算計了——不過沒關係，只要大王還在我床上，這些兵權早晚還是我的。」"
         }
@@ -750,7 +948,13 @@
             "corruption": 12,
             "rel_b": -30,
             "rel_g": 15,
-            "flag": "fuhao_expedition_supreme"
+            "flag": "fuhao_expedition_supreme",
+            "mist": 12,
+            "crave": 6,
+            "heat": 7,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "出征前夜，婦好穿著戰甲直接在你的帥帳裡與你狂野歡愛，說是要帶著你的精氣去砍下敵酋的腦袋。三日後大軍開拔，{b} 族兄果然在首戰便被她當作誘餌送進了敵陣。"
         },
@@ -760,7 +964,11 @@
             "aff": 4,
             "inf": 6,
             "rel_b": 5,
-            "rel_g": 8
+            "rel_g": 8,
+            "troops": 80,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "婦好冷笑著接過軍令，臨行前卻在 {g} 的酒壺裡暗中下了一味慢性軟筋散，確保大軍一出王城百里，全軍上下依然只聽她一個人的號令。"
         }
@@ -786,7 +994,13 @@
             "hedon": 14,
             "tyranny": 14,
             "rel_g": 12,
-            "flag": "fuhao_skull_mound_victory"
+            "flag": "fuhao_skull_mound_victory",
+            "mist": 16,
+            "crave": 14,
+            "heat": 7,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "帥帳外人頭京觀森然聳立，帳內卻是徹夜未停的血汗交融。此戰過後，敵國聞「婦好」之名便夜啼，而她在朝堂與後宮的聲勢也達到了無人敢忤的頂峰。"
         },
@@ -796,7 +1010,10 @@
             "aff": -6,
             "inf": 8,
             "tyranny": 6,
-            "rel_g": 5
+            "rel_g": 5,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "婦好咂了咂嘴，隨手將最後一顆已經砍下的敵酋首級踢進你腳邊的泥坑：「大王心善，那就把這些奴隸全賞給我去挖銅礦——活著榨乾，確實比一刀砍了划算。」"
         }
@@ -825,7 +1042,12 @@
               "corruption": 14,
               "rel_b": -30,
               "rel_g": 20,
-              "flag": "fuhao_grand_blood_burial"
+              "flag": "fuhao_grand_blood_burial",
+              "mist": 14,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "厚葬大典血染殷墟，{g} 率婦好舊部誓死效忠於你；{b} 嚇得連夜交還名冊，從此每逢陰雨便覺婦好提著銅鉞站在她床頭。"
           },
@@ -835,7 +1057,12 @@
               "inf": -10,
               "tyranny": 12,
               "rel_b": 15,
-              "rel_g": -35
+              "rel_g": -35,
+              "troops": 80,
+              "heat": 6,
+              "pol": 15,
+              "mist": 15,
+              "wood": -50
             },
             "outcome": "封邑私兵當夜譁變燒毀半數礦井，{g} 帶著她的銅鉞遠遁荒野，從此大邑商北疆再無這尊血色煞神替你鎮守。"
           }
@@ -861,7 +1088,11 @@
               "inf": 8,
               "corruption": 12,
               "rel_b": -20,
-              "flag": "fuhao_rescue_ordered"
+              "flag": "fuhao_rescue_ordered",
+              "mist": 12,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "你下達死命令的當日，便親手掌摑了阻撓議和的 {b}；敵營裡的婦好聽聞你傾國來救，舔著嘴角的血跡露出森冷的笑。"
           },
@@ -872,7 +1103,14 @@
               "inf": -15,
               "corruption": 22,
               "tyranny": 14,
-              "rel_b": 18
+              "rel_b": 18,
+              "exec": "b",
+              "pol": 12,
+              "energy": 25,
+              "mist": 22,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "當這道「賜死除籍」的消息傳入敵營，婦好看著天邊黑霧放聲大笑——從那一刻起，她發誓若有一日能活著爬回王城，定要把你與 {b} 一起剝皮祭天。"
           }
@@ -899,7 +1137,13 @@
               "corruption": 10,
               "hedon": 6,
               "rel_b": -25,
-              "flag": "fuhao_wounded_devotion"
+              "flag": "fuhao_wounded_devotion",
+              "inj": 1,
+              "mist": 10,
+              "crave": 6,
+              "heat": 6,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "婦好忍著劇痛靠在你懷裡，用完好的那隻手死死扣住你的後頸，將沾著藥味與血味的唇印上你的脖頸——即便重傷，她依然要在榻上確認你還屬於她。"
           },
@@ -910,7 +1154,12 @@
               "inf": -16,
               "corruption": 20,
               "tyranny": 10,
-              "rel_b": 20
+              "rel_b": 20,
+              "troops": 80,
+              "mist": 20,
+              "heat": 5,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "婦好看著你拿走銅符，一句話也沒說，只是緩緩鬆開握緊的匕首。半個月後，{b} 殿裡的三口水井裡同時浮出了被剝皮的野貓與刻著她生辰的血骨。"
           }
@@ -937,7 +1186,11 @@
               "tyranny": 16,
               "corruption": 18,
               "rel_b": -30,
-              "flag": "fuhao_shame_silenced"
+              "flag": "fuhao_shame_silenced",
+              "exec": "b",
+              "mist": 18,
+              "heat": 8,
+              "pop": -15
             },
             "outcome": "婦好在你懷裡劇烈發抖，卻不是因為恐懼，而是因為壓抑不住的嗜血狂喜。當夜她洗去滿身污穢後，竟要你用同樣粗暴的麻繩綁住她，說是要用你的印記徹底覆蓋敵人的羞辱。"
           },
@@ -948,7 +1201,12 @@
               "inf": -18,
               "corruption": 24,
               "tyranny": 12,
-              "rel_b": 15
+              "rel_b": 15,
+              "exec": "b",
+              "mist": 24,
+              "heat": 6,
+              "ban": 1,
+              "tag": "受辱怨骨"
             },
             "outcome": "她被鎖進偏殿的第七夜，便靠著收買的看守與秘密送進來的朱砂，在殿內設起黑壇，整座後宮從此接連爆發離奇的毒殺與失蹤案。"
           }
@@ -975,7 +1233,12 @@
               "corruption": 20,
               "hedon": 10,
               "tyranny": 14,
-              "flag": "fuhao_ghost_army_vow"
+              "flag": "fuhao_ghost_army_vow",
+              "troops": 80,
+              "mist": 20,
+              "crave": 10,
+              "heat": 7,
+              "tag": "死人堆爬歸"
             },
             "outcome": "婦好在你懷裡發出一聲如同野獸哀嚎般的嗚咽，隨即瘋狂地撕扯你的衣襟，彷彿只有最粗暴的肉體交纏與痛楚，才能證明她自己還活著。"
           },
@@ -985,7 +1248,10 @@
               "aff": -25,
               "inf": -15,
               "corruption": 26,
-              "tyranny": 16
+              "tyranny": 16,
+              "mist": 26,
+              "heat": 8,
+              "jail": 1
             },
             "outcome": "她醒來後不再哭喊，只是每天在牆上用血寫滿朝中大臣與你的名字。整個玄鳥殿從此陰森如鬼域，凡進去送飯的宮婢無不嚇得精神失常。"
           }
@@ -1012,7 +1278,12 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_b": -30,
-              "flag": "fuhao_blood_purge_saved"
+              "flag": "fuhao_blood_purge_saved",
+              "preg": 1,
+              "exec": "b",
+              "mist": 20,
+              "heat": 8,
+              "tag": "懷敵種"
             },
             "outcome": "婦好在鬼門關前走了一遭，醒來時蒼白得像一尊玉雕惡鬼。她第一件事便是將自己喝剩的那半碗毒藥，派人暗中灌進了 {b} 懷孕親妹的湯藥裡。"
           },
@@ -1023,7 +1294,13 @@
               "inf": -12,
               "corruption": 28,
               "tyranny": 20,
-              "rel_b": 10
+              "rel_b": 10,
+              "mist": 28,
+              "heat": 10,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "婦好徹底看透了你的冷血。她竟真的忍著無盡屈辱保下性命，但從那天起，她在床笫與權謀中對你只剩下赤裸裸的利用與隨時準備同歸於盡的毒恨。"
           }
@@ -1051,7 +1328,14 @@
               "hedon": 18,
               "tyranny": 14,
               "rel_b": -35,
-              "flag": "fuhao_killed_captor_husband"
+              "flag": "fuhao_killed_captor_husband",
+              "troops": 80,
+              "mist": 20,
+              "crave": 18,
+              "heat": 7,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "滿朝質疑聲在敵酋首級前徹底啞火。當夜婦好在你的寢榻上狂野得近乎自毀，一邊索歡一邊逼你聽她細數如何將敵酋虐殺的每一個細節。"
           },
@@ -1062,7 +1346,12 @@
               "inf": -10,
               "corruption": 24,
               "tyranny": 16,
-              "rel_b": 15
+              "rel_b": 15,
+              "troops": 80,
+              "mist": 24,
+              "heat": 8,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "婦好盯著你冷笑，臨走前故意用沾著敵酋血跡的手指劃過你的臉頰：「大王怕了？別急，大王若也敢像他那樣待我，我髮髻裡還藏著第二根銅針。」"
           }
@@ -1090,7 +1379,13 @@
               "tyranny": 12,
               "rel_b": -35,
               "rel_g": 15,
-              "flag": "fuhao_rescued_vengeance"
+              "flag": "fuhao_rescued_vengeance",
+              "exec": "b",
+              "mist": 14,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "婦好這才收劍，滿身血腥地撲進你懷裡，當夜卻也私下召見了滿身傷痕的 {g} 在玄室共飲血酒，埋下了更複雜的暗流。"
           },
@@ -1101,7 +1396,10 @@
               "inf": -12,
               "corruption": 20,
               "rel_b": 10,
-              "rel_g": -10
+              "rel_g": -10,
+              "mist": 20,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "婦好冷笑著把長劍丟在地上，轉頭對 {g} 說：「看見了嗎？咱們在外頭拿命替他擋刀，人家在深宮裡護著偷咬咱們的毒蛇呢。」從此她與 {g} 的私下同盟徹底脫離你的掌控。"
           }
@@ -1129,7 +1427,12 @@
               "hedon": 16,
               "tyranny": 14,
               "rel_g": -50,
-              "flag": "fuhao_cage_burned"
+              "flag": "fuhao_cage_burned",
+              "pv": 1,
+              "mist": 22,
+              "crave": 16,
+              "heat": 7,
+              "exec": "g"
             },
             "outcome": "回到王宮後，婦好徹底變成了另外一個人——她在床榻上變得極具侵略性與控制欲，唯有將你死死壓在身下、看你露出失控神色時，她眼底的陰霾才會短暫散去。"
           },
@@ -1139,7 +1442,11 @@
               "aff": -28,
               "inf": -14,
               "corruption": 28,
-              "hedon": 14
+              "hedon": 14,
+              "mist": 28,
+              "crave": 14,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "婦好立刻看穿了你的嫌棄。她不再求你臨幸，反而開始在玄鳥殿地下仿照那間金牢，暗中私養並折磨數名酷似你容貌的俊美男奴，徹底沉淪於瘋狂的復仇與淫樂之中。"
           }
@@ -1166,7 +1473,12 @@
               "corruption": 16,
               "tyranny": 12,
               "rel_b": -40,
-              "flag": "fuhao_lone_wolf_return"
+              "flag": "fuhao_lone_wolf_return",
+              "troops": 80,
+              "mist": 16,
+              "heat": 6,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "婦好一把奪過虎符，反手扣住你的下巴狠狠咬破你的嘴唇：「記住今天的血味，大王。以後誰再敢動我的地盤，我連大王的面子也不會給了。」"
           },
@@ -1177,7 +1489,12 @@
               "inf": -14,
               "tyranny": 16,
               "corruption": 24,
-              "rel_b": 10
+              "rel_b": 10,
+              "troops": 80,
+              "mist": 24,
+              "heat": 8,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "婦好擦掉羊骨上的血水，笑得冰冷徹骨：「好啊，大王既要講宮規，那咱們就看看，到底是你的宮規硬，還是我從死人堆裡帶回來的殺法硬！」"
           }
@@ -1186,3 +1503,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['fuhao'] = DATA;
+  (window.characterPacks ||= {})['fuhao'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

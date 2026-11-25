@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["mulan"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 01 號 花木蘭 (mulan)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "mulan",
     "index": 1,
@@ -18,7 +23,8 @@
       "低侵蝕(0-34)：剛卸下北魏戰甲入塔，仍以軍法護袍澤，但已對後宮虛偽禮法極度不耐，遇挑釁直接動手見血。",
       "中侵蝕(35-69)：看透燈塔內外皆是吃人修羅場，開始把軍中酷刑、暗殺與肉身交易全數化作後宮爭權的武器。",
       "高侵蝕(70-100)：徹底黑化為『血甲女軍閥』——已在後宮私設軍法刑堂、已在帥帳暗蓄精壯親衛洩慾、已能面不改色屠盡政敵滿殿並用鐵鏈與刀疤肉身把君王死死鎖在帳內。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -45,7 +51,11 @@
             "corruption": 6,
             "rel_g": 18,
             "rel_b": -25,
-            "flag": "mulan_first_blood"
+            "flag": "mulan_first_blood",
+            "tag": "毀容@b",
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "花木蘭與 {g} 當夜便在校場喝完一壇血酒結盟；{b} 抱著毀容哀嚎的老宮媼氣得渾身發抖，當晚便重金收買太醫署想在花木蘭傷藥裡下絕命毒。"
         },
@@ -55,7 +65,11 @@
             "aff": -12,
             "corruption": 20,
             "hedon": 6,
-            "flag": "mulan_disarmed"
+            "flag": "mulan_disarmed",
+            "mist": 20,
+            "crave": 6,
+            "office": 1,
+            "troops": 70
           },
           "outcome": "侍衛強行剝下她玄鐵輕甲時，她一聲不吭，只死死盯著得意冷笑的 {b}。當夜客院裡，她已經用折斷的木梳磨出三根尖刺藏進束胸布裡。"
         }
@@ -81,7 +95,13 @@
             "aff": 10,
             "corruption": 20,
             "hedon": 10,
-            "flag": "mulan_bite_caught"
+            "flag": "mulan_bite_caught",
+            "troops": 80,
+            "mist": 20,
+            "crave": 10,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "花木蘭被你死死按在木案上，看著你盯住那道刺眼齒印的陰冷目光，非但不怕，反而仰頭舔著唇冷笑：「主公看清楚了？我還沒進你宮門，沒銀子沒位分，不拿這身帶疤的皮肉去換三百個死士的命，進宮第一天就得被 {b} 毒死。怎麼，主公現在要親自蓋過這個印子，讓我只聽你的嗎？」"
         },
@@ -90,7 +110,11 @@
           "effects": {
             "aff": -20,
             "corruption": 30,
-            "tyranny": 12
+            "tyranny": 12,
+            "mist": 30,
+            "heat": 6,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "花木蘭盯著院裡兩件滴血的校尉戰袍沉默了一整夜。天亮入宮時，她臉上掛起了生平第一副溫順笑臉——那是她徹底黑化、決心用更毒更暗的手段吞掉整座後宮的開端。"
         }
@@ -113,7 +137,12 @@
             "aff": 16,
             "inf": 18,
             "corruption": 12,
-            "rel_b": -40
+            "rel_b": -40,
+            "inj": "b",
+            "mist": 12,
+            "heat": 6,
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "{b} 顏面掃地、吐血賠錢，從此在後宮視花木蘭為不死不休的煞星；花木蘭第一刀見血立威，少府與軍需庫從此徹底落入她掌心。"
         },
@@ -122,7 +151,13 @@
           "effects": {
             "aff": -18,
             "corruption": 25,
-            "hedon": 8
+            "hedon": 8,
+            "pol": 12,
+            "energy": 25,
+            "mist": 25,
+            "crave": 8,
+            "exile": "b",
+            "food": 90
           },
           "outcome": "花木蘭冷笑著交出印信，當夜卻已經暗中指使親衛把 {b} 殿裡送炭火的車隊全部「意外」推下黑霧山溝，凍得 {b} 整整半月下不了床。"
         }
@@ -167,7 +202,11 @@
             "corruption": 30,
             "hedon": 12,
             "tyranny": 12,
-            "rel_b": -50
+            "rel_b": -50,
+            "exec": "b",
+            "mist": 30,
+            "crave": 12,
+            "heat": 6
           },
           "outcome": "你在狂怒與嫉妒中粗暴佔有了渾身還殘留著別的男人痕跡的她，花木蘭在劇痛與窒息中卻大笑出聲：「好……痛快！殺了 {b}，再把我鎖在你身上——咱們誰也別裝什麼正人君子了！」"
         },
@@ -176,7 +215,11 @@
           "effects": {
             "aff": -35,
             "corruption": 40,
-            "tyranny": 15
+            "tyranny": 15,
+            "mist": 40,
+            "heat": 7,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "三十記浸血軍鞭抽碎了她最後一絲對你的忠誠；她在死牢裡已經靠著收買獄卒跟城外反軍重新搭上線，一場血洗主城的復仇正在倒數。"
         }
@@ -401,3 +444,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['mulan'] = DATA;
+  (window.characterPacks ||= {})['mulan'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

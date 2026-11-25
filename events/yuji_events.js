@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["yuji"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 06 號 虞姬 (yuji)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "yuji",
     "index": 6,
@@ -18,7 +23,8 @@
       "0-34（初染）：仍帶著垓下別離的淒豔執念，重情烈性，遇後宮陰毒挑釁便直接亮劍見血，絕不忍氣吞聲。",
       "35-69（深蝕）：在黑霧與宮鬥侵蝕下，開始大量種植提煉『虞美人斷腸花汁』控人神智、用深夜楚歌逼瘋情敵，對君王的愛意轉化為帶著血腥與利刃的偏執佔有。",
       "70+（深淵）：徹底黑化為『血花劍鬼』——已親手在後宮以劍舞削面施刑、已在紅燭帳裡沉溺於毀滅性的熾烈歡愛與私情、已能笑著把毒花酒灌進背叛者喉嚨並與整座宮殿玉石俱焚。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -51,7 +57,10 @@
             "corruption": 6,
             "rel_b": -25,
             "rel_g": 15,
-            "flag": "yuji_sword_win"
+            "flag": "yuji_sword_win",
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "虞姬眼底驟然亮起一抹灼熱烈光，反手將劍橫於胸前行了個西楚軍禮；{b} 捂著流血的脖子氣得渾身發抖，當夜便開始打聽怎麼毒啞這名瘋婆娘。"
         },
@@ -62,7 +71,11 @@
             "hedon": 8,
             "corruption": 14,
             "rel_b": -10,
-            "flag": "yuji_scar_kissed"
+            "flag": "yuji_scar_kissed",
+            "mist": 14,
+            "crave": 8,
+            "office": 1,
+            "troops": 70
           },
           "outcome": "頸間舊疤被你滾燙雙唇覆住那刻，虞姬渾身劇烈一顫，眼底瞬間湧出近乎失控的迷離與狂熱——她終於在這座死寂燈塔裡，再次嗅到了足以讓她燃命的霸主氣息。"
         },
@@ -73,7 +86,11 @@
             "corruption": 20,
             "tyranny": 8,
             "rel_b": 12,
-            "flag": "yuji_disarmed"
+            "flag": "yuji_disarmed",
+            "mist": 20,
+            "heat": 5,
+            "affair": "g",
+            "tag": "桀驁未馴"
           },
           "outcome": "虞姬沒有反抗，任由侍衛收走佩劍。當夜她在荒僻偏院牆角已經悄悄種下了一排從袖袋帶出來的血紅虞美人毒花種子。"
         }
@@ -101,7 +118,12 @@
             "aff": 10,
             "corruption": 16,
             "hedon": 8,
-            "flag": "yuji_flower_caught"
+            "flag": "yuji_flower_caught",
+            "mist": 16,
+            "crave": 8,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "濃郁花煙嗆得兩人呼吸急促，她被你死死壓在榻上，反手勾住你後頸輕笑喘息：「主公聞見這股味兒了嗎？這花叫虞美人，是用我的血澆出來的——主公既闖進來了，今晚就陪奴家把這出楚歌演完吧。」"
         },
@@ -113,7 +135,12 @@
             "corruption": 12,
             "rel_g": 8,
             "rel_c": 10,
-            "flag": "yuji_song_network"
+            "flag": "yuji_song_network",
+            "food": -80,
+            "mist": 12,
+            "heat": 6,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "虞姬正式入宮前便已經在禁軍與中立後宮裡織起一張無形的『楚歌毒網』，凡聽過她夜唱之人皆漸漸對她言聽計從。"
         },
@@ -123,7 +150,12 @@
             "aff": -14,
             "corruption": 24,
             "tyranny": 10,
-            "rel_g": -15
+            "rel_g": -15,
+            "inj": "g",
+            "mist": 24,
+            "heat": 5,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "她靜靜看著侍衛踩爛滿院紅花，卻早已把最精純的三瓶濃縮血花汁藏進了貼身香囊裡，眼底殺意愈發深沉。"
         }
@@ -154,7 +186,12 @@
             "corruption": 12,
             "rel_b": -40,
             "rel_c": 10,
-            "flag": "yuji_banquet_blood"
+            "flag": "yuji_banquet_blood",
+            "mist": 12,
+            "heat": 6,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "{b} 羞憤交加暈厥於席間；虞姬一舞成煞，從此內廷樂坊與無數宮女皆奉她為生殺之主。"
         },
@@ -164,7 +201,12 @@
             "aff": -10,
             "inf": -6,
             "corruption": 20,
-            "rel_b": 8
+            "rel_b": 8,
+            "ban": "b",
+            "mist": 20,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "虞姬將沾著一絲血痕的雙劍交給侍衛，回頭對 {b} 綻開一抹淒豔冷笑——當夜 {b} 敷上的金創藥裡，便已被樂坊宮女悄悄摻進了讓人奇癢潰爛的虞美人花汁。"
         }
@@ -191,7 +233,10 @@
             "aff": 8,
             "corruption": 16,
             "rel_g": -10,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 16,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "虞姬被你鎖在帳內，非但沒哭鬧，反而笑著把臉貼上你的胸口：「你吃醋了？好啊，既然不讓我找別人幫忙，那今後我想殺誰，主公你親自替我殺。」"
         },
@@ -202,7 +247,12 @@
             "inf": 14,
             "corruption": 22,
             "rel_b": -25,
-            "rel_g": -15
+            "rel_g": -15,
+            "troops": 80,
+            "mist": 22,
+            "heat": 6,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "三夜後 {b} 城外私糧化作沖天火海；{g} 徹底淪為離不開虞姬血花露的亡命死士，兩人關係變質為極度病態的毒藥依存。"
         }
@@ -230,7 +280,12 @@
             "inf": 16,
             "corruption": 12,
             "rel_g": 15,
-            "rel_c": 15
+            "rel_c": 15,
+            "mist": 12,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "以虞姬為核心的『血舞派』正式成形，成員皆悍不畏死，成了後宮最令人膽寒的亡命勢力。"
         },
@@ -240,7 +295,11 @@
             "aff": -14,
             "inf": -10,
             "corruption": 20,
-            "rel_g": -12
+            "rel_g": -12,
+            "troops": 80,
+            "mist": 20,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "血盟被迫轉入地下，虞姬表面安靜彈琴，暗裡卻已經與 {c} 聯手在每旬夜宴裡暗中擴大毒花香的滲透範圍。"
         }
@@ -268,7 +327,11 @@
             "hedon": 18,
             "corruption": 28,
             "rel_b": -20,
-            "flag": "yuji_inn_conquered"
+            "flag": "yuji_inn_conquered",
+            "mist": 28,
+            "crave": 18,
+            "exec": "b",
+            "heat": 8
           },
           "outcome": "火把盡滅，荒驛裡傳出一整夜激烈掙扎與徹底潰散理智的泣喘；她肩頭原本屬於敵將的紅印被你更狠的齒印徹底覆蓋，從此對你生出既愛又恨、隨時想同歸於盡的扭曲痴狂。"
         },
@@ -280,7 +343,11 @@
             "corruption": 38,
             "tyranny": 14,
             "rel_b": 15,
-            "flag": "yuji_jailed_treason"
+            "flag": "yuji_jailed_treason",
+            "mist": 38,
+            "heat": 7,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "她光著腳戴著鐵枷走過雪地，盯著得意冷笑的 {b} 輕聲唱起催命的楚歌——在深牢裡，她已經開始用藏在髮髻裡的毒花籽收買獄卒籌備血腥越獄。"
         }
@@ -313,7 +380,13 @@
             "inf": 16,
             "corruption": 14,
             "rel_b": -50,
-            "rel_c": -10
+            "rel_c": -10,
+            "cold": "b",
+            "mist": 14,
+            "heat": 6,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "虞姬俯身謝恩，唇角卻還殘留著剛才嚼碎花瓣的一抹猩紅——從此六宮誰見了那抹紅花，便如見索命無常。"
         },
@@ -322,7 +395,10 @@
           "effects": {
             "aff": -8,
             "corruption": 22,
-            "rel_b": -15
+            "rel_b": -15,
+            "ban": 1,
+            "mist": 22,
+            "heat": 7
           },
           "outcome": "虞姬冷冷領旨，但當夜她已經把最後幾袋濃縮花毒藏進了樂坊的琵琶腹腔裡，等待下一次見血。"
         }
@@ -348,7 +424,13 @@
             "inf": 12,
             "corruption": 16,
             "rel_b": -30,
-            "rel_g": 15
+            "rel_g": 15,
+            "exec": "b",
+            "mist": 16,
+            "heat": 6,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "{g} 與南門守軍徹底倒向虞姬；{b} 抱著斷腕恨毒入骨，發誓不計代價要將虞姬凌遲。"
         },
@@ -357,7 +439,10 @@
           "effects": {
             "aff": -12,
             "corruption": 20,
-            "rel_b": 10
+            "rel_b": 10,
+            "mist": 20,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "虞姬將鑰匙隨手扔進血水裡轉身離去，從此對你的命令陽奉陰違，只聽自己劍鋒的規矩。"
         }
@@ -392,7 +477,11 @@
             "hedon": 14,
             "corruption": 16,
             "rel_b": -15,
-            "flag": "yuji_fire_night"
+            "flag": "yuji_fire_night",
+            "mist": 16,
+            "crave": 14,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "她徹底沉溺於你身上帶來的窒息感與霸氣，從此對你的愛意與毀滅慾交織成密不可分的血網。"
         },
@@ -402,7 +491,11 @@
             "aff": -20,
             "corruption": 28,
             "tyranny": 10,
-            "rel_g": -30
+            "rel_g": -30,
+            "mist": 28,
+            "heat": 5,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "她看著你轉身離去的背影，眼底最後一點對人間溫情的留戀徹底燒成死灰，連笑容都染上了濃重死氣。"
         }
@@ -430,7 +523,12 @@
             "tyranny": 12,
             "corruption": 25,
             "rel_b": -30,
-            "flag": "yuji_blood_carnival"
+            "flag": "yuji_blood_carnival",
+            "mist": 25,
+            "crave": 20,
+            "heat": 6,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "整座楚歌閣徹底化為人間魔窟，朝野上下震動，虞姬進入無法回頭的極致墮落狂歡。"
         },
@@ -439,7 +537,10 @@
           "effects": {
             "aff": -14,
             "hedon": -6,
-            "corruption": 10
+            "corruption": 10,
+            "mist": 10,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "她盯著滿地碎裂的金樽與暗紅花酒冷笑了半晌：「主公想當聖主了？晚了——這座塔裡早就沒一個清醒人了。」"
         }
@@ -469,7 +570,11 @@
             "corruption": 20,
             "tyranny": 10,
             "rel_b": -50,
-            "rel_c": -10
+            "rel_c": -10,
+            "mist": 20,
+            "heat": 5,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "虞姬任由你替她包紮滲血的虎口，眼底閃著病態滿足的冷光；{c} 等旁觀者從此對楚歌閣退避三舍。"
         },
@@ -479,7 +584,11 @@
             "aff": -20,
             "inf": -16,
             "corruption": 28,
-            "rel_b": 15
+            "rel_b": 15,
+            "mist": 28,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "虞姬笑著交出雙劍，但當夜已經派收買的樂女把一壺毒花水灌進了 {b} 的傷藥碗裡。"
         }
@@ -506,7 +615,13 @@
             "aff": 10,
             "inf": 6,
             "corruption": 12,
-            "flag": "yuji_heir_expedition"
+            "flag": "yuji_heir_expedition",
+            "troops": 80,
+            "mist": 12,
+            "kidLoss": "b",
+            "inj": "b",
+            "heat": 8,
+            "tag": "奪嗣毒手"
           },
           "outcome": "母子之間裂痕深種，虞姬卻暗中派死士一路隨行，不惜用最陰毒的手段替兒子掃清軍中所有競爭對手。"
         },
@@ -516,7 +631,12 @@
             "aff": -22,
             "inf": -14,
             "corruption": 30,
-            "tyranny": 8
+            "tyranny": 8,
+            "mist": 30,
+            "heat": 5,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "被生生奪走兒子的虞姬徹底瘋魔，誓言要讓挑撥離間的 {b} 母子血債血償。"
         }
@@ -550,7 +670,13 @@
             "tyranny": 15,
             "rel_g": 15,
             "rel_c": -35,
-            "flag": "yuji_blood_phoenix"
+            "flag": "yuji_blood_phoenix",
+            "mist": 25,
+            "heat": 7,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "虞姬笑得淚光閃爍、直接帶血吻上你的唇；整座後宮從此籠罩在楚歌與血花劍影的恐怖統治之下。"
         },
@@ -561,7 +687,14 @@
             "inf": -20,
             "corruption": 35,
             "tyranny": 12,
-            "rel_g": -20
+            "rel_g": -20,
+            "mainWife": 1,
+            "troops": 80,
+            "mist": 35,
+            "heat": 6,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "她沒有掙扎，只看著你一字一句冷笑：「好啊，天運者。你今天鎖得住我的人，鎖不住外頭那群喝了血花酒的死士。」"
         }
@@ -591,7 +724,13 @@
             "hedon": 12,
             "corruption": 14,
             "rel_b": -15,
-            "flag": "yuji_reunion_fire"
+            "flag": "yuji_reunion_fire",
+            "house": 1,
+            "mist": 14,
+            "crave": 12,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "紅燭燃盡，她滿身汗水與紅痕地窩在你懷裡，指尖卻仍輕輕劃過你的動脈低語：「下次再敢把我趕去分城，我可真會把你鎖在身邊一起死。」"
         },
@@ -601,7 +740,12 @@
             "aff": -18,
             "inf": -12,
             "corruption": 26,
-            "tyranny": 8
+            "tyranny": 8,
+            "ban": 1,
+            "mist": 26,
+            "heat": 5,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "她臉色瞬間白得像雪，冷笑著將佩劍往地上一擲轉身走進寒夜——從此徹底斷了對你的溫柔妄想。"
         }
@@ -627,7 +771,12 @@
             "inf": 18,
             "corruption": 12,
             "rel_g": 15,
-            "rel_b": -25
+            "rel_b": -25,
+            "mist": 12,
+            "heat": 6,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "分城徹底成為虞姬遙控主城的鐵血基地，{b} 氣得在主城砸爛了一整套玉器卻無可奈何。"
         },
@@ -638,7 +787,11 @@
             "inf": -10,
             "corruption": 24,
             "rel_g": -25,
-            "tyranny": 10
+            "tyranny": 10,
+            "mist": 24,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "分城雖收回，但邊軍怨氣四起，虞姬回主城後更是恨意難消，暗中轉為更陰狠的刺殺路線。"
         }
@@ -666,7 +819,11 @@
             "aff": 8,
             "inf": 8,
             "rel_g": 10,
-            "rel_b": 6
+            "rel_b": 6,
+            "heat": 6,
+            "mainWife": 1,
+            "crave": 7,
+            "tag": "生死血鎖"
           },
           "outcome": "兩人表面冷硬如冰，關鍵時刻卻能互相遞刀，成為極具威懾力的危險組合。"
         },
@@ -676,7 +833,9 @@
             "aff": -6,
             "corruption": 16,
             "rel_b": -20,
-            "rel_g": -15
+            "rel_g": -15,
+            "mist": 16,
+            "house": 1
           },
           "outcome": "兩人徹底撕破臉，後宮與軍營隨即陷入更慘烈的流血互咬。"
         }
@@ -708,7 +867,11 @@
             "corruption": 24,
             "tyranny": 10,
             "rel_g": -40,
-            "flag": "yuji_duty_blood"
+            "flag": "yuji_duty_blood",
+            "mist": 24,
+            "heat": 5,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "無論生死離別，那場暴雨夜的拔劍徹底把虞姬心底最後一點純粹溫情燒成焦炭，使她變得更加極端瘋狂。"
         },
@@ -718,7 +881,12 @@
             "aff": -22,
             "inf": -15,
             "corruption": 30,
-            "rel_g": 15
+            "rel_g": 15,
+            "ban": 1,
+            "mist": 30,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "她在禁足中徹夜磨尖髮簪，對你與這座吃人的燈塔徹底死心黑化。"
         }
@@ -746,7 +914,13 @@
             "inf": 10,
             "corruption": 12,
             "rel_b": -30,
-            "rel_g": 10
+            "rel_g": 10,
+            "ban": "b",
+            "mist": 12,
+            "heat": 6,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "虞姬咬破嘴唇才壓下殺意，從此雖仍隨你出征，卻再也不把後背輕易交給主城指令。"
         },
@@ -756,7 +930,11 @@
             "aff": -25,
             "corruption": 32,
             "tyranny": 12,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 32,
+            "heat": 6,
+            "exec": "g",
+            "pop": -10
           },
           "outcome": "她被押走時對著你冷笑唱起四面楚歌——她徹底把你看成了那個背信棄義的薄情之主。"
         }
@@ -783,7 +961,11 @@
             "aff": 15,
             "inf": 12,
             "rel_g": 12,
-            "corruption": 6
+            "corruption": 6,
+            "heat": 6,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "她殺得酣暢淋漓，回營當夜便穿著尚未洗淨血跡的火紅舞衣將你拉進了軍帳。"
         },
@@ -791,7 +973,11 @@
           "text": "戰後嚴令她交出私藏毒花暗器，不可違背正統軍法",
           "effects": {
             "aff": -10,
-            "corruption": 16
+            "corruption": 16,
+            "mist": 16,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "她冷笑著交出兩瓶空的，把最毒的幾瓶早已藏進馬鞍夾層裡。"
         }
@@ -817,7 +1003,11 @@
               "aff": 10,
               "tyranny": 10,
               "rel_g": 15,
-              "flag": "yuji_buried_vengeance"
+              "flag": "yuji_buried_vengeance",
+              "heat": 5,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "全軍哀兵必勝之氣大漲，誓要替西楚劍姬血洗荒原。"
           },
@@ -827,7 +1017,11 @@
               "aff": -12,
               "corruption": 40,
               "hedon": 8,
-              "flag": "yuji_resummoned_dark"
+              "flag": "yuji_resummoned_dark",
+              "mist": 40,
+              "crave": 8,
+              "pol": 15,
+              "wood": -50
             },
             "outcome": "重召歸來的她撫著頸間兩道重疊的血紅舊痕冷笑：「兩輩子都死在絕境裡……既然你硬把我拽回來，那就別怪我把這座塔變成地獄。」"
           }
@@ -852,7 +1046,10 @@
               "aff": 12,
               "inf": -6,
               "rel_b": -15,
-              "flag": "yuji_rescue_planned"
+              "flag": "yuji_rescue_planned",
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "主城迅速展開營救籌備，軍中舊部紛紛請戰。"
           },
@@ -862,7 +1059,11 @@
               "aff": -20,
               "corruption": 25,
               "rel_b": 10,
-              "flag": "yuji_abandoned_captured"
+              "flag": "yuji_abandoned_captured",
+              "food": 100,
+              "mist": 25,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "等待無果的虞姬在敵帳裡徹底心寒黑化，後續極易觸發『強迫婚籍』、『私人囚禁』或『自行逃脫』後的血腥反撲。"
           }
@@ -888,7 +1089,11 @@
               "aff": 18,
               "corruption": 15,
               "rel_b": -15,
-              "flag": "yuji_injured_devoted"
+              "flag": "yuji_injured_devoted",
+              "mist": 15,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "她在你懷裡咬牙發抖卻終究沒有崩潰，從此改習袖箭與毒花術，對你的依戀變得更加窒息偏執。"
           },
@@ -897,7 +1102,10 @@
             "effects": {
               "aff": -20,
               "corruption": 30,
-              "flag": "yuji_injured_bitter"
+              "flag": "yuji_injured_bitter",
+              "mist": 30,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "她看著關上的殿門冷笑出聲，從此徹底放棄劍道正途，成為後宮最陰毒的製毒高手。"
           }
@@ -922,7 +1130,11 @@
               "aff": 16,
               "tyranny": 12,
               "corruption": 20,
-              "rel_b": -30
+              "rel_b": -30,
+              "exec": "b",
+              "mist": 20,
+              "heat": 6,
+              "pop": -15
             },
             "outcome": "她看著你親手斬掉多嘴宮人，眼裡沒有淚只有瘋狂的血光：「殺得好……明天開始，我自己動手殺。」"
           },
@@ -931,7 +1143,10 @@
             "effects": {
               "aff": -25,
               "corruption": 38,
-              "rel_b": 10
+              "rel_b": 10,
+              "mist": 38,
+              "ban": 1,
+              "tag": "受辱怨骨"
             },
             "outcome": "她在冷清的楚歌閣裡徹底黑化瘋魔，開始暗中往 {b} 殿裡的水源與香爐裡大肆投毒報復。"
           }
@@ -953,7 +1168,11 @@
               "aff": 14,
               "inf": 10,
               "corruption": 12,
-              "rel_g": -10
+              "rel_g": -10,
+              "mist": 12,
+              "heat": 6,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "她攥緊拳頭默不作聲，但那五百張臨死前的臉徹底刻進她夢魘裡，讓她變得越發冷血偏執。"
           },
@@ -963,7 +1182,9 @@
               "aff": -20,
               "inf": -10,
               "corruption": 28,
-              "rel_g": 12
+              "rel_g": 12,
+              "mist": 28,
+              "jail": 1
             },
             "outcome": "她在牢中冷笑徹夜，徹底看透這座塔的涼薄，從此只為自己而活。"
           }
@@ -989,7 +1210,11 @@
               "aff": 20,
               "corruption": 18,
               "rel_b": -35,
-              "flag": "yuji_saved_after_miscarriage"
+              "flag": "yuji_saved_after_miscarriage",
+              "mist": 18,
+              "preg": 1,
+              "tag": "懷敵種",
+              "heat": 8
             },
             "outcome": "她從鬼門關爬回來後，對你生出近乎瘋魔的唯一依附，但對後宮所有敵人都徹底化為索命惡鬼。"
           },
@@ -999,7 +1224,13 @@
               "aff": -35,
               "corruption": 40,
               "tyranny": 15,
-              "rel_b": 15
+              "rel_b": 15,
+              "mist": 40,
+              "heat": 7,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "她憑著一口滔天怨氣硬是活了下來，從此把你與敵酋並列為不共戴天的死敵。"
           }
@@ -1025,7 +1256,11 @@
               "aff": 10,
               "tyranny": 8,
               "rel_b": -15,
-              "flag": "yuji_war_for_bride"
+              "flag": "yuji_war_for_bride",
+              "soldiers": 60,
+              "heat": 5,
+              "affair": "g",
+              "tag": "敵帳歸婦"
             },
             "outcome": "消息暗中傳進敵營，虞姬在紅燭下停住自毀的手，開始暗中下毒配合你的進攻。"
           },
@@ -1035,7 +1270,10 @@
               "aff": -35,
               "corruption": 40,
               "rel_b": 20,
-              "flag": "yuji_disowned_bride"
+              "flag": "yuji_disowned_bride",
+              "mist": 40,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "得知被主城除籍那夜，虞姬徹底魔化——她反客為主用毒花迷香控住了敵酋，準備有朝一日親率蠻兵殺回燈塔找你與 {b} 清算！"
           }
@@ -1058,7 +1296,12 @@
               "hedon": 8,
               "corruption": 15,
               "rel_g": 10,
-              "flag": "yuji_rescued_devotion"
+              "flag": "yuji_rescued_devotion",
+              "mist": 15,
+              "crave": 8,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "她對你的情深與病態佔有欲雙雙飆升，成為你最瘋狂卻也最忠誠的血刃。"
           },
@@ -1067,7 +1310,10 @@
             "effects": {
               "aff": -6,
               "corruption": 18,
-              "rel_g": 8
+              "rel_g": 8,
+              "mist": 18,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她望著你冷靜處事的背影，心底那一絲剛燃起的炙熱又悄悄冷了半截。"
           }
@@ -1091,7 +1337,12 @@
               "inf": 12,
               "corruption": 20,
               "rel_g": 15,
-              "flag": "yuji_dungeon_raid"
+              "flag": "yuji_dungeon_raid",
+              "jail": "g",
+              "mist": 20,
+              "heat": 6,
+              "exec": "g",
+              "pv": 1
             },
             "outcome": "內外夾擊大獲全勝，但經歷暗室折辱的虞姬從此極度畏黑、對所有敵人手段變得慘烈十倍。"
           },
@@ -1100,7 +1351,11 @@
             "effects": {
               "aff": -30,
               "corruption": 35,
-              "flag": "yuji_left_in_cage"
+              "flag": "yuji_left_in_cage",
+              "exec": "b",
+              "mist": 35,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "絕望徹底引爆她的殺性，直接觸發她親手毒殺敵將後的『自行逃脫』血腥回歸！"
           }
@@ -1128,7 +1383,12 @@
               "corruption": 25,
               "tyranny": 12,
               "rel_b": -50,
-              "flag": "yuji_return_revenge"
+              "flag": "yuji_return_revenge",
+              "mist": 25,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "當夜 {b} 偏殿響起淒厲楚歌與慘叫；虞姬徹底成為你身邊最危險、也最令人膽寒的染血修羅。"
           },
@@ -1138,7 +1398,15 @@
               "aff": -35,
               "inf": -15,
               "corruption": 40,
-              "tyranny": 15
+              "tyranny": 15,
+              "jail": 1,
+              "troops": 80,
+              "pol": 12,
+              "energy": 25,
+              "mist": 40,
+              "heat": 7,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "她看著包圍上來的長矛仰天大笑，從此徹底把你當成比敵酋更可恨的仇敵。"
           }
@@ -1147,3 +1415,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['yuji'] = DATA;
+  (window.characterPacks ||= {})['yuji'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

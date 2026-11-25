@@ -451,6 +451,7 @@ window.addEventListener('error',function(e){show((e.message||'')+' @'+(e.filenam
 <script src="events/v4_4_sig_house_inter_ret.js"></script>
 <script src="events/v42_text.js"></script>
 <script src="events/v4_5_mutation_system.js"></script>
+<script src="events/v4_6_text.js"></script>
 <script src="events/engine.js"></script>
 <script src="rewrite_01z_qing_terms.js"></script>
 <script>
@@ -3861,10 +3862,10 @@ function houseCheck(cb){const h=S.house;if(!h)return cb();if(h.done){delete S.ho
 {const _mhc=maybeEvent;maybeEvent=function(cb){return _mhc(()=>houseCheck(cb))}}
 /* ===== 虧空：資源可以是負的，債越滾越大 ===== */
 function debtTurn(add){const L=[];
- if(S.food<0){const d=-S.food;const p=Math.max(1,Math.ceil(d/25)),s=Math.min(S.soldiers||0,Math.ceil(d/8));S.pop=Math.max(0,(S.pop||0)-p);S.soldiers=(S.soldiers||0)-s;S.order.forEach(x=>gainAff(x,-1));S.food-=Math.ceil(d*.06);L.push(`糧倉見底（糧 ${S.food}）：流民 −${p}、士兵逃散 ${s}、全員好感 −1，欠債利滾利`)}
- ['wood','stone'].forEach(k=>{if(S[k]<0){S[k]-=Math.ceil(-S[k]*.05);S.dur=Math.max(1,(S.dur||0)-2);L.push(`${k==='wood'?'木':'石'}料虧空（${S[k]}）：燈塔失修 −2`)}});
- if(S.energy<0){S.energy-=Math.ceil(-S.energy*.05);S.pol=(S.pol||0)+2;L.push(`能量透支（${S.energy}）：據點污染 +2`)}
- if(L.length){add('【虧空】'+L.join('；'),'neg');const top=spouses().concat(femFree()).filter(x=>S.order.includes(x)).sort((a,b)=>(hs(b).graft||0)-(hs(a).graft||0))[0];if(top&&(hs(top).graft||0)>0&&Math.random()<.4)add(`【虧空】國庫是誰掏空的？${H(top).n}的私房裡堆著 ${hs(top).graft} 的財物`,'neg')}}
+ if(S.food<0){const d=-S.food;const p=Math.max(1,Math.ceil(d/25)),s=Math.min(S.soldiers||0,Math.ceil(d/8));S.pop=Math.max(0,(S.pop||0)-p);S.soldiers=(S.soldiers||0)-s;S.order.forEach(x=>gainAff(x,-1));S.food-=Math.ceil(d*.06);L.push(`${T46('DEBT_TEXT','food')||''} 糧倉見底（糧 ${S.food}）：流民 −${p}、士兵逃散 ${s}、全員好感 −1，欠債利滾利`)}
+ ['wood','stone'].forEach(k=>{if(S[k]<0){S[k]-=Math.ceil(-S[k]*.05);S.dur=Math.max(1,(S.dur||0)-2);L.push(`${T46('DEBT_TEXT','wood')||''} ${k==='wood'?'木':'石'}料虧空（${S[k]}）：燈塔失修 −2`)}});
+ if(S.energy<0){S.energy-=Math.ceil(-S.energy*.05);S.pol=(S.pol||0)+2;L.push(`${T46('DEBT_TEXT','energy')||''} 能量透支（${S.energy}）：據點污染 +2`)}
+ if(L.length){add('【虧空】'+L.join('；'),'neg');const top=spouses().concat(femFree()).filter(x=>S.order.includes(x)).sort((a,b)=>(hs(b).graft||0)-(hs(a).graft||0))[0];if(top&&(hs(top).graft||0)>0&&Math.random()<.4)add(`【虧空】${T46n(T46('DEBT_TEXT','blame'),top)||''} 國庫是誰掏空的？${H(top).n}的私房裡堆著 ${hs(top).graft} 的財物`,'neg')}}
 {const _hdb=haremEvent;haremEvent=function(cb){try{debtTurn(feedPush)}catch(e){}return _hdb(cb)}}
 /* ===== 她們的請求：當場回應 ===== */
 const REQT={
@@ -3881,7 +3882,7 @@ function reqTurn(){const all=spouses().concat(femFree()).filter(x=>S.order.inclu
 function reqEvent(cb){const q=(S.reqQ||[]).filter(x=>x&&S.order.includes(x.id)&&typeof x.t==='string'&&REQT[x.k]);S.reqQ=[];const L=q.slice(-2);const step=i=>{if(i>=L.length)return cb();const r=L[i],id=r.id,N=H(id).n,T=REQT[r.k];const col=(CRAVE[craveOf(id)]||[0,'#ffb0c8'])[1];
  sheet(`<div class="dlg"><div class="pic" style="background-image:url(img/${face(id)}.jpg)"></div><div><b style="color:${col}">${N}的請求</b><p style="margin:6px 0;font-family:Noto Serif TC,serif;font-size:1.08em;color:${col}">「${r.say||r.t.replace(/^要/,'我要').replace(/^想要/,'我想要').replace(/^問你/,'你說，')+'。'}」</p>${r.say?`<div class="small" style="color:var(--dim)">（${r.t}）</div>`:''}</div></div>
  <span id="rqMeta"></span><button class="btn" style="width:100%;margin-top:6px" data-rq="y">答應</button><button class="btn ghost" style="width:100%;margin-top:6px" data-rq="h">敷衍（她看得出來）</button><button class="btn ghost" style="width:100%;margin-top:6px" data-rq="n">拒絕</button>`,true);
- {const bx=document.querySelector('#sheetIn');if(bx){bx.dataset.rqid=id;bx.dataset.rqk=r.k}}$$('[data-rq]').forEach(b=>b.onclick=()=>{const k=b.dataset.rq,st=hs(id),w=wed(id);let s='';const pen=o=>{if(o.fav){if(w)w.fav=Math.max(0,w.fav+o.fav);else st.aff=Math.max(0,(st.aff|0)+o.fav)}if(o.aff)st.aff=Math.max(0,(st.aff|0)+o.aff);if(o.app)st.app=(st.app||0)+o.app;if(o.heat)st.heat=(st.heat||0)+o.heat};
+ {const bx=document.querySelector('#sheetIn');if(bx){bx.dataset.rqid=id;bx.dataset.rqk=r.k;bx.dataset.rqr=r.r||''}}$$('[data-rq]').forEach(b=>b.onclick=()=>{const k=b.dataset.rq,st=hs(id),w=wed(id);let s='';const pen=o=>{if(o.fav){if(w)w.fav=Math.max(0,w.fav+o.fav);else st.aff=Math.max(0,(st.aff|0)+o.fav)}if(o.aff)st.aff=Math.max(0,(st.aff|0)+o.aff);if(o.app)st.app=(st.app||0)+o.app;if(o.heat)st.heat=(st.heat||0)+o.heat};
   if(k==='y'){s=T.yes(id,r)||'';if(w)w.fav=Math.min(100,w.fav+6);else st.aff=Math.min(100,(st.aff|0)+6);st.app=(st.app||0)+2}
   else if(k==='h'){const o=T.no(id);pen({fav:Math.round((o.fav||0)/2),aff:Math.round((o.aff||0)/2),heat:2});s=`${N}冷笑了一聲`}
   else{pen(T.no(id));s=`${N}被拒絕了${(T.no(id).heat||0)?'，眼神變得很危險':''}`;if(Math.random()<.4)(S.retQ??=[]).push({by:id,vs:pick(spouses().filter(x=>x!==id))||id,at:S.t+1,sev:1})}
@@ -3965,7 +3966,7 @@ window.TY_FX={
  ban:(id,v,cast)=>{const x=fxWho(id,v,cast);if(!x)return'';setHst(x,'ban',3);return`【禁足】${H(x).n}`},
  inj:(id,v,cast)=>{const x=fxWho(id,v,cast);if(!x)return'';setHst(x,'inj',2);return`【負傷】${H(x).n}`},
  cold:(id,v,cast)=>{const x=fxWho(id,v,cast);if(!x||!wed(x))return'';wed(x).cold=true;return`【冷宮】${H(x).n}`},
- kidLoss:(id,v,cast)=>{const x=fxWho(id,v,cast);const w=x&&wed(x);if(!w||!w.preg)return'';w.preg=0;(S.pregLoss??=[]).push({t:S.t,mom:x});return`${H(x).n}失去了腹中的孩子`},
+ kidLoss:(id,v,cast)=>{const x=fxWho(id,v,cast);const w=x&&wed(x);if(!w||!w.preg)return'';w.preg=0;if(hs(x).dtag)delete hs(x).dtag['懷敵種'];(S.pregLoss??=[]).push({t:S.t,mom:x});return`${H(x).n}失去了腹中的孩子`},
  mist:(id,n)=>{mistAdd(id,n);return''},
  crave:(id,n)=>{hs(id).app=(hs(id).app||0)+n;return''},
  heat:(id,n)=>{hs(id).heat=(hs(id).heat||0)+n;return''},
@@ -3998,9 +3999,9 @@ window.TY_SCENE=function(e,r){const out=[],id=e.id,c=e.cast||{};const body=(r.bo
 /* ===== 敵種血脈：懷孕歸來生下的孩子 ===== */
 INH['敵種血脈']=['生父是囚禁母親的敵人','武力 +10、統率 +5；儲位天生受質疑',{6:10,5:5}];
 {const _ki=kidInh;kidInh=function(k){if(!k.inh&&k.mom&&hs(k.mom)&&('懷敵種' in (hs(k.mom).dtag||{}))){k.inh='敵種血脈';k.esteem=(k.esteem||0)-20;k.enemyKid=1;delete hs(k.mom).dtag['懷敵種'];feedPush(`【敵種】${(typeof T46==='function'&&T46('ENEMYKID_TEXT','birth'))?T46n(T46('ENEMYKID_TEXT','birth'),k.mom):H(k.mom).n+'生下了那個孩子——宮裡沒有人敢說出口，但每個人都知道他的生父是誰'}`,'rum');spouses().filter(x=>x!==k.mom).forEach(x=>relAdd(x,k.mom,-5))}return _ki(k)}}
-function enemyKidTurn(add){(S.kids||[]).filter(k=>k.enemyKid).forEach(k=>{if(Math.random()<.06){const F=(typeof curFacs==='function'?curFacs():[]).filter(d=>FS(d.id)&&FS(d.id).alive);if(F.length&&!S.extort){S.extort={fid:pick(F).id};add(`【敵種】敵方派人來認${k.n||'那個孩子'}，說那是他們的骨血——不交人，就開戰`,'neg')}}
- if(Math.random()<.05){k.esteem=Math.max(0,(k.esteem||0)-5);const r=pick(spouses().filter(x=>x!==k.mom));if(r){relAdd(r,k.mom,-6);add(`【敵種】${H(r).n}在朝堂上質問${k.n||'那個孩子'}的血統（聲望 −5）`,'rum')}}
- if(k.adult&&k.id&&S.order.includes(k.id)&&(hs(k.id).aff|0)<40&&Math.random()<.04){goneHero(k.id,'exile',20);add(`【敵種】${H(k.id).n}留下一封信，投奔了生父`,'neg')}})}
+function enemyKidTurn(add){(S.kids||[]).filter(k=>k.enemyKid).forEach(k=>{if(Math.random()<.06){const F=(typeof curFacs==='function'?curFacs():[]).filter(d=>FS(d.id)&&FS(d.id).alive);if(F.length&&!S.extort){S.extort={fid:pick(F).id};add(`【敵種】${T46n(T46('ENEMYKID_TEXT','claim'),k.mom)||''} 敵方派人來認${k.n||'那個孩子'}，說那是他們的骨血——不交人，就開戰`,'neg')}}
+ if(Math.random()<.05){k.esteem=Math.max(0,(k.esteem||0)-5);const r=pick(spouses().filter(x=>x!==k.mom));if(r){relAdd(r,k.mom,-6);add(`【敵種】${T46n(T46('ENEMYKID_TEXT','question'),k.mom,r)||''} ${H(r).n}在朝堂上質問${k.n||'那個孩子'}的血統（聲望 −5）`,'rum')}}
+ if(k.adult&&k.id&&S.order.includes(k.id)&&(hs(k.id).aff|0)<40&&Math.random()<.04){goneHero(k.id,'exile',20);add(`【敵種】${T46n(T46('ENEMYKID_TEXT','defect'),k.mom)||''} ${H(k.id).n}留下一封信，投奔了生父`,'neg')}})}
 {const _hek=haremEvent;haremEvent=function(cb){try{enemyKidTurn(feedPush)}catch(e){}return _hek(cb)}}
 /* 私宅處置按鈕、通用返回鍵 */
 document.addEventListener('click',e=>{const x=e.target.closest&&e.target.closest('[data-sheetx]');if(x){e.stopPropagation();closeSheet();return}
@@ -4032,13 +4033,13 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
 /* ===== v4.6 文本接口：請求、入宮前自主、昏暴、虧空、敵種、變質請求 ===== */
 const T46=(o,...ks)=>{try{let x=globalThis[o];for(const k of ks){if(x==null)return null;x=x[k]}return Array.isArray(x)?(x.length?pick(x):null):(typeof x==='string'?x:null)}catch(e){return null}};
 const T46n=(s,id,b)=>s?s.replaceAll('{a}',H(id)?H(id).n:'').replaceAll('{b}',b&&H(b)?H(b).n:''):s;
-{const _re=reqEvent;reqEvent=function(cb){(S.reqQ||[]).forEach(r=>{if(!r||r._t46)return;r._t46=1;const mn=typeof mutName==='function'?mutName(r.id):'';const s=(mn&&T46('MUTREQ_TEXT',mn,r.k,'ask'))||T46('REQ_TEXT',r.id,r.k,'ask')||T46('REQ_TEXT','_'+craveOf(r.id),r.k,'ask');if(s)r.say=T46n(s,r.id,r.r)});return _re(cb)}}
-document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-rq]');if(!b)return;const box=document.querySelector('#sheetIn');const id=box&&box.dataset.rqid,k=box&&box.dataset.rqk;if(!id)return;const key={y:'yes',h:'half',n:'no'}[b.dataset.rq];const s=T46('REQ_TEXT',id,k,key)||T46('REQ_TEXT','_'+craveOf(id),k,key);if(s)setTimeout(()=>hxPush(id,T46n(s,id),'請求'),50)},true);
+{const _re=reqEvent;reqEvent=function(cb){(S.reqQ||[]).forEach(r=>{if(!r||r._t46)return;r._t46=1;if(!S.heroes[r.id]||!S.order.includes(r.id)||!REQT[r.k])return;const mn=MUT[craveOf(r.id)]?.[mutStage(r.id)-1]?.[0];const s=(mn&&T46('MUTREQ_TEXT',mn,r.k,'ask'))||T46('REQ_TEXT',r.id,r.k,'ask')||T46('REQ_TEXT','_'+craveOf(r.id),r.k,'ask');if(s)r.say=T46n(s,r.id,r.r)});return _re(cb)}}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-rq]');if(!b)return;const box=document.querySelector('#sheetIn');const id=box&&box.dataset.rqid,k=box&&box.dataset.rqk;if(!id)return;const key={y:'yes',h:'half',n:'no'}[b.dataset.rq];const s=T46('REQ_TEXT',id,k,key)||T46('REQ_TEXT','_'+craveOf(id),k,key);if(s)setTimeout(()=>hxPush(id,T46n(s,id,box.dataset.rqr),'請求'),50)},true);
 {const _ad=PREACT.map(a=>a[4]);PREACT.forEach((a,i)=>{a[4]=id=>{const s=_ad[i](id);if(!s)return s;const t=T46('PRE_TEXT',id,a[0])||T46('PRE_TEXT','_',a[0]);return t?T46n(t,id)+' '+s:s}})}
 {const _lt=lordTurn;lordTurn=function(add){const h0=lordTier(S.hedon||0),t0=lordTier(S.tyranny||0);if(S.lordTH==null){S.lordTH=h0;S.lordTT=t0}if(h0>S.lordTH){const s=T46('LORD_TEXT','hedon','t'+h0);add(`<b style="color:#ff8a5a">【${LORDT.昏庸[h0-1]}】</b>${s||'你的昏庸已經傳遍了燈塔內外。'}`,'neg')}if(t0>S.lordTT){const s=T46('LORD_TEXT','tyranny','t'+t0);add(`<b style="color:#ff6a6a">【${LORDT.暴虐[t0-1]}】</b>${s||'人人都在私下議論你的暴虐。'}`,'neg')}S.lordTH=h0;S.lordTT=t0;return _lt(add)}}
 LREM.forEach(r=>{const f=r[6];r[6]=()=>{f();const s=T46('LORD_TEXT',r[0]);if(s)feedPush(`【${r[1]}】${s}`)}});
-{const _dt=debtTurn;debtTurn=function(add){return _dt(s=>{const k=/糧倉/.test(s)?'food':/木|石/.test(s)?'wood':/能量/.test(s)?'energy':/私房/.test(s)?'blame':'';const t=k&&T46('DEBT_TEXT',k);add(t?s.replace('【虧空】','【虧空】'+t+' '):s,'neg')})}}
-{const _ek=enemyKidTurn;enemyKidTurn=function(add){return _ek((s,...a)=>{const k=/來認/.test(s)?'claim':/質問/.test(s)?'question':/投奔/.test(s)?'defect':'';const t=k&&T46('ENEMYKID_TEXT',k);add(t?s.replace('【敵種】','【敵種】'+t+' '):s,...a)})}}
+
+
 /* ===== 本旬她們做了什麼：旬末一張總覽，讓行動被看見 ===== */
 function digestEvent(cb){if(S.digestOff)return cb();const ppl=spouses().concat(femFree()).filter(x=>S.order.includes(x)||(S.gone&&S.gone[x]));const rows=ppl.map(id=>{const a=(hs(id).acts||[]).filter(o=>o.t===S.t&&o.seen!==false);return[id,a]}).filter(x=>x[1].length);
  if(!rows.length)return cb();const tr=id=>heatTier(id);

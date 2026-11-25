@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["wuzetian"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 05 號 武則天 (wuzetian)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "wuzetian",
     "index": 5,
@@ -18,7 +23,8 @@
       "低侵蝕(0-34)：初入燈塔如昔日感業寺歸來，低眉順眼卻已在暗中記下滿朝文武與六宮每一道弱點。",
       "中侵蝕(35-69)：在黑霧與權慾侵蝕下全面啟動銅匭告密網與酷吏刑堂，逐步『二聖臨朝』架空政敵與舊主母。",
       "高侵蝕(70-100)：徹底黑化為『無字碑暴君女帝』——已親手將仇敵做成骨醉酒甕、已在控鶴監蓄養俊美男寵取樂、已把天運者本身視作垂簾背後的傀儡與榻上玩物。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -45,7 +51,11 @@
             "corruption": 8,
             "rel_b": -30,
             "rel_g": 12,
-            "flag": "wuzetian_whip_win"
+            "flag": "wuzetian_whip_win",
+            "mist": 10,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "武則天唇角勾起一抹帝王般的冷傲微笑，順勢回握你的掌心——進門第一刻，她便已經把自己擺在了與你平起平坐的位置上；{b} 死死盯著案上那方血帕，手心冰涼。"
         },
@@ -55,7 +65,11 @@
             "aff": -8,
             "corruption": 18,
             "tyranny": 8,
-            "flag": "wuzetian_caged_start"
+            "flag": "wuzetian_caged_start",
+            "mist": 18,
+            "heat": 5,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "武則天垂眸福身，順從得挑不出一絲錯處；當夜客院裡，她已經開始憑記憶默寫今天殿上每一個朝臣與宮婢的臉，並在心裡替他們排好了『請君入甕』的順序。"
         }
@@ -78,7 +92,12 @@
             "aff": 14,
             "inf": 18,
             "corruption": 15,
-            "tyranny": 10
+            "tyranny": 10,
+            "office": 1,
+            "mist": 15,
+            "heat": 5,
+            "pv": 1,
+            "food": -60
           },
           "outcome": "武則天笑著替你奉上一盞濃茶，兩人隔著滿案密報達成極度危險的帝王共謀——從此燈塔內外人人自危，告密成風。"
         },
@@ -87,7 +106,11 @@
           "effects": {
             "aff": -14,
             "corruption": 24,
-            "tyranny": 8
+            "tyranny": 8,
+            "mist": 24,
+            "heat": 5,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "武則天跪在碎銅片旁神色平靜如水；但她早就把那三十七份密報的內容一字不漏背進了腦子裡，砸掉銅匣，根本砸不掉她腦中的絞索。"
         }
@@ -111,7 +134,12 @@
             "inf": 20,
             "corruption": 18,
             "tyranny": 12,
-            "rel_b": -50
+            "rel_b": -50,
+            "ban": "b",
+            "mist": 18,
+            "heat": 6,
+            "inj": "b",
+            "tag": "立威震宮"
           },
           "outcome": "「請君入甕」之名一夜傳遍全城！六宮與前朝從此聞武氏之名便骨寒膽裂，誰也不敢再把她當尋常後宮女子看待。"
         },
@@ -119,7 +147,11 @@
           "text": "駭於手段過於慘烈，當場勒令撤掉鐵甕、押下酷吏，嚴斥武則天不可亂用私刑",
           "effects": {
             "aff": -12,
-            "corruption": 20
+            "corruption": 20,
+            "mist": 20,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "武則天從容收起供詞退下，但 {b} 的心腹已經被嚇瘋、秘密已經全數曝光——即便撤了鐵甕，{b} 在後宮的根基也已經徹底垮塌。"
         }
@@ -164,7 +196,11 @@
             "inf": 15,
             "corruption": 22,
             "hedon": 10,
-            "flag": "wuzetian_two_sages"
+            "flag": "wuzetian_two_sages",
+            "mist": 22,
+            "crave": 10,
+            "heat": 6,
+            "exec": "b"
           },
           "outcome": "龍案上奏摺掃落滿地，明黃織金大袖被你粗暴撕開半邊；她在權力與情慾的劇烈碰撞中仰頭喘笑，眼神沒有絲毫屈服，反倒燃著與你勢均力敵的瘋狂火焰——從此『二聖臨朝』成既定事實。"
         },
@@ -174,7 +210,12 @@
             "aff": -25,
             "inf": -15,
             "corruption": 35,
-            "tyranny": 15
+            "tyranny": 15,
+            "troops": 60,
+            "mist": 35,
+            "heat": 7,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "兩顆人頭滾在明黃裙襬前，武則天連眉睫都未顫動一下，只淡淡看了一眼你滴血的劍鋒：「殺得不錯。只是主公殺得完兩個人，殺得完滿朝靠我提拔起來的寒門嗎？」"
         }
@@ -395,3 +436,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['wuzetian'] = DATA;
+  (window.characterPacks ||= {})['wuzetian'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["change"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 02 號 嫦娥 (change)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "change",
     "index": 2,
@@ -18,7 +23,8 @@
       "低侵蝕(0-34)：剛離三萬年冰冷廣寒宮，貪婪汲取人間活人熱氣與肌膚相貼，卻早已習慣為自保隨時背叛枕邊人。",
       "中侵蝕(35-69)：在黑霧與宮鬥侵蝕下，開始系統性下藥控人、私設玄冰刑室折磨情敵、並用肉身在霧帳裡榨取武將精氣與情報。",
       "高侵蝕(70-100)：徹底黑化為『嗜溫妖仙』——已在廣寒閣公然蓄養壯漢禁衛當活體暖爐、已無聲毒殺主母奪取凰戒、已能面不改色看著仇敵活活凍爛在冰磚上。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -44,7 +50,11 @@
             "hedon": 12,
             "corruption": 10,
             "rel_b": -25,
-            "flag": "change_stole_warmth"
+            "flag": "change_stole_warmth",
+            "mist": 10,
+            "crave": 12,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "嫦娥被你當眾按在腿上強灌熱酒，眼尾泛起一片妖冶霜紅，反手把碎裂的火玉渣撒在 {b} 腳邊輕笑：「不用破石頭了，主公這副身子夠燙。」{b} 氣得發抖，當晚便暗中聯絡清流準備彈劾她妖言惑眾。"
         },
@@ -54,7 +64,10 @@
             "aff": -10,
             "corruption": 20,
             "tyranny": 6,
-            "flag": "change_frozen_start"
+            "flag": "change_frozen_start",
+            "mist": 20,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "嫦娥沒有辯解，只靜靜舔掉嘴角殘酒。當夜她便趁夜催動月霜秘術，悄無聲息抽乾了 {b} 殿內所有炭盆的熱火，害得 {b} 染上寒症咳血半月。"
         }
@@ -80,7 +93,13 @@
             "aff": 12,
             "corruption": 20,
             "hedon": 12,
-            "flag": "change_wax_caught"
+            "flag": "change_wax_caught",
+            "troops": 60,
+            "mist": 20,
+            "crave": 12,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "你一把扯碎她的月白領口逼問她想拿兵符幹什麼，她卻仰起雪白脖頸喘笑著勾住你腰帶：「我還沒入宮門，沒人護我，不偷點籌碼防身怎麼活？主公既抓了個正著……今晚把這身被他碰過的地方，親手用主公自己的熱氣洗乾淨好不好？」"
         },
@@ -89,7 +108,12 @@
           "effects": {
             "aff": -18,
             "corruption": 28,
-            "tyranny": 12
+            "tyranny": 12,
+            "exec": "g",
+            "troops": 60,
+            "mist": 28,
+            "heat": 6,
+            "affair": "g"
           },
           "outcome": "{g} 挨了四十杖仍對那夜的冰火銷魂念念不忘，反倒徹底淪為嫦娥的暗中死忠；嫦娥則在戴枷三日裡徹底磨滅對你的最後一絲敬畏。"
         }
@@ -112,7 +136,13 @@
             "aff": 15,
             "inf": 18,
             "corruption": 14,
-            "rel_b": -40
+            "rel_b": -40,
+            "food": -80,
+            "mist": 14,
+            "heat": 6,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "嫦娥第一刀便在六宮立下令人毛骨悚然的寒威；那名女官十指盡廢，{b} 恨得咬碎銀牙，從此在後宮視嫦娥為最陰毒的死敵。"
         },
@@ -120,7 +150,11 @@
           "text": "斥她濫用上古寒刑殘害宮人，當場奪回炭火印信並派太醫救治傷者",
           "effects": {
             "aff": -14,
-            "corruption": 22
+            "corruption": 22,
+            "mist": 22,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "嫦娥從容交回印信，沒人發現她在離開少府藥庫前，早已經把庫裡最珍貴的五瓶西域迷情香與劇毒寒散全部掉包偷進了自己袖底。"
         }
@@ -164,7 +198,11 @@
             "aff": 12,
             "hedon": 18,
             "corruption": 30,
-            "flag": "change_well_punish"
+            "flag": "change_well_punish",
+            "mist": 30,
+            "crave": 18,
+            "exec": "b",
+            "heat": 8
           },
           "outcome": "火把盡滅，枯井邊只剩壓抑失控的嬌吟、碎裂的月白羅衫與石沿上大片水漬。次日她滿身紫黑掐痕步履虛浮地走回廣寒閣，卻對著銅鏡笑得極為得意——你終究還是被她這具冰肌玉骨拿捏得死死的。"
         },
@@ -173,7 +211,12 @@
           "effects": {
             "aff": -28,
             "corruption": 38,
-            "tyranny": 14
+            "tyranny": 14,
+            "troops": 60,
+            "mist": 38,
+            "heat": 7,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "斷藥後的萬年寒毒在深牢裡把她折磨得發瘋，她咬破雙手用血在牢牆上寫滿了你與 {b} 的名字，徹底化為只求毀滅燈塔的冰霜惡鬼。"
         }
@@ -397,3 +440,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['change'] = DATA;
+  (window.characterPacks ||= {})['change'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["zhenmi"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 04 號 甄宓 (zhenmi)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "zhenmi",
     "index": 4,
@@ -18,7 +23,8 @@
       "低侵蝕(0-34)：帶著鄴城破後被強納、終遭賜死的深重戒備，表面溫婉守禮，暗中早已用金銀打通少府與清流眼線自保。",
       "中侵蝕(35-69)：在黑霧與宮鬥侵蝕下，開始頻繁動用輿論筆伐逼瘋情敵、服五石散後在帳內行極度放浪之事，視男人的深情為最廉價的笑話。",
       "高侵蝕(70-100)：徹底黑化為『覆面怨神』——已親手將進讒情敵塞糠悶死、已在散發五石散熱氣的書閣裡公然與多名清流才子及侍衛放浪取樂、已把天運者當成下一個隨時可被取代的曹丕。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -45,7 +51,11 @@
             "inf": 14,
             "corruption": 10,
             "rel_b": -30,
-            "flag": "zhenmi_gold_win"
+            "flag": "zhenmi_gold_win",
+            "mist": 10,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "甄宓順從地靠進你懷裡，雪白頸項微微後仰任你嗅聞她身上的冷檀與五石散微香，眼角卻冷冷看著臉色慘白的 {b} 被衛兵請出偏殿——進門頭一天，她已經用銀子把敵人的心腹拆了一半。"
         },
@@ -55,7 +65,12 @@
             "aff": -10,
             "corruption": 22,
             "tyranny": 8,
-            "flag": "zhenmi_gold_seized"
+            "flag": "zhenmi_gold_seized",
+            "affair": "g",
+            "mist": 22,
+            "heat": 5,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "甄宓優雅地斂袖退後半步，臉上清絕笑意未減，心裡卻已經把你畫上「第二個曹丕」的死標籤。當夜她便把剩下藏在髮髻裡的十顆夜明珠散進了城中茶樓，次日滿城已經開始流傳 {b} 與少府官員私通的艷詩。"
         }
@@ -77,7 +92,12 @@
           "effects": {
             "aff": 12,
             "corruption": 20,
-            "hedon": 14
+            "hedon": 14,
+            "mist": 20,
+            "crave": 14,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "五石散的藥力正讓她渾身滾燙、每一寸皮膚都敏感得發抖。她被你壓在寫滿艷詩的宣紙上，非但沒求饒，反而雙腿緊緊勾住你的腰急促喘息：「主公……藥力上來了，我身上好燙、皮膚要裂開了……他們連我的裡衣都沒碰到，這副滾燙的身子留著給主公解藥性呢……快撕開它！」"
         },
@@ -86,7 +106,13 @@
           "effects": {
             "aff": -18,
             "corruption": 30,
-            "tyranny": 10
+            "tyranny": 10,
+            "exile": 1,
+            "food": 100,
+            "mist": 30,
+            "heat": 5,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "冰水澆透她單薄白紗，她在劇痛寒戰中咬破嘴唇，眼底徹底凝結出前世臨死前的死寂怨毒：「好……連冷血多疑都跟曹丕一模一樣。」"
         }
@@ -110,7 +136,12 @@
             "aff": 16,
             "inf": 18,
             "corruption": 15,
-            "rel_b": -45
+            "rel_b": -45,
+            "ban": "b",
+            "mist": 15,
+            "heat": 6,
+            "inj": "b",
+            "tag": "立威震宮"
           },
           "outcome": "{b} 在全城恥笑聲中幾乎氣瘋自盡；甄宓手握史筆與輿論大權，從此六宮誰敢惹她，隔天就會變成滿城茶樓裡的下賤女主角。"
         },
@@ -118,7 +149,12 @@
           "text": "震怒下令全城禁毀淫詞並抓捕說書人，當眾斥責甄宓手段下作",
           "effects": {
             "aff": -14,
-            "corruption": 24
+            "corruption": 24,
+            "pop": -15,
+            "mist": 24,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "甄宓溫順低頭領罰，但那些朗朗上口的淫詞早已刻進全城百姓腦子裡根本禁不乾淨；{b} 的名聲已經徹底臭爛，甄宓的目的早就達成了。"
         }
@@ -162,7 +198,11 @@
             "aff": 10,
             "hedon": 20,
             "corruption": 32,
-            "flag": "zhenmi_ink_punish"
+            "flag": "zhenmi_ink_punish",
+            "mist": 32,
+            "crave": 20,
+            "exec": "b",
+            "heat": 8
           },
           "outcome": "整夜書閣裡傳出壓抑到極致的吟哦與宣紙撕裂聲；次日宮婢進去收拾時，只見滿地沾滿墨印與大片水漬的詩箋，甄宓赤裸的肩背上印滿了青紫指痕與黑墨，眼底卻透出一股徹底墮落的病態快感。"
         },
@@ -171,7 +211,12 @@
           "effects": {
             "aff": -30,
             "corruption": 40,
-            "tyranny": 15
+            "tyranny": 15,
+            "pop": -15,
+            "mist": 40,
+            "heat": 7,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "她光著腳被拖過長廊任由滿宮恥笑，嘴角卻一直掛著瘋癲的笑意——從此她徹底變成一隻只為復仇與毀滅而活的洛水厲鬼。"
         }
@@ -391,3 +436,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['zhenmi'] = DATA;
+  (window.characterPacks ||= {})['zhenmi'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

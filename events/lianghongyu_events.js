@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["lianghongyu"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 07 號 梁紅玉 (lianghongyu)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "lianghongyu",
     "index": 7,
@@ -18,7 +23,8 @@
       "0-34（初染）：帶著京口營妓受盡白眼的尖刺與抗金名將的傲骨，誰敢拿她出身羞辱，她當場便拿對方的醜事與血債反抽耳光。",
       "35-69（深蝕）：在黑霧與宮鬥侵蝕下，徹底拾回教坊司最下作也最管用的『酒色控人、暗錄醜態』之術，同時以水師封江與戰鼓私刑在後宮瘋狂斂權。",
       "70+（深淵）：徹底黑化為『血鼓妖帥』——已親手將羞辱她出身的高門夫人拖進水牢敲鼓震瘋、已在江心樓船上公然以教坊風月豢養水師悍將、已把君王與滿朝文武全當成她鼓點下的提線木偶。"
-    ]
+    ],
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -50,7 +56,11 @@
             "corruption": 6,
             "rel_b": -30,
             "rel_g": 15,
-            "flag": "lianghongyu_drum_debut"
+            "flag": "lianghongyu_drum_debut",
+            "troops": 80,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "梁紅玉朗聲大笑抱拳領命，轉身時火紅戰袍掃過 {b} 慘白的臉；{g} 對她這股既妖且狠的氣魄佩服得五體投地。"
         },
@@ -61,7 +71,11 @@
             "hedon": 10,
             "corruption": 14,
             "rel_b": -12,
-            "flag": "lianghongyu_bed_test"
+            "flag": "lianghongyu_bed_test",
+            "mist": 14,
+            "crave": 10,
+            "office": 1,
+            "troops": 70
           },
           "outcome": "梁紅玉眉梢一挑，反手勾住你的脖頸吐氣如蘭：「主公爽快。只怕驗完今夜，主公明天就不捨得讓我下床去打仗了。」"
         },
@@ -71,7 +85,11 @@
             "aff": -10,
             "corruption": 20,
             "tyranny": 6,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 20,
+            "affair": "g",
+            "heat": 6,
+            "tag": "桀驁未馴"
           },
           "outcome": "梁紅玉笑著退下，當夜便已經用教坊舊人脈把 {b} 娘家典當蜀錦的當票抄本散遍了整個城南酒肆。"
         }
@@ -101,7 +119,13 @@
             "corruption": 12,
             "rel_g": 12,
             "rel_c": 10,
-            "flag": "lianghongyu_navy_grip"
+            "flag": "lianghongyu_navy_grip",
+            "troops": 80,
+            "mist": 12,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "梁紅玉未入宮便已在水師樹立極高威望，成了前朝武將最願親近、後宮最為忌憚的實權新人。"
         },
@@ -112,7 +136,12 @@
             "hedon": 12,
             "corruption": 18,
             "rel_g": -10,
-            "flag": "lianghongyu_drum_interrogate"
+            "flag": "lianghongyu_drum_interrogate",
+            "troops": 80,
+            "mist": 18,
+            "crave": 12,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "戰鼓被壓得發出低沉悶響，梁紅玉仰躺在鼓面上非但不怕，反而抬起一雙健美雪白的長腿勾住你的腰大笑：「主公吃醋啦？水師漢子糙，不給點酒和甜頭誰肯替你賣命？今夜這面鼓留給主公——你敲得響，老娘便連人帶水師全聽你的！」"
         },
@@ -122,7 +151,11 @@
             "aff": -14,
             "corruption": 24,
             "tyranny": 10,
-            "rel_g": -18
+            "rel_g": -18,
+            "troops": 80,
+            "mist": 24,
+            "heat": 5,
+            "affair": "g"
           },
           "outcome": "梁紅玉笑著領罪，心底卻徹底涼透——從此她不再與你分享套來的秘密，而是全數留作日後要挾朝堂的私籌。"
         }
@@ -151,7 +184,12 @@
             "corruption": 10,
             "rel_b": -40,
             "rel_g": -12,
-            "flag": "lianghongyu_impeach_win"
+            "flag": "lianghongyu_impeach_win",
+            "mist": 10,
+            "heat": 6,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "滿朝文武與六宮徹底見識到她的冷酷無情——連剛喝過酒的自己人都敢當眾開刀，沒人再敢輕易拿私交或出身拿捏她。"
         },
@@ -162,7 +200,11 @@
             "inf": -10,
             "corruption": 20,
             "rel_g": 10,
-            "rel_b": 10
+            "rel_b": 10,
+            "mist": 20,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "梁紅玉面無表情收起奏摺退下，從此認定這座塔根本不配講公道，往後行事徹底轉為私下暗算與黑吃黑。"
         }
@@ -190,7 +232,12 @@
             "inf": 16,
             "corruption": 22,
             "tyranny": 10,
-            "rel_g": -40
+            "rel_g": -40,
+            "troops": 80,
+            "mist": 22,
+            "heat": 5,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "梁紅玉徹底坐穩水師與武勳派龍頭，身邊再無人敢提她昔日教坊出身半個字。"
         },
@@ -199,7 +246,10 @@
           "effects": {
             "aff": -10,
             "corruption": 16,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 16,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "兩人從此形同陌路，昔日並肩擂鼓的情誼徹底碎成冰渣。"
         }
@@ -209,7 +259,7 @@
       "id": "lianghongyu_ch2_02",
       "title": "教坊夜宴・已用風月溫柔鄉與軍功爵位雙重收編中立派",
       "stage": "招攬武將、形成派系與私下討論去留",
-      "roles": "{g}：待拉攏的中立武將；{c}：被排擠的中立夫人",
+      "roles": "{b}：扣押水師與邊軍糧餉的對立高位嬪妃；{g}：待拉攏的中立武將；{c}：被排擠的中立夫人",
       "trigger": {
         "infMin": 20,
         "corruptionMin": 25
@@ -228,7 +278,12 @@
             "inf": 16,
             "corruption": 12,
             "rel_g": 15,
-            "rel_c": 15
+            "rel_c": 15,
+            "troops": 80,
+            "mist": 12,
+            "heat": 6,
+            "pv": 1,
+            "tag": "血盟共犯"
           },
           "outcome": "梁紅玉迅速建立起橫跨水師軍營與低階後宮的強悍派系，聲勢一時無兩。"
         },
@@ -239,7 +294,10 @@
             "inf": -10,
             "corruption": 20,
             "rel_g": -10,
-            "rel_c": -10
+            "rel_c": -10,
+            "mist": 20,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "酒局被迫改入城外水寨船艙，她的手段變得更加隱蔽而毫無底線。"
         }
@@ -268,7 +326,11 @@
             "hedon": 18,
             "corruption": 28,
             "rel_b": -20,
-            "flag": "lianghongyu_boat_punish"
+            "flag": "lianghongyu_boat_punish",
+            "mist": 28,
+            "crave": 18,
+            "exec": "b",
+            "heat": 8
           },
           "outcome": "整夜江心樓船隨著急促喘息與鼓面悶響劇烈搖晃；天亮後她滿身紫紅掐痕卻滿意地笑開——她徹底確信自己的肉身與手腕依舊能把你按在掌心。"
         },
@@ -280,7 +342,12 @@
             "corruption": 38,
             "tyranny": 14,
             "rel_b": 18,
-            "flag": "lianghongyu_jailed_smuggle"
+            "flag": "lianghongyu_jailed_smuggle",
+            "troops": 80,
+            "mist": 38,
+            "heat": 7,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "戴上重鐐走過甲板時，她盯著得意洋洋的 {b} 放聲冷笑：「牢房關得住我的人，關不住這三千條認我鼓聲的水師漢子！」"
         }
@@ -312,7 +379,14 @@
             "inf": 16,
             "corruption": 12,
             "rel_b": -45,
-            "rel_c": -12
+            "rel_c": -12,
+            "ban": "b",
+            "inj": "b",
+            "mist": 12,
+            "heat": 6,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "{b} 羞憤吐血被拖出正殿；自此全宮無人再敢提『營妓』二字，凡敢出口者必遭梁紅玉加倍扒皮。"
         },
@@ -321,7 +395,12 @@
           "effects": {
             "aff": -8,
             "corruption": 20,
-            "rel_b": -15
+            "rel_b": -15,
+            "kidLoss": "b",
+            "troops": 80,
+            "mist": 20,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "梁紅玉冷笑領旨，但當晚已經派水師老兵把 {b} 喝墮胎藥的事編成了粗俗船歌，唱得整個碼頭人盡皆知。"
         }
@@ -347,7 +426,12 @@
             "inf": 14,
             "corruption": 14,
             "rel_b": -30,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 14,
+            "heat": 6,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "梁紅玉徹底統一水陸補給大權，{b} 恨得咬牙切齒卻拿她毫無辦法。"
         },
@@ -356,7 +440,10 @@
           "effects": {
             "aff": -8,
             "corruption": 16,
-            "rel_b": 10
+            "rel_b": 10,
+            "mist": 16,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "梁紅玉隨手把木牌扔進 {b} 懷裡，兩人之間的血仇卻已更深一層。"
         }
@@ -391,7 +478,11 @@
             "hedon": 16,
             "corruption": 16,
             "rel_b": -15,
-            "flag": "lianghongyu_drum_night"
+            "flag": "lianghongyu_drum_night",
+            "mist": 16,
+            "crave": 16,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "她徹底在權力與肉慾的雙重滿足中綻放出極致妖豔的佔有慾，從此把你當成比韓世忠更讓她發瘋的掌中獵物。"
         },
@@ -401,7 +492,11 @@
             "aff": -24,
             "corruption": 30,
             "tyranny": 12,
-            "rel_g": -40
+            "rel_g": -40,
+            "mist": 30,
+            "heat": 6,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "「營妓」兩字徹底踩爆了她心底最毒的雷區——她抹掉濺在臉上的血點冷笑出聲，從此視你為與高門偽君子無異的死敵。"
         }
@@ -429,7 +524,13 @@
             "tyranny": 10,
             "corruption": 25,
             "rel_b": -30,
-            "flag": "lianghongyu_red_fleet"
+            "flag": "lianghongyu_red_fleet",
+            "troops": 80,
+            "mist": 25,
+            "crave": 22,
+            "heat": 5,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "江上紅舫夜夜笙歌，梁紅玉成了全城最張狂也最奢靡的江上女魔頭。"
         },
@@ -439,7 +540,11 @@
             "aff": -18,
             "hedon": -8,
             "corruption": 18,
-            "rel_b": 10
+            "rel_b": 10,
+            "mist": 18,
+            "crave": 6,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "看著紅舫燃成灰燼，梁紅玉冷哼一聲：「主公這副既要老娘賣命又要老娘吃素的嘴臉，真讓人倒胃口。」"
         }
@@ -469,7 +574,12 @@
             "corruption": 20,
             "tyranny": 12,
             "rel_b": -50,
-            "rel_c": -10
+            "rel_c": -10,
+            "cold": "b",
+            "mist": 20,
+            "heat": 6,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "梁紅玉笑著靠進你懷裡上藥，整個後宮再也沒人敢拿出身二字觸她逆鱗。"
         },
@@ -479,7 +589,12 @@
             "aff": -20,
             "inf": -16,
             "corruption": 28,
-            "rel_b": 15
+            "rel_b": 15,
+            "troops": 80,
+            "mist": 28,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "梁紅玉冷笑領旨，但水牢裡留下的恐懼已經刻進全宮骨頭裡，沒人敢接手她退下來的爛攤子。"
         }
@@ -507,7 +622,12 @@
             "inf": 12,
             "corruption": 10,
             "rel_b": -20,
-            "flag": "lianghongyu_defended_honor"
+            "flag": "lianghongyu_defended_honor",
+            "mist": 10,
+            "heat": 6,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "鐵血女帥頭一回在你懷裡咬著牙發抖落淚，隨即徹底斬斷對親兒的指望，將全部瘋狂的忠誠與權慾只壓在你一個人身上。"
         },
@@ -518,7 +638,11 @@
             "inf": -15,
             "corruption": 40,
             "rel_b": 20,
-            "flag": "lianghongyu_son_stolen"
+            "flag": "lianghongyu_son_stolen",
+            "mainWife": 1,
+            "mist": 40,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "梁紅玉徹底瘋魔！她當夜便砸碎帥帳裡所有擺設，發誓要親手毀掉 {b}、毀掉這個忘本的白眼狼兒子，甚至不惜掀翻這座薄情的燈塔！"
         }
@@ -552,7 +676,13 @@
             "tyranny": 14,
             "rel_g": 15,
             "rel_c": -35,
-            "flag": "lianghongyu_water_empress"
+            "flag": "lianghongyu_water_empress",
+            "mist": 24,
+            "heat": 7,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "梁紅玉笑得張狂豔麗，當眾踩過血水吻上你的唇；從此整個燈塔的水路命脈與後宮生殺徹底歸於她的戰鼓之下。"
         },
@@ -563,7 +693,14 @@
             "inf": -20,
             "corruption": 38,
             "tyranny": 15,
-            "rel_g": -25
+            "rel_g": -25,
+            "troops": 80,
+            "soldiers": 60,
+            "mist": 38,
+            "heat": 7,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "一場慘烈的城內血戰後她被鎖進深牢，但水師殘部從此與主城離心，隨時準備伺機反撲救主。"
         }
@@ -593,7 +730,13 @@
             "hedon": 12,
             "corruption": 12,
             "rel_b": -18,
-            "flag": "lianghongyu_reunion_boat"
+            "flag": "lianghongyu_reunion_boat",
+            "troops": 80,
+            "mist": 12,
+            "crave": 12,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "次日她神清氣爽地放行了糧船，卻順手把其中三箱最貴的東珠留進了自己帳裡。"
         },
@@ -603,7 +746,11 @@
             "aff": -18,
             "inf": -14,
             "corruption": 26,
-            "tyranny": 8
+            "tyranny": 8,
+            "mist": 26,
+            "heat": 5,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "她冷笑著交出船牌，暗中卻早已教會分城船夫怎麼在暗礁區「不小心」撞沉 {b} 家的私貨船。"
         }
@@ -629,7 +776,12 @@
             "inf": 18,
             "corruption": 12,
             "rel_g": 15,
-            "rel_b": -25
+            "rel_b": -25,
+            "mist": 12,
+            "heat": 6,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "梁紅玉在兩百里外穩坐江上女王之位，主城政敵徹底拿她無可奈何。"
         },
@@ -640,7 +792,11 @@
             "inf": -12,
             "corruption": 25,
             "rel_g": -25,
-            "tyranny": 10
+            "tyranny": 10,
+            "mist": 25,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "碼頭雖暫時收回，但水手怠工、黑市暴漲，梁紅玉更是對你徹底生出反骨。"
         }
@@ -668,7 +824,11 @@
             "aff": 8,
             "inf": 10,
             "rel_g": 10,
-            "rel_b": 8
+            "rel_b": 8,
+            "heat": 6,
+            "mainWife": 1,
+            "crave": 7,
+            "tag": "生死血鎖"
           },
           "outcome": "兩人表面冷嘲熱諷，遇上外敵時卻配合得天衣無縫。"
         },
@@ -678,7 +838,9 @@
             "aff": -6,
             "corruption": 16,
             "rel_b": -20,
-            "rel_g": -15
+            "rel_g": -15,
+            "mist": 16,
+            "house": 1
           },
           "outcome": "後宮與水寨隨即爆發更陰毒的斷糧與暗殺戰。"
         }
@@ -710,7 +872,12 @@
             "inf": 16,
             "corruption": 18,
             "rel_g": -25,
-            "flag": "lianghongyu_duty_decided"
+            "flag": "lianghongyu_duty_decided",
+            "troops": 80,
+            "mist": 18,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "梁紅玉徹底在水師立下神一般的鐵血威信，但內心對情義的最後一點柔軟也隨之冰封。"
         },
@@ -720,7 +887,12 @@
             "aff": -18,
             "inf": -12,
             "corruption": 24,
-            "rel_g": 10
+            "rel_g": 10,
+            "troops": 80,
+            "mist": 24,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "她冷笑領旨，從此對你徹底生出戒心，暗中加速培養只聽她鼓聲的死士。"
         }
@@ -748,7 +920,12 @@
             "inf": 14,
             "corruption": 10,
             "rel_b": -35,
-            "rel_g": 15
+            "rel_g": 15,
+            "troops": 80,
+            "mist": 10,
+            "heat": 6,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "梁紅玉收刀冷哼，勉強壓下水師譁變，但從此再不輕信主城的空頭承諾。"
         },
@@ -759,7 +936,13 @@
             "inf": -15,
             "corruption": 34,
             "tyranny": 14,
-            "rel_g": -25
+            "rel_g": -25,
+            "ban": 1,
+            "troops": 80,
+            "mist": 34,
+            "heat": 7,
+            "exec": "g",
+            "pop": -10
           },
           "outcome": "水師上下徹底寒心，梁紅玉在禁足中冷笑磨刀，暗中醞釀一場掀翻朝堂的風暴。"
         }
@@ -786,7 +969,11 @@
             "aff": 16,
             "inf": 16,
             "rel_g": 12,
-            "corruption": 6
+            "corruption": 6,
+            "heat": 6,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "梁紅玉威名震懾荒原，當夜便在帥帳裡以最熾烈奔放的方式犒賞了你。"
         },
@@ -796,7 +983,12 @@
             "aff": -14,
             "inf": -10,
             "corruption": 20,
-            "rel_g": -12
+            "rel_g": -12,
+            "troops": 80,
+            "mist": 20,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "她表面笑著交印，私下卻已經教會水師老兵怎麼把那名新來的監軍「意外」推下江去。"
         }
@@ -822,7 +1014,12 @@
               "aff": 10,
               "tyranny": 10,
               "rel_g": 18,
-              "flag": "lianghongyu_buried_wrath"
+              "flag": "lianghongyu_buried_wrath",
+              "troops": 80,
+              "heat": 5,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "三千水師披麻戴孝、戰意化為滔天復仇血火。"
           },
@@ -832,7 +1029,11 @@
               "aff": -10,
               "corruption": 40,
               "hedon": 8,
-              "flag": "lianghongyu_resummoned_dark"
+              "flag": "lianghongyu_resummoned_dark",
+              "mist": 40,
+              "crave": 8,
+              "pol": 15,
+              "wood": -50
             },
             "outcome": "重召歸來的她低頭盯著自己完好卻彷彿仍在劇痛的雙手冷笑：「砸碎我的手、撕爛我的鼓……這回回來，我要拿敵酋的皮蒙一面新戰鼓。」"
           }
@@ -857,7 +1058,11 @@
               "aff": 12,
               "inf": -6,
               "rel_b": -15,
-              "flag": "lianghongyu_rescue_planned"
+              "flag": "lianghongyu_rescue_planned",
+              "troops": 80,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "水師舊部紛紛請命夜襲敵寨，誓要搶回女帥。"
           },
@@ -867,7 +1072,10 @@
               "aff": -22,
               "corruption": 28,
               "rel_b": 12,
-              "flag": "lianghongyu_abandoned"
+              "flag": "lianghongyu_abandoned",
+              "mist": 28,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "在敵艦枯等無果的她徹底寒心黑化，後續極易觸發『強迫婚籍』、『私人囚禁』或『自行逃脫』後的恐怖清算。"
           }
@@ -893,7 +1101,12 @@
               "aff": 18,
               "corruption": 14,
               "rel_b": -20,
-              "flag": "lianghongyu_injured_trusted"
+              "flag": "lianghongyu_injured_trusted",
+              "troops": 80,
+              "mist": 14,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "她緊緊回抱住你、壓下崩潰情緒，從此轉入幕後以更陰毒精準的謀略操控整座水師與後宮。"
           },
@@ -903,7 +1116,12 @@
               "aff": -24,
               "inf": -15,
               "corruption": 32,
-              "rel_b": 12
+              "rel_b": 12,
+              "affair": "g",
+              "troops": 80,
+              "mist": 32,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "失去兵權的她徹底黑化，開始在後宮暗中用教坊秘藥與私通手段瘋狂奪權復仇。"
           }
@@ -928,7 +1146,11 @@
               "aff": 16,
               "tyranny": 14,
               "corruption": 20,
-              "rel_b": -30
+              "rel_b": -30,
+              "mist": 20,
+              "heat": 7,
+              "exec": "b",
+              "pop": -15
             },
             "outcome": "她看著血濺街頭，臉上沒有半點淚光，只冷冷一笑：「殺得好——剩下那些心裡偷笑的，我會一個個替他們唱送葬曲。」"
           },
@@ -938,7 +1160,10 @@
               "aff": -26,
               "inf": -12,
               "corruption": 38,
-              "rel_b": 12
+              "rel_b": 12,
+              "ban": "b",
+              "mist": 38,
+              "tag": "受辱怨骨"
             },
             "outcome": "她在幽禁中徹底喪失人性底線，發誓要把整個薄情的後宮連同 {b} 一併拖入血海。"
           }
@@ -960,7 +1185,11 @@
               "aff": 12,
               "inf": 12,
               "corruption": 16,
-              "rel_g": -18
+              "rel_g": -18,
+              "troops": 80,
+              "mist": 16,
+              "heat": 6,
+              "tag": "死人堆爬歸"
             },
             "outcome": "她冷笑接賞，但從此水師基層對她又敬又怕，再無人敢把後背輕易交給這位冷血女帥。"
           },
@@ -970,7 +1199,9 @@
               "aff": -22,
               "inf": -14,
               "corruption": 30,
-              "rel_g": 15
+              "rel_g": 15,
+              "mist": 30,
+              "jail": 1
             },
             "outcome": "她挨完板子一聲不吭，眼底最後一絲對軍中袍澤的感情徹底熄滅。"
           }
@@ -996,7 +1227,11 @@
               "aff": 20,
               "corruption": 18,
               "rel_b": -35,
-              "flag": "lianghongyu_saved_after_abortion"
+              "flag": "lianghongyu_saved_after_abortion",
+              "mist": 18,
+              "preg": 1,
+              "tag": "懷敵種",
+              "heat": 8
             },
             "outcome": "她撿回一命後對你生出極端排他且兇狠的忠誠，誓要替你掃平一切內外障礙。"
           },
@@ -1006,7 +1241,13 @@
               "aff": -35,
               "corruption": 40,
               "tyranny": 14,
-              "rel_b": 15
+              "rel_b": 15,
+              "mist": 40,
+              "heat": 7,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "她憑著一口怨氣硬生生熬了過來，從此把你視作與敵酋無異的薄情仇敵。"
           }
@@ -1032,7 +1273,11 @@
               "aff": 12,
               "tyranny": 8,
               "rel_b": -15,
-              "flag": "lianghongyu_war_for_bride"
+              "flag": "lianghongyu_war_for_bride",
+              "soldiers": 60,
+              "heat": 5,
+              "affair": "g",
+              "tag": "敵帳歸婦"
             },
             "outcome": "消息暗中傳到敵艦，梁紅玉立刻收起絕望，開始暗中在敵帥酒裡下慢毒配合你的總攻。"
           },
@@ -1042,7 +1287,10 @@
               "aff": -35,
               "corruption": 40,
               "rel_b": 20,
-              "flag": "lianghongyu_disowned"
+              "flag": "lianghongyu_disowned",
+              "mist": 40,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "得知遭除籍那夜，梁紅玉冷笑燒掉大紅戰袍殘片，反客為主用教坊絕技徹底迷昏敵帥，準備奪取敵艦殺回燈塔找你與 {b} 算總帳！"
           }
@@ -1050,7 +1298,7 @@
       },
       "營救獲釋": {
         "title": "火艦奪帥・斷鏈後在血火裡失控的野性擁吻",
-        "roles": "{g}：隨同殺上敵艦救援的水師副將",
+        "roles": "{b}：在後宮進讒阻撓援軍的對立高位嬪妃；{g}：隨同殺上敵艦救援的水師副將",
         "trigger": {
           "captured": true,
           "rescued": true
@@ -1065,7 +1313,12 @@
               "hedon": 10,
               "corruption": 14,
               "rel_g": 12,
-              "flag": "lianghongyu_rescued_passion"
+              "flag": "lianghongyu_rescued_passion",
+              "mist": 14,
+              "crave": 10,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "她對你的忠誠與瘋狂佔有欲同時飆升，成為你最鋒利卻也最不容分享的江上狂刀。"
           },
@@ -1074,7 +1327,10 @@
             "effects": {
               "aff": -6,
               "corruption": 18,
-              "rel_g": 10
+              "rel_g": 10,
+              "mist": 18,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她看著你轉身清點戰利品的冷靜背影，眼底剛升起的那團熱火悄悄沉成了深冷的算計。"
           }
@@ -1098,7 +1354,11 @@
               "inf": 14,
               "corruption": 18,
               "rel_g": 16,
-              "flag": "lianghongyu_ship_raid"
+              "flag": "lianghongyu_ship_raid",
+              "mist": 18,
+              "heat": 6,
+              "exec": "g",
+              "pv": 1
             },
             "outcome": "敵軍旗艦化作沖天火柱，梁紅玉渾身浴血歸城，從此手段比過往殘酷十倍。"
           },
@@ -1107,7 +1367,10 @@
             "effects": {
               "aff": -30,
               "corruption": 35,
-              "flag": "lianghongyu_abandoned_cabin"
+              "flag": "lianghongyu_abandoned_cabin",
+              "mist": 35,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "徹底絕望的她親手啟動最血腥的反殺計畫，直接導向『自行逃脫』後的恐怖回歸！"
           }
@@ -1135,7 +1398,12 @@
               "corruption": 25,
               "tyranny": 12,
               "rel_b": -50,
-              "flag": "lianghongyu_return_revenge"
+              "flag": "lianghongyu_return_revenge",
+              "mist": 25,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "當夜水寨方向傳來響徹雲霄的催命戰鼓與 {b} 撕心裂肺的慘叫；梁紅玉徹底成為整座燈塔最無人敢惹的血衣女魔頭。"
           },
@@ -1145,7 +1413,15 @@
               "aff": -35,
               "inf": -16,
               "corruption": 40,
-              "tyranny": 15
+              "tyranny": 15,
+              "jail": 1,
+              "troops": 80,
+              "pol": 12,
+              "energy": 25,
+              "mist": 40,
+              "heat": 7,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "她看著圍上來的長矛仰天大笑，水師舊部當夜便在碼頭蠢蠢欲動，一場內亂一觸即發。"
           }
@@ -1154,3 +1430,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['lianghongyu'] = DATA;
+  (window.characterPacks ||= {})['lianghongyu'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();
