@@ -4144,6 +4144,20 @@ function loveTurnY(add){spouses().concat(femFree()).forEach(id=>{if(!S.order.inc
 /* 介面：情緒標籤與威信 */
 {const _gc=gridCard;gridCard=function(id){let h=_gc(id);if(wed(id)){const e=emoOf(id);return h.replace(/<\/b>/,`</b><span style="font-size:10px;color:${EMOC[e]};border:1px solid ${EMOC[e]};border-radius:8px;padding:0 4px;margin-left:3px">${e}</span>`)}return h}}
 {const _rw2=render;render=function(...a){const r=_rw2.apply(this,a);try{const el=document.querySelector('.res.lord');if(el&&!el.dataset.w){el.dataset.w=1;el.insertAdjacentHTML('afterend',`<span class="res" style="color:${wei()<30?'#ff6a6a':wei()>=75?'#9fd0a0':'#d9c690'}">威${wei()}</span>`)}}catch(e){}return r}}
+/* ===== 不死不滅 × 病態之愛 ===== */
+const isImmY=id=>!!(hs(id)&&hs(id).immortal!=null);
+REQT.eternal={who:'wed',w:c=>S.immMethod&&!isImmY(c.id)?(loveTypes(c.id).includes('doom')||c.crave==='immortal'||c.crave==='own'?2:.4):0,ask:id=>({t:'要你給她永生——她不要再看著你一個人活下去'}),yes:(id)=>{if((S.core||0)>=3&&S.energy>=150){immPact(id);return`你與${H(id).n}結下了同命之契`}S.core=(S.core||0)-3;S.energy-=150;const st=hs(id);st.immortal=S.t;(st.dtag??={}).永生=S.t;return`你硬是湊出了代價，國庫被掏空——${H(id).n}從此與你同壽`},no:id=>({fav:-15,app:5,heat:6})};
+/* 1. 殉情失敗：她知道你死不了 */
+{const d=LOVTACT.doom;LOVTACT.doom=(id,b,add)=>{if(S.immMethod&&b==='low'){if(!isImmY(id)&&!(S.reqQ||[]).some(q=>q.id===id))(S.reqQ??=[]).push({id,k:'eternal',...REQT.eternal.ask(id),at:S.t});if(!S.house&&Math.random()<.4){S.house={by:id,t:S.t};S.houseCD=S.t+16;return'「你死不了，那我就把你關起來，陪我到我死為止。」'}return'她知道殉情對你沒用。於是她要的，變成了永遠'}return d(id,b,add)}}
+/* 2. 永生者更瘋 */
+{const _lt2=loveTurnY;loveTurnY=function(add){_lt2(add);spouses().filter(x=>isImmY(x)&&S.order.includes(x)&&!hst(x)).forEach(id=>{if(Math.random()<.3){const T=pick(loveTypes(id));let s=null;try{s=LOVTACT[T](id,(wed(id).fav>=70?'high':wed(id).fav>=35?'mid':'low'),add)}catch(e){}if(s)add(`<b style="color:#f0d79a">【永生・${H(id).n}・${LOVTN[T]}】</b>她也死不了了，所以什麼都不怕——${s}`,'neg')}})}}
+/* 3. 搶永生 */
+function immEnvy(add){const im=spouses().filter(x=>isImmY(x)&&S.order.includes(x));if(!im.length)return;spouses().filter(x=>!isImmY(x)&&S.order.includes(x)&&!hst(x)).forEach(id=>{const k=craveOf(id);if(!(k==='immortal'||k==='own'||loveTypes(id).includes('sacrifice')))return;if(Math.random()>.05)return;const v=pick(im);if(Math.random()<.3){delete hs(v).immortal;if(hs(v).dtag)delete hs(v).dtag.永生;const st=hs(id);st.immortal=S.t;(st.dtag??={}).永生=S.t;relAdd(v,id,-50);harm(id,v,3);add(`<b style="color:#ff6a6a">【奪壽】</b>${H(id).n}用了邪法，把${H(v).n}的永生奪了過來——如今會老會死的，換成了${H(v).n}`,'neg')}else{goneHero(v,'exec');relAdd(v,id,-40);setGrudge(id,6);add(`<b style="color:#ff6a6a">【謀害永生者】</b>${H(id).n}對${H(v).n}下了殺手，可${H(v).n}死不了，只是陷入了沉睡……醒來後，她會記得是誰`,'neg')}})}
+/* 4. 用永生互相折磨 */
+{const _hm=harm;harm=function(by,vs,sev){_hm(by,vs,sev);if(vs&&isImmY(vs)&&S.order.includes(vs)){mistAdd(vs,8*sev);relAdd(vs,by,-8);if(Math.random()<.4)feedPush(`【無盡折磨】${H(vs).n}死不了，所以${H(by).n}的手段可以一直、一直繼續下去（${H(vs).n}污染 +${8*sev}）`,'neg')}}}
+/* 5. 拿你的不死去炫耀 */
+function immBoast(add){if(!S.immMethod)return;spouses().filter(x=>S.order.includes(x)&&(loveTypes(x).includes('dominate')||craveOf(x)==='power')).forEach(id=>{if(Math.random()>.1)return;weiAdd(3);hp(id).inf=Math.min(100,(hp(id).inf|0)+3);const F=(typeof curFacs==='function'?curFacs():[]).filter(d=>FS(d.id)&&FS(d.id).alive);if(F.length&&S.extort&&Math.random()<.5){S.extort=null;add(`【不死之威】${H(id).n}對來使冷笑：「你們要打一個殺不死的人？」——勒索不了了之（威信 +3）`)}else add(`【不死之威】${H(id).n}在朝堂上拿你的不死震懾群臣（威信 +3、她權勢 +3）`)})}
+{const _him=haremEvent;haremEvent=function(cb){try{immEnvy(feedPush);immBoast(feedPush)}catch(e){}return _him(cb)}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
