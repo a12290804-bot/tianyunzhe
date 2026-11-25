@@ -4433,6 +4433,40 @@ function sedEvent(cb){const q=(S.sedQ||[]).filter(x=>S.order.includes(x.id)&&x.a
    feedPush(`【誘惑・${N}・${SEDK[k]}】${String(r).replace(/<br>/g,' ').replace(/<[^>]+>/g,'')}`);hxPush(id,String(r).replace(/<[^>]+>/g,''),'誘惑');
    sheet(`<p style="font-family:Noto Serif TC,serif;font-size:16px;color:${col}">${r}</p><button class="btn" style="width:100%;margin-top:8px" id="sdOk">……</button>`,true);$('#sdOk').onclick=()=>{closeSheet();render();step(i+1)}})};step(0)}
 {const _hsd=haremEvent;haremEvent=function(cb){try{sedTurn(feedPush)}catch(e){console.error(e)}return _hsd(()=>sedEvent(cb))}}
+/* ===== 對外誘惑：她們不只誘惑你，也對外施展，依慾望、標籤、身體、污染產生真實影響 ===== */
+const SEDO={
+ lust:['情夫',(id,m)=>{if(!m)return null;const k=id+'|'+m,a=(S.aff2??={})[k]??={v:0,k:1};a.v+=Math.round(15*MAG(id));barAdd('hedon',1);return[`對${H(m).n}寬衣解帶，${H(m).n}再也離不開她了`,`與${H(m).n}的私情 +${Math.round(15*MAG(id))}、昏庸 +1`]}],
+ power:['朝臣',(id,m)=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+Math.round(4*MAG(id)));if(m)relAdd(m,id,10);return[`在${m?H(m).n:'重臣'}的耳邊低語了一整夜，對方從此只聽她的`,`她權勢 +${Math.round(4*MAG(id))}`]}],
+ greed:['富商',(id)=>{const n=Math.round(40*MAG(id));S.food+=n;hs(id).hoard=(hs(id).hoard||0)+5;return[`讓城裡最有錢的商人為她傾家蕩產`,`糧 +${n}，大半進了她的私庫`]}],
+ vanity:['滿城百姓',(id)=>{barAdd('hedon',1);S.pop=(S.pop||0)+R(2,6);spouses().filter(x=>x!==id).forEach(x=>{hs(x).heat=(hs(x).heat||0)+1;relAdd(x,id,-3)});bloomAdd(id,1);return[`盛裝遊城，滿城的人追著她的車駕跑`,`人口小增、昏庸 +1、其他夫人嫉妒、華彩 +1`]}],
+ blood:['敵將',(id)=>{const F=homeFacs().filter(d=>d.id!=='huapi');const d=pick(F);if(!d)return null;const n=Math.round(60*MAG(id));FS(d.id).troops=Math.max(0,FS(d.id).troops-n);barAdd('tyranny',1);mistAdd(id,5);return[`誘${d.n}的將領出營相會——回來時只帶著他的首級`,`${d.n}兵力 −${n}、暴虐 +1、她污染 +5`]}],
+ own:['情敵',(id)=>{const v=pick(spouses().filter(x=>x!==id&&S.order.includes(x)));if(!v)return null;if(wed(v))wed(v).fav=Math.max(0,wed(v).fav-6);relAdd(v,id,-10);return[`去勾引${H(v).n}身邊的人，讓${H(v).n}在你面前出盡了醜`,`${H(v).n}寵愛 −6`]}],
+ immortal:['方士',(id)=>{hs(id).lifeP=Math.min(100,(hs(id).lifeP||0)+Math.round(4*MAG(id)));return[`用身子換來了方士的祕方`,`她長生 +${Math.round(4*MAG(id))}`]}]};
+const SEDO_T={flaunt:['後宮',(id)=>{spouses().filter(x=>x!==id).forEach(x=>{hs(x).heat=(hs(x).heat||0)+2;relAdd(x,id,-4)});return[`把你留在她身上的痕跡亮給每一位姐妹看`,`其他夫人熱度上升、更恨她`]}],
+ dominate:['來使',(id)=>{const d=pick(homeFacs().filter(x=>x.id!=='huapi'));if(!d)return null;facRelAdd(d.id,15);(S.facPeace??={})[d.id]=Math.max(S.facPeace[d.id]||0,S.t+4);return[`把${d.n}的使者迷得神魂顛倒，簽下了她要的條約`,`${d.n}關係 +15、和平 4 旬`]}],
+ play:['守城軍',(id)=>{S.soldiers=Math.max(0,(S.soldiers||0)-R(5,15));barAdd('hedon',1);return[`溜去軍營跳了一夜舞，第二天一半的兵都起不來`,`兵力小減、昏庸 +1`]}],
+ zealot:['將士',(id)=>{S.soldiers=(S.soldiers||0)+R(15,35);return[`在校場卸甲，讓將士們看她身上的戰傷——全軍為她發誓效死`,`兵力 +`]}]};
+/* 身體狀態對外 */
+const SEDO_B={preg:(id)=>{spouses().filter(x=>x!==id).forEach(x=>{hs(x).heat=(hs(x).heat||0)+1});const pg=hs(id).pg;if(pg&&Math.random()<.4)pg.doubt=1;return'她挺著肚子到處走，逢人就讓人摸——宮裡有人開始嚼舌根，說那孩子未必是你的'},
+ hurt:(id)=>{S.soldiers=(S.soldiers||0)+10;return'她讓將士們看她的傷，軍中都在說要為她報仇（兵 +10）'},
+ mist:(id)=>{const d=pick(homeFacs().filter(x=>x.id!=='huapi'));if(d){FS(d.id).troops=Math.max(0,FS(d.id).troops-40)}S.pop=Math.max(0,(S.pop||0)-R(1,4));return`她讓霧化的身體在城頭現形，敵軍嚇退了${d?'（'+d.n+'兵 −40）':''}，城裡也有人嚇得逃走`},
+ imm:(id)=>{weiAdd(1);return'她當眾讓刀刃劃過自己的手臂，傷口在所有人眼前合上（威 +1）'},
+ bloom:(id)=>{S.pop=(S.pop||0)+R(2,5);return'她的美貌傳遍四方，有人千里迢迢來城裡只為看她一眼（人口 +）'}};
+function bodyKey(id){const st=hs(id);if(isPreg(id))return'preg';if(hst(id)==='inj')return'hurt';if(mistState(id).band>=2)return'mist';if(isImmY(id))return'imm';if(bloomLv(id)>=2)return'bloom';return null}
+function sedOutTurn(add){if(inWorld())return;const W=spouses().concat(femFree()).filter(x=>S.order.includes(x)&&H(x).sex==='f'&&(!hst(x)||hst(x)==='inj')&&!busyArmy(x));
+ W.forEach(id=>{const cr=craveOf(id),T=loveTypes(id),N=H(id).n;let p=.03+(cr==='lust'?.05:0)+(cr==='vanity'?.03:0)+heatTier(id)*.015+mutStage(id)*.03+(T.includes('flaunt')||T.includes('play')?.02:0)+(('淫' in (hs(id).dtag||{}))?.05:0);if(Math.random()>p)return;
+  const men=S.order.filter(x=>H(x)&&H(x).sex==='m'&&x!==id&&!hst(x));const m=pick(men);
+  const opts=[];if(SEDO[cr])opts.push(SEDO[cr]);T.forEach(t=>{if(SEDO_T[t])opts.push(SEDO_T[t])});if(!opts.length)opts.push(SEDO.vanity);
+  const o=pick(opts);let r=null;try{r=o[1](id,m)}catch(e){}if(!r)return;const bk=bodyKey(id);let extra='';if(bk&&Math.random()<.5){try{extra=SEDO_B[bk](id)}catch(e){}}
+  const mn=mutStage(id)>0?(typeof mutName==='function'?mutName(id):''):'';const tags=Object.keys(hs(id).dtag||{}).slice(0,2);
+  const s=T46('SEDUCE_OUT',id,o[0])||T46('SEDUCE_OUT','_'+cr,o[0])||T46('SEDUCE_OUT','_',o[0]);const line=s?T46n(s,id,m):r[0];
+  hs(id).heat=(hs(id).heat||0)+1;(hs(id).acts??=[]).push({t:S.t,s:line,n:'對外誘惑・'+o[0]});
+  add(`<b style="color:#ff7ab0">【對外誘惑・${N}→${o[0]}】</b>${mn?`（${mn}）`:''}${line}（${r[1]}）${extra?`<br>　└ ${extra}`:''}${tags.length?`<span class="small" style="color:var(--dim)">［${tags.join('・')}］</span>`:''}`,'neg');
+  if(Math.random()<.25)(S.sedCaught??=[]).push({id,o:o[0],line,m})})}
+function sedCaughtEvent(cb){const q=(S.sedCaught||[]).filter(x=>S.order.includes(x.id));S.sedCaught=[];if(!q.length||midLeft()<1)return cb();midUse(1);const c=q[0],N=H(c.id).n,w=wed(c.id),col=(CRAVE[craveOf(c.id)]||[0,'#ff7ab0'])[1];
+ emoDlg(c.id,'被你撞見',`你親眼看見了：${c.line}<br>她發現你在看，沒有停，反而回頭對你笑。`,col,[['默許（昏庸 +1，她更放肆）',()=>{barAdd('hedon',1);hs(c.id).heat=(hs(c.id).heat||0)+3;weiAdd(-2)}],['把她拖回宮裡（她又驚又喜）',()=>{if(w){w.fav=Math.min(100,w.fav+6);loveAdd(c.id,50,true)}hs(c.id).heat=Math.max(0,(hs(c.id).heat||0)-2)}],[c.m&&S.order.includes(c.m)?`懲罰${H(c.m).n}（禁足三旬）`:'公開斥責她（寵愛 −10）',()=>{if(c.m&&S.order.includes(c.m)){setHst(c.m,'ban',3);relAdd(c.id,c.m,-5);hs(c.id).heat=(hs(c.id).heat||0)+1}else{if(w)w.fav=Math.max(0,w.fav-10);setGrudge(c.id,4)}}]]);
+ $$('[data-emo]').forEach(b=>b.addEventListener('click',()=>setTimeout(cb,0)))}
+{const _hso=haremEvent;haremEvent=function(cb){try{sedOutTurn(feedPush)}catch(e){console.error(e)}return _hso(()=>sedCaughtEvent(cb))}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
