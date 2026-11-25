@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["wanzhener"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 26 號 萬貞兒 (wanzhener)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "wanzhener",
     "index": 26,
@@ -18,7 +23,8 @@
       "0-34": "自幼貼身護持天子的年長掌衣宮女，身姿豐碩英氣、眼明手辣，深知天子離不開自己的懷抱與體溫，已開始暗中驅逐所有試圖親近龍榻的年輕女官。",
       "35-69": "坐鎮安喜宮的鐵腕貴妃，戎裝侍駕、一怒逼廢正宮，勾結西廠番子與內廷太監大肆「傳奉賣官」並對懷孕宮嬪展開無情絕嗣屠殺，同時在密室以房中丹藥與權色控制壯年侍衛。",
       "70+": "凌駕內閣與六宮之上的母性暴君。連皇嗣都只能藏身荒僻冷院苟延殘喘，滿朝大臣卑躬屈膝自稱萬氏子姪，她在安喜宮裡以戎裝軟鞭與溫熱懷抱將天子徹底馴成離不開她的囚徒。"
-    }
+    },
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -40,7 +46,12 @@
             "aff": 14,
             "inf": 12,
             "corruption": 8,
-            "hedon": 10
+            "hedon": 10,
+            "mist": 10,
+            "crave": 10,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "她發出滿足而低沉的輕笑，結實豐滿的雙腿死死纏上你的腰，在溫柔哄慰與強勢支配的交替中將你徹底淹沒。次日滿朝驚駭於一個年長十七歲的宮女一步登天，而安喜宮的大門從此成了紫禁城真正的權力核心。"
         },
@@ -50,7 +61,10 @@
             "aff": -4,
             "inf": -2,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "被你反壓在身下，她非但沒慌，反而仰起英氣成熟的臉龐露出近乎寵溺又危險的笑：「皇爺終於長大、學會壓著姐姐了？那姐姐倒要看看，皇爺這雙手，離不離得開姐姐這身骨頭。」"
         },
@@ -60,7 +74,12 @@
             "aff": 10,
             "inf": 6,
             "corruption": 10,
-            "hedon": 12
+            "hedon": 12,
+            "mist": 10,
+            "crave": 12,
+            "affair": "g",
+            "heat": 6,
+            "tag": "桀驁未馴"
           },
           "outcome": "一夜過後，你幾乎沉溺在她那種既像母愛又像烈酒的霸道懷抱裡無法自拔。可天明時司禮監密報卻顯示：她早已把御藥房與乾清宮半數小太監認作了乾兒子。"
         }
@@ -82,7 +101,12 @@
             "corruption": 12,
             "tyranny": 6,
             "rel_b": -12,
-            "rel_g": 10
+            "rel_g": 10,
+            "mist": 12,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "她眼底閃過一絲母鷹護巢般的陰鷙與得意，直接將你打橫抱起走向內室錦榻，在低沉的哄笑聲裡用豐碩滾燙的身子獎賞你的聽話。自此安喜宮成了內廷唯一的主宰。"
         },
@@ -93,7 +117,11 @@
             "inf": -6,
             "corruption": 8,
             "tyranny": 6,
-            "rel_g": -8
+            "rel_g": -8,
+            "affair": "g",
+            "mist": 10,
+            "troops": 60,
+            "heat": 6
           },
           "outcome": "萬貞兒面不改色地交出明面上的兩本假帳，手指卻在桌下輕輕敲了三下。不出五日，帶頭查帳的那名戶部郎中便被西廠羅織「私通番邦」之罪抓進了詔獄。"
         }
@@ -114,7 +142,13 @@
             "inf": 18,
             "corruption": 14,
             "tyranny": 12,
-            "rel_b": -30
+            "rel_b": -30,
+            "cold": "b",
+            "mist": 14,
+            "heat": 6,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "大明開國以來最荒唐的一場「一杖廢后」震動朝野！{b}被剝去禮服押入冷宮那夜，萬貞兒趴在龍榻上，任由你親自替她雪白紅腫的腰臀塗抹藥膏，一邊低吟一邊冷笑——從今往後，這紫禁城再沒人敢動安喜宮一根寒毛。"
         },
@@ -124,7 +158,13 @@
             "aff": -10,
             "inf": -4,
             "corruption": 12,
-            "rel_b": -10
+            "rel_b": -10,
+            "mainWife": 1,
+            "ban": "b",
+            "mist": 12,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "萬貞兒趴在錦枕上安靜了半息，隨即低低笑出聲來：「皇爺學會顧忌祖制了？很好。既然皇爺下不了手，那姐姐自己替她修修規矩。」三個月未滿，{b}宮中便接連爆出「巫蠱魘鎮」的鐵證。"
         }
@@ -147,7 +187,11 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 14,
-            "rel_g": -30
+            "rel_g": -30,
+            "mist": 18,
+            "heat": 7,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "半個時辰後，西偏殿裡徹底安靜下來，只剩一盆盆端出來的血水。當夜萬貞兒洗淨手上的藥味回到你懷裡，像什麼都沒發生過一樣輕拍著你的背哼著舊歌，令你既溫暖又毛骨悚然。"
         },
@@ -157,7 +201,10 @@
             "aff": -14,
             "inf": -10,
             "corruption": 14,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 14,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "黑苦藥汁潑滿了萬貞兒的紫金裙襬。她緩緩擦去臉頰濺到的藥點，低沉的嗓音冷得像冰刃：「皇爺為了這塊還沒成形的肉，竟然要踢我的手？好啊，那皇爺就睜大眼睛二十四小時守著她吧！」"
         }
@@ -180,7 +227,13 @@
             "tyranny": 10,
             "hedon": 8,
             "rel_g": 14,
-            "rel_c": -16
+            "rel_c": -16,
+            "mist": 16,
+            "crave": 8,
+            "heat": 5,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "不出一季，大明朝堂上多出數百名安喜宮出身的「傳奉官」，連內閣首輔都自稱萬氏子姪，{c}的彈劾奏章連乾清宮門檻都遞不進來。"
         },
@@ -192,7 +245,10 @@
             "corruption": 10,
             "tyranny": 6,
             "rel_g": -10,
-            "rel_c": 12
+            "rel_c": 12,
+            "mist": 10,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "銀箱被查封那夜，萬貞兒一滴眼淚沒掉，只平靜地換上緊身戎服在乾清宮外跪了一夜——次日天明，你終究還是心軟了，而{c}的親家則在三天後被西廠抓進大牢拷打致殘。"
         }
@@ -213,7 +269,10 @@
             "inf": 16,
             "corruption": 16,
             "tyranny": 16,
-            "rel_b": -26
+            "rel_b": -26,
+            "exec": "b",
+            "mist": 16,
+            "heat": 8
           },
           "outcome": "小太監當夜「畏罪自盡」於詔獄，{b}更是百口莫辯地被鐵鎖鎖進西內冷殿。當夜萬貞兒解下戎服將你壓在懷裡低哄：「以後這種髒活，都交給姐姐和西廠辦，皇爺的手只要乾乾淨淨的就好。」"
         },
@@ -224,7 +283,10 @@
             "inf": -12,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 8
+            "rel_b": 8,
+            "mist": 12,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "三法司還沒開堂，小太監便在押解途中「突發急病」暴斃在囚車裡。萬貞兒端著一碗熱蓮子羹走進乾清宮，眼神溫柔卻冰冷：「皇爺你看，連老天爺都覺得這賤奴不該多嘴呢。」"
         }
@@ -246,7 +308,12 @@
             "corruption": 16,
             "tyranny": 16,
             "rel_b": -26,
-            "rel_c": -26
+            "rel_c": -26,
+            "jail": "b",
+            "pop": -15,
+            "mist": 16,
+            "heat": 8,
+            "tag": "誣陷成案@b"
           },
           "outcome": "{c}被打得血肉模糊丟進詔獄，{b}嚇得徹底閉門謝罪。整個朝堂從此鴉雀無聲，連史官提筆寫起居注都得先看看安喜宮的臉色。"
         },
@@ -257,7 +324,10 @@
             "inf": -8,
             "corruption": 12,
             "rel_b": -4,
-            "rel_c": 10
+            "rel_c": 10,
+            "mist": 12,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "萬貞兒安靜地鬆開抱著你的雙臂，臉上沒有半分怒容，只淡淡道：「皇爺信外頭那些讀書人，勝過信從小把您帶大的姐姐了？」當夜，你竟發現沒有她在懷裡低哄，乾清宮的長夜冷得讓你徹夜失眠。"
         }
@@ -278,7 +348,12 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 14,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 18,
+            "heat": 7,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "數月後新妃果然產下一名氣息微弱的早產死胎，太后痛哭卻查不出半點毒跡。萬貞兒與{g}在雪夜暖閣裡碰杯，整個紫禁城再次籠罩在安喜宮的絕嗣陰影之下。"
         },
@@ -288,7 +363,10 @@
             "aff": -10,
             "inf": -10,
             "corruption": 12,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 12,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "萬貞兒盯著案上那包被截獲的藥粉，低啞地嘆了口氣：「皇爺連太后塞來牽制您的棋子都護著……看來姐姐真的老了，管不動皇爺了。」可她眼底的寒光卻更毒了三分。"
         }
@@ -311,7 +389,12 @@
             "inf": 12,
             "corruption": 14,
             "hedon": 18,
-            "rel_b": -14
+            "rel_b": -14,
+            "mist": 14,
+            "crave": 18,
+            "heat": 6,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "龍椅上奏章散落滿地，她在激烈起伏中既低聲哄著「乖皇爺」，又瘋狂啃咬著你的鎖骨直到滲血。天亮後，她滿意地整好戎服，順手派西廠把{b}最愛的一對玉鐲當場砸碎警告。"
         },
@@ -322,7 +405,11 @@
             "inf": -8,
             "corruption": 14,
             "tyranny": 6,
-            "rel_b": 8
+            "rel_b": 8,
+            "mist": 14,
+            "house": 1,
+            "inj": "b",
+            "heat": 8
           },
           "outcome": "她踉蹌退後半步，敞開的戎服露出劇烈起伏的豐滿胸口。她沒有哭鬧，反而緩緩扣回盤扣，眼神冷得像在看一個不聽話的孩子：「皇爺長硬翅膀、敢推開姐姐了？好極了，那明日姐姐親自去教教{b}怎麼當個懂事的妹妹。」"
         }
@@ -344,7 +431,13 @@
             "corruption": 20,
             "hedon": 18,
             "tyranny": 10,
-            "rel_c": -10
+            "rel_c": -10,
+            "troops": 60,
+            "pv": 1,
+            "mist": 20,
+            "crave": 18,
+            "heat": 5,
+            "pol": 15
           },
           "outcome": "你悄然退離密室，翌日依舊面不改色地喝下了她親手餵來的「延春湯」。藥力在血管裡燃燒，你徹底明白自己正被她一寸寸煉成離不開這口毒蜜的傀儡，卻已甘之如飴。"
         },
@@ -355,7 +448,12 @@
             "inf": -16,
             "corruption": 18,
             "tyranny": 16,
-            "rel_c": 14
+            "rel_c": 14,
+            "exec": "c",
+            "mist": 18,
+            "heat": 8,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "刀光閃過，方士與侍衛人頭落地。萬貞兒披上外袍跪在血泊裡，滿身紅油在火光下宛如浴血魔神，低啞大笑：「我為了留住您這顆愛嫩肉的心，吃毒丹、找精壯小子試藥，把這把老骨頭折騰得半死不活——皇爺居然嫌我髒？殺了我啊！殺了我，今晚您一個人睡在乾清宮裡，看您怕不怕黑！」"
         },
@@ -366,7 +464,13 @@
             "inf": 12,
             "corruption": 22,
             "hedon": 22,
-            "rel_c": -16
+            "rel_c": -16,
+            "pv": 1,
+            "mist": 22,
+            "crave": 22,
+            "heat": 6,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "鐵門重重反鎖。她在丹爐烈火與滾燙紅油的包裹下發出震徹密室的狂喜低吟，豐碩的胴體如蟒蛇般死死纏上你。自此安喜宮密室成了只屬於你們二人的禁忌煉慾場。"
         }
@@ -388,7 +492,12 @@
             "corruption": 18,
             "tyranny": 16,
             "hedon": 8,
-            "rel_b": -30
+            "rel_b": -30,
+            "mist": 18,
+            "crave": 8,
+            "heat": 8,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "身後傳來{b}最後一聲微弱的哀號。滿宮太監宮婢徹底看清：在這座紫禁城裡，連皇爺都是安喜宮娘娘膝下聽話的孩子。"
         },
@@ -399,7 +508,11 @@
             "inf": -10,
             "corruption": 14,
             "tyranny": 6,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 14,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "雪白荔枝滾進塵土裡。萬貞兒低頭看了一眼沾汁的手指，緩緩起身逼近你半步，高大豐碩的身姿籠罩下來：「為了她，您連姐姐遞的果子都打翻了？好……皇爺長大了，翅膀硬了。」"
         }
@@ -420,7 +533,12 @@
             "inf": 20,
             "corruption": 24,
             "tyranny": 18,
-            "rel_b": -30
+            "rel_b": -30,
+            "mist": 24,
+            "heat": 9,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "{heir}被送進安喜宮不到半月便「不慎驚風夭折」，大明皇室最後一點希望也徹底斷在她的掌心。當夜她溫柔地抱著痛哭失聲的你輕拍後背：「別哭了乖皇爺，有姐姐在就夠了，要那些討債鬼做什麼？」"
         },
@@ -431,7 +549,13 @@
             "inf": -16,
             "corruption": 18,
             "tyranny": 10,
-            "rel_b": 16
+            "rel_b": 16,
+            "soldiers": 60,
+            "mist": 18,
+            "heat": 5,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "萬貞兒盯著你護在身後的{heir}，那張總是勝券在握的臉第一次徹底扭曲發白。她咬牙切齒地轉身回殿，從此安喜宮與東宮之間展開了不死不休的暗殺血戰。"
         }
@@ -453,7 +577,14 @@
             "corruption": 24,
             "tyranny": 22,
             "hedon": 12,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 24,
+            "crave": 12,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "{c}與數十名忠臣當夜血染金水橋。天明後，萬貞兒穿著大紅戎服坐在乾清宮暖閣批閱天下奏章，而你則溫順地枕在她豐碩溫熱的膝頭沉沉睡去，大明江山徹底改姓安喜。"
         },
@@ -464,7 +595,12 @@
             "inf": -20,
             "corruption": 18,
             "tyranny": 14,
-            "rel_c": 18
+            "rel_c": 18,
+            "mist": 18,
+            "heat": 7,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "刀鋒割破她豐潤雪白的頸項。她竟沒有掙扎，反而流著血低笑著望進你眼底：「好孩子……終於學會對姐姐動刀子了。只是你這一刀若不敢捅進去，明天死在詔獄裡的就是你滿朝忠臣！」"
         }
@@ -488,7 +624,13 @@
             "corruption": 16,
             "tyranny": 10,
             "hedon": 10,
-            "rel_c": -14
+            "rel_c": -14,
+            "food": 100,
+            "mist": 16,
+            "crave": 10,
+            "heat": 5,
+            "pv": 1,
+            "wood": 60
           },
           "outcome": "她欣慰地親吻你的額角，彷彿誇獎一個終於開竅的孩子。自此江南三城商賈官員只知孝敬安喜宮，巡按御史{c}則被調往瘴癘之地永不錄用。"
         },
@@ -499,7 +641,12 @@
             "inf": -12,
             "corruption": 10,
             "tyranny": 6,
-            "rel_c": 12
+            "rel_c": 12,
+            "food": 100,
+            "pop": -15,
+            "mist": 10,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "江南黑銀雖抄回半數，可押運車隊走到半路竟遭「水匪」劫走大半——萬貞兒端著參湯淡淡一笑：「皇爺看，外頭路這麼亂，銀子還是放姐姐這裡最安全。」"
         }
@@ -521,7 +668,14 @@
             "corruption": 16,
             "hedon": 14,
             "tyranny": 8,
-            "rel_g": 12
+            "rel_g": 12,
+            "pv": 1,
+            "mist": 16,
+            "crave": 14,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "短短數月，滿朝王公盡成安喜宮丹莊常客，個個對萬貞兒俯首帖耳。她在丹香瀰漫的莊園裡將你擁入豐碩懷中，低笑道：「這整個大明，都是咱們姐弟倆的玩物。」"
         },
@@ -532,7 +686,10 @@
             "inf": -12,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 10,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "丹莊被查封那夜，所有丹方與權貴名冊早已神秘轉移進了安喜宮地窖。萬貞兒冷眼看著你，低聲道：「皇爺拆了我的丹莊，可別哪天自己又喊著沒精神、求姐姐找方士去。」"
         }
@@ -552,7 +709,12 @@
             "aff": 18,
             "inf": 14,
             "corruption": 18,
-            "hedon": 14
+            "hedon": 14,
+            "mist": 18,
+            "crave": 14,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "這個殺人不眨眼的鐵腕貴妃，竟在你懷裡滾下兩行滾燙熱淚，隨即爆發出比年輕時更狂烈窒息的擁吻與纏綿。你們早已成了互相吞噬、至死不休的畸形共生體。"
         },
@@ -562,7 +724,9 @@
             "aff": 4,
             "inf": 4,
             "corruption": 14,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 14,
+            "house": 1
           },
           "outcome": "她眼底那一瞬難得的脆弱瞬間收斂乾淨。她緩緩坐直身子，重新披上那件冰冷鮮紅的戎服，低啞笑道：「原來皇爺心裡，終究還是把江山排在姐姐前頭呢……那姐姐可就更不能放手了。」"
         }
@@ -585,7 +749,12 @@
             "tyranny": 18,
             "rel_b": -26,
             "rel_c": -26,
-            "rel_g": 10
+            "rel_g": 10,
+            "inj": "b",
+            "mist": 18,
+            "heat": 9,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "百官驚駭失色，{c}吐血被拖走，{b}當場昏厥，{g}則連滾帶爬抱住萬貞兒的靴子哭求饒命。安喜宮的鐵血霸權在這一戰後徹底無人敢撼。"
         },
@@ -598,7 +767,12 @@
             "tyranny": 10,
             "rel_b": -6,
             "rel_c": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "mist": 12,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "一場血腥大案暫時化作死寂僵局。萬貞兒退出文華殿前，回頭深深看了你一眼，低沉笑道：「皇爺學會玩平衡了？可惜啊，姐姐最討厭的，就是跟這群老鼠平起平坐。」"
         }
@@ -621,7 +795,12 @@
             "inf": 18,
             "corruption": 16,
             "tyranny": 12,
-            "rel_c": -22
+            "rel_c": -22,
+            "mist": 16,
+            "heat": 6,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "西廠緹騎浩浩蕩蕩開赴邊關，軍營裡人頭滾滾、人人自危。雖暫時靠重賞與鐵血監軍擋住了敵軍初鋒，但邊軍上下對安喜宮的怨恨已深如海。"
         },
@@ -631,7 +810,13 @@
             "aff": -10,
             "inf": -8,
             "corruption": 10,
-            "rel_c": 14
+            "rel_c": 14,
+            "office": 1,
+            "troops": 60,
+            "mist": 10,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "萬貞兒冷冷收回令旗，低沉的嗓音裡帶著一絲寒意：「皇爺寧可把刀交給外頭的武夫，也不信姐姐替您守著後背？那姐姐就在安喜宮裡，等著看這些大將軍能不能平平安安回來。」"
         }
@@ -652,7 +837,12 @@
             "inf": 16,
             "corruption": 16,
             "tyranny": 10,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 16,
+            "heat": 5,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "她在疾馳馬背上緊緊將你護在胸前，豐碩滾燙的身軀在寒風血火裡宛如最堅固也最致命的盾牌。逃入安全堡壘那夜，兩人不顧血污在簡陋土炕上瘋狂交纏，禁忌依戀深入骨髓。"
         },
@@ -662,7 +852,12 @@
             "aff": 4,
             "inf": 6,
             "corruption": 10,
-            "rel_c": -18
+            "rel_c": -18,
+            "troops": 60,
+            "mist": 10,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "她收刀入鞘，冷冷看了一眼被押走的{c}，低沉地哼了一聲：「皇爺對背叛您的人，永遠都太心軟了——也罷，回京以後西廠自然會替您好好審他。」"
         }
@@ -685,7 +880,12 @@
               "aff": 18,
               "corruption": 10,
               "tyranny": 18,
-              "flag": "wze_tragedy_dead_avenged"
+              "flag": "wze_tragedy_dead_avenged",
+              "mist": 10,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "「貞兒既去，朕亦不久矣……」你在空蕩冰冷的乾清宮裡徹底失魂落魄，滿朝大臣暗自慶幸妖妃已死，卻見天子自此變得愈發陰鬱暴戾。"
           },
@@ -695,7 +895,11 @@
               "inf": -10,
               "corruption": 8,
               "tyranny": 8,
-              "flag": "wze_tragedy_dead_buried"
+              "flag": "wze_tragedy_dead_buried",
+              "mist": 10,
+              "heat": 5,
+              "pol": 15,
+              "wood": -50
             },
             "outcome": "安喜宮一夜查封，滿朝歡呼中興。只是每當深夜大雪拍窗、你被噩夢驚醒時，再也沒有那雙寬厚溫熱的手掌伸過來，低沉沙啞地哄你一句「皇爺別怕」。"
           }
@@ -718,7 +922,12 @@
               "inf": -14,
               "corruption": 12,
               "hedon": 6,
-              "flag": "wze_tragedy_captured_ransom"
+              "flag": "wze_tragedy_captured_ransom",
+              "mist": 12,
+              "crave": 6,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "你幾乎發瘋般簽下屈辱贖約，只因離了她的紫禁城讓你每一夜都如墜冰窖。朝臣痛罵昏庸，而她歸來後的報復勢必更加恐怖。"
           },
@@ -728,7 +937,11 @@
               "inf": 10,
               "corruption": 14,
               "tyranny": 12,
-              "flag": "wze_tragedy_captured_spy"
+              "flag": "wze_tragedy_captured_spy",
+              "mist": 14,
+              "heat": 6,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "十日後塞外火起，那名被她用權位與肉體策反的漢人譯官果真打開了金帳暗柵。這名鐵腕熟女，即便淪為階下囚也從未停止算計。"
           }
@@ -751,7 +964,13 @@
               "inf": 14,
               "corruption": 16,
               "hedon": 8,
-              "flag": "wze_tragedy_wounded_devoted"
+              "flag": "wze_tragedy_wounded_devoted",
+              "mist": 16,
+              "crave": 8,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "她在劇痛裡發出滿足又陰森的低笑，將你死死按在懷裡。自此這座紫禁城成了只屬於她一個人的窒息牢籠，沒人再敢挑戰這份用殘軀換來的絕對霸權。"
           },
@@ -762,7 +981,10 @@
               "inf": -10,
               "corruption": 18,
               "tyranny": 6,
-              "flag": "wze_tragedy_wounded_sidelined"
+              "flag": "wze_tragedy_wounded_sidelined",
+              "mist": 18,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "她瞬間鬆開抱著你的手臂，臉上所有溫情徹底消失。半月後，你剛提拔接管內廷的兩名年輕太監便雙雙「墜井溺斃」——即便成了殘廢，安喜宮的毒爪依然鋒利無比。"
           }
@@ -786,7 +1008,11 @@
               "corruption": 20,
               "tyranny": 22,
               "rel_b": -30,
-              "flag": "wze_tragedy_humiliated_purge"
+              "flag": "wze_tragedy_humiliated_purge",
+              "mist": 20,
+              "heat": 11,
+              "exec": "b",
+              "pop": -15
             },
             "outcome": "京師連著半月血雨腥風，詔獄人滿為患，{b}被折磨得求生不得求死不能。從此京城街巷再無人敢低聲提起「萬貴妃」三字，連小兒夜啼聞其名亦止。"
           },
@@ -797,7 +1023,10 @@
               "inf": -10,
               "corruption": 16,
               "rel_b": -14,
-              "flag": "wze_tragedy_humiliated_suppressed"
+              "flag": "wze_tragedy_humiliated_suppressed",
+              "ban": "b",
+              "mist": 16,
+              "tag": "受辱怨骨"
             },
             "outcome": "萬貞兒冷笑著抽回手，低頭拂去戎服上一粒灰塵：「皇爺顧忌民心？好啊，姐姐最聽皇爺的話了。」可不出十日，名單上那兩百多名暴民竟離奇「染疫」全數死絕於城外荒宅，{b}亦在冷殿裡懸樑自盡。"
           }
@@ -820,7 +1049,11 @@
               "inf": 16,
               "corruption": 16,
               "tyranny": 12,
-              "flag": "wze_tragedy_survivor_reclaimed"
+              "flag": "wze_tragedy_survivor_reclaimed",
+              "mist": 16,
+              "heat": 6,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "熱水染紅了整座暖池，她在水霧裡死死纏上你的腰，彷彿要把這條從死人堆裡撿回來的命重新焊死在你骨血裡。次日京師大牢再次爆滿。"
           },
@@ -831,7 +1064,10 @@
               "inf": -12,
               "corruption": 18,
               "tyranny": 8,
-              "flag": "wze_tragedy_survivor_quarantined"
+              "flag": "wze_tragedy_survivor_quarantined",
+              "mist": 18,
+              "heat": 5,
+              "jail": 1
             },
             "outcome": "她看著攔在身前的禁軍，發出一聲極低沉、極冰冷的嗤笑：「連敵人的刀都沒能讓我跟皇爺分開，皇爺倒自己先築起牆防著姐姐了？好孩子，真長進了。」"
           }
@@ -855,7 +1091,11 @@
               "corruption": 24,
               "tyranny": 14,
               "rel_c": -28,
-              "flag": "wze_tragedy_pregnant_kept"
+              "flag": "wze_tragedy_pregnant_kept",
+              "preg": 1,
+              "mist": 24,
+              "heat": 7,
+              "tag": "懷敵種"
             },
             "outcome": "滿朝文武如喪考妣，大明江山竟可能落入敵種之手。而萬貞兒則狂喜地將你緊緊擁入寬厚胸懷，溫柔得像世間最慈愛的母親，眼底卻燃著最可怕的毒火。"
           },
@@ -867,7 +1107,14 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_c": 14,
-              "flag": "wze_tragedy_pregnant_aborted"
+              "flag": "wze_tragedy_pregnant_aborted",
+              "kidLoss": 1,
+              "inj": 1,
+              "exec": "c",
+              "mist": 20,
+              "heat": 8,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "大紅錦袍被滾燙鮮血徹底浸透。她在撕心裂肺的劇痛裡沒有哭喊求饒，只用一雙充血得像厲鬼般的眼睛死死鎖著你：「你親手殺了我的孩子……好，那姐姐發誓，這輩子絕不讓大明再留下一滴活著的龍種！」"
           }
@@ -891,7 +1138,14 @@
               "corruption": 16,
               "hedon": 12,
               "rel_c": -18,
-              "flag": "wze_tragedy_forcedmarriage_reclaimed"
+              "flag": "wze_tragedy_forcedmarriage_reclaimed",
+              "food": 100,
+              "mist": 16,
+              "crave": 12,
+              "heat": 6,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "火海映紅草原，你挑開紅帳一劍結果了藥力未醒的敵帥。萬貞兒披著半敞的紅嫁衣大步走過來擁住你，低沉笑道：「還是皇爺這雙手，抱起來最合姐姐心意。」"
           },
@@ -903,7 +1157,11 @@
               "corruption": 12,
               "tyranny": 8,
               "rel_c": 12,
-              "flag": "wze_tragedy_forcedmarriage_disowned"
+              "flag": "wze_tragedy_forcedmarriage_disowned",
+              "mist": 12,
+              "heat": 5,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "除名詔書傳到草原那日，萬貞兒竟直接毒死了敵帥、憑鐵血手腕與收買的漢人降將奪了敵營半數牛羊馬匹自立一方，成了大明北境最令人毛骨悚然的復仇鐵娘子。"
           }
@@ -926,7 +1184,13 @@
               "inf": 14,
               "corruption": 16,
               "hedon": 16,
-              "flag": "wze_tragedy_rescued_restored"
+              "flag": "wze_tragedy_rescued_restored",
+              "mist": 16,
+              "crave": 16,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "她在你身下發出壓抑又滿足的長嘆，寬厚手掌死死扣住你的十指。次日安喜宮與西廠重振雄風，整個紫禁城再度屏息臣服。"
           },
@@ -936,7 +1200,10 @@
               "aff": -8,
               "inf": -4,
               "corruption": 12,
-              "flag": "wze_tragedy_rescued_restrained"
+              "flag": "wze_tragedy_rescued_restrained",
+              "mist": 12,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她靜靜看著你替她包紮的手指，低沉一笑：「皇爺長大了，開始心疼別的女人了？沒關係，姐姐有的是時間，慢慢幫皇爺把這毛病改過來。」"
           }
@@ -961,7 +1228,12 @@
               "tyranny": 16,
               "hedon": 10,
               "rel_c": -30,
-              "flag": "wze_tragedy_imprisoned_freed"
+              "flag": "wze_tragedy_imprisoned_freed",
+              "mist": 18,
+              "crave": 10,
+              "heat": 8,
+              "exec": "g",
+              "pv": 1
             },
             "outcome": "{c}一族連根拔起。回到安喜宮後，萬貞兒在滾燙藥浴裡緊緊抱著你，低笑著說往後這大明朝堂誰敢再對她起歹心，下場就是這條濕麻繩。"
           },
@@ -973,7 +1245,10 @@
               "corruption": 18,
               "tyranny": 6,
               "rel_c": -20,
-              "flag": "wze_tragedy_imprisoned_cold"
+              "flag": "wze_tragedy_imprisoned_cold",
+              "mist": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "她站在冷清偏殿裡，低頭摩挲著自己曾徒手絞死武將的雙手，聲音低沉得像夜風：「皇爺怕姐姐了？沒關係，姐姐最擅長的，就是等皇爺自己害怕得跑回來求我。」"
           }
@@ -996,7 +1271,13 @@
               "inf": 20,
               "corruption": 18,
               "hedon": 14,
-              "flag": "wze_tragedy_escaped_empowered"
+              "flag": "wze_tragedy_escaped_empowered",
+              "mist": 18,
+              "crave": 14,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "她在滿室血腥與龍涎香中狂笑著將你按倒在龍榻上，彷彿宣告無論戰場還是深宮，她萬貞兒永遠是這座大明帝國唯一不可撼動的女主人。"
           },
@@ -1007,7 +1288,11 @@
               "inf": -10,
               "corruption": 16,
               "tyranny": 8,
-              "flag": "wze_tragedy_escaped_watched"
+              "flag": "wze_tragedy_escaped_watched",
+              "mist": 16,
+              "heat": 5,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "萬貞兒擦去臉頰的敵血，看了一眼門外新調來的禁軍，低沉地嗤笑一聲：「北邊十萬蠻子都沒把姐姐留住，皇爺真覺得這道朱門，鎖得住安喜宮的主人？」"
           }
@@ -1016,3 +1301,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['wanzhener'] = DATA;
+  (window.characterPacks ||= {})['wanzhener'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

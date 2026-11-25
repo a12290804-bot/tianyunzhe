@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["mibazi"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 31 號 羋八子 (mibazi)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "mibazi",
     "index": 31,
@@ -18,7 +23,8 @@
       "0-34": "咸陽宮裡位分卑微的楚女「羋八子」，細腰蘊藏楚舞柔韌與秦鐵野心，善以直白潑辣的床第妙語與滾燙肉體撬開君王心防，暗中扶植外戚親弟滲透秦軍。",
       "35-69": "鐵腕執政的咸陽權姬，公然以床第譬喻戲弄六國使臣、聯手外戚四貴清洗後宮孕嬪與宗室異己，同時在甘泉宮暗設紅帳以肉身色誘並麻痺西戎霸主。",
       "70+": "甘泉殺虎滅國、獨掌強秦朝綱的千古第一鐵血妖后。紅帳裡笑著割斷異族情夫咽喉、朝堂上踩碎宗室頭顱、暖閣內豢養俊美男寵並欲其生殉，將愛慾與殺戮冶成大秦霸業。"
-    }
+    },
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -40,7 +46,12 @@
             "aff": 14,
             "inf": 12,
             "corruption": 8,
-            "hedon": 12
+            "hedon": 12,
+            "mist": 10,
+            "crave": 12,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "熊皮榻上翻雲覆雨直至天明，她柔韌的楚腰與近乎野蠻的主動迎合令你大呼痛快。次日詔書一出，卑微的羋八子與她那名虎狼般的親弟正式踏上了大秦權力中心。"
         },
@@ -50,7 +61,11 @@
             "aff": 0,
             "inf": 0,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "heat": 6,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "她被你攥緊手腕卻不退反進，直接把飽滿胸口貼上你掌心嬌笑：「不給官做？沒關係，等大王嘗透了妾身這副身子的好處，明天自然會雙手奉上。」"
         },
@@ -60,7 +75,12 @@
             "aff": 10,
             "inf": 6,
             "corruption": 10,
-            "hedon": 12
+            "hedon": 12,
+            "mist": 10,
+            "crave": 12,
+            "affair": "g",
+            "heat": 6,
+            "tag": "桀驁未馴"
           },
           "outcome": "那一夜兩人在玄黑寢殿裡簡直像在打一場兩敗俱傷的肉搏戰。天明後黑冰臺密報：她還沒出月子，已經透過送酒老嫗收買了兩名咸陽衛尉。"
         }
@@ -82,7 +102,12 @@
             "corruption": 12,
             "tyranny": 8,
             "rel_b": -14,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 12,
+            "heat": 5,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "炭盆裡密檔化作灰燼，她在火光旁熱烈吻上你的喉結，將你拉倒在鋪著大秦輿圖的狼皮榻上。自此「四貴」羽翼正式成型，甘泉宮成了她最穩固的權力巢穴。"
         },
@@ -93,7 +118,11 @@
             "inf": -6,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": -8
+            "rel_g": -8,
+            "mist": 10,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "羋八子看著炭盆餘燼冷笑一聲，毫不畏懼地直視你：「大王現在削我的翅膀，等哪天秦國宗室造反、沒人替大王殺人的時候，大王可別又來求我把魏冉叫回來。」"
         }
@@ -114,7 +143,12 @@
             "inf": 18,
             "corruption": 16,
             "tyranny": 16,
-            "rel_b": -30
+            "rel_b": -30,
+            "mist": 16,
+            "heat": 8,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "「季君之亂」以最血腥的方式落幕，反對羋八子的宗室勢力一夜滅絕。當夜她在血腥氣未散的章台暖閣裡跨坐上你腰間，那股鐵血女霸主的征服感令你徹底沉醉。"
         },
@@ -125,7 +159,13 @@
             "inf": -8,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 8
+            "rel_b": 8,
+            "troops": 60,
+            "mist": 12,
+            "heat": 6,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "羋八子拔起青銅長劍慢條斯理地擦淨血漬，冷眼望著你：「大王要保她？好呀——只是那些宗室公子的腦袋已經砍下來了，大王就是把她的命留著，她這輩子也只剩一副空殼子了。」"
         }
@@ -148,7 +188,13 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 14,
-            "rel_g": -30
+            "rel_g": -30,
+            "exec": "g",
+            "pv": 1,
+            "mist": 18,
+            "heat": 7,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "{g}含淚飲下烏頭毒酒氣絕身亡。羋八子面無表情地合上木盒，轉身撲進你懷裡，滾燙的唇帶著烈酒氣息深深吻住你：「大王瞧見了？對背叛者心軟，就是對自己殘忍。」"
         },
@@ -158,7 +204,10 @@
             "aff": -10,
             "inf": -8,
             "corruption": 12,
-            "rel_g": 8
+            "rel_g": 8,
+            "mist": 12,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "羋八子微笑著放下酒杯，神態從容得彷彿早就料到：「走廷尉也好——反正那隻耳朵和魏國密信已經夠廷尉判她車裂了，不過是死得難看些罷了。」"
         }
@@ -181,7 +230,13 @@
             "hedon": 12,
             "tyranny": 8,
             "rel_g": 14,
-            "rel_c": -18
+            "rel_c": -18,
+            "mist": 16,
+            "crave": 12,
+            "heat": 5,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "六國使臣嚇破了膽、連夜割城獻銀求救，{g}徹底淪為羋八子的死忠鐵黨。自此大秦朝野上下唯利是圖、唯羋氏馬首是瞻。"
         },
@@ -193,7 +248,10 @@
             "corruption": 10,
             "tyranny": 6,
             "rel_g": -8,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 10,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "羋八子大笑著拂袖離殿，回眸瞥了一眼臉色發青的{c}：「裝什麼正人君子？今晚這幫使臣私底下送去{c}府上的美人與黃金，可比我嘴上說的髒一百倍！」"
         }
@@ -214,7 +272,12 @@
             "inf": 16,
             "corruption": 16,
             "tyranny": 18,
-            "rel_b": -26
+            "rel_b": -26,
+            "pol": 12,
+            "energy": 25,
+            "mist": 16,
+            "heat": 9,
+            "exec": "b"
           },
           "outcome": "鞭響馬奔，校場血花四濺，{b}嚇得當場癱軟奪位。羋八子踩著血塵翻身上馬貼進你懷裡，用這場最冷酷的同鄉血祭徹底打消了秦人對她楚女出身的一切猜忌。"
         },
@@ -225,7 +288,10 @@
             "inf": -8,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 6
+            "rel_b": 6,
+            "mist": 12,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "她收起長鞭冷笑一聲：「大王講究秦法程序？好啊，我倒要看看，是秦法判得快，還是我四貴手裡的刀快。」次日舊僕便在獄中「畏罪自裁」。"
         }
@@ -248,7 +314,13 @@
             "hedon": 12,
             "tyranny": 12,
             "rel_b": -28,
-            "rel_c": -28
+            "rel_c": -28,
+            "mist": 18,
+            "crave": 12,
+            "heat": 6,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "一場原本足以讓任何皇后身敗名裂的通姦大案，硬生生被她反轉成「為國獻身、色誘敵王」的千古奇功！滿朝文武羞愧低頭，再無人敢議甘泉宮床第半句。"
         },
@@ -259,7 +331,11 @@
             "inf": -6,
             "corruption": 12,
             "rel_b": -6,
-            "rel_c": 8
+            "rel_c": 8,
+            "affair": "c",
+            "mist": 12,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "羋八子冷哼一聲拾起撤軍圖：「男人總是又要馬兒跑、又嫌馬兒草髒！大王既然這麼愛惜這張假面子，那西邊十萬胡騎，大王自己去擋吧！」"
         }
@@ -280,7 +356,13 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 14,
-            "rel_g": 12
+            "rel_g": 12,
+            "exec": "g",
+            "mist": 18,
+            "heat": 7,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "翌日東宮搜出「山東合縱密信」，新妃與說客當場論罪腰斬！羋八子與{g}在雪夜甘泉宮裡大碗喝著烈酒，沒有溫情，只有虎狼分肉的暢快。"
         },
@@ -290,7 +372,10 @@
             "aff": -10,
             "inf": -10,
             "corruption": 12,
-            "rel_g": -12
+            "rel_g": -12,
+            "troops": 60,
+            "mist": 12,
+            "inj": "c"
           },
           "outcome": "羋八子看著被燒毀的假信，嘴角揚起一抹冷傲笑意：「大王護著山東來的美人與外客，是想學著制衡我『四貴』了？好得很——那咱們就看看，是外客的嘴厲害，還是我手裡的秦兵厲害。」"
         }
@@ -313,7 +398,12 @@
             "inf": 12,
             "corruption": 14,
             "hedon": 20,
-            "rel_b": -16
+            "rel_b": -16,
+            "mist": 14,
+            "crave": 20,
+            "heat": 6,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "虎皮榻上戰況激烈得宛如兩頭虎狼肉搏直至黎明，她主動掌控節奏的極致張力讓你徹底忘卻了{b}的軟弱寡淡。次日清晨，她順手便把{b}調去了偏遠冷殿。"
         },
@@ -324,7 +414,11 @@
             "inf": 2,
             "corruption": 12,
             "tyranny": 8,
-            "rel_b": 6
+            "rel_b": 6,
+            "mist": 12,
+            "heat": 5,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "被你粗暴反壓在身下，她非但沒有半分惱怒，反倒美眸爆出熾熱興奮的亮光、主動張開修長玉腿勾緊你的腰狂笑：「這才像我大秦的王！用力些，別跟在{b}屋裡一樣軟綿綿的！」"
         }
@@ -346,7 +440,12 @@
             "corruption": 24,
             "tyranny": 20,
             "hedon": 18,
-            "rel_c": -10
+            "rel_c": -10,
+            "mist": 24,
+            "crave": 18,
+            "heat": 10,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "一夜之間大秦西北大患徹底滅絕，開疆拓土千里！當夜羋八子連身上的敵王血都還沒洗淨，便在另一張錦榻上帶著殺戮後的瘋狂亢奮纏上你，將「最淫也最狠」演繹到了極致。"
         },
@@ -357,7 +456,12 @@
             "inf": -8,
             "corruption": 18,
             "tyranny": 12,
-            "rel_c": 12
+            "rel_c": 12,
+            "exec": "b",
+            "mist": 18,
+            "heat": 6,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "羋八子赤裸著沾血的玉體站在紅帳前，任由冷水澆下洗去敵王鮮血，回眸對你冷笑：「替你滅了三十年大患、白撿千里江山，你反倒怕我哪天也割了你的脖子？大王，你可真懂我呀。」"
         },
@@ -369,7 +473,12 @@
             "corruption": 24,
             "hedon": 24,
             "tyranny": 14,
-            "rel_c": -20
+            "rel_c": -20,
+            "mist": 24,
+            "crave": 24,
+            "heat": 7,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "她在血腥紅帳裡發出近乎瘋魔的狂笑，任由你的佔有覆蓋了異族王者留下的最後一絲氣息。那一夜，大秦宮廷徹底墜入了嗜血與淫慾共舞的修羅道。"
         }
@@ -391,7 +500,13 @@
             "corruption": 22,
             "hedon": 18,
             "tyranny": 14,
-            "rel_b": -30
+            "rel_b": -30,
+            "affair": "g",
+            "mist": 22,
+            "crave": 18,
+            "heat": 7,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "{b}在極致屈辱中徹底崩潰瘋癲，滿宮上下再無人敢對甘泉宮男寵之事多嘴半句。羋八子滿意地一腳踹開男寵、赤足撲進你懷裡，賞了你一夜極致狂放的霸道歡愛。"
         },
@@ -402,7 +517,15 @@
             "inf": -12,
             "corruption": 16,
             "tyranny": 10,
-            "rel_b": 12
+            "rel_b": 12,
+            "affair": "g",
+            "exec": "b",
+            "mist": 16,
+            "crave": 6,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "鮮血濺上大紅薄紗，俊美男寵身首異處。羋八子看著男寵尚未合眼的俊臉，竟緩緩蹲下身輕輕合上他的眼皮，隨即抬起一雙森冷如鬼的鳳眼盯著你：「殺了一個魏醜夫，咸陽城裡還有一千個美少年——大王，這筆血帳，我記住了。」"
         }
@@ -423,7 +546,12 @@
             "inf": 22,
             "corruption": 24,
             "tyranny": 22,
-            "rel_b": -30
+            "rel_b": -30,
+            "mist": 24,
+            "heat": 11,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "東宮血痕在一場大雨後被沖洗乾淨，大秦再無第二個敢爭儲位的皇子。羋八子起身替你拭去劍上雨水，在你耳畔低語：「這才是霸主該有的心腸。」"
         },
@@ -434,7 +562,13 @@
             "inf": -16,
             "corruption": 18,
             "tyranny": 12,
-            "rel_b": 16
+            "rel_b": 16,
+            "troops": 60,
+            "mist": 18,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "門外驟然響起三千「四貴」黑甲親兵整齊拔刀的森寒聲響！羋八子盯著抵住胸口的劍尖冷笑：「大王動手前最好先聽聽門外的聲音——如今這座咸陽宮，聽誰的虎符？」"
         }
@@ -456,7 +590,14 @@
             "corruption": 24,
             "tyranny": 22,
             "hedon": 14,
-            "rel_c": -30
+            "rel_c": -30,
+            "troops": 60,
+            "mist": 24,
+            "crave": 14,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "soldiers": -50
           },
           "outcome": "{c}當場車裂於咸陽市口，滿朝再無一人敢提「驅逐四貴」。羋八子大笑著將你擁入玄黑大袍之中，從此大秦只知有宣太后、不知有秦王。"
         },
@@ -467,7 +608,13 @@
             "inf": -20,
             "corruption": 18,
             "tyranny": 14,
-            "rel_c": 18
+            "rel_c": 18,
+            "troops": 60,
+            "mist": 18,
+            "heat": 7,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "劍刃劃破她雪白頸項滲出血線，四貴將領投鼠忌器頓時亂了陣腳！羋八子卻迎著冷鋒仰天大笑，眼中滿是欣賞與瘋狂：「好極了！不愧是我教出來的男人——終於學會咬主人了！」"
         }
@@ -490,7 +637,14 @@
             "inf": 18,
             "corruption": 16,
             "tyranny": 8,
-            "rel_c": -16
+            "rel_c": -16,
+            "troops": 60,
+            "soldiers": 60,
+            "mist": 16,
+            "heat": 5,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "羋八子滿意地跨坐上你膝頭獻上熱吻。自此陶邑、穰城、新城成了羋氏四貴富可敵國的獨立王國，大秦王室財權徹底旁落。"
         },
@@ -501,7 +655,11 @@
             "inf": -10,
             "corruption": 10,
             "tyranny": 6,
-            "rel_c": 14
+            "rel_c": 14,
+            "troops": 60,
+            "food": 100,
+            "mist": 10,
+            "affair": "g"
           },
           "outcome": "詔書剛抵陶邑，魏冉便稱病拒不出兵禦敵，逼得邊關告急。羋八子端著楚酒冷笑：「大王瞧瞧，沒了甜頭，再忠心的惡犬也是不肯咬人的。」"
         }
@@ -523,7 +681,13 @@
             "corruption": 18,
             "hedon": 12,
             "tyranny": 8,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 18,
+            "crave": 12,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "不出一年，六國朝堂接連爆出賣國求榮、臨陣換將的昏招，大秦兵鋒所指無不望風而降。羋八子在金幣堆裡擁著你狂笑，深諳黑金與慾望才是天下最強武器。"
         },
@@ -534,7 +698,11 @@
             "inf": -12,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": -12
+            "rel_g": -12,
+            "affair": "g",
+            "mist": 10,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "商館被封那夜，所有列國收賄原件早已轉移進甘泉宮地窖。羋八子冷冷看著你：「大王防我像防賊，卻不知這些把柄一旦斷了，六國合縱明日就會打到函谷關。」"
         }
@@ -554,7 +722,12 @@
             "aff": 18,
             "inf": 16,
             "corruption": 18,
-            "hedon": 16
+            "hedon": 16,
+            "mist": 18,
+            "crave": 16,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "她眼底閃過一抹炙熱得幾乎能融化青銅的光芒，翻身將你壓進玄黑錦褥裡展開一場毫無保留的狂烈交融。你們是彼此最致命的敵手，也是世間唯一配得上彼此的伴侶。"
         },
@@ -564,7 +737,10 @@
             "aff": 4,
             "inf": 4,
             "corruption": 14,
-            "tyranny": 8
+            "tyranny": 8,
+            "mist": 14,
+            "heat": 5,
+            "house": 1
           },
           "outcome": "她聞言非但沒有傷心，反倒仰頭發出爽朗又危險的狂笑，指尖重重劃過你劇烈跳動的胸口：「哈哈哈！不愧是我挑中的秦王——沒錯，沒有權柄的男人，我連看都懶得看一眼！」"
         }
@@ -587,7 +763,11 @@
             "tyranny": 20,
             "rel_b": -28,
             "rel_c": -28,
-            "rel_g": -22
+            "rel_g": -22,
+            "exec": "b",
+            "mist": 18,
+            "heat": 10,
+            "office": 1
           },
           "outcome": "三方徹底覆滅，咸陽市口血流成河。章台正殿之上，羋八子踩著玄黑戰靴走回你身邊，舉起酒爵敬向滿朝噤若寒蟬的百官。"
         },
@@ -600,7 +780,12 @@
             "tyranny": 10,
             "rel_b": -6,
             "rel_c": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "mist": 12,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "四方暫時僵持休兵。羋八子臨退下前，回眸瞥了你一眼，眼底滿是法家鐵腕的冷酷：「大王留著這幾條毒蛇想咬我？小心他們先咬斷了大王自己的脖子。」"
         }
@@ -623,7 +808,12 @@
             "inf": 20,
             "corruption": 18,
             "tyranny": 12,
-            "rel_c": -24
+            "rel_c": -24,
+            "troops": 60,
+            "mist": 18,
+            "heat": 6,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "半月後齊楚果然拿錢撤軍、韓魏慘遭秦軍坑殺十萬！大秦威震天下，而羋八子與四貴的權勢也在這場大勝裡徹底超越了王室本身。"
         },
@@ -633,7 +823,12 @@
             "aff": -10,
             "inf": -8,
             "corruption": 10,
-            "rel_c": 14
+            "rel_c": 14,
+            "troops": 60,
+            "mist": 10,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "羋八子冷哼一聲鬆開劍柄，玄黑披風一甩轉身離殿：「大王寧可看秦國兒郎在關前流乾血，也不願分我四貴兩座城？好啊，看這群老將打不打得破五國合縱！」"
         }
@@ -654,7 +849,12 @@
             "inf": 18,
             "corruption": 16,
             "tyranny": 12,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 16,
+            "heat": 6,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "她在狂奔戰馬上緊緊貼著你滾燙的背脊，雙腿夾緊馬腹反手連射三箭斃敵。劫後餘生那夜，兩人在簡陋軍帳裡帶著滿身血腥瘋狂交纏，如兩頭共享獵物的虎狼。"
         },
@@ -664,7 +864,12 @@
             "aff": 4,
             "inf": 6,
             "corruption": 10,
-            "rel_c": -18
+            "rel_c": -18,
+            "exec": "c",
+            "mist": 10,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "羋八子收劍入鞘，對著被押走的{c}冷冷吐了一口帶血唾沫：「留著回咸陽再殺太磨蹭了——大王有時候，還是不夠果斷。」"
         }
@@ -687,7 +892,15 @@
               "aff": 18,
               "corruption": 10,
               "tyranny": 18,
-              "flag": "mbz_tragedy_dead_avenged"
+              "flag": "mbz_tragedy_dead_avenged",
+              "troops": 60,
+              "pol": 12,
+              "energy": 25,
+              "mist": 10,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "驪山大墓合攏那日，你親手將一枚大秦虎符放進她的玄棺。沒有了那個敢在朝堂上大罵百官、敢在龍榻上與你針鋒相對的楚女，咸陽宮從此冷得像座青銅墳墓。"
           },
@@ -697,7 +910,11 @@
               "inf": -8,
               "corruption": 8,
               "tyranny": 10,
-              "flag": "mbz_tragedy_dead_buried"
+              "flag": "mbz_tragedy_dead_buried",
+              "mist": 10,
+              "heat": 5,
+              "pol": 15,
+              "wood": -50
             },
             "outcome": "外戚盡除、王權歸一。只是每當深夜你在章台獨對六國輿圖時，耳畔總會響起那句辣烈刺耳的笑問：「大王壓一條腿嫌重，整個人壓上來，可還嫌重？」"
           }
@@ -720,7 +937,12 @@
               "inf": -16,
               "corruption": 12,
               "hedon": 8,
-              "flag": "mbz_tragedy_captured_ransom"
+              "flag": "mbz_tragedy_captured_ransom",
+              "mist": 12,
+              "crave": 8,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "朝臣痛哭罵你棄地贖婦，你卻冷眼簽下贖書——沒有這個女人替你撕咬天下，這座大秦江山少了一半鋒芒。"
           },
@@ -730,7 +952,12 @@
               "inf": 12,
               "corruption": 14,
               "tyranny": 14,
-              "flag": "mbz_tragedy_captured_spy"
+              "flag": "mbz_tragedy_captured_spy",
+              "food": 100,
+              "mist": 14,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "十日後敵軍糧營火光沖天、聯軍瞬間崩潰！沒人知道那座紅燭搖曳的敵帥大帳裡，這位大秦鐵血妖后究竟是怎麼邊承歡邊算計死敵軍的。"
           }
@@ -753,7 +980,13 @@
               "inf": 14,
               "corruption": 16,
               "hedon": 14,
-              "flag": "mbz_tragedy_wounded_devoted"
+              "flag": "mbz_tragedy_wounded_devoted",
+              "mist": 16,
+              "crave": 14,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "她在劇痛裡發出暢快低笑，修長有力的雙臂死死扣住你的背脊。此後甘泉宮的鐵腕比她未受傷時更加令朝野膽寒。"
           },
@@ -764,7 +997,11 @@
               "inf": -10,
               "corruption": 18,
               "tyranny": 6,
-              "flag": "mbz_tragedy_wounded_sidelined"
+              "flag": "mbz_tragedy_wounded_sidelined",
+              "troops": 60,
+              "mist": 18,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "她瞬間鬆開手靠回熊皮枕上，眼神冷得像咸陽冬雪：「好啊，大王趁老娘流血的時候搶兵符？這手藝果然是跟我學的——咱們走著瞧。」"
           }
@@ -788,7 +1025,12 @@
               "corruption": 20,
               "tyranny": 22,
               "rel_b": -30,
-              "flag": "mbz_tragedy_humiliated_purge"
+              "flag": "mbz_tragedy_humiliated_purge",
+              "jail": "b",
+              "pop": -15,
+              "mist": 20,
+              "heat": 11,
+              "exec": "b"
             },
             "outcome": "那一夜咸陽市口人頭滾滾，{b}在甘泉宮地牢裡受盡酷刑而死。洗淨血污的羋八子重新換上玄黑大袍，從此大秦百姓連提她的名諱都不敢大聲。"
           },
@@ -799,7 +1041,12 @@
               "inf": -10,
               "corruption": 16,
               "rel_b": -14,
-              "flag": "mbz_tragedy_humiliated_suppressed"
+              "flag": "mbz_tragedy_humiliated_suppressed",
+              "cold": "b",
+              "troops": 60,
+              "mist": 16,
+              "ban": 1,
+              "tag": "受辱怨骨"
             },
             "outcome": "她冷笑著收劍退去。五日後，{b}在冷宮裡離奇暴斃，而市口那十幾家帶頭罵人的宗室宅邸同夜遭黑甲私兵滅門，無人敢查。"
           }
@@ -822,7 +1069,12 @@
               "inf": 16,
               "corruption": 16,
               "tyranny": 12,
-              "flag": "mbz_tragedy_survivor_reclaimed"
+              "flag": "mbz_tragedy_survivor_reclaimed",
+              "exec": "b",
+              "mist": 16,
+              "heat": 6,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "熱水洗去黃沙與血痂，她在暖閣裡如母虎般反騎在你身上瘋狂宣洩劫後狂喜。次日早朝，三名曾提議「趁機廢四貴」的大臣直接被拉出午門斬首。"
           },
@@ -833,7 +1085,11 @@
               "inf": -12,
               "corruption": 18,
               "tyranny": 8,
-              "flag": "mbz_tragedy_survivor_quarantined"
+              "flag": "mbz_tragedy_survivor_quarantined",
+              "troops": 60,
+              "mist": 18,
+              "heat": 5,
+              "jail": 1
             },
             "outcome": "她看了一眼守在門口的黑冰臺密探，冷笑著將手裡的空酒囊砸在地上：「連西戎萬馬都留不住我羋八子，大王這幾隻暗探，看得住我嗎？」"
           }
@@ -858,7 +1114,12 @@
               "tyranny": 14,
               "hedon": 10,
               "rel_c": -28,
-              "flag": "mbz_tragedy_pregnant_kept"
+              "flag": "mbz_tragedy_pregnant_kept",
+              "mist": 24,
+              "crave": 10,
+              "heat": 7,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "這場震驚戰國七雄的冷血決斷就此拍板。羋八子大笑著吻上你的唇，兩人彷彿已經看見十年後秦軍旗幟插滿敵國王城的血色藍圖。"
           },
@@ -870,7 +1131,13 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_c": 14,
-              "flag": "mbz_tragedy_pregnant_aborted"
+              "flag": "mbz_tragedy_pregnant_aborted",
+              "kidLoss": 1,
+              "mist": 20,
+              "heat": 8,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "猩紅血水浸透了暗紅楚袍。她在劇痛裡硬是沒喊出一聲疼，只用那雙淬火寒鐵般的眼睛死死盯著你：「為了這點可笑的男人面子，親手倒掉一座能白吞的敵國江山……大王，你還是不夠狠啊。」"
           }
@@ -894,7 +1161,14 @@
               "corruption": 16,
               "hedon": 14,
               "rel_c": -18,
-              "flag": "mbz_tragedy_forcedmarriage_reclaimed"
+              "flag": "mbz_tragedy_forcedmarriage_reclaimed",
+              "troops": 60,
+              "mist": 16,
+              "crave": 14,
+              "heat": 6,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "西門大開，秦軍長驅直入斬殺驚慌失措的敵王。紅燭洞房內，羋八子披著半敞的大紅嫁衣舉杯大笑，撲進你懷裡在敵王新床上慶祝這場最痛快的搶親滅國戰！"
           },
@@ -906,7 +1180,11 @@
               "corruption": 12,
               "tyranny": 8,
               "rel_c": 12,
-              "flag": "mbz_tragedy_forcedmarriage_disowned"
+              "flag": "mbz_tragedy_forcedmarriage_disowned",
+              "mist": 12,
+              "heat": 5,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "除名詔書傳至敵城那日，羋八子冷笑著把詔書燒成灰燼——三個月後，敵王離奇暴斃，而身披紅嫁衣的羋八子竟以新太后之姿徹底接管了敵國朝政，反過來成為大秦最可怕的宿敵！"
           }
@@ -929,7 +1207,14 @@
               "inf": 16,
               "corruption": 16,
               "hedon": 18,
-              "flag": "mbz_tragedy_rescued_restored"
+              "flag": "mbz_tragedy_rescued_restored",
+              "troops": 60,
+              "mist": 16,
+              "crave": 18,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "那一夜甘泉宮裡烈酒與喘息交織至天明。次日秦軍鐵騎誓師出關，整座中原都在這頭復仇母虎的咆哮聲中戰慄。"
           },
@@ -939,7 +1224,12 @@
               "aff": -8,
               "inf": -4,
               "corruption": 12,
-              "flag": "mbz_tragedy_rescued_restrained"
+              "flag": "mbz_tragedy_rescued_restrained",
+              "troops": 60,
+              "food": 100,
+              "mist": 12,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她冷哼一聲拉上大袍，眼神銳利得像要刺穿你：「國庫沒錢？大王忘了，我四貴封邑裡有的是銀子和私兵——大王不打，我弟弟魏冉自己帶兵去打！」"
           }
@@ -964,7 +1254,12 @@
               "tyranny": 18,
               "hedon": 12,
               "rel_c": -30,
-              "flag": "mbz_tragedy_imprisoned_freed"
+              "flag": "mbz_tragedy_imprisoned_freed",
+              "mist": 18,
+              "crave": 12,
+              "heat": 9,
+              "exec": "g",
+              "pv": 1
             },
             "outcome": "{c}一族男女老幼盡數伏誅。回到甘泉宮後，羋八子在滾燙酒浴裡跨坐上你腰間，用極致霸道的索愛慶祝又一次把敵人踩成爛泥。"
           },
@@ -976,7 +1271,10 @@
               "corruption": 18,
               "tyranny": 6,
               "rel_c": -20,
-              "flag": "mbz_tragedy_imprisoned_cold"
+              "flag": "mbz_tragedy_imprisoned_cold",
+              "mist": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "她站在冷清偏院裡回眸望向你，眼神裡滿是霸主般的嘲弄：「怕我手太黑？大王別忘了，這座咸陽城裡每一塊地磚底下，流的可全都是黑血。」"
           }
@@ -999,7 +1297,13 @@
               "inf": 22,
               "corruption": 20,
               "hedon": 16,
-              "flag": "mbz_tragedy_escaped_empowered"
+              "flag": "mbz_tragedy_escaped_empowered",
+              "mist": 20,
+              "crave": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "她在滿朝震駭的目光裡暢快大笑，染血的紅唇狠狠堵住你的嘴。從此大秦帝國正式迎來了兩頭虎狼並立的宣后黃金鐵血時代。"
           },
@@ -1010,7 +1314,12 @@
               "inf": -10,
               "corruption": 16,
               "tyranny": 8,
-              "flag": "mbz_tragedy_escaped_watched"
+              "flag": "mbz_tragedy_escaped_watched",
+              "troops": 60,
+              "mist": 16,
+              "heat": 5,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "羋八子擦乾臉頰血跡，掃了一眼門外新調來的禁軍，冷傲地嗤笑一聲：「敵軍十萬大營都鎖不住我羋八子，大王這點小把戲，且看明天誰的刀更快！」"
           }
@@ -1019,3 +1328,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['mibazi'] = DATA;
+  (window.characterPacks ||= {})['mibazi'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

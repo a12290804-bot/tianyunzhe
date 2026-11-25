@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["liuchuyu"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 24 號 劉楚玉 (liuchuyu)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "liuchuyu",
     "index": 24,
@@ -18,7 +23,8 @@
       "0-34": "驕狂冶豔的建康皇室狂姬，公開譏諷「天子六宮萬數、女子卻要守節」的不公，初入台城便已挑中俊美羽林貼身侍酒，以滾燙肉體與大膽言語挑釁君威。",
       "35-69": "正式築起三十面首的建康慾海，強召清流名臣入府逼姦折辱、藉男寵滲透禁軍與尚書省，並以極盡張揚的殘忍手段碾碎後宮所有敢攔路的情敵。",
       "70+": "徹底踏碎倫常與朝綱的建康慾后。山陰別府擴張為三百面首與私兵並立的獨立淫窟，一面在龍榻上與天子肆無忌憚地撕咬沉淪，一面把滿朝清流的尊嚴與天下生殺踩在塗丹玉足之下。"
-    }
+    },
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -40,7 +46,15 @@
             "aff": 14,
             "inf": 12,
             "corruption": 8,
-            "hedon": 12
+            "hedon": 12,
+            "affair": "g",
+            "inj": 1,
+            "pv": 1,
+            "mist": 10,
+            "crave": 12,
+            "heat": 6,
+            "marry": 1,
+            "preg": 1
           },
           "outcome": "她發出暢快至極的狂笑，修長雪白的大腿猛地絞緊你的腰身，像一頭終於掙脫鐵籠的豔烈母獸般瘋狂迎合撕咬。次日詔書一出，建康士族氣得集體吐血，而華林別院的紅燈從此徹夜不滅。"
         },
@@ -50,7 +64,11 @@
             "aff": -4,
             "inf": -2,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "affair": "g",
+            "mist": 10,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "膝蓋磕在玉磚上生疼，她卻仰起臉舔去唇角酒漬，眼底燃起更烈的不馴與色慾：「原來陛下喜歡硬的？好啊，看陛下這張龍椅，壓不壓得住我劉楚玉這團火。」"
         },
@@ -60,7 +78,13 @@
             "aff": 10,
             "inf": 6,
             "corruption": 10,
-            "hedon": 12
+            "hedon": 12,
+            "pv": 1,
+            "mist": 10,
+            "crave": 12,
+            "affair": "g",
+            "heat": 6,
+            "tag": "桀驁未馴"
           },
           "outcome": "那一夜暖閣裡酒盞碎裂無數、喘息震徹迴廊。天剛亮，禁軍密報便已遞上：她還沒下榻，已經遣心腹把建康城裡五名最俊美的世家庶子「請」進了別院偏廂。"
         }
@@ -82,7 +106,14 @@
             "corruption": 12,
             "hedon": 12,
             "rel_b": -12,
-            "rel_g": 10
+            "rel_g": 10,
+            "affair": "g",
+            "pv": 1,
+            "mist": 12,
+            "crave": 12,
+            "heat": 6,
+            "office": 1,
+            "food": -60
           },
           "outcome": "她暢快地揮退一眾面首，當場將濕透的素紗扯落池中，光潔滾燙的身軀直接撲進你懷裡在白玉池邊縱情索愛。自此華林別院成了建康最奢靡、也最致命的權力暗網。"
         },
@@ -93,7 +124,11 @@
             "inf": -6,
             "corruption": 8,
             "tyranny": 6,
-            "rel_g": -8
+            "rel_g": -8,
+            "affair": "g",
+            "mist": 10,
+            "troops": 60,
+            "heat": 6
           },
           "outcome": "十二名面首倉皇披衣退走。劉楚玉踩著水花冷笑一聲，毫不遮掩地光著身子披上大紅織錦外袍：「陛下趕得走穿著官服的羽林，趕得走晚上自己翻牆來求我疼的建康郎君嗎？」"
         }
@@ -115,7 +150,14 @@
             "corruption": 14,
             "hedon": 10,
             "tyranny": 10,
-            "rel_b": -28
+            "rel_b": -28,
+            "pv": 1,
+            "mist": 14,
+            "crave": 10,
+            "heat": 5,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "那一役後，整個建康士族與後宮徹底嚇破了膽——得罪別的妃子頂多失寵，得罪劉楚玉，連你家裡最體面的男人都能被她拖進紅帳裡當眾玩爛！當夜她在你懷裡笑得花枝亂顫，比任何時候都要炙熱放浪。"
         },
@@ -126,7 +168,13 @@
             "inf": -6,
             "corruption": 10,
             "tyranny": 4,
-            "rel_b": 8
+            "rel_b": 8,
+            "ban": "b",
+            "pv": 1,
+            "mist": 10,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "她毫不在意地收回玉足，舔掉指尖殘酒，對著被抬走的清流公子嗤笑：「禁足一月？這齣戲已經傳遍建康酒樓了，他這輩子洗得掉這雙腳印嗎？」"
         }
@@ -149,7 +197,12 @@
             "inf": 14,
             "corruption": 14,
             "tyranny": 10,
-            "rel_g": -26
+            "rel_g": -26,
+            "pv": 1,
+            "mist": 14,
+            "heat": 5,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "{g}絕望地被拖出華林園。錦袍之下，劉楚玉滾燙濕滑的身軀緊緊貼著你，咬著你的耳垂低笑：「我的男人、我的陛下、我的別院，誰敢偷沾一根指頭，我就讓誰連骨頭都吐出來。」"
         },
@@ -159,7 +212,12 @@
             "aff": -10,
             "inf": -8,
             "corruption": 10,
-            "rel_g": 8
+            "rel_g": 8,
+            "affair": "g",
+            "pv": 1,
+            "mist": 10,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "劉楚玉被你推開半步，水珠從她下巴滴落鎖骨，她卻突然大笑出聲：「陛下心疼她？好啊，那今夜陛下就去抱她吧——只是別忘了，她昨晚還睡在我那名面首的床上呢。」一句話便徹底毀了{g}的前程。"
         }
@@ -181,7 +239,15 @@
             "corruption": 16,
             "hedon": 16,
             "rel_g": 14,
-            "rel_c": -14
+            "rel_c": -14,
+            "affair": "g",
+            "office": 1,
+            "mist": 16,
+            "crave": 16,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "滿室歡呼聲幾乎掀翻屋頂。劉楚玉直接撲進你懷裡，當著滿屋面首與{g}的面熱烈擁吻，徹底宣告這座建康宮的規矩早已被肉慾燒成灰燼。"
         },
@@ -193,7 +259,10 @@
             "corruption": 10,
             "tyranny": 6,
             "rel_g": -10,
-            "rel_c": 12
+            "rel_c": 12,
+            "mist": 10,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "衣衫凌亂的公子哥們抱頭鼠竄。劉楚玉卻穩穩坐在酒案上，晃著塗丹玉足冷笑看著鐵青著臉的{c}：「{c}大人抓得真起勁——要不要查查，剛才從後窗跳出去的那個白臉小子，是不是您家二公子？」"
         }
@@ -214,7 +283,11 @@
             "inf": 14,
             "corruption": 16,
             "tyranny": 14,
-            "rel_b": -24
+            "rel_b": -24,
+            "exec": "b",
+            "troops": 60,
+            "mist": 16,
+            "heat": 7
           },
           "outcome": "荷塘水面濺起一聲悶響後重歸平靜。劉楚玉敞開狐裘將你裹進滾燙的懷裡，在微涼的夜風裡發出一聲滿足的長嘆：「還是陛下懂事，死人的嘴巴，永遠最乾淨。」"
         },
@@ -225,7 +298,12 @@
             "inf": -12,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 8
+            "rel_b": 8,
+            "affair": "g",
+            "pv": 1,
+            "mist": 12,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "人雖搶下來了，可押送途中那名面首卻突然口吐黑血暴斃——原來劉楚玉早在錦帕裡浸透了見血封喉的毒汁。她遠遠朝你舉杯致意，笑得張狂無比。"
         }
@@ -248,7 +326,13 @@
             "hedon": 10,
             "tyranny": 10,
             "rel_b": -26,
-            "rel_c": -24
+            "rel_c": -24,
+            "mist": 16,
+            "crave": 10,
+            "heat": 5,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "滿朝清流羞憤欲絕卻人人自危、再無人敢提「淫亂」二字。散朝後，劉楚玉直接在禦廊角落一把將你按在朱紅殿柱上狂吻，笑得肆無忌憚：「這天下誰的褲腰帶是乾淨的？扯下來比比誰更不要臉罷了！」"
         },
@@ -259,7 +343,10 @@
             "inf": -6,
             "corruption": 12,
             "rel_b": -8,
-            "rel_c": 6
+            "rel_c": 6,
+            "mist": 12,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "畫卷燒成漫天黑灰，可建康酒樓當晚就換上了新曲子——唱的全是{c}與{b}家族的荒唐醜聞，顯然劉楚玉早把刻板印了三千份撒滿了秦淮兩岸。"
         }
@@ -281,7 +368,13 @@
             "corruption": 18,
             "hedon": 12,
             "tyranny": 10,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 18,
+            "crave": 12,
+            "heat": 5,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "當夜西殿爆出驚天醜聞，那位貞潔新妃神志迷離、衣不蔽體的模樣被數十雙眼睛看得一清二楚，翌日便羞憤撞柱而亡。劉楚玉與{g}在紅帳裡舉杯狂笑，徹底把「貞潔」二字踩成齏粉。"
         },
@@ -291,7 +384,11 @@
             "aff": -10,
             "inf": -10,
             "corruption": 12,
-            "rel_g": -12
+            "rel_g": -12,
+            "affair": "g",
+            "mist": 12,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "面首當場被格殺在牆頭。劉楚玉聽完回報，只懶洋洋啃著一顆蜜橘冷笑：「可惜了那麼俊的一張臉。不過沒關係，聖女最怕髒，下回我直接把她親弟弟請進我被窩裡。」"
         }
@@ -314,7 +411,13 @@
             "inf": 10,
             "corruption": 14,
             "hedon": 18,
-            "rel_b": -14
+            "rel_b": -14,
+            "affair": "g",
+            "mist": 14,
+            "crave": 18,
+            "heat": 6,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "紅紗帳劇烈晃動了整整一夜，她在你的狂風暴雨裡放浪大笑又啞聲求饒，指甲在你背上抓出無數血痕。天亮後，她滿意地舔著唇角宣布把那十名面首暫時趕出內院三日。"
         },
@@ -325,7 +428,12 @@
             "inf": -8,
             "corruption": 14,
             "tyranny": 8,
-            "rel_b": 8
+            "rel_b": 8,
+            "affair": "g",
+            "inj": 1,
+            "mist": 14,
+            "heat": 5,
+            "house": 1
           },
           "outcome": "琴弦崩斷、面首慘叫著滾出大門。劉楚玉赤身立在滿地狼藉裡，非但不怕，反而指著你的背影狂笑不止：「越是氣急敗壞，越說明你眼裡根本放不下別人！明日我便再挑二十個更俊的進來氣死你！」"
         }
@@ -347,7 +455,12 @@
             "corruption": 20,
             "hedon": 16,
             "tyranny": 14,
-            "rel_c": -30
+            "rel_c": -30,
+            "pv": 1,
+            "mist": 20,
+            "crave": 16,
+            "heat": 7,
+            "pol": 15
           },
           "outcome": "第十日清晨，{c}雙目失神、步履虛浮地走出華林別院，從此徹底喪失清流風骨，淪為劉楚玉在朝堂上最溫順的應聲蟲。建康士族的脊梁，就這樣被她用最淫奢殘忍的方式一寸寸折斷。"
         },
@@ -358,7 +471,12 @@
             "inf": -14,
             "corruption": 14,
             "tyranny": 6,
-            "rel_c": 18
+            "rel_c": 18,
+            "troops": 60,
+            "pv": 1,
+            "mist": 14,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "你替{c}披上外袍送他離去。劉楚玉赤身靠在紅漆柱上，臉上露出極端掃興與怨毒的冷笑：「就差最後一口氣，他就要跪下來舔我的腳了！陛下這麼護著這幫裝清高的男人，難道陛下心裡也嫌我髒嗎？」"
         },
@@ -369,7 +487,13 @@
             "inf": 12,
             "corruption": 18,
             "hedon": 20,
-            "rel_c": -10
+            "rel_c": -10,
+            "affair": "c",
+            "mist": 18,
+            "crave": 20,
+            "heat": 6,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "{c}倉皇逃出生天，卻也徹底驚駭於君妃二人的荒誕無度。暖閣內，劉楚玉在烈酒與情慾催化下瘋狂纏上你，笑得妖豔失控：「比起那個死板書生，還是陛下這副狠勁更合本宮胃口！」"
         }
@@ -391,7 +515,13 @@
             "corruption": 18,
             "tyranny": 16,
             "hedon": 12,
-            "rel_b": -30
+            "rel_b": -30,
+            "affair": "g",
+            "mist": 18,
+            "crave": 12,
+            "heat": 8,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "{b}在絕望與羞辱中徹底崩潰瘋癲。劉楚玉滿意得像隻吃飽鮮血的妖貓，當眾坐進你懷裡，在滿屋面首的歡呼聲裡與你共飲交杯酒。"
         },
@@ -401,7 +531,12 @@
             "aff": -16,
             "inf": -10,
             "corruption": 14,
-            "rel_b": 12
+            "rel_b": 12,
+            "affair": "g",
+            "mist": 14,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "斷鞭飛落在地。劉楚玉收回玉足，看著你護住{b}的背影，眼中閃過一抹陰鷙的殺意：「陛下真愛當救苦救難的菩薩啊——那明日我就讓三十名面首一起去{b}宮門口唱曲，看她這條命撐得住幾天。」"
         }
@@ -423,7 +558,13 @@
             "corruption": 22,
             "tyranny": 18,
             "hedon": 10,
-            "rel_b": -30
+            "rel_b": -30,
+            "mist": 22,
+            "crave": 10,
+            "heat": 9,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "一場在眾目睽睽之下逼死皇嗣的血案，就這樣被硬生生壓了下去。當夜劉楚玉踩著洗淨的紅毯撲進你懷裡，滾燙的身軀帶著血與麝香的殘味，徹底確立了她凌駕後宮生死的暴君地位。"
         },
@@ -434,7 +575,15 @@
             "inf": -16,
             "corruption": 16,
             "tyranny": 12,
-            "rel_b": 14
+            "rel_b": 14,
+            "affair": "g",
+            "exec": "b",
+            "pv": 1,
+            "mist": 16,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "香灰漫天飛舞，劉楚玉被禁軍團團圍住卻毫無懼色，反而挺起雪白飽滿的胸口迎向你的劍尖狂笑：「殺啊！你敢為了那個沒出世的野種殺了我劉楚玉，明日建康城裡的皇室宗親與三百面首，就把你這座台城拆成平地！」"
         }
@@ -456,7 +605,14 @@
             "corruption": 24,
             "tyranny": 20,
             "hedon": 18,
-            "rel_c": -30
+            "rel_c": -30,
+            "troops": 60,
+            "mist": 24,
+            "crave": 18,
+            "heat": 10,
+            "mainWife": 1,
+            "exec": "b",
+            "soldiers": -50
           },
           "outcome": "{c}當場伏誅，太極殿前血流成河。天未亮，劉楚玉便命人把紅帳直接搭上了太極殿龍椅，在滿城恐懼與哀嚎中跨坐上你的腰間縱情狂笑，成了名副其實的慾海女皇。"
         },
@@ -467,7 +623,14 @@
             "inf": -20,
             "corruption": 18,
             "tyranny": 12,
-            "rel_c": 18
+            "rel_c": 18,
+            "affair": "g",
+            "troops": 60,
+            "mist": 18,
+            "heat": 6,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "咽喉被你死死掐住、臉頰漲得通紅，她卻反手撫上你緊繃的手背，從喉嚨裡擠出近乎變態的快感喘息：「掐狠點……陛下這副想殺我又捨不得的樣子，比那三百個男人加起來都讓我發瘋……」"
         }
@@ -490,7 +653,14 @@
             "inf": 16,
             "corruption": 16,
             "hedon": 14,
-            "rel_c": -12
+            "rel_c": -12,
+            "affair": "g",
+            "mist": 16,
+            "crave": 14,
+            "heat": 6,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "她得意地蹬掉小侍，赤足跳下軟榻撲進你懷裡狠狠親了一口。自此江南水路無人敢攔山陰畫舫，連地方太守見了她的面首使者都得跪迎十里。"
         },
@@ -501,7 +671,10 @@
             "inf": -10,
             "corruption": 10,
             "tyranny": 6,
-            "rel_c": 12
+            "rel_c": 12,
+            "mist": 10,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "畫舫被一把火燒在秦淮河面，火光映紅半邊夜空。劉楚玉倚在台城高樓遠遠望著南邊，嘴角勾起一抹不屑的冷笑：「燒了三條船算什麼？只要這天下還有人想升官，明日他們就會自己把兒子洗乾淨送上門來。」"
         }
@@ -523,7 +696,13 @@
             "corruption": 16,
             "hedon": 14,
             "tyranny": 8,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 16,
+            "crave": 14,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "短短數月，驕橫百年的建康世家在朝堂上竟溫順得像群綿羊。劉楚玉把那本厚厚的秘檔墊在你枕頭底下，跨坐上你腰間笑道：「看吧，用慾望拴人，比用刀拴人牢靠一萬倍。」"
         },
@@ -534,7 +713,10 @@
             "inf": -12,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 10,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "官兵破門時閣內早已人去樓空，唯獨幾份最致命的畫卷隔天神奇地貼滿了尚書省大門——劉楚玉用一場全城轟動的醜聞告訴你，她絕不白白吃虧。"
         }
@@ -554,7 +736,12 @@
             "aff": 18,
             "inf": 14,
             "corruption": 18,
-            "hedon": 18
+            "hedon": 18,
+            "mist": 18,
+            "crave": 18,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "雷聲掩蓋了殿內極致的喘息與狂笑。那一夜之後，你們之間再無君臣、無禮法、無底線，唯有兩團互相吞噬、誓要燒盡整座建康城的狂烈慾火。"
         },
@@ -564,7 +751,9 @@
             "aff": 6,
             "inf": 4,
             "corruption": 12,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 12,
+            "house": 1
           },
           "outcome": "她聞言非但不惱，反而張口狠狠咬破你的肩頭，舔著血珠妖豔大笑：「燒死又如何？只要死前能拉著陛下一起在火海裡痛快一場，這輩子我劉楚玉就不算白活！」"
         }
@@ -587,7 +776,13 @@
             "tyranny": 16,
             "rel_b": -24,
             "rel_c": -24,
-            "rel_g": 10
+            "rel_g": 10,
+            "jail": "b",
+            "pv": 1,
+            "mist": 18,
+            "heat": 8,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "太極殿瞬間亂成一團，{c}與{b}被禁軍拖下玉階，{g}更是嚇得當場昏厥。劉楚玉在滿殿死寂中赤足轉了個圈，對著百官舉起酒杯，狂妄至極。"
         },
@@ -600,7 +795,13 @@
             "tyranny": 10,
             "rel_b": -6,
             "rel_c": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "exec": "b",
+            "mist": 12,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "四方暫時被迫停火。劉楚玉退出大殿前，回眸對你拋了個豔麗又危險的飛吻：「陛下留著這幾條毒蛇互相咬，倒比我一個人玩還有意思。」"
         }
@@ -624,7 +825,15 @@
             "corruption": 16,
             "hedon": 14,
             "tyranny": 6,
-            "rel_c": -20
+            "rel_c": -20,
+            "affair": "c",
+            "troops": 60,
+            "pv": 1,
+            "mist": 16,
+            "crave": 14,
+            "heat": 6,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "江北軍營一夜之間成了酒池肉林與血腥角鬥場。重賞與極致誘惑下，守軍果然個個如瘋虎般殺紅了眼，硬生生將敵軍先鋒打退三十里，而劉楚玉在江邊大帳裡的豔名與凶名從此震動南北。"
         },
@@ -634,7 +843,12 @@
             "aff": -10,
             "inf": -8,
             "corruption": 10,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 10,
+            "crave": 6,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "劉楚玉冷笑著扯下肩上狐裘丟給親衛：「好啊，那{c}將軍就拿你那套聖賢道理去擋敵人的馬刀吧！本宮在華林園點好香，等著聽你吃敗仗的好消息。」"
         }
@@ -656,7 +870,15 @@
             "corruption": 16,
             "tyranny": 10,
             "hedon": 10,
-            "rel_c": -30
+            "rel_c": -30,
+            "affair": "c",
+            "pv": 1,
+            "mist": 16,
+            "crave": 10,
+            "heat": 5,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "她在火光沖天的戰船甲板上反手撕開你的戰袍，滿身血腥與江風裡肆無忌憚地吻得你喘不過氣。從此全軍再沒人敢笑話華林別院的面首是軟骨頭。"
         },
@@ -666,7 +888,11 @@
             "aff": 4,
             "inf": 6,
             "corruption": 10,
-            "rel_c": -18
+            "rel_c": -18,
+            "mist": 10,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "她被架走前舔了舔刀背上溫熱的血珠，回眸瞥了你一眼，眼底滿是不屑與遺憾：「這麼痛快的血夜，陛下卻還要講什麼押回問斬……真是掃興透了。」"
         }
@@ -689,7 +915,13 @@
               "aff": 16,
               "corruption": 10,
               "tyranny": 18,
-              "flag": "lcy_tragedy_dead_avenged"
+              "flag": "lcy_tragedy_dead_avenged",
+              "pv": 1,
+              "mist": 10,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "你親手為她換上最濃豔的大紅羅裙，華林別院從此點滿長明燈卻再無笑聲。半年後敵營化作焦土，可這座沉悶壓抑的建康宮，再也沒人敢那樣大膽地在你懷裡狂笑了。"
           },
@@ -699,7 +931,13 @@
               "inf": -10,
               "corruption": 8,
               "tyranny": 6,
-              "flag": "lcy_tragedy_dead_buried"
+              "flag": "lcy_tragedy_dead_buried",
+              "pv": 1,
+              "wood": -60,
+              "stone": -60,
+              "mist": 10,
+              "crave": 6,
+              "pol": 15
             },
             "outcome": "清流士族齊聲頌聖，華林園被改建成寂靜的佛堂。只是每逢秦淮夏夜酒香飄來，你總會想起那雙塗著鮮紅鳳仙花汁、曾肆無忌憚踏碎禮法的雪白玉足。"
           }
@@ -722,7 +960,12 @@
               "inf": -14,
               "corruption": 12,
               "hedon": 8,
-              "flag": "lcy_tragedy_captured_ransom"
+              "flag": "lcy_tragedy_captured_ransom",
+              "mist": 12,
+              "crave": 8,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "你頂著朝野非議送出贖金。你知道，連敵軍金帳都馴不服的女人，贖回來只會比從前更加瘋狂難馴。"
           },
@@ -732,7 +975,12 @@
               "inf": 10,
               "corruption": 14,
               "tyranny": 12,
-              "flag": "lcy_tragedy_captured_spy"
+              "flag": "lcy_tragedy_captured_spy",
+              "troops": 60,
+              "mist": 14,
+              "heat": 6,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "七日後北岸果然大亂，敵帥兄弟為了爭奪那座紅帳竟在軍中大打出手。沒人想到，一具赤裸豐美的南朝女體竟比十萬精兵更能瓦解敵軍防線。"
           }
@@ -755,7 +1003,13 @@
               "inf": 12,
               "corruption": 14,
               "hedon": 16,
-              "flag": "lcy_tragedy_wounded_devoted"
+              "flag": "lcy_tragedy_wounded_devoted",
+              "mist": 14,
+              "crave": 16,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "傷口滲出的鮮血染紅了白玉錦被，她卻在痛楚與快感的雙重衝擊裡笑得淚流滿面，死死纏住你直至昏睡。自此她的狂傲再無人能折。"
           },
@@ -765,7 +1019,11 @@
               "aff": -12,
               "inf": -6,
               "corruption": 14,
-              "flag": "lcy_tragedy_wounded_sidelined"
+              "flag": "lcy_tragedy_wounded_sidelined",
+              "pv": 1,
+              "mist": 14,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "她盯著被清空的酒案冷笑一聲，隔天便帶傷翻下床榻，用未傷的右手直接打翻了太醫的藥碗：「想把我關成聽話的病貓？陛下做夢吧！」"
           }
@@ -790,7 +1048,13 @@
               "tyranny": 18,
               "hedon": 10,
               "rel_b": -30,
-              "flag": "lcy_tragedy_humiliated_purge"
+              "flag": "lcy_tragedy_humiliated_purge",
+              "pv": 1,
+              "mist": 20,
+              "crave": 10,
+              "heat": 9,
+              "exec": "b",
+              "pop": -15
             },
             "outcome": "當夜華林別院的慘叫與絲竹聲交織到天明，那幾名士族門客全被去勢丟回秦淮河畔，{b}更是被折磨得生不如死。浴火重生的劉楚玉，成了整個南朝最無可阻擋的慾海女王。"
           },
@@ -801,7 +1065,11 @@
               "inf": -10,
               "corruption": 16,
               "rel_b": -14,
-              "flag": "lcy_tragedy_humiliated_suppressed"
+              "flag": "lcy_tragedy_humiliated_suppressed",
+              "ban": "b",
+              "inj": "b",
+              "mist": 16,
+              "tag": "受辱怨骨"
             },
             "outcome": "她笑聲驟止，慢條斯理地從你懷裡抽身，冷冷抹去胸口一道黑墨：「陛下怕士族？我不怕。」三日後，帶頭辱罵她的那座士族大宅一夜起火，滿門上下無一活口。"
           }
@@ -824,7 +1092,13 @@
               "inf": 14,
               "corruption": 16,
               "hedon": 14,
-              "flag": "lcy_tragedy_survivor_reclaimed"
+              "flag": "lcy_tragedy_survivor_reclaimed",
+              "troops": 60,
+              "pv": 1,
+              "mist": 16,
+              "crave": 14,
+              "heat": 6,
+              "tag": "死人堆爬歸"
             },
             "outcome": "蒸騰熱霧裡，她在水中瘋狂索取你的體溫與呼吸，彷彿要用最激烈的歡愛確認自己依然牢牢踩在這座人世之上。"
           },
@@ -835,7 +1109,10 @@
               "inf": -12,
               "corruption": 18,
               "tyranny": 8,
-              "flag": "lcy_tragedy_survivor_quarantined"
+              "flag": "lcy_tragedy_survivor_quarantined",
+              "mist": 18,
+              "heat": 5,
+              "jail": 1
             },
             "outcome": "她甩開圍上來的女官，撕掉濕冷的蓑衣赤身立在偏殿冷風裡仰天大笑：「連長江大浪都淹不死我，陛下倒學起那些小氣男人查起我的貞潔來了？好極了！」"
           }
@@ -860,7 +1137,12 @@
               "hedon": 12,
               "tyranny": 12,
               "rel_c": -26,
-              "flag": "lcy_tragedy_pregnant_kept"
+              "flag": "lcy_tragedy_pregnant_kept",
+              "mist": 24,
+              "crave": 12,
+              "heat": 6,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "你親手把南朝皇室的禮法徹底踩成了笑話。劉楚玉狂喜地撲上來吻住你，兩人在紅帳裡為這個未出世的狂徒舉杯痛飲，滿朝清流則徹底陷入絕望。"
           },
@@ -872,7 +1154,13 @@
               "corruption": 18,
               "tyranny": 16,
               "rel_c": 12,
-              "flag": "lcy_tragedy_pregnant_aborted"
+              "flag": "lcy_tragedy_pregnant_aborted",
+              "kidLoss": 1,
+              "mist": 18,
+              "heat": 8,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "猩紅血水浸透了大紅錦被。她在撕心裂肺的劇痛裡硬是沒掉一滴眼淚，只抓著染血的床單死死盯著你，笑得比鬼還冷：「殺得好……從今往後，你這座皇宮裡別想再有任何一個女人平平安安生出孩子！」"
           }
@@ -896,7 +1184,14 @@
               "corruption": 16,
               "hedon": 14,
               "rel_c": -18,
-              "flag": "lcy_tragedy_forcedmarriage_reclaimed"
+              "flag": "lcy_tragedy_forcedmarriage_reclaimed",
+              "troops": 60,
+              "mist": 16,
+              "crave": 14,
+              "heat": 6,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "火光中你一劍斬落敵帥首級。帳內的劉楚玉正披著半敞的北地大紅嫁衣赤足搖著酒杯，見你提頭進來，歡呼著撲進你懷裡在敵帥新房裡與你瘋狂歡好。"
           },
@@ -908,7 +1203,11 @@
               "corruption": 12,
               "tyranny": 8,
               "rel_c": 12,
-              "flag": "lcy_tragedy_forcedmarriage_disowned"
+              "flag": "lcy_tragedy_forcedmarriage_disowned",
+              "mist": 12,
+              "heat": 5,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "詔書傳到江北那日，劉楚玉冷笑著撕了詔書，乾脆與被她迷得神魂顛倒的敵軍副將聯手毒死了老敵帥，自己披著紅嫁衣坐上了江北叛軍的虎皮大椅。"
           }
@@ -931,7 +1230,15 @@
               "inf": 14,
               "corruption": 16,
               "hedon": 18,
-              "flag": "lcy_tragedy_rescued_restored"
+              "flag": "lcy_tragedy_rescued_restored",
+              "affair": "g",
+              "pv": 1,
+              "mist": 16,
+              "crave": 18,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "水花與喘息整夜未歇。次日華林別院紅燈重燃、絲竹更響，彷彿那場被俘的浩劫不過是讓這朵狂蓮開得更加冶豔毒辣的養料。"
           },
@@ -941,7 +1248,12 @@
               "aff": -8,
               "inf": -4,
               "corruption": 12,
-              "flag": "lcy_tragedy_rescued_restrained"
+              "flag": "lcy_tragedy_rescued_restrained",
+              "affair": "g",
+              "pv": 1,
+              "mist": 12,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她冷哼一聲甩開你的手，赤身走回紅帳裡拉上帷幔：「收心？陛下還是去跟那些死人牌位講收心吧！」隔夜，三名新挑的俊俏禁軍便翻牆進了別院。"
           }
@@ -966,7 +1278,13 @@
               "tyranny": 14,
               "hedon": 14,
               "rel_c": -30,
-              "flag": "lcy_tragedy_imprisoned_freed"
+              "flag": "lcy_tragedy_imprisoned_freed",
+              "pv": 1,
+              "pop": -15,
+              "mist": 18,
+              "crave": 14,
+              "heat": 7,
+              "exec": "g"
             },
             "outcome": "{c}身敗名裂、家破人亡。回到華林別院後，劉楚玉興奮地把那條鍍金鐵鏈留了下來，夜裡纏綿時總愛笑著套在你的手腕上重溫那份支配快感。"
           },
@@ -978,7 +1296,11 @@
               "corruption": 18,
               "tyranny": 6,
               "rel_c": -20,
-              "flag": "lcy_tragedy_imprisoned_cold"
+              "flag": "lcy_tragedy_imprisoned_cold",
+              "exec": "c",
+              "mist": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "她裹緊外袍站在冷殿門口，回頭輕蔑地瞥了你一眼：「連一個敢私囚我的蠢貨都被我玩成了狗，陛下這座冷殿裡的守衛，您猜幾天會跪下來求我疼他們？」"
           }
@@ -1001,7 +1323,13 @@
               "inf": 18,
               "corruption": 18,
               "hedon": 16,
-              "flag": "lcy_tragedy_escaped_empowered"
+              "flag": "lcy_tragedy_escaped_empowered",
+              "mist": 18,
+              "crave": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "奏章與血帕散落一地，她在龍案上張開雙臂暢快狂笑，雪白長腿死死勾住你的腰。從此建康皇城再無人能壓得住這團燒盡一切規矩的烈火。"
           },
@@ -1012,7 +1340,12 @@
               "inf": -10,
               "corruption": 16,
               "tyranny": 8,
-              "flag": "lcy_tragedy_escaped_watched"
+              "flag": "lcy_tragedy_escaped_watched",
+              "pv": 1,
+              "mist": 16,
+              "heat": 5,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "劉楚玉擦去下巴水珠，赤足從龍案上跳下來，指尖帶著血腥味輕輕點過你的鼻尖冷笑：「連敵營萬軍都鎖不住老娘，陛下這座金絲籠，且看它能撐幾個晚上！」"
           }
@@ -1021,3 +1354,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['liuchuyu'] = DATA;
+  (window.characterPacks ||= {})['liuchuyu'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

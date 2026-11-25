@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["fengxiaolian"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 28 號 馮小憐 (fengxiaolian)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "fengxiaolian",
     "index": 28,
@@ -18,7 +23,8 @@
       "0-34": "正宮階下卑微隱忍的琵琶侍婢，卻早已看透皮囊的真正價碼；趁五月端午獻身之夜，以冬暖夏涼的瓷白玉體與一曲胡琶徹底勾斷天子神智。",
       "35-69": "封號淑妃、權壓中宮的鄴城妖姬，正式開啟「玉體橫陳・千金一覽」的荒唐朝堂狂宴，肆意延誤軍機看城池燃燒如煙火，並血腥清算昔日主母與政敵。",
       "70+": "視萬里江山皆為自己妝台陪襯的亡國妖蓮。赤裸橫陳於白玉高台收割滿朝尊嚴與鮮血，在戰火與琵琶斷弦間冷笑著將北齊拖入萬劫不復的深淵。"
-    }
+    },
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -40,7 +46,12 @@
             "aff": 14,
             "inf": 12,
             "corruption": 8,
-            "hedon": 14
+            "hedon": 14,
+            "mist": 10,
+            "crave": 14,
+            "heat": 6,
+            "marry": 1,
+            "preg": 1
           },
           "outcome": "那一夜昭陽殿的琵琶弦斷了三根，她的玉體在玄黑錦褥上泛著令人發瘋的白光。天還沒亮，曾經的洗腳婢已一步登天，把半個北齊宮廷踩在了腳下。"
         },
@@ -50,7 +61,10 @@
             "aff": -2,
             "inf": 0,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "被你掐住咽喉，她臉頰微紅卻不閃不避，反倒主動將雪白胸口往你掌心貼近，低聲輕笑：「陛下掐得越緊，越說明您捨不得鬆手呢。」"
         },
@@ -60,7 +74,14 @@
             "aff": 10,
             "inf": 6,
             "corruption": 10,
-            "hedon": 12
+            "hedon": 12,
+            "mainWife": 1,
+            "exile": 1,
+            "mist": 10,
+            "crave": 12,
+            "affair": "g",
+            "heat": 6,
+            "tag": "桀驁未馴"
           },
           "outcome": "一夜翻覆如夢似幻。可次日寺人密報：她剛下龍榻，便把原本送她進宮的兩名貼身老嫗直接發配去了最苦寒的浣衣坊，手段冷硬得絲毫不念舊情。"
         }
@@ -82,7 +103,13 @@
             "corruption": 12,
             "tyranny": 8,
             "rel_b": -24,
-            "rel_g": 10
+            "rel_g": 10,
+            "mainWife": 1,
+            "mist": 12,
+            "heat": 5,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "你親自替她雪白染血的腳心敷藥，她在你懷裡露出一個無人看見的森冷微笑——踩碎一塊鏡子換掉一座中宮，這筆買賣划算透了。"
         },
@@ -93,7 +120,11 @@
             "inf": -4,
             "corruption": 10,
             "rel_b": -8,
-            "rel_g": -6
+            "rel_g": -6,
+            "mist": 10,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "她靜靜看著工匠搬走碎鏡，鮮血沿著瓷白腳踝滑落也毫不在意，只輕聲對{g}道：「鏡子拆了沒關係，等明天我把全朝堂的眼睛都變成我的鏡子。」"
         }
@@ -115,7 +146,13 @@
             "corruption": 14,
             "tyranny": 12,
             "hedon": 10,
-            "rel_b": -30
+            "rel_b": -30,
+            "mist": 14,
+            "crave": 10,
+            "heat": 6,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "{b}屈辱得幾乎咬碎滿口銀牙，顫抖著替曾經的洗腳婢擦乾了足背。當夜馮小憐在昭陽殿裡瘋狂索愛，那雙被舊主捧過的玉足死死踩在你胸口，宣告婢奴時代徹底翻篇。"
         },
@@ -125,7 +162,12 @@
             "aff": -10,
             "inf": -6,
             "corruption": 12,
-            "rel_b": 8
+            "rel_b": 8,
+            "mist": 12,
+            "heat": 6,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "馮小憐收回玉足裹緊銀狐大氅，眼神冷得像結了冰的華林池水：「陛下護著她的體面？好啊，那明日我就讓全鄴城知道，她那位清高兄長是怎麼花五百金求著看我一眼的。」"
         }
@@ -148,7 +190,11 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 14,
-            "rel_g": -30
+            "rel_g": -30,
+            "mist": 18,
+            "heat": 7,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "{g}抽搐了兩下便徹底不動了。馮小憐隨手丟開染血的琵琶弦，淨手換上月白薄紗撲進你懷裡，冰涼滑膩的肌膚帶著剛殺完人的奇異戰慄感，令你血脈僨張。"
         },
@@ -158,7 +204,10 @@
             "aff": -12,
             "inf": -8,
             "corruption": 12,
-            "rel_g": 8
+            "rel_g": 8,
+            "mist": 12,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "{g}倒地劇烈咳嗽、嗓子已徹底勒啞再也唱不出曲。馮小憐看著斷裂的琴弦輕笑一聲，用舌尖舔掉虎口濺到的一點血珠：「啞了也好，至少往後不會再學我彈琴了。」"
         }
@@ -180,7 +229,13 @@
             "corruption": 16,
             "hedon": 16,
             "rel_g": 14,
-            "rel_c": -16
+            "rel_c": -16,
+            "mist": 16,
+            "crave": 16,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "金餅硌在瓷白玉體下發出清脆聲響，那一夜你在金銀與她的冷香胴體間徹底放縱。自此半數北齊官員全成了昭陽殿的銀主與裙下之臣，{c}徹底被排擠出朝堂。"
         },
@@ -192,7 +247,11 @@
             "corruption": 10,
             "tyranny": 6,
             "rel_g": -10,
-            "rel_c": 12
+            "rel_c": 12,
+            "inj": "g",
+            "mist": 10,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "金箱被一箱箱抬走，馮小憐光著玉足站在空蕩蕩的錦氈上，嘴角勾起一抹極冷的嘲弄：「銀子拿去養兵了？可惜呀，那些偷看過我身子的大官，心可早就收不回去了。」"
         }
@@ -213,7 +272,10 @@
             "inf": 14,
             "corruption": 16,
             "tyranny": 16,
-            "rel_b": -26
+            "rel_b": -26,
+            "exec": "b",
+            "mist": 16,
+            "heat": 8
           },
           "outcome": "石洞裡爆發出一聲撕心裂肺的慘嚎，隨即徹底歸於沉寂。{b}亦遭削位幽禁。當夜馮小憐赤裸著冰涼滑膩的玉體貼進你懷裡，輕笑道：「只有陛下點頭的人，才配睜眼看我。」"
         },
@@ -224,7 +286,10 @@
             "inf": -10,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 6
+            "rel_b": 6,
+            "mist": 12,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "閹宦雖保住了雙眼，可當晚在廷尉牢裡竟離奇咬舌自盡——昭陽殿的銀子，早把廷尉獄卒買通了一半。"
         }
@@ -246,7 +311,12 @@
             "corruption": 16,
             "tyranny": 14,
             "rel_b": -28,
-            "rel_c": -26
+            "rel_c": -26,
+            "jail": "b",
+            "mist": 16,
+            "heat": 7,
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "{c}百口莫辯被押入死牢，{b}徹底失勢崩潰。散朝後，馮小憐在空曠的大殿裡褪去白袍、赤足踏上龍階，抱著琵琶對你冷笑：「誰敢說我亡國，我就先亡了他的家。」"
         },
@@ -257,7 +327,10 @@
             "inf": -6,
             "corruption": 12,
             "rel_b": -6,
-            "rel_c": 8
+            "rel_c": 8,
+            "mist": 12,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "馮小憐垂下眼睫輕輕撥了一下琵琶弦，發出冷冽餘音：「陛下喜歡查證據？那便慢慢查吧——只怕還沒查完，北周的兵馬就已經打到晉州城下了。」"
         }
@@ -278,7 +351,12 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 14,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 18,
+            "heat": 7,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "翌日校場血濺塵土，驕橫的鮮卑新妃當場墜馬折斷脊骨淪為廢人。高台之上，馮小憐與{g}隔著帷幔遙遙舉杯，冷豔的眼底沒有半點波瀾。"
         },
@@ -288,7 +366,10 @@
             "aff": -10,
             "inf": -10,
             "corruption": 12,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 12,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "那名年輕馬夫當場自盡頂罪。馮小憐看著被繳獲的琉璃瓶輕輕一笑：「馬沒發瘋，真是可惜——不過陛下放心，這宮裡想讓她摔死的人，可不止我一個。」"
         }
@@ -311,7 +392,12 @@
             "inf": 12,
             "corruption": 14,
             "hedon": 20,
-            "rel_b": -16
+            "rel_b": -16,
+            "mist": 14,
+            "crave": 20,
+            "heat": 6,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "冰水融化浸透了黑絲絨與兩人交纏的軀體，她在極寒與極熱的撕咬裡發出破碎又驕傲的低吟。次日清晨，{b}收到一盆昭陽殿送去的碎冰，嚇得主動稱病避寵。"
         },
@@ -322,7 +408,11 @@
             "inf": -4,
             "corruption": 12,
             "tyranny": 4,
-            "rel_b": 6
+            "rel_b": 6,
+            "mist": 12,
+            "house": 1,
+            "inj": "b",
+            "heat": 8
           },
           "outcome": "裹在大氅裡的她卻突然咯咯笑出聲，冰涼的指尖滑過你的下巴：「陛下這麼緊張妾身凍壞了……看來這場冰火戲，是妾身贏了呢。」"
         }
@@ -344,7 +434,12 @@
             "corruption": 24,
             "hedon": 24,
             "tyranny": 14,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 24,
+            "crave": 24,
+            "heat": 7,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "百官驚駭又瘋狂，金盆堆成了山，北齊最後一絲廉恥徹底死在昭陽殿裡。你在萬眾目光下佔有了她最興奮顫慄的胴體，而敵國北周聞訊大喜，立刻下令整軍滅齊。"
         },
@@ -355,7 +450,12 @@
             "inf": -14,
             "corruption": 16,
             "tyranny": 8,
-            "rel_c": 16
+            "rel_c": 16,
+            "mist": 16,
+            "crave": 6,
+            "heat": 5,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "眾官倉皇逃出大殿。紅錦之下，馮小憐發出一聲無比掃興又森冷的嗤笑：「陛下真沒膽量……明明您自己最喜歡看他們眼饞得發瘋的樣子，怎麼反倒被一個老哭鬼嚇縮了？」"
         },
@@ -366,7 +466,12 @@
             "inf": 10,
             "corruption": 20,
             "hedon": 20,
-            "rel_c": -12
+            "rel_c": -12,
+            "mist": 20,
+            "crave": 20,
+            "heat": 6,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "大殿空無一人，唯餘金盆閃耀與百盞宮燈。她在被窺視後的餘韻裡滾燙得像團火，死死纏上你的腰，將這場千金荒宴變成只屬於你們二人的極致沉淪。"
         }
@@ -388,7 +493,12 @@
             "corruption": 20,
             "tyranny": 18,
             "hedon": 10,
-            "rel_b": -30
+            "rel_b": -30,
+            "mist": 20,
+            "crave": 10,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "那一枚滾落的銅錢徹底壓垮了{b}的理智，她當場尖叫著一頭撞向白玉台柱血流滿面。馮小憐看都沒看血跡，只挽著你優雅地轉身赴宴。"
         },
@@ -398,7 +508,11 @@
             "aff": -16,
             "inf": -10,
             "corruption": 14,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 14,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "馮小憐看著你脫給{b}的外袍，眼底瞬間結滿寒霜：「陛下心疼她的貞潔？那今晚陛下就自己去抱著她的貞潔睡吧，昭陽殿的門，不開了。」"
         }
@@ -420,7 +534,14 @@
             "corruption": 24,
             "tyranny": 20,
             "hedon": 10,
-            "rel_b": -30
+            "rel_b": -30,
+            "cold": "b",
+            "mist": 24,
+            "crave": 10,
+            "heat": 10,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "大雪很快蓋住了冰井邊的血痕，{b}在冷院裡日夜抱著空繈褓瘋笑。而你則捧著馮小憐染血的玉手深吻，徹底淪為她冷血野心的共犯。"
         },
@@ -431,7 +552,12 @@
             "inf": -16,
             "corruption": 18,
             "tyranny": 12,
-            "rel_b": 16
+            "rel_b": 16,
+            "mist": 18,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "雪花落進她敞開的領口，她被掐得喘不過氣卻依然笑得冰冷妖豔：「查吧……所有動手的太監，剛才都已經自己跳進冰井裡陪葬了。陛下，您抓不到半點把柄的。」"
         }
@@ -453,7 +579,14 @@
             "corruption": 24,
             "tyranny": 22,
             "hedon": 14,
-            "rel_c": -30
+            "rel_c": -30,
+            "troops": 60,
+            "mist": 24,
+            "crave": 14,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "soldiers": -50
           },
           "outcome": "{c}與數名宗室當夜人頭落地，北齊最後的支柱徹底崩毀。馮小憐踩著血水將你拉回猩紅白玉榻上，在琵琶餘音裡迎來了帝國最後的狂歡。"
         },
@@ -464,7 +597,12 @@
             "inf": -20,
             "corruption": 18,
             "tyranny": 14,
-            "rel_c": 18
+            "rel_c": 18,
+            "mist": 18,
+            "heat": 7,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "劍鋒緊貼著她冰涼的肌膚，幾名禁軍校尉投鼠忌器頓時亂了陣腳。馮小憐卻仰頭輕笑，任由劍刃壓出一道細細血線：「陛下終於捨得拿劍指著妾身了？真可惜，這一劍下去，這座枯燥的皇宮可就再也沒顏色了。」"
         }
@@ -488,7 +626,13 @@
             "corruption": 18,
             "hedon": 16,
             "tyranny": 8,
-            "rel_c": -18
+            "rel_c": -18,
+            "pv": 1,
+            "mist": 18,
+            "crave": 16,
+            "heat": 5,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "三座邊防重鎮的軍餉化作了晉陽溫泉的漢白玉磚與千斤香脂。{c}接到斥責回詔後仰天長嘆，邊軍士氣徹底瓦解。"
         },
@@ -499,7 +643,12 @@
             "inf": -10,
             "corruption": 10,
             "tyranny": 6,
-            "rel_c": 14
+            "rel_c": 14,
+            "pv": 1,
+            "food": 100,
+            "mist": 10,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "馮小憐將手裡的胭脂盒「啪」地合上，瓷白玉體泡回溫泉裡背對著你冷冷道：「為了幾個粗俗武夫掃妾身的興？好啊，那這整個秋天，陛下都別想碰妾身一根指頭。」"
         }
@@ -521,7 +670,13 @@
             "corruption": 18,
             "hedon": 14,
             "tyranny": 8,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 18,
+            "crave": 14,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "鄴城官場徹底陷入集體瘋狂與拜物淫奢之中，馮小憐的一根髮絲竟能抵上一縣稅收，整座帝國在紙醉金迷裡加速腐朽。"
         },
@@ -532,7 +687,10 @@
             "inf": -12,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 10,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "秘閣被查封當夜，那些曾在閣裡買過馮小憐舊物的高官竟個個嚇得魂飛魄散、反而更加死心塌地幫她隱瞞證據——她的名字，早已成了懸在他們頭頂的刀。"
         }
@@ -552,7 +710,12 @@
             "aff": 18,
             "inf": 14,
             "corruption": 20,
-            "hedon": 20
+            "hedon": 20,
+            "mist": 20,
+            "crave": 20,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "她在你懷裡發出極輕、極冷豔的笑聲，修長玉腿死死纏緊你的腰。你們都很清楚前方是萬丈深淵，卻依然笑著踩下了最後一步。"
         },
@@ -562,7 +725,9 @@
             "aff": 4,
             "inf": 4,
             "corruption": 14,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 14,
+            "house": 1
           },
           "outcome": "她靜靜凝視你片刻，唇角緩緩勾起一抹極淡的嘲諷：「口是心非的男人最有趣了——那妾身就等著看，陛下的江山，能撐得住妾身幾次梳妝。」"
         }
@@ -585,7 +750,12 @@
             "tyranny": 16,
             "rel_b": -26,
             "rel_c": -26,
-            "rel_g": -20
+            "rel_g": -20,
+            "jail": "b",
+            "mist": 18,
+            "heat": 8,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "三方徹底崩盤，{c}氣絕昏厥，{g}與{b}被堵嘴拖入死牢。空蕩蕩的昭陽殿裡，馮小憐踩過展開的絹畫撲進你懷裡，笑得冷傲無雙。"
         },
@@ -598,7 +768,13 @@
             "tyranny": 10,
             "rel_b": -6,
             "rel_c": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "ban": 1,
+            "mist": 12,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "一場血案暫時被硬生生按住。馮小憐退出前輕輕回眸，指尖在琵琶弦上滑出一聲尖銳雜音——她知道，這座搖搖欲墜的皇宮，已經沒有多少日子好按了。"
         }
@@ -622,7 +798,13 @@
             "corruption": 22,
             "hedon": 20,
             "tyranny": 12,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 22,
+            "crave": 20,
+            "heat": 6,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "就是這荒唐的半個時辰，北周守軍以木柵死死堵住了城牆缺口、援軍隨後殺至！晉州大敗虧輸，全軍士氣徹底崩盤，而馮小憐在高坡上遠望著火海煙塵，竟還笑著稱讚「像一場好大的煙火」。"
         },
@@ -632,7 +814,11 @@
             "aff": -14,
             "inf": -8,
             "corruption": 10,
-            "rel_c": 16
+            "rel_c": 16,
+            "mist": 10,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "銅鏡碎裂在地，大軍趁勢一舉攻克缺口扭轉戰局。馮小憐看著滿地碎脂粉，眼神冷得像冬夜寒冰：「為了座破石頭城，摔了妾身的鏡子？陛下這筆帳，妾身記下了。」"
         }
@@ -654,7 +840,13 @@
             "corruption": 20,
             "tyranny": 16,
             "hedon": 12,
-            "rel_c": -30
+            "rel_c": -30,
+            "troops": 60,
+            "mist": 20,
+            "crave": 12,
+            "heat": 8,
+            "soldiers": 90,
+            "tag": "浴血功勳"
           },
           "outcome": "{c}仰天狂笑著獨自衝向北周鐵騎戰死橋頭。馬背上，馮小憐回頭看著身後綿延十里的火海與無數北齊屍骨，冷豔的唇角竟泛起一絲毫無溫度的笑意。"
         },
@@ -664,7 +856,13 @@
             "aff": -10,
             "inf": 6,
             "corruption": 10,
-            "rel_c": 18
+            "rel_c": 18,
+            "troops": 60,
+            "soldiers": 60,
+            "mist": 10,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "馮小憐被親兵架走前，回頭冷冷看了浴血斷後的你一眼，眼神裡沒有感動，只有對「蠢男人竟為一座破橋拼命」的極度輕蔑。"
         }
@@ -687,7 +885,12 @@
               "aff": 18,
               "corruption": 10,
               "tyranny": 18,
-              "flag": "fxl_tragedy_dead_avenged"
+              "flag": "fxl_tragedy_dead_avenged",
+              "soldiers": 60,
+              "mist": 10,
+              "heat": 9,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "你親手替她蓋上最奢華的猩紅織錦，昭陽殿從此再無人敢彈琵琶。只是沒有了那具冬暖夏涼的玉體，這座殘破皇宮冷得像座活墳。"
           },
@@ -697,7 +900,13 @@
               "inf": -10,
               "corruption": 8,
               "tyranny": 8,
-              "flag": "fxl_tragedy_dead_buried"
+              "flag": "fxl_tragedy_dead_buried",
+              "pop": -15,
+              "mist": 10,
+              "crave": 6,
+              "heat": 5,
+              "pol": 15,
+              "wood": -50
             },
             "outcome": "白玉長案被砸成碎石，荒淫舊事彷彿一夜抹平。可每當寒冬深夜你摸到冰冷錦被時，腦中總會浮現她橫陳於黑絲絨上那道刺目至極的雪白剪影。"
           }
@@ -720,7 +929,12 @@
               "inf": -16,
               "corruption": 12,
               "hedon": 8,
-              "flag": "fxl_tragedy_captured_ransom"
+              "flag": "fxl_tragedy_captured_ransom",
+              "mist": 12,
+              "crave": 8,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "朝臣跪地哭諫不可為一失節亡國妖姬再賣山河，你卻只盯著那兩句「猶憶昔時憐」顫手蓋下玉璽。"
           },
@@ -730,7 +944,11 @@
               "inf": 10,
               "corruption": 14,
               "tyranny": 12,
-              "flag": "fxl_tragedy_captured_spy"
+              "flag": "fxl_tragedy_captured_spy",
+              "mist": 14,
+              "heat": 6,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "你把那張詩箋鎖進暗匣。遠在長安紅帳裡，馮小憐赤裸著玉體靠在北周親王懷中冷笑——對她而言，換個男人、換座皇城，戲照樣能唱下去。"
           }
@@ -753,7 +971,13 @@
               "inf": 12,
               "corruption": 16,
               "hedon": 14,
-              "flag": "fxl_tragedy_wounded_devoted"
+              "flag": "fxl_tragedy_wounded_devoted",
+              "mist": 16,
+              "crave": 14,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "她僵硬冰冷的身軀突然劇烈顫抖起來，發出一聲壓抑到極致的嗚咽，反手死死扣住你的頭顱。從此昭陽殿不再對外炫耀，卻成了更加陰暗窒息的私人禁臠牢籠。"
           },
@@ -764,7 +988,11 @@
               "inf": -10,
               "corruption": 18,
               "tyranny": 6,
-              "flag": "fxl_tragedy_wounded_sidelined"
+              "flag": "fxl_tragedy_wounded_sidelined",
+              "exec": "b",
+              "mist": 18,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "你眼神裡那一剎那的惋惜，徹底殺死了她最後一點柔情。半月後，後宮兩名肌膚最白皙的新晉才人竟雙雙遭滾油潑背、毀去半身皮肉。"
           }
@@ -788,7 +1016,11 @@
               "corruption": 20,
               "tyranny": 22,
               "rel_b": -30,
-              "flag": "fxl_tragedy_humiliated_purge"
+              "flag": "fxl_tragedy_humiliated_purge",
+              "mist": 20,
+              "heat": 11,
+              "exec": "b",
+              "pop": -15
             },
             "outcome": "鄴城西市血流成河，{b}在昭陽殿白玉台上的哀嚎持續了整整兩夜。馮小憐坐在血泊外優雅地彈完一曲《胡笳》，彷彿剛才不過擦掉了一點鞋上的灰。"
           },
@@ -799,7 +1031,12 @@
               "inf": -10,
               "corruption": 16,
               "rel_b": -14,
-              "flag": "fxl_tragedy_humiliated_suppressed"
+              "flag": "fxl_tragedy_humiliated_suppressed",
+              "cold": "b",
+              "pop": -15,
+              "mist": 16,
+              "ban": 1,
+              "tag": "受辱怨骨"
             },
             "outcome": "馮小憐冷冷撫過琵琶弦，連一句爭辯都沒有。可七日後，{b}的冷宮便在深夜裡燃起無名烈火，連同她身邊六名宮婢一起燒成了黑炭。"
           }
@@ -822,7 +1059,13 @@
               "inf": 14,
               "corruption": 16,
               "hedon": 14,
-              "flag": "fxl_tragedy_survivor_reclaimed"
+              "flag": "fxl_tragedy_survivor_reclaimed",
+              "pop": -15,
+              "mist": 16,
+              "crave": 14,
+              "heat": 6,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "熱水洗淨了她的瓷白肌膚，她在水霧裡冷豔地跨坐上你的腰，彷彿外頭那場死傷數萬的敗仗根本從未發生過。"
           },
@@ -833,7 +1076,11 @@
               "inf": -12,
               "corruption": 18,
               "tyranny": 8,
-              "flag": "fxl_tragedy_survivor_quarantined"
+              "flag": "fxl_tragedy_survivor_quarantined",
+              "exec": "b",
+              "mist": 18,
+              "heat": 5,
+              "jail": 1
             },
             "outcome": "她平靜地交出焦黑琵琶，回眸瞥了你一眼，眼底滿是看穿男人涼薄的嘲弄：「連死人堆和敵軍刀口都沒能殺死我，陛下這間冷屋子，又能關得住我多久？」"
           }
@@ -858,7 +1105,12 @@
               "tyranny": 12,
               "hedon": 10,
               "rel_c": -28,
-              "flag": "fxl_tragedy_pregnant_kept"
+              "flag": "fxl_tragedy_pregnant_kept",
+              "mist": 24,
+              "crave": 10,
+              "heat": 6,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "你親手吞下了這口奇恥大辱。馮小憐微笑著拉過你的手按在她雪白溫熱的小腹上，眼底閃過一絲對你徹底淪喪尊嚴的輕蔑與滿意。"
           },
@@ -870,7 +1122,13 @@
               "corruption": 18,
               "tyranny": 16,
               "rel_c": 14,
-              "flag": "fxl_tragedy_pregnant_aborted"
+              "flag": "fxl_tragedy_pregnant_aborted",
+              "mist": 18,
+              "heat": 8,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "殷紅鮮血染透了雪白錦褥，她咬破下唇硬是一聲未吭，只用那雙冷得像萬年玄冰的鳳眼死死鎖著你：「真有骨氣呀陛下——那就祝您這份骨氣，能扛得住北周十萬大軍吧。」"
           }
@@ -894,7 +1152,14 @@
               "corruption": 16,
               "hedon": 14,
               "rel_c": -18,
-              "flag": "fxl_tragedy_forcedmarriage_reclaimed"
+              "flag": "fxl_tragedy_forcedmarriage_reclaimed",
+              "troops": 60,
+              "mist": 16,
+              "crave": 14,
+              "heat": 6,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "花帳裡酒香四溢，代王措手不及遭你一劍重創敗逃。馮小憐披著半敞的北周大紅嫁衣赤足踏過滿地落花撲進你懷裡輕笑：「還是舊主搶人的時候，看著最順眼。」"
           },
@@ -906,7 +1171,11 @@
               "corruption": 12,
               "tyranny": 8,
               "rel_c": 12,
-              "flag": "fxl_tragedy_forcedmarriage_disowned"
+              "flag": "fxl_tragedy_forcedmarriage_disowned",
+              "mist": 12,
+              "heat": 5,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "詔書傳至長安那日，馮小憐輕笑著撥斷了一根琵琶弦——不到半年，她便在北周宮廷裡接連逼死代王原配、攪得北周諸王內訌不休，成了跨越兩朝的不滅妖火。"
           }
@@ -929,7 +1198,13 @@
               "inf": 14,
               "corruption": 16,
               "hedon": 18,
-              "flag": "fxl_tragedy_rescued_restored"
+              "flag": "fxl_tragedy_rescued_restored",
+              "mist": 16,
+              "crave": 18,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "水花漫過池沿，她在你的狂怒啃咬裡發出一聲滿足而冰冷的喘息。次日昭陽殿絲竹重響，比她被俘前更加奢靡荒唐。"
           },
@@ -939,7 +1214,10 @@
               "aff": -8,
               "inf": -4,
               "corruption": 12,
-              "flag": "fxl_tragedy_rescued_restrained"
+              "flag": "fxl_tragedy_rescued_restrained",
+              "mist": 12,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她泡在熱水裡輕輕嗤笑一聲：「把一塊夜明珠鎖進黑箱子裡，陛下就不怕箱子外頭的賊，惦記得更厲害嗎？」"
           }
@@ -964,7 +1242,13 @@
               "tyranny": 16,
               "hedon": 14,
               "rel_c": -30,
-              "flag": "fxl_tragedy_imprisoned_freed"
+              "flag": "fxl_tragedy_imprisoned_freed",
+              "pop": -15,
+              "mist": 18,
+              "crave": 14,
+              "heat": 8,
+              "exec": "g",
+              "pv": 1
             },
             "outcome": "{c}全族伏誅。回到昭陽暖閣後，十二面銅鏡映出你們二人徹夜交纏的身影，她在鏡光裡笑得宛如真正的不死妖魔。"
           },
@@ -976,7 +1260,10 @@
               "corruption": 18,
               "tyranny": 6,
               "rel_c": -20,
-              "flag": "fxl_tragedy_imprisoned_cold"
+              "flag": "fxl_tragedy_imprisoned_cold",
+              "mist": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "她站在冷僻院落裡回望著你匆匆離去的背影，指尖輕輕摩挲著那根染血的斷弦冷笑：「陛下現在嫌我手上有血了？可這滿宮裡，誰的龍椅底下不是血呢？」"
           }
@@ -999,7 +1286,13 @@
               "inf": 20,
               "corruption": 20,
               "hedon": 16,
-              "flag": "fxl_tragedy_escaped_empowered"
+              "flag": "fxl_tragedy_escaped_empowered",
+              "mist": 20,
+              "crave": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "鮮血與螺鈿琵琶散落龍案，她在你的瘋狂佔有下冷傲大笑。自此北齊朝政與後宮徹底淪為這名絕世妖姬的私人舞台。"
           },
@@ -1010,7 +1303,11 @@
               "inf": -10,
               "corruption": 16,
               "tyranny": 8,
-              "flag": "fxl_tragedy_escaped_watched"
+              "flag": "fxl_tragedy_escaped_watched",
+              "mist": 16,
+              "heat": 5,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "馮小憐抱著螺鈿琵琶跨進昭陽殿門檻前，回頭對門外兩排年輕禁軍微微一笑——薄紗滑落肩頭半寸，整排禁軍的長矛竟齊齊晃了一下。"
           }
@@ -1019,3 +1316,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['fengxiaolian'] = DATA;
+  (window.characterPacks ||= {})['fengxiaolian'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

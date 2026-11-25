@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["huhou"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 33 號 北齊胡太后 (huhou)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "huhou",
     "index": 33,
@@ -18,7 +23,8 @@
       "0-34": "胡漢豪門出身的豐豔貴女，生性放浪不耐深宮清冷，入宮伊始便以象牙握槊博戲與毫無遮掩的豐腴肉體大膽挑逗天子與年輕侍臣。",
       "35-69": "徹底放飛本性的鄴城淫后，公然與俊美權臣握槊通姦、賞官換歡，並暗將數十名英俊沙門偽裝成宮婢藏入內殿佛堂日夜縱慾，以男寵權臣之刀血洗政敵。",
       "70+": "喊出「為后不如為娼」的終極慾海太后。將鄴城皇宮化作百僧與百官輪番進出的無底花樓，視江山燃燒如助興紅燭，至死都要將天下肉慾榨乾享盡。"
-    }
+    },
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -40,7 +46,12 @@
             "aff": 14,
             "inf": 12,
             "corruption": 8,
-            "hedon": 16
+            "hedon": 16,
+            "mist": 10,
+            "crave": 16,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "象牙棋子與金冠散落滿地，她在你身下發出毫無顧忌的放浪浪笑與急促喘息，豐滿雙腿死死絞住你的腰直到五更。次日鄴城宮廷便多了一位徹底不守規矩的極樂貴主。"
         },
@@ -50,7 +61,10 @@
             "aff": -2,
             "inf": 0,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "她被你按在棋盤上，胸口壓碎了幾枚棋子卻咯咯笑得花枝亂顫：「陛下嘴上罵得凶，手底下摸得倒挺實誠嘛——規矩是死的，人是活的，咱們走著瞧。」"
         },
@@ -60,7 +74,12 @@
             "aff": 10,
             "inf": 6,
             "corruption": 10,
-            "hedon": 14
+            "hedon": 14,
+            "mist": 10,
+            "crave": 14,
+            "affair": "g",
+            "heat": 6,
+            "tag": "桀驁未馴"
           },
           "outcome": "一夜極樂令你幾乎忘了早朝。可寺人密報卻讓你眉頭微跳：你剛離開宣光殿不到一個時辰，那名彈得一手好胡琵琶、又極擅握槊的俊美侍臣便笑吟吟進了殿門。"
         }
@@ -82,7 +101,13 @@
             "corruption": 14,
             "hedon": 16,
             "rel_b": -14,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 14,
+            "crave": 16,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "她歡喜地揮退那幾名面紅耳赤的俊僧，當場就在金身佛像前的蒲團上扯開紫羅長袍與你縱情交歡。自此宣光殿佛堂成了北齊皇宮最荒淫褻瀆的「百僧歡喜窟」。"
         },
@@ -93,7 +118,12 @@
             "inf": -10,
             "corruption": 12,
             "tyranny": 10,
-            "rel_g": -10
+            "rel_g": -10,
+            "jail": "g",
+            "mist": 12,
+            "heat": 5,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "光頭滾落蒲團、佛像染滿鮮血。胡太后看了一眼死去的俊僧，只惋惜地嘆了口氣：「多俊的一張臉呀，真浪費了。沒關係，鄴城寺廟裡有的是更俊的年輕和尚呢。」"
         }
@@ -115,7 +145,15 @@
             "corruption": 16,
             "tyranny": 10,
             "hedon": 10,
-            "rel_b": -30
+            "rel_b": -30,
+            "affair": "g",
+            "cold": "b",
+            "mist": 16,
+            "crave": 10,
+            "heat": 5,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "{b}醒來後發覺清白盡毀，當場撞牆而亡。當夜胡太后在佛堂裡大笑著脫去素白長袍，用最放蕩滾燙的肉體慶祝又一個清高蠢婦死在她的淫局裡。"
         },
@@ -125,7 +163,11 @@
             "aff": -10,
             "inf": -6,
             "corruption": 12,
-            "rel_b": 8
+            "rel_b": 8,
+            "mist": 12,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "胡太后毫不介意地丟開佛珠大笑：「陛下鼻子真靈！不過沒關係，剛才那十幾名宗室老太太可只看見{b}抱著和尚脫衣裳了——明日全鄴城都會傳遍她的風流韻事呢。」"
         }
@@ -148,7 +190,11 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 14,
-            "rel_g": -30
+            "rel_g": -30,
+            "mist": 18,
+            "crave": 6,
+            "heat": 7,
+            "affair": "g"
           },
           "outcome": "佛珠「啪」地散落一地滾進血影裡，{g}徹底沒了氣息。胡太后踩過滿地檀木珠子撲進你懷裡，剛殺完人的指尖滾燙發顫，在佛燈下瘋狂索取你的歡愛。"
         },
@@ -158,7 +204,11 @@
             "aff": -12,
             "inf": -8,
             "corruption": 12,
-            "rel_g": 8
+            "rel_g": 8,
+            "affair": "g",
+            "mist": 12,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "滿地滾動的佛珠裡，胡太后毫不在意地拍了拍手：「救下她也行呀——反正她剛才已經跟和士開睡過了，陛下要是喜歡拾破鞋，今晚就賞給陛下吧。」"
         }
@@ -180,7 +230,13 @@
             "corruption": 18,
             "hedon": 16,
             "rel_g": 14,
-            "rel_c": -18
+            "rel_c": -18,
+            "mist": 18,
+            "crave": 16,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "和士開與{g}識趣退下後，胡太后就在滿桌官印與金餅之間扯開大紅胡裙迎向你。自此北齊朝野官職皆有明價，{c}徹底被排擠出權力核心。"
         },
@@ -192,7 +248,12 @@
             "corruption": 12,
             "tyranny": 8,
             "rel_g": -10,
-            "rel_c": 14
+            "rel_c": 14,
+            "inj": "g",
+            "mist": 12,
+            "heat": 5,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "賄銀被抬走那夜，胡太后連哭都沒哭，只搖著葡萄酒杯對滿臉正氣的{c}媚笑：「{c}王爺查得這麼嚴，明天要是您府上突然冒出十幾名『招認您謀反』的刺客，可別怪和士開沒提醒您呀。」"
         }
@@ -213,7 +274,11 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 18,
-            "rel_b": -28
+            "rel_b": -28,
+            "jail": "b",
+            "mist": 18,
+            "heat": 9,
+            "exec": "b"
           },
           "outcome": "地牢裡爆發出非人的慘嚎，從此宣光殿多了一名終生無法開口的殘廢小太監，{b}更是百口莫辯被打入冷牢。當夜胡太后在酒香裡瘋狂獎勵你的縱容。"
         },
@@ -224,7 +289,12 @@
             "inf": -12,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 8
+            "rel_b": 8,
+            "exec": "b",
+            "pv": 1,
+            "mist": 12,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "沙門剛被押進廷尉大牢，當夜便被和士開安插的獄卒灌下啞藥與鴆酒滅口，留給滿朝文武一場永遠查不清的無頭公案。"
         }
@@ -246,7 +316,13 @@
             "corruption": 18,
             "tyranny": 18,
             "rel_b": -28,
-            "rel_c": -30
+            "rel_c": -30,
+            "affair": "c",
+            "mist": 18,
+            "heat": 9,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "高氏忠良宗室血流滿殿，{c}死不瞑目！一場足以廢后的驚天淫亂案，硬生生變成胡太后與男寵權臣血洗宗室的屠殺慶典。"
         },
@@ -257,7 +333,10 @@
             "inf": -8,
             "corruption": 12,
             "rel_b": -4,
-            "rel_c": 12
+            "rel_c": 12,
+            "mist": 12,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "胡太后冷笑著鬆開和士開的衣袖，當夜卻直接赤裸著豐滿玉體爬上你的龍榻哭求纏綿——不出三日，和士開依然安然無恙地放了出來。"
         }
@@ -279,7 +358,15 @@
             "corruption": 20,
             "hedon": 14,
             "tyranny": 12,
-            "rel_g": 12
+            "rel_g": 12,
+            "preg": 1,
+            "pv": 1,
+            "mist": 20,
+            "crave": 14,
+            "heat": 6,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "翌日清晨偏殿爆出驚天醜聞，清高新妃醒來見滿室狼藉與身邊俊僧當場羞憤血崩而亡！胡太后與{g}在酒池裡碰杯狂笑，整座後宮再無一片淨土。"
         },
@@ -289,7 +376,10 @@
             "aff": -10,
             "inf": -10,
             "corruption": 12,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 12,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "俊僧被拖走時胡太后連眉頭都沒皺，只懶洋洋飲盡金杯紅酒：「可惜了曇獻這張好臉蛋……不過沒關係，聖女怕髒，下回我直接把她親弟弟請進我被窩裡玩握槊。」"
         }
@@ -312,7 +402,12 @@
             "inf": 12,
             "corruption": 16,
             "hedon": 22,
-            "rel_b": -16
+            "rel_b": -16,
+            "mist": 16,
+            "crave": 22,
+            "heat": 6,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "酒案翻覆、紅紗撕裂，她在你近乎粗暴的掠奪下發出極盡放蕩的浪叫與滿足喘息。天亮後，她得意地舔著唇角宣布這三天只收你一個「頭牌恩客」。"
         },
@@ -323,7 +418,12 @@
             "inf": -8,
             "corruption": 16,
             "tyranny": 10,
-            "rel_b": 8
+            "rel_b": 8,
+            "exec": "b",
+            "mist": 16,
+            "heat": 5,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "樂工血濺殿外，胡太后赤裸著豐滿雪白的胴體站在滿地碎杯與葡萄汁裡放聲狂笑：「殺吧！殺了這四個，明天佛堂裡還有五十個剃了光頭等著侍候老娘呢！」"
         }
@@ -345,7 +445,12 @@
             "corruption": 24,
             "hedon": 24,
             "tyranny": 12,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 24,
+            "crave": 24,
+            "heat": 6,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "{c}痛哭撞柱昏厥在佛堂外。大佛金身之下，北齊皇室最後一點尊嚴與氣數徹底燃燒殆盡，你在百僧與妖后的靡爛浪笑裡墜入萬劫不復的深淵。"
         },
@@ -356,7 +461,11 @@
             "inf": -16,
             "corruption": 18,
             "tyranny": 20,
-            "rel_c": 18
+            "rel_c": 18,
+            "mist": 18,
+            "heat": 10,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "金佛腳下血流成河，百名俊僧頭顱滾滿紅毯！胡太后披著染血的紫金袈裟跪在屍堆中央，卻笑得淚水橫流、瘋狂無比：「殺吧！把全鄴城的和尚都殺光吧！只要老娘還活著一天，就照樣能把看守冷殿的甲士全拉進被窩裡！」"
         },
@@ -368,7 +477,12 @@
             "corruption": 22,
             "hedon": 22,
             "tyranny": 12,
-            "rel_c": -16
+            "rel_c": -16,
+            "mist": 22,
+            "crave": 22,
+            "heat": 6,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "曇獻的熱血濺上了胡太后雪白飽滿的胸口。她竟看著死去的俊僧露出更加瘋狂興奮的潮紅，張開豐滿雙腿死死纏住你的腰，在佛像前與你展開一場沾血的極致瘋歡。"
         }
@@ -390,7 +504,12 @@
             "corruption": 20,
             "tyranny": 18,
             "hedon": 14,
-            "rel_b": -30
+            "rel_b": -30,
+            "mist": 20,
+            "crave": 14,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "{b}在滿堂淫笑聲中絕望咬舌自盡、鮮血染紅了青樓花燈。胡太后掃興地撇撇嘴，轉頭便坐進你懷裡繼續與你暢飲作樂。"
         },
@@ -400,7 +519,11 @@
             "aff": -16,
             "inf": -10,
             "corruption": 14,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 14,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "酒水潑滿地毯。胡太后毫不在意地舔去濺在手背上的紅酒，對你冷笑：「陛下真愛裝正人君子——可惜啊，她這副被十幾個男人看光了的身子，陛下以後還睡得下去嗎？」"
         }
@@ -422,7 +545,14 @@
             "corruption": 24,
             "tyranny": 20,
             "hedon": 12,
-            "rel_b": -30
+            "rel_b": -30,
+            "cold": "b",
+            "mist": 24,
+            "crave": 12,
+            "heat": 10,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "皇嗣冤死、兇手逍遙法外。當夜胡太后踩過滿地象牙棋子撲進你懷裡，在濃烈酒香裡用極盡放蕩的肉體徹底麻痺了你最後一點父性與良知。"
         },
@@ -433,7 +563,13 @@
             "inf": -16,
             "corruption": 18,
             "tyranny": 12,
-            "rel_b": 16
+            "rel_b": 16,
+            "jail": 1,
+            "mist": 18,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "她被掐得面頰漲紅卻依然笑得放浪張狂：「抓吧！殺吧！只是和士開手裡攥著半個鄴城官員的買官帳本——他要是進了大牢，明日整個尚書省都得跟著一起陪葬！」"
         }
@@ -455,7 +591,15 @@
             "corruption": 24,
             "tyranny": 22,
             "hedon": 20,
-            "rel_c": -30
+            "rel_c": -30,
+            "affair": "c",
+            "mist": 24,
+            "crave": 20,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "{c}人頭落地，北齊最後一點國運徹底斷絕。宣光殿紅燭高燒百日不滅，百僧與佞臣日夜狂歡，整座帝國在極致淫奢中等待著亡國的烈火。"
         },
@@ -466,7 +610,13 @@
             "inf": -20,
             "corruption": 18,
             "tyranny": 14,
-            "rel_c": 18
+            "rel_c": 18,
+            "exec": "b",
+            "mist": 18,
+            "heat": 7,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "和士開慘叫倒地，佛堂壯僧與禁軍頓時大亂！胡太后渾身濺滿情夫熱血，卻仰頭發出一陣歇斯底里的狂笑：「殺了好！殺得痛快！只是你殺得了和士開，殺得了這滿城早已被老娘腐蝕透了的人心嗎？」"
         }
@@ -490,7 +640,13 @@
             "corruption": 18,
             "hedon": 18,
             "tyranny": 10,
-            "rel_c": -18
+            "rel_c": -18,
+            "mist": 18,
+            "crave": 18,
+            "heat": 5,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "三城徹底淪為宣光殿的「采男獻金庫」，民間怨聲載道卻無人敢反抗。胡太后在成群俊美侍從與滾滾白銀裡笑得花枝亂顫。"
         },
@@ -501,7 +657,10 @@
             "inf": -10,
             "corruption": 10,
             "tyranny": 6,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 10,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "胡太后掃興地把橘子皮往地上一扔：「切，放回去就放回去吧——反正只要本宮張開嘴喊一聲，鄴城裡自己排著隊想進宣光殿的俊俏郎君能從朱雀門排到城外呢！」"
         }
@@ -523,7 +682,13 @@
             "corruption": 20,
             "hedon": 20,
             "tyranny": 8,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 20,
+            "crave": 20,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "太后親自下場開青樓的荒唐奇聞成了鄴城暗夜裡最瘋狂的秘密。胡太后在滿屋金條與脂粉氣中拉你共枕，笑稱你才是極樂坊裡永遠不用付錢的頭號恩客。"
         },
@@ -534,7 +699,11 @@
             "inf": -12,
             "corruption": 12,
             "tyranny": 6,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 12,
+            "crave": 6,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "「極樂坊」被封當夜，胡太后竟笑著穿上一身大紅舞衣在宣光殿裡自己跳了一夜胡旋舞：「拆了外頭的花樓沒關係，反正這整座鄴城皇宮，早就是本宮的極樂坊了！」"
         }
@@ -554,7 +723,12 @@
             "aff": 18,
             "inf": 14,
             "corruption": 20,
-            "hedon": 22
+            "hedon": 22,
+            "mist": 20,
+            "crave": 22,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "雷雨震天卻掩不住殿內最狂放無忌的浪笑與交纏。你們徹底拋棄了江山與身後罵名，只求在這最後的極樂長夜裡燃盡靈魂。"
         },
@@ -564,7 +738,9 @@
             "aff": 4,
             "inf": 4,
             "corruption": 14,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 14,
+            "house": 1
           },
           "outcome": "她先是一怔，旋即咯咯大笑著翻身滾進紅錦被裡，露出大片雪白圓潤的大腿嘲弄地望著你：「都爛到骨子裡了還想當明君？陛下，您現在裝清醒，已經太晚啦！」"
         }
@@ -588,7 +764,13 @@
             "hedon": 12,
             "rel_b": -26,
             "rel_c": -26,
-            "rel_g": -22
+            "rel_g": -22,
+            "jail": "b",
+            "mist": 20,
+            "crave": 12,
+            "heat": 8,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "{c}氣得口吐鮮血昏死過去，{b}與{g}被堵嘴拖入死牢。滿朝文武再無一人敢提「極樂坊」與「百僧佛堂」半個字。"
         },
@@ -601,7 +783,14 @@
             "tyranny": 10,
             "rel_b": -6,
             "rel_c": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "ban": 1,
+            "mist": 12,
+            "crave": 6,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "大火燒盡了所有紙面罪證，胡太后看著火光媚眼如絲地輕笑：「陛下真懂事——把大家的髒衣服一塊兒燒了，今晚宣光殿的握槊局才能繼續開嘛！」"
         }
@@ -625,7 +814,14 @@
             "corruption": 20,
             "hedon": 14,
             "tyranny": 10,
-            "rel_c": -26
+            "rel_c": -26,
+            "affair": "c",
+            "food": 100,
+            "mist": 20,
+            "crave": 14,
+            "heat": 5,
+            "troops": 100,
+            "soldiers": 80
           },
           "outcome": "和士開與武僧督戰隊在前線大肆克扣軍糧、酒肉荒淫，北齊精銳士氣徹底崩潰！敵軍長驅直入，而宣光殿裡依然紅燭高燒、握槊不止。"
         },
@@ -635,7 +831,14 @@
             "aff": -12,
             "inf": -8,
             "corruption": 10,
-            "rel_c": 16
+            "rel_c": 16,
+            "troops": 60,
+            "wood": -60,
+            "stone": -60,
+            "mist": 10,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "胡太后看著被強徵抬走的黃金箱，臉上笑容瞬間消失、冷冷哼了一聲：「拿老娘的買歡錢去打仗？好啊，看你們這幫死腦筋守不守得住鄴城！」"
         }
@@ -657,7 +860,13 @@
             "corruption": 22,
             "hedon": 16,
             "tyranny": 14,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 22,
+            "crave": 16,
+            "heat": 7,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "{c}仰天長嘯自刎於宮門前。顛簸逃亡的豪華馬車裡，胡太后聽著身後鄴城傾塌的轟鳴，竟然笑著打開一壺葡萄酒跨坐上你腰間：「江山沒了就沒了吧，只要酒還在、人還在，哪裡不能快活？」"
         },
@@ -667,7 +876,12 @@
             "aff": -14,
             "inf": 6,
             "corruption": 10,
-            "rel_c": 18
+            "rel_c": 18,
+            "exec": "c",
+            "mist": 10,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "黃金散落街頭瞬間激起殘軍最後血性！胡太后看著自己心愛的金珠與四名俊僧全被衝散，氣得破口大罵：「你這個沒情趣的蠢皇帝，老娘早晚要進長安開青樓去！」"
         }
@@ -690,7 +904,12 @@
               "aff": 16,
               "corruption": 10,
               "tyranny": 18,
-              "flag": "hh_tragedy_dead_avenged"
+              "flag": "hh_tragedy_dead_avenged",
+              "soldiers": 60,
+              "mist": 10,
+              "heat": 9,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "你親手將那兩枚象牙骰子放回她冰冷掌心。往後這座深宮再怎麼端莊肅穆，卻再也沒人能像她那樣毫無底線地拉著你一起狂笑沉淪了。"
           },
@@ -700,7 +919,11 @@
               "inf": -8,
               "corruption": 8,
               "tyranny": 8,
-              "flag": "hh_tragedy_dead_buried"
+              "flag": "hh_tragedy_dead_buried",
+              "mist": 10,
+              "heat": 5,
+              "pol": 15,
+              "wood": -50
             },
             "outcome": "大火燒了三天三夜，佛堂與花樓化作黑灰。只是每當深夜聞見西域葡萄酒香，你總會想起宣光殿裡那聲清脆的象牙骰子響。"
           }
@@ -723,7 +946,12 @@
               "inf": -16,
               "corruption": 14,
               "hedon": 10,
-              "flag": "hh_tragedy_captured_ransom"
+              "flag": "hh_tragedy_captured_ransom",
+              "mist": 14,
+              "crave": 10,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "全天下都在笑話你割地贖回一名樂在其中的長安名妓，你卻紅著眼簽下和約——就算她是娼，也只能在你一個人的床上當娼！"
           },
@@ -733,7 +961,11 @@
               "inf": 12,
               "corruption": 16,
               "tyranny": 12,
-              "flag": "hh_tragedy_captured_spy"
+              "flag": "hh_tragedy_captured_spy",
+              "mist": 16,
+              "heat": 6,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "靠著胡太后在長安青樓枕畔套來的絕密軍情，北齊竟奇蹟般連勝兩陣！史書上從此留下這段荒唐透頂的「娼館密探傳奇」。"
           }
@@ -756,7 +988,13 @@
               "inf": 12,
               "corruption": 18,
               "hedon": 20,
-              "flag": "hh_tragedy_wounded_devoted"
+              "flag": "hh_tragedy_wounded_devoted",
+              "mist": 18,
+              "crave": 20,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "血印與紅酒染紅了整張金床，她在痛楚與極樂交織中大笑流淚。養好傷後，宣光殿的荒淫程度比受傷前更加變本加厲。"
           },
@@ -766,7 +1004,11 @@
               "aff": -14,
               "inf": -8,
               "corruption": 16,
-              "flag": "hh_tragedy_wounded_sidelined"
+              "flag": "hh_tragedy_wounded_sidelined",
+              "affair": "g",
+              "mist": 16,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "迷湯藥效剛退，她便帶傷打昏了看門老嫗、偷偷喚進一名年輕太醫在藥房裡翻雲覆雨——沒人能關住一顆發了瘋的慾望之心。"
           }
@@ -791,7 +1033,12 @@
               "tyranny": 20,
               "hedon": 14,
               "rel_b": -30,
-              "flag": "hh_tragedy_humiliated_purge"
+              "flag": "hh_tragedy_humiliated_purge",
+              "pop": -15,
+              "mist": 22,
+              "crave": 14,
+              "heat": 10,
+              "exec": "b"
             },
             "outcome": "當夜佛堂傳出{b}絕望至極的悲鳴直至徹底瘋癲。洗淨泥污的胡太后重新坐回金床，成了整座鄴城無人能用任何道德擊垮的不死妖后。"
           },
@@ -802,7 +1049,12 @@
               "inf": -10,
               "corruption": 16,
               "rel_b": -14,
-              "flag": "hh_tragedy_humiliated_suppressed"
+              "flag": "hh_tragedy_humiliated_suppressed",
+              "cold": "b",
+              "inj": "b",
+              "mist": 16,
+              "ban": 1,
+              "tag": "受辱怨骨"
             },
             "outcome": "胡太后撇了撇嘴翻個白眼：「真沒勁兒。」可五日後，冷宮裡竟「不小心」混進了三名喝醉了迷魂酒的壯碩馬夫，徹底毀了{b}一生。"
           }
@@ -825,7 +1077,13 @@
               "inf": 14,
               "corruption": 18,
               "hedon": 18,
-              "flag": "hh_tragedy_survivor_reclaimed"
+              "flag": "hh_tragedy_survivor_reclaimed",
+              "soldiers": 60,
+              "mist": 18,
+              "crave": 18,
+              "heat": 6,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "滾燙藥浴與西域美酒讓宣光殿瞬間恢復了往日的紙醉金迷，彷彿外頭的血戰與屍骨從不存在。"
           },
@@ -836,7 +1094,10 @@
               "inf": -12,
               "corruption": 18,
               "tyranny": 8,
-              "flag": "hh_tragedy_survivor_quarantined"
+              "flag": "hh_tragedy_survivor_quarantined",
+              "mist": 18,
+              "heat": 5,
+              "jail": 1
             },
             "outcome": "她看著把守偏殿的年輕禁軍舔了舔嘴唇：「斷我的酒？沒關係，門外這幾個小將軍長得可比酒解渴多了呢。」"
           }
@@ -861,7 +1122,12 @@
               "hedon": 14,
               "tyranny": 12,
               "rel_c": -28,
-              "flag": "hh_tragedy_pregnant_kept"
+              "flag": "hh_tragedy_pregnant_kept",
+              "mist": 24,
+              "crave": 14,
+              "heat": 6,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "高氏宗室徹底寒心瓦解，胡太后卻開懷大笑著吻住你，彷彿兩人聯手給迂腐的天下開了一個最惡劣也最痛快的玩笑。"
           },
@@ -873,7 +1139,14 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_c": 14,
-              "flag": "hh_tragedy_pregnant_aborted"
+              "flag": "hh_tragedy_pregnant_aborted",
+              "kidLoss": 1,
+              "exec": "c",
+              "mist": 20,
+              "heat": 8,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "猩紅鮮血染透了大紅金床。她在劇痛裡抓破了錦被，抬起一雙怨毒又瘋狂的鳳眼冷笑：「真小氣呀陛下——殺了我肚子裡這塊肉，往後這宣光殿裡，我便天天找十個男人來給您戴綠帽！」"
           }
@@ -897,7 +1170,14 @@
               "corruption": 18,
               "hedon": 16,
               "rel_c": -18,
-              "flag": "hh_tragedy_forcedmarriage_reclaimed"
+              "flag": "hh_tragedy_forcedmarriage_reclaimed",
+              "pv": 1,
+              "mist": 18,
+              "crave": 16,
+              "heat": 6,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "火光照亮別院，北周親王驚慌落荒而逃。胡太后披著半敞的大紅嫁衣抱著兩箱明珠撲進你懷裡大笑：「搶親還倒賺十匣珠寶，這筆買賣划算透了！」"
           },
@@ -909,7 +1189,12 @@
               "corruption": 12,
               "tyranny": 8,
               "rel_c": 12,
-              "flag": "hh_tragedy_forcedmarriage_disowned"
+              "flag": "hh_tragedy_forcedmarriage_disowned",
+              "mist": 12,
+              "crave": 6,
+              "heat": 5,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "休書傳至長安那日，胡太后歡天喜地地把休書貼在了新開的平康坊青樓大門上當招牌，從此在長安城裡過上了比當太后快活十倍的極樂餘生。"
           }
@@ -932,7 +1217,14 @@
               "inf": 14,
               "corruption": 18,
               "hedon": 22,
-              "flag": "hh_tragedy_rescued_restored"
+              "flag": "hh_tragedy_rescued_restored",
+              "pv": 1,
+              "mist": 18,
+              "crave": 22,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "酒水四濺、浪笑震徹宣光殿直至天明。次日佛堂與極樂酒宴重新開張，比她被俘前更加靡麗無度。"
           },
@@ -942,7 +1234,10 @@
               "aff": -8,
               "inf": -4,
               "corruption": 14,
-              "flag": "hh_tragedy_rescued_restrained"
+              "flag": "hh_tragedy_rescued_restrained",
+              "mist": 14,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她泡在酒水裡撇嘴大笑：「把我關起來守活寡？陛下，您不如現在就賜我一杯毒酒痛快些——反正不出三天，守門的年輕侍衛就會自己把鑰匙遞進我被窩裡！」"
           }
@@ -967,7 +1262,12 @@
               "tyranny": 14,
               "hedon": 18,
               "rel_c": -30,
-              "flag": "hh_tragedy_imprisoned_freed"
+              "flag": "hh_tragedy_imprisoned_freed",
+              "exec": "c",
+              "mist": 20,
+              "crave": 18,
+              "heat": 7,
+              "pv": 1
             },
             "outcome": "{c}笑著被拉出去斬首，全部家產歸入宣光殿。當夜胡太后在金床上用極盡放蕩的姿態與你共慶這場「被綁架反而發大財」的奇蹟。"
           },
@@ -979,7 +1279,11 @@
               "corruption": 18,
               "tyranny": 6,
               "rel_c": -20,
-              "flag": "hh_tragedy_imprisoned_cold"
+              "flag": "hh_tragedy_imprisoned_cold",
+              "exec": "c",
+              "mist": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "她抱著那疊被沒收前的幾張金票站在冷殿門口嗤笑：「別人被綁架哭天搶地，老娘被綁架順手賺了三座銀礦——陛下居然還嫌老娘丟人？真是沒眼光！」"
           }
@@ -1002,7 +1306,13 @@
               "inf": 20,
               "corruption": 22,
               "hedon": 20,
-              "flag": "hh_tragedy_escaped_empowered"
+              "flag": "hh_tragedy_escaped_empowered",
+              "mist": 22,
+              "crave": 20,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "紅酒與金珠灑滿龍案，她在你的瘋狂佔有裡放蕩大笑。從此北齊朝野徹底臣服於這位「為后不如為娼」的千古絕世妖后。"
           },
@@ -1013,7 +1323,12 @@
               "inf": -10,
               "corruption": 16,
               "tyranny": 8,
-              "flag": "hh_tragedy_escaped_watched"
+              "flag": "hh_tragedy_escaped_watched",
+              "troops": 60,
+              "mist": 16,
+              "heat": 5,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "胡太后舔去唇邊酒珠，從龍椅扶手上滑落，回眸對著門外兩排年輕禁軍拋了個媚眼笑道：「敵軍十萬大營我都睡出來了，陛下這點看門的小郎君，倒挺合老娘胃口的！」"
           }
@@ -1022,3 +1337,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['huhou'] = DATA;
+  (window.characterPacks ||= {})['huhou'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

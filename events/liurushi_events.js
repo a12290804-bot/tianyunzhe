@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["liurushi"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 34 號 柳如是 (liurushi)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "liurushi",
     "index": 34,
@@ -18,7 +23,8 @@
       "0-34": "尚存幾分品評天下名士的孤高潔癖，卻已毫不留情地用書肆清議、匿名詩社與畫舫線報撕碎擋路者的名聲，將後宮視作一場誰先丟臉誰就該死的文壇死鬥。",
       "35-69": "徹底把深宮改造成秦淮最大的一座銷金窟——用春宮速寫勒索言官、借吳越鹽幫斷絕敵宮銀糧，在床笫間以儒衫半敞、墨筆遊走雪膚的褻瀆手段把君主逼成替她簽發殺令的癮君子。",
       "70+": "化為統御書院、青樓、水師暗莊與後宮暗獄的秦淮女梟：忤逆者不是被刻成淫書遺臭萬年，便是被套上麻袋沉入秦淮河底；連天子本人也被她當作絳雲樓裡蓋了私印、日夜索歡的專屬禁臠。"
-    }
+    },
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -43,7 +49,10 @@
             "hedon": 10,
             "corruption": 6,
             "rel_b": -8,
-            "flag": "liurushi_ink_tamed"
+            "flag": "liurushi_ink_tamed",
+            "crave": 10,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "她非但沒驚呼，反倒順勢跨坐上你的大腿，雙臂緊緊纏住你的後頸，故意把冰涼的墨指按進你滾燙的衣領裡。她在你耳垂上狠狠咬出一口血印，沙啞低笑：「好啊，天子若降得住秦淮河東君，明日城南的話本，我就替你改成歌功頌德——不過今夜這張書案，你得先被妾身榨乾。」"
         },
@@ -54,7 +63,10 @@
             "tyranny": 8,
             "corruption": 5,
             "rel_b": 5,
-            "flag": "liurushi_ledger_bargain"
+            "flag": "liurushi_ledger_bargain",
+            "heat": 5,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "她盯著那張查封令看了三息，忽然仰頭大笑，笑得肩頭儒衫滑落半邊，露出大片如玉肩頸。她反手從抹胸內袋抽出一枚溫熱的象牙私印丟進你手心：「封得了城南書肆，封不了太湖三百條畫舫。天子既要暗帳，我給——但每給一頁，你得把{b}的一塊肥肉割下來餵我。」"
         },
@@ -65,7 +77,11 @@
             "inf": 8,
             "corruption": 8,
             "rel_b": -12,
-            "flag": "liurushi_first_blood"
+            "flag": "liurushi_first_blood",
+            "mist": 10,
+            "affair": "g",
+            "heat": 6,
+            "tag": "桀驁未馴"
           },
           "outcome": "她眼底瞬間燒起兩簇妖異的火光，提筆就在自己雪白小臂上寫下四個淋漓大字，隨後敞著半邊衣襟走到殿門珠簾後。等{b}進來看到龍案上散落的艷本清樣與她鎖骨間未乾的墨痕時，臉色煞白得像具死屍；柳如是只隔著簾子吹了口茶氣，輕輕笑了。"
         }
@@ -90,7 +106,12 @@
             "corruption": 9,
             "rel_b": -10,
             "rel_g": -10,
-            "flag": "liurushi_scandal_press"
+            "flag": "liurushi_scandal_press",
+            "mist": 10,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "她的腰被硬木版硌得微微弓起，反而發出一聲愉悅到發顫的喘息。她雙腿熟練地纏住你的腰身，反手扯開你的玉帶：「天子果然和妾身是一路貨色！今夜別走，妾身一邊承歡，一邊替你把那老東西的祖宗十八代都刻進淫書裡。」"
         },
@@ -101,7 +122,10 @@
             "tyranny": 6,
             "corruption": 5,
             "rel_b": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "heat": 6,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "火光映紅她半張冷艷的臉，她盯著灰燼嗤笑一聲，順手拾起一塊燒焦的木炭，在你掌心慢慢畫了個圈：「天子比妾身還貪心，既要吃肉又要立牌坊。也好，這把火燒完，{b}和{g}明日就得跪著來求你保命了。」"
         }
@@ -127,7 +151,14 @@
             "corruption": 8,
             "rel_b": -14,
             "rel_g": -5,
-            "flag": "liurushi_banquet_dominance"
+            "flag": "liurushi_banquet_dominance",
+            "food": 100,
+            "mist": 10,
+            "crave": 8,
+            "heat": 6,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "她在你懷裡故意鬆開髮簪，烏黑長髮如瀑垂落，一隻手公然鑽進你的龍袍前襟輕輕揉捏。路過面如死灰的{b}身旁時，她挑起一抹極盡輕蔑的笑，用口型對{b}說了四個字：「下一個你。」"
         },
@@ -138,7 +169,11 @@
             "tyranny": 6,
             "corruption": 6,
             "rel_b": -4,
-            "rel_g": 4
+            "rel_g": 4,
+            "heat": 6,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "她順手把那疊發黃的信箋塞進你的袖袋，指尖卻趁機滑過你的掌心，狠狠掐出一道紅痕：「天子拿走了我的刀，就得用別的東西賠——今夜我要後宮所有書庫的鑰匙，還有{b}那間茶房的管事權。」"
         }
@@ -164,7 +199,11 @@
             "tyranny": 8,
             "corruption": 10,
             "rel_b": -16,
-            "flag": "liurushi_boat_purge"
+            "flag": "liurushi_boat_purge",
+            "mist": 10,
+            "heat": 5,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "見你現身，柳如是眼裡的殘忍瞬間化作熾熱的冶艷。她一腳把哭到失聲的{b}踢下軟毯，自己赤著腳爬到你膝上，拉著你的手去撫她被雨氣濡濕的細腰：「天子來得正好，船艙裡剛掃乾淨，這張竹榻還空著呢。」"
         },
@@ -174,7 +213,9 @@
             "aff": -6,
             "inf": 6,
             "tyranny": 4,
-            "rel_b": 8
+            "rel_b": 8,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "她被你扯得跌回榻上，紗衫徹底滑落肩頭，卻毫無懼色地盯著你冷笑：「江湖私刑？天子，後宮這口吃人的深井，比秦淮河髒上百倍。你今天護著這條咬人的狗，明日她就會連你的肉一起啃。」"
         }
@@ -200,7 +241,13 @@
             "corruption": 12,
             "rel_b": 6,
             "rel_g": -14,
-            "flag": "liurushi_jiangyun_syndicate"
+            "flag": "liurushi_jiangyun_syndicate",
+            "mist": 12,
+            "crave": 8,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "滿室眾人嚇得伏地顫抖，唯有柳如是笑得花枝亂顫。她順勢將懷裡瑟縮的{b}推到你腳邊，自己貼上你的後背，滾燙的指尖順著你的腰線滑下去：「既然天子親自坐鎮絳雲閣，今夜這筆『投名狀』，就由妾身和{b}一起替陛下驗收吧。」"
         },
@@ -212,7 +259,11 @@
             "tyranny": 12,
             "corruption": 6,
             "rel_b": -8,
-            "rel_g": 8
+            "rel_g": 8,
+            "exec": "b",
+            "heat": 6,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "慘叫聲在院外次第響起，血腥味順著門縫滲進紅紗帳。柳如是跪在冰涼地板上，仰著沾了一點血珠的雪白下巴看你，嘴角卻掛著近乎瘋狂的笑：「殺得好啊，天子。死人最會守口如瓶，你替妾身省了滅口的銀子。」"
         }
@@ -238,7 +289,10 @@
             "corruption": 10,
             "rel_b": -12,
             "rel_g": -15,
-            "flag": "liurushi_turned_mole"
+            "flag": "liurushi_turned_mole",
+            "exec": "b",
+            "mist": 10,
+            "heat": 5
           },
           "outcome": "{b}看著畫上親弟的醜態當場崩潰，磕頭如搗蒜般交出了{g}所有的密信。柳如是滿意地在你唇角啄了一口，指尖染著紅泥抹過你的下唇：「還是天子夠毒，留著一條嚇破膽的狗去咬舊主，比殺了她有趣多了。」"
         },
@@ -250,7 +304,13 @@
             "hedon": 6,
             "corruption": 12,
             "rel_b": -20,
-            "flag": "liurushi_family_ruined"
+            "flag": "liurushi_family_ruined",
+            "cold": "b",
+            "inj": "b",
+            "mist": 12,
+            "crave": 6,
+            "heat": 6,
+            "exile": "g"
           },
           "outcome": "不出兩日，{b}娘家祠堂外貼滿了污穢畫頁，老父氣絕吐血，{b}在冷宮裡撕碎了所有衣裳瘋笑不止。柳如是穿著那襲最艷的紅紗衣在你懷裡品茶，赤足輕輕蹭著你的小腿：「名節這東西，撕起來的聲音最好聽了。」"
         }
@@ -276,7 +336,14 @@
             "corruption": 10,
             "rel_b": -15,
             "rel_g": -15,
-            "flag": "liurushi_rumor_slaughter"
+            "flag": "liurushi_rumor_slaughter",
+            "ban": "b",
+            "mist": 10,
+            "crave": 10,
+            "heat": 6,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "她發出一聲綿長而放肆的嬌吟，雙腿緊緊夾住你的腰，故意在你掌心蹭出滑膩水聲：「天子這道旨意下得真及時——今晚我就把她們兩宮搜出來的私物，全拿來當咱們床榻上的助興玩意兒。」"
         },
@@ -288,7 +355,9 @@
             "tyranny": 6,
             "corruption": 6,
             "rel_b": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "她毫無愧色地舔了舔你的拇指，眼神狂妄而熾熱：「有又如何？沒有又如何？那些曾經跪在妾身裙下的名士，如今哪個不是替天子您寫文章、查暗帳的走狗？您若吃醋，現在就狠狠弄壞妾身，讓他們聽聽誰才是真正的主人。」"
         }
@@ -313,7 +382,12 @@
             "corruption": 10,
             "rel_b": 8,
             "rel_g": -18,
-            "flag": "liurushi_blood_pact"
+            "flag": "liurushi_blood_pact",
+            "mist": 10,
+            "heat": 6,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "三日後，崇文門火光沖天，{g}一派徹底傾覆。慶功夜裡，柳如是一手端著合巹酒、一手拉著眼神徹底麻木順從的{b}跪在你榻前，笑靨如花：「看吧，天子，把仇人綁在同一條船上，划起槳來比親姐妹還賣力。」"
         },
@@ -324,7 +398,12 @@
             "tyranny": 10,
             "corruption": 8,
             "rel_b": -6,
-            "rel_g": -14
+            "rel_g": -14,
+            "affair": "g",
+            "mist": 10,
+            "heat": 5,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "柳如是看著案上多出來的那份密報，先是一怔，隨後眼中爆發出近乎癡迷的興奮光芒。她慢慢解開儒衫扣子走向你：「好手段！我就喜歡能把妾身逼到牆角的男人——這筆債，妾身今夜用身子連本帶利還您。」"
         }
@@ -350,7 +429,12 @@
             "tyranny": 8,
             "corruption": 12,
             "rel_b": -18,
-            "flag": "liurushi_curtain_humiliation"
+            "flag": "liurushi_curtain_humiliation",
+            "mist": 12,
+            "crave": 15,
+            "heat": 5,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "柳如是爽得仰起雪白天鵝般的頸項，喉間溢出一串破碎而得意的嬌笑。那一夜，她身上被你寫滿了凌亂的紅墨與吻痕，而天亮時被抬出去的{b}雙膝烏青、失魂落魄，從此見了柳如是連頭都不敢抬。"
         },
@@ -360,7 +444,12 @@
             "aff": 10,
             "hedon": 12,
             "corruption": 8,
-            "rel_b": -6
+            "rel_b": -6,
+            "mist": 10,
+            "crave": 12,
+            "house": 1,
+            "inj": "b",
+            "heat": 8
           },
           "outcome": "她被你吻得喘不過氣，卻在換氣間隙惡劣地咬破你的下唇，血腥味在兩人舌尖炸開：「心疼了？可惜啊天子，你的身子可比你的嘴誠實多了——抓得妾身這麼緊，明早起來，我這滿身青紫可是要穿著低領衫去給六宮看的。」"
         }
@@ -387,7 +476,13 @@
             "corruption": 16,
             "rel_b": -12,
             "rel_g": -12,
-            "flag": "liurushi_ink_and_flesh_rule"
+            "flag": "liurushi_ink_and_flesh_rule",
+            "food": 100,
+            "mist": 16,
+            "crave": 18,
+            "heat": 5,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "次日早朝無故罷朝，而三道蓋著御寶、卻帶著淡淡脂粉與酒氣的抄家令已血洗京師。朝野上下無人不知，如今真正的司禮監不在內廷，而在絳雲樓那張沾滿墨汁與歡愛水漬的龍榻之上。"
         },
@@ -400,7 +495,12 @@
             "tyranny": 12,
             "corruption": 10,
             "rel_b": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "mist": 10,
+            "crave": 10,
+            "heat": 6,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "缺氧讓她的臉頰泛起病態的艷紅，她非但沒掙扎，反倒眼中水光暴漲，痙攣著攀上極致的顫慄，沙啞吐氣：「好……太好了……天子就該這麼掐著妾身的脖子……把這天下一起拖進地獄裡！」"
         }
@@ -426,7 +526,12 @@
             "corruption": 14,
             "rel_b": -25,
             "rel_g": -8,
-            "flag": "liurushi_blood_triumph"
+            "flag": "liurushi_blood_triumph",
+            "jail": "b",
+            "mist": 14,
+            "heat": 6,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "當晚在太醫院外的暖閣裡，她頸上纏著雪白繃帶，卻已經迫不及待地跨坐在你身上。傷口滲出的點點嫣紅混著汗水滑落，她舔著嘴唇狂笑：「這道疤，我要留一輩子——每次天子親這裡的時候，都得記得是誰幫您清了後宮！」"
         },
@@ -438,7 +543,13 @@
             "tyranny": 10,
             "corruption": 10,
             "rel_b": -12,
-            "rel_g": 4
+            "rel_g": 4,
+            "ban": "b",
+            "mist": 10,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "她任由鮮血滴在金磚上，望著你的背影慢條斯理地擦去嘴角血沫，笑得陰寒刺骨：「禁足？天子以為一道宮鎖，鎖得住天下三百間書院的筆桿子嗎？三日後，你會親自跪著來求我開門的。」"
         }
@@ -463,7 +574,12 @@
             "tyranny": 10,
             "corruption": 14,
             "rel_b": -10,
-            "flag": "liurushi_dark_heir"
+            "flag": "liurushi_dark_heir",
+            "mist": 14,
+            "heat": 5,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "{heir}眼中的畏懼漸漸褪去，取而代之的是一種與年齡極不相稱的陰冷早熟。等孩子退下後，柳如是直接跌進你懷裡，拉過你的手按在自己急促跳動的心口：「我們的孩子，絕不會像前朝那些軟骨頭一樣，被人牽著鼻子去跳井。」"
         },
@@ -473,7 +589,10 @@
             "aff": -8,
             "inf": 4,
             "tyranny": 4,
-            "rel_b": 10
+            "rel_b": 10,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "紙頁在火盆裡捲曲燃燒，柳如是盯著跳動的火光，嘴角勾起一抹極盡嘲諷的冷笑：「天子想把孩子養成溫室裡的綿羊，等著被{b}之流啃得骨頭都不剩？也好，那本經書我腦子裡還有一百篇，總有孩子自己哭著來求我教的那天。」"
         }
@@ -500,7 +619,14 @@
             "corruption": 18,
             "rel_b": -25,
             "rel_g": -25,
-            "flag": "liurushi_empress_of_shadows"
+            "flag": "liurushi_empress_of_shadows",
+            "troops": 60,
+            "mist": 18,
+            "crave": 16,
+            "heat": 7,
+            "mainWife": 1,
+            "exec": "b",
+            "soldiers": -50
           },
           "outcome": "在龍椅嘎吱作響的劇烈晃動與柳如是放肆入骨的喘息聲中，{b}與{g}徹底斷了最後一絲念想。從此大明宮闈不再有溫順賢妃，只有那位穿著半敞儒袍、手握生殺筆與水師暗網的河東女梟。"
         },
@@ -512,7 +638,13 @@
             "tyranny": 16,
             "corruption": 12,
             "rel_b": -20,
-            "rel_g": -20
+            "rel_g": -20,
+            "troops": 60,
+            "mist": 12,
+            "heat": 8,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "她看著你毫不手軟地收回兵權，先是冷哼一聲，隨即卻笑得更加妖嬈，主動解開紅袍滑落肩頭：「天子果然連枕邊人都防著。沒關係，水幫可以給您，兵符也可以給您——反正您這顆心和這具身子，早就離不開妾身的毒了。」"
         }
@@ -540,7 +672,13 @@
             "corruption": 10,
             "rel_b": -10,
             "rel_c": -10,
-            "flag": "liurushi_jiangnan_viceroy"
+            "flag": "liurushi_jiangnan_viceroy",
+            "food": 100,
+            "mist": 10,
+            "crave": 8,
+            "heat": 6,
+            "pv": 1,
+            "wood": 60
           },
           "outcome": "半月後，江南解運入京的稅銀翻了整整一倍，隨銀車同來的還有一只沉香木匣——裡頭裝著她親手剪下的一縷青絲、一件沾著墨痕的貼身紗衣，以及三名被她逼到自殺的江南貪官的官印。"
         },
@@ -552,7 +690,10 @@
             "tyranny": 6,
             "corruption": 6,
             "rel_b": -4,
-            "rel_c": -6
+            "rel_c": -6,
+            "heat": 6,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "她連夜乘快船趕回京城，推開你寢殿門時滿身露水，二話不說就把那條絳紅羅帕蒙住你的雙眼，翻身壓上來狠狠咬住你的喉結：「急著把我叫回來收權？行啊，先把欠妾身這半個月的債，今晚一次清乾淨！」"
         }
@@ -577,7 +718,12 @@
             "corruption": 12,
             "rel_b": -14,
             "rel_g": -14,
-            "flag": "liurushi_economic_chokehold"
+            "flag": "liurushi_economic_chokehold",
+            "mist": 12,
+            "heat": 6,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "不出一個月，{b}與{g}在京師的宮院連炭火與名貴藥材都捉襟見肘，手下管事紛紛倒戈。柳如是則穿著一身蘇州進貢的雲霧冰紗回京覆命，一進門便把江南織造局的總印拍進了你的龍袍襟口。"
         },
@@ -589,7 +735,10 @@
             "tyranny": 8,
             "corruption": 6,
             "rel_b": 4,
-            "rel_g": 4
+            "rel_g": 4,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "得知水幫受挫，柳如是不怒反笑，親筆寄來一首嘲諷朝廷「養虎又怕虎吃肉」的七言絕句，字跡狂放如刀——信紙背面，還印著一個鮮紅挑釁的唇印。"
         }
@@ -612,7 +761,11 @@
             "hedon": 16,
             "corruption": 14,
             "rel_b": -10,
-            "flag": "liurushi_mutual_brand"
+            "flag": "liurushi_mutual_brand",
+            "mist": 14,
+            "crave": 16,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "她痛得弓起纖細如柳的腰肢，隨即爆發出撕裂夜色的狂喜嬌吟，雙腿死死鎖住你的腰身，指甲在你背上抓出十道淋漓血痕——那一夜，你們不再是君與妃，而是兩頭在深宮血泥裡彼此吞噬的絕世妖魔。"
         },
@@ -622,7 +775,10 @@
             "aff": 14,
             "inf": 14,
             "corruption": 10,
-            "rel_b": -6
+            "rel_b": -6,
+            "mist": 10,
+            "heat": 6,
+            "house": 1
           },
           "outcome": "她貼在你劇烈跳動的胸口，長長呼出一口帶著酒香的熱氣，收起了所有張牙舞爪的鋒芒，只留下一句低沉而致命的誓言：「好，那從今往後，你的刀指向哪裡，我的筆與血就流向哪裡。」"
         }
@@ -648,7 +804,12 @@
             "corruption": 14,
             "rel_b": -16,
             "rel_g": -16,
-            "flag": "liurushi_triple_sweep"
+            "flag": "liurushi_triple_sweep",
+            "mist": 14,
+            "crave": 12,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "門外傳來絕望的哭喊與侍衛驅趕的腳步聲，門內卻是一片令人血脈僨張的翻雲覆雨。柳如是將兩枚冰涼金印按在自己汗濕的雪胸之間，仰頭狂笑著迎合你的每一次衝撞。"
         },
@@ -660,7 +821,12 @@
             "tyranny": 8,
             "corruption": 8,
             "rel_b": 4,
-            "rel_g": -18
+            "rel_g": -18,
+            "mist": 10,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "柳如是眼波一沉，指尖在你肩頭狠狠掐出一道血痕，隨即卻又媚笑著吻上你的耳根：「天子真會玩平衡之術……沒關係，留著{b}那條殘狗也好，免得妾身以後在後宮太寂寞，沒東西可撕。」"
         }
@@ -688,7 +854,14 @@
             "corruption": 10,
             "rel_b": -15,
             "rel_g": -12,
-            "flag": "liurushi_river_commander"
+            "flag": "liurushi_river_commander",
+            "jail": 1,
+            "troops": 60,
+            "mist": 10,
+            "crave": 6,
+            "heat": 5,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "她接過虎符在掌心重重一握，眼底燃起近乎毀滅的狂熱。散帳後她沒換戰甲，直接把你按在行軍輿圖上索取了一場粗暴而滾燙的臨別歡愛：「等我燒光北虜的船回來，天子，你得用整座後宮的命來犒賞我。」"
         },
@@ -699,7 +872,10 @@
             "inf": 10,
             "corruption": 6,
             "rel_b": 4,
-            "rel_g": 4
+            "rel_g": 4,
+            "heat": 6,
+            "exec": "g",
+            "pop": -10
           },
           "outcome": "她冷笑著將佩劍重重插回鞘中，轉身離去前丟下一句寒氣逼人的話：「天子把我的火船交給那群蠢豬，可別等江防崩潰那天，後悔沒讓我親自點火！」"
         }
@@ -725,7 +901,12 @@
             "corruption": 12,
             "rel_b": -16,
             "rel_g": -14,
-            "flag": "liurushi_yangtze_inferno"
+            "flag": "liurushi_yangtze_inferno",
+            "mist": 12,
+            "heat": 5,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "驚天動地的爆炸掀翻了江面，熱浪把兩人震倒在滿是血水的甲板上。她在漫天火雨裡發狂般翻身騎在你身上，沾著血與硝煙的嘴唇狠狠啃咬你的唇舌：「死在一起都值了……不過天子，今天死的是北虜，活下來當魔鬼的是我們！」"
         },
@@ -736,7 +917,11 @@
             "inf": 8,
             "corruption": 6,
             "rel_b": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "troops": 60,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "她被拖回船艙時還在破口大罵，卻在看見你肩頭替她擋箭留下的傷口時驟然安靜下來。她撕下染血的紅袍替你死死綁住傷口，眼底翻湧著比江火更燙的殺意：「這箭，我記在{b}和{g}頭上了。」"
         }
@@ -761,7 +946,12 @@
               "tyranny": 20,
               "corruption": 16,
               "rel_b": -25,
-              "flag": "liurushi_blood_funeral"
+              "flag": "liurushi_blood_funeral",
+              "mist": 16,
+              "heat": 10,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "靈堂白燭燃了七天七夜，京師菜市口的血水流乾了又積滿。你將她的烏木棺停在絳雲樓正中，從此再無一人敢在朝堂上提一個「和」字。"
           },
@@ -771,7 +961,10 @@
               "aff": 10,
               "inf": 8,
               "corruption": 8,
-              "rel_b": -10
+              "rel_b": -10,
+              "mist": 10,
+              "pol": 15,
+              "wood": -50
             },
             "outcome": "墓碑立起那夜，京城各大書肆同時流傳出一本無名烈女傳，把她寫成了活著的鬼神；而每逢梅雨深夜，你總覺得案頭的徽墨裡還散著她那股不肯散去的酒氣。"
           }
@@ -798,7 +991,13 @@
               "corruption": 10,
               "rel_b": -12,
               "rel_g": -12,
-              "flag": "liurushi_rescue_raid"
+              "flag": "liurushi_rescue_raid",
+              "troops": 60,
+              "mist": 10,
+              "heat": 5,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "你親手斬了三個阻攔出兵的文臣，連夜點燃狼煙渡江。無論她活著還是只剩一口氣，這筆帳都必須用敵帥與內奸的頭顱來算。"
           },
@@ -809,7 +1008,10 @@
               "inf": 8,
               "corruption": 12,
               "rel_b": -6,
-              "rel_g": -6
+              "rel_g": -6,
+              "mist": 12,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "敵營收了銀子卻遲遲不放人，反倒派人送回她一隻沾滿血漬與撕裂痕跡的緋紅抹胸，挑釁的羞辱讓整個南都朝堂沸騰如油鍋。"
           }
@@ -835,7 +1037,12 @@
               "tyranny": 10,
               "corruption": 12,
               "rel_b": -18,
-              "flag": "liurushi_left_hand_wrath"
+              "flag": "liurushi_left_hand_wrath",
+              "inj": "b",
+              "mist": 12,
+              "heat": 5,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "院外響起清脆的巴掌聲與{b}的哀嚎。柳如是靠在你胸口，忍著背上撕裂般的劇痛，用那隻完好的左手慢慢解開你的腰帶，眼底燒著病態的烈火：「別停……讓我疼，讓我記住今天每一個笑話我的人。」"
           },
@@ -845,7 +1052,10 @@
               "aff": 6,
               "inf": 8,
               "corruption": 6,
-              "rel_b": -4
+              "rel_b": -4,
+              "mist": 22,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "她盯著被你收走的印信，沒有爭吵，只是在深夜裡獨自用左手抓起炭筆，在牆壁上歪歪扭扭卻力透紙背地寫滿了仇人的名字，指節磨得鮮血淋漓。"
           }
@@ -872,7 +1082,12 @@
               "corruption": 12,
               "rel_b": -10,
               "rel_g": -10,
-              "flag": "liurushi_cage_rescue"
+              "flag": "liurushi_cage_rescue",
+              "soldiers": 60,
+              "mist": 12,
+              "heat": 6,
+              "exec": "b",
+              "pop": -15
             },
             "outcome": "城門轟然洞開，血戰整整持續到黃昏。當你渾身是血地劈開木籠、用大氅將她裹進懷裡時，她顫抖著抱緊你的脖子，在你耳邊嘶聲發誓：「凡是今天在城樓上偷笑的人，一個都別想全屍而死。」"
           },
@@ -884,7 +1099,11 @@
               "tyranny": 10,
               "corruption": 14,
               "rel_b": 8,
-              "rel_g": 8
+              "rel_g": 8,
+              "mist": 14,
+              "heat": 5,
+              "ban": 1,
+              "tag": "受辱怨骨"
             },
             "outcome": "囚車遠去前，她隔著數百步死死盯著城樓上沒有動彈的你，最後緩緩咧開沾血的紅唇笑了。那抹笑意，成了日後無數個深夜裡纏繞你夢魘的索命符。"
           }
@@ -912,7 +1131,12 @@
               "corruption": 16,
               "rel_b": -18,
               "rel_g": -14,
-              "flag": "liurushi_revenant_purge"
+              "flag": "liurushi_revenant_purge",
+              "mist": 16,
+              "crave": 10,
+              "heat": 6,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "她在你懷裡發出野獸般的低鳴，撕碎身上最後的破布，在冰冷的御書房地板上與你進行了一場近乎自毀的瘋狂交合。次日清晨，依據她帶回的密錄，京師人頭滾滾。"
           },
@@ -923,7 +1147,10 @@
               "inf": 10,
               "corruption": 8,
               "rel_b": -4,
-              "rel_g": -4
+              "rel_g": -4,
+              "mist": 10,
+              "heat": 6,
+              "jail": 1
             },
             "outcome": "她冷冷看著你保持距離的動作，嘴角扯起一絲淒厲的笑，任由侍女把她扶走——可那一晚，她就暗中聯絡上了潛伏京師的太湖舊部，決定不再把復仇的刀交給任何人。"
           }
@@ -952,7 +1179,13 @@
               "corruption": 18,
               "rel_b": -16,
               "rel_g": -16,
-              "flag": "liurushi_poison_heir"
+              "flag": "liurushi_poison_heir",
+              "preg": 1,
+              "inj": "b",
+              "mist": 18,
+              "crave": 8,
+              "heat": 5,
+              "tag": "懷敵種"
             },
             "outcome": "滿宮上下震駭失語，{b}與{g}氣得險些吐血卻無從取證。柳如是伏在你懷裡狂笑到眼淚直流，那種與你共犯滔天禁忌的扭曲快感，徹底把你們綁死在同一條血色賊船上。"
           },
@@ -964,7 +1197,13 @@
               "tyranny": 16,
               "corruption": 14,
               "rel_b": 6,
-              "rel_g": 6
+              "rel_g": 6,
+              "mist": 14,
+              "heat": 8,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "淒厲的慘叫與濃重的血腥氣整夜籠罩絳雲樓。當她滿身冷汗從血泊裡醒來時，眼裡最後一絲人氣徹底熄滅，只剩下對你與整個後宮無止境的冰冷恨意。"
           }
@@ -991,7 +1230,12 @@
               "corruption": 16,
               "rel_b": -12,
               "rel_c": -8,
-              "flag": "liurushi_bedchamber_spy"
+              "flag": "liurushi_bedchamber_spy",
+              "mist": 16,
+              "heat": 6,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "三個月後，北虜前鋒因軍機盡洩慘敗於江北，敵帥在洞房裡喝下她親手遞上的合巹毒酒七竅流血而亡。她在火光沖天的敵府裡扯碎嫁衣，提著敵帥首級一路殺回南岸。"
           },
@@ -1003,7 +1247,11 @@
               "tyranny": 8,
               "corruption": 10,
               "rel_b": 10,
-              "rel_c": 10
+              "rel_c": 10,
+              "mist": 10,
+              "heat": 5,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "聖旨傳到北岸那日，她對著南方冷笑著燒掉了所有書信。半年後，江南書肆突然湧出無數痛罵你薄情寡義、揭露南朝宮闈醜聞的匿名奇書，筆鋒毒辣得舉世皆知出自誰手。"
           }
@@ -1031,7 +1279,13 @@
               "corruption": 14,
               "rel_b": -18,
               "rel_g": -14,
-              "flag": "liurushi_rescued_vengeance"
+              "flag": "liurushi_rescued_vengeance",
+              "mist": 14,
+              "crave": 12,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "那一夜她身上纏滿了白布，卻比任何時候都更加放肆熾烈。天亮之後，曾瓜分她江南暗莊的幾名管事全被剝光了吊死在城外柳樹林裡，後宮再度瑟瑟發抖。"
           },
@@ -1042,7 +1296,9 @@
               "inf": 6,
               "corruption": 6,
               "rel_b": 4,
-              "rel_g": 4
+              "rel_g": 4,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她在錦被裡沉默地盯著帳頂，指尖一遍遍摩挲著鎖骨上的新疤，眼底沒有半點感激，只有愈發深沉的算計。"
           }
@@ -1070,7 +1326,11 @@
               "corruption": 16,
               "rel_b": -22,
               "rel_c": -20,
-              "flag": "liurushi_gilded_cage_massacre"
+              "flag": "liurushi_gilded_cage_massacre",
+              "exec": "b",
+              "mist": 16,
+              "heat": 7,
+              "pv": 1
             },
             "outcome": "水閣火光沖天，她赤著腳、拖著還沒來得及解開的斷裂金鏈，當場把熱騰騰的叛臣心肝踹進太湖，隨即渾身發抖卻狂笑著吻上你的唇：「這條金鏈別丟……回去換天子您親自鎖我。」"
           },
@@ -1081,7 +1341,10 @@
               "inf": 6,
               "corruption": 10,
               "rel_b": -8,
-              "rel_c": -8
+              "rel_c": -8,
+              "mist": 10,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "雖成功將她救回，卻打草驚蛇讓{b}與{c}及時銷毀了最關鍵的通敵證據。她回宮後撫摸著腳踝磨破的紅痕，冷笑著看著你：「天子這份憐香惜玉，差點毀了我用半年皮肉換來的殺局。」"
           }
@@ -1110,7 +1373,13 @@
               "corruption": 16,
               "rel_b": -16,
               "rel_g": -12,
-              "flag": "liurushi_untamed_wolf"
+              "flag": "liurushi_untamed_wolf",
+              "mist": 16,
+              "crave": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "殿門在身後轟然關上，她在案頭劇烈地迎合與撕咬，鮮血、江水與歡愛的汗水徹底混在一起。從此你與她之間再無上下尊卑，只有勢均力敵的瘋狂共生。"
           },
@@ -1122,7 +1391,11 @@
               "tyranny": 12,
               "corruption": 10,
               "rel_b": 4,
-              "rel_g": 4
+              "rel_g": 4,
+              "mist": 10,
+              "heat": 6,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "她盯著被侍衛捧走的彎刀，發出一聲極其輕蔑的冷笑，任由濕透的薄衫貼在身上轉身離去——當晚，京師所有書肆就開始瘋傳「河東君單騎屠虜、朝廷嫉賢收權」的歌謠。"
           }
@@ -1131,3 +1404,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['liurushi'] = DATA;
+  (window.characterPacks ||= {})['liurushi'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

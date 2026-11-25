@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["jiananfeng"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 23 號 賈南風 (jiananfeng)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "jiananfeng",
     "index": 23,
@@ -18,7 +23,8 @@
       "0-34": "權臣賈氏之女初入洛陽宮，因身形矮小青黑、眉後帶疵而對美貌宮嬪懷有極度敏感的嫉恨，已開始動用外家勢力與強硬床第手段把持天子。",
       "35-69": "坐穩西宮權柄的妒海暴君，動輒提戟闖殿逼落情敵胎兒，同時開啟「竹箱獵豔」暗線，於洛陽城中私擄俊美少年入宮采補滅口，並借藩王之刀清洗外戚。",
       "70+": "把金墉城化作皇族墳場、把洛陽朝堂攪成諸王血池的毒后。不再遮掩五石散下的淫奢與暴虐，以偽詔廢儲、以男寵掌禁軍，連天子都只是她膝下任由擺佈的昏聵玩偶。"
-    }
+    },
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -40,7 +46,11 @@
             "aff": 12,
             "inf": 12,
             "corruption": 6,
-            "hedon": 8
+            "hedon": 8,
+            "office": 1,
+            "crave": 8,
+            "heat": 6,
+            "marry": 1
           },
           "outcome": "她在你身下沒有半分柔弱，反而像發狂的野貓般咬破你的肩頭、用修長金甲套在你背上劃出一道道紅痕，在濃烈酒香與粗重喘息裡死死佔有了你的整個夜晚。"
         },
@@ -50,7 +60,10 @@
             "aff": -4,
             "inf": -2,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "她右眉後那枚暗紅小疵瞬間漲得發紫，卻很快壓下怒火，發出咯咯的冷笑：「陛下有脾氣才好，軟骨頭的男人折騰起來最沒意思。」翌日，賈氏門生便在朝堂上連上了三道逼宮奏章。"
         },
@@ -60,7 +73,12 @@
             "aff": 8,
             "inf": 6,
             "corruption": 10,
-            "hedon": 12
+            "hedon": 12,
+            "mist": 10,
+            "crave": 12,
+            "affair": "g",
+            "heat": 6,
+            "tag": "桀驁未馴"
           },
           "outcome": "藥酒的燥熱讓兩人在羅帳裡近乎失控地糾纏到天明。可你尚未清醒，大內密報便已遞上：她入宮才一夜，已經用十箱金餅把負責宮門出入的兩名閹宦買成了自家私奴。"
         }
@@ -82,7 +100,13 @@
             "corruption": 12,
             "hedon": 8,
             "rel_b": -10,
-            "rel_g": 10
+            "rel_g": 10,
+            "mist": 12,
+            "crave": 8,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "她得意地踮起腳尖狠狠吻上你的喉結，濃烈龍涎香薰得人頭暈目眩。自此西宮成了洛陽城最密不透風的暗窟，而那些夜間抬進去的青竹箱，往往比抬出來時沉重許多。"
         },
@@ -93,7 +117,11 @@
             "inf": -6,
             "corruption": 8,
             "tyranny": 6,
-            "rel_g": -8
+            "rel_g": -8,
+            "affair": "g",
+            "mist": 10,
+            "troops": 60,
+            "heat": 6
           },
           "outcome": "箱蓋撬開，裡頭卻只躺著一隻半死不活的西域大黑豹與幾匹錦緞——原來她早把真正裝著活人的那口箱子從後門運走了。賈南風看著你鐵青的臉，笑得尖利又得意。"
         }
@@ -114,7 +142,13 @@
             "inf": 16,
             "corruption": 14,
             "tyranny": 12,
-            "rel_b": -28
+            "rel_b": -28,
+            "kidLoss": "b",
+            "mist": 14,
+            "heat": 6,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "那一聲「短戟砸案」震碎了整個後宮的膽氣。當夜賈南風穿著沾了一點血跡的紅衣爬上你的床，服過五石散的身軀滾燙得像團火，死死壓在你身上嘶聲笑著：「這宮裡，誰敢比我先挺起肚子，我手裡的戟就認誰！」"
         },
@@ -125,7 +159,13 @@
             "inf": -8,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 8
+            "rel_b": 8,
+            "preg": 1,
+            "ban": "b",
+            "mist": 12,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "她摔在藥汁裡，卻像瘋了一樣仰頭大笑，露出染紅的牙齒：「關我三個月？好啊！只要她肚子裡這塊肉沒保住，我關三年也划算！」三日後，{b}果然沒能保住胎兒，從此見了賈南風便渾身發抖。"
         }
@@ -148,7 +188,13 @@
             "inf": 14,
             "corruption": 16,
             "tyranny": 12,
-            "rel_g": -28
+            "rel_g": -28,
+            "exile": "g",
+            "tag": "毀容@g",
+            "mist": 16,
+            "heat": 6,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "{g}絕望地被拖出西宮。門剛合上，賈南風便如餓虎般撲進你懷裡，扯開你的衣襟瘋狂啃咬你的頸項，彷彿把情敵毀容的血腥快感全都轉化成了最原始熾烈的佔有慾。"
         },
@@ -158,7 +204,10 @@
             "aff": -14,
             "inf": -10,
             "corruption": 12,
-            "rel_g": 10
+            "rel_g": 10,
+            "mist": 12,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "金甲套碎裂的聲響裡，賈南風看著自己發紅的指尖，沒有哭鬧，只陰沉沉地盯著你護在身後的{g}：「陛下護得了她的臉，護得住她的命嗎？」半月後，{g}便在荒井邊離奇失足身亡。"
         }
@@ -180,7 +229,13 @@
             "corruption": 14,
             "hedon": 12,
             "rel_g": 14,
-            "rel_c": -14
+            "rel_c": -14,
+            "mist": 14,
+            "crave": 12,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "賈南風大笑著踢開腳下小吏，扯過薄紗赤足撲進你懷裡，當著眾人面把殘酒渡進你口中。自此賈門黨羽遍布中書與禁軍，{c}在朝堂上徹底陷入孤立。"
         },
@@ -192,7 +247,10 @@
             "corruption": 10,
             "tyranny": 6,
             "rel_g": -8,
-            "rel_c": 12
+            "rel_c": 12,
+            "mist": 10,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "那兩名年輕官吏當場被押走，賈南風卻連眼皮都沒眨一下，只裹緊紅紗冷笑：「{c}敢動我的人，那便瞧瞧是他先倒台，還是我先倒台。」不出十日，{c}便遭御史集體彈劾「結黨謀逆」。"
         }
@@ -213,7 +271,11 @@
             "inf": 14,
             "corruption": 16,
             "tyranny": 14,
-            "rel_b": -22
+            "rel_b": -22,
+            "exec": "b",
+            "troops": 60,
+            "mist": 16,
+            "heat": 7
           },
           "outcome": "泥土一層層壓熄了坑裡的悶哼。回到暖閣後，全身濕透的賈南風直接扯下你我身上的濕衣，在烈酒與五石散的催動下瘋狂撕咬纏綿，慶祝又一次把秘密徹底埋進土裡。"
         },
@@ -224,7 +286,11 @@
             "inf": -12,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 8
+            "rel_b": 8,
+            "troops": 60,
+            "mist": 12,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "你保住了閹宦一條命，可當夜他押進廷尉大牢不到兩個時辰，便被賈家安插在獄中的獄卒用棉被活活悶死，只留下一具死無對證的屍體與賈南風冷笑的眼神。"
         }
@@ -246,7 +312,12 @@
             "corruption": 16,
             "tyranny": 14,
             "rel_b": -26,
-            "rel_c": -24
+            "rel_c": -24,
+            "jail": "b",
+            "mist": 16,
+            "heat": 7,
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "一場原本足以廢后的醜聞風暴，瞬間反轉成賈南風血洗政敵的屠刀。滿朝文武噤若寒蟬，而她當夜坐在你腿上把玩著那張偽造醉書，笑得前仰後合。"
         },
@@ -257,7 +328,12 @@
             "inf": -8,
             "corruption": 12,
             "rel_b": -6,
-            "rel_c": 10
+            "rel_c": 10,
+            "rebel": 1,
+            "pv": 1,
+            "mist": 12,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "紙片紛飛間，賈南風面色鐵青地盯著你。可不出三日，她便暗中買通一名手握重兵的宗室藩王，直接以「清君側」為名圍了{c}的府邸——你不肯動手，她就找藩王替她動手。"
         }
@@ -278,7 +354,12 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 16,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 18,
+            "heat": 8,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "八天後的雪夜，金墉城傳來「憂憤病逝」的死訊，實則裡頭連草席都被啃爛了一角。賈南風與{g}在沾滿血債的權力頂峰重新舉杯，整個洛陽宮再無人敢逆她的意。"
         },
@@ -288,7 +369,10 @@
             "aff": -10,
             "inf": -10,
             "corruption": 12,
-            "rel_g": -10
+            "rel_g": -10,
+            "mist": 12,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "賈南風怒得把整張酒案掀翻，鹿肉與紅酒潑了一地。她喘著粗氣盯著你，右眉後的紅疵像燒紅的烙鐵：「陛下今天心軟，明日等他們把刀架上來的時候，別指望我替你擋！」"
         }
@@ -311,7 +395,12 @@
             "inf": 10,
             "corruption": 12,
             "hedon": 16,
-            "rel_b": -14
+            "rel_b": -14,
+            "mist": 12,
+            "crave": 16,
+            "heat": 6,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "那一夜兩人在五石散的燥熱裡幾乎像在互相吞噬般翻滾到天亮，彼此肩背皆是齒印與抓痕。次日清晨，她神清氣爽地讓人把一包碎銅鏡渣送去了{b}的梳妝台。"
         },
@@ -322,7 +411,11 @@
             "inf": -8,
             "corruption": 14,
             "tyranny": 4,
-            "rel_b": 8
+            "rel_b": 8,
+            "mist": 14,
+            "house": 1,
+            "inj": "b",
+            "heat": 8
           },
           "outcome": "你轉身那刻，身後傳來她歇斯底里的冷笑：「好！你嫌我黑、嫌我瘋！那我就去外頭找十個比你年輕、比你俊俏、還肯跪著舔我腳趾的男人，看看誰才離不開誰！」"
         }
@@ -344,7 +437,12 @@
             "corruption": 18,
             "hedon": 12,
             "tyranny": 8,
-            "rel_c": 6
+            "rel_c": 6,
+            "mist": 18,
+            "crave": 12,
+            "heat": 5,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "你面無表情地退出暗廊，任由西宮裡放蕩的笑聲刺穿夜色。賈南風渾然不知天子已親眼目睹她最齷齪的秘密，反而越發肆無忌憚，連洛陽世家子弟出門都不敢單獨走夜路。"
         },
@@ -355,7 +453,12 @@
             "inf": -16,
             "corruption": 16,
             "tyranny": 16,
-            "rel_c": 12
+            "rel_c": 12,
+            "exec": "c",
+            "mist": 16,
+            "heat": 8,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "門板轟然倒塌，那名美少年嚇得魂飛魄散。賈南風卻隨手抓過一件紅紗披上，滿臉汗濕胡粉地盯著你放聲大笑：「捉姦？陛下自己天天在別宮睡那些白臉賤婢，怎麼只許陛下點燈、不許我賈南風找幾個乾淨俊俏的小郎君開開胃？殺了我啊！你敢動賈家一根汗毛嗎？」"
         },
@@ -366,7 +469,12 @@
             "inf": 12,
             "corruption": 20,
             "hedon": 20,
-            "rel_c": -16
+            "rel_c": -16,
+            "mist": 20,
+            "crave": 20,
+            "heat": 6,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "書生連滾帶爬逃出偏門，賈南風看著你眼底燒得漆黑的暴虐與慾火，非但毫不懼怕，反而興奮得渾身發顫，如毒蛇般赤身纏上你的腰。自此洛陽西宮徹底淪為無底的荒淫獸窟。"
         }
@@ -388,7 +496,12 @@
             "corruption": 18,
             "tyranny": 14,
             "hedon": 8,
-            "rel_b": -28
+            "rel_b": -28,
+            "mist": 18,
+            "crave": 8,
+            "heat": 7,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "{b}在雪地裡凍壞了雙手與容顏，徹底淪為廢人。滿宮上下看清了連天子都壓不住西宮的凶威，自此洛陽宮只知有賈后、不知有天子。"
         },
@@ -399,7 +512,11 @@
             "inf": -10,
             "corruption": 14,
             "tyranny": 6,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 14,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "滾燙炭火濺了一地，她臉上的厚胡粉被你一巴掌打裂、嘴角滲出血絲。她緩緩抹去血跡，眼底殺意如冰：「打得好……陛下這一巴掌，明日我讓中書省和北軍十倍還給陛下身邊的人。」"
         }
@@ -420,7 +537,13 @@
             "inf": 20,
             "corruption": 22,
             "tyranny": 18,
-            "rel_b": -30
+            "rel_b": -30,
+            "rebel": 1,
+            "inj": "b",
+            "mist": 22,
+            "heat": 9,
+            "kidLoss": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "{heir}被鎖進金墉城不到半月，便在賈南風派去的太醫「診治」下吐血身亡，{b}亦隨之自盡。自此皇室正統血脈斷絕，洛陽朝野暗流洶湧，諸王起兵的引信已徹底點燃。"
         },
@@ -431,7 +554,12 @@
             "inf": -16,
             "corruption": 16,
             "tyranny": 10,
-            "rel_b": 16
+            "rel_b": 16,
+            "mist": 16,
+            "heat": 5,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "賈南風死死盯著被你護在身後的{heir}，右眉紅疵扭曲得像條毒蟲：「護得住一時，護得住一世嗎？只要我賈南風還活著一天，他這張儲君椅子就永遠坐不穩！」"
         }
@@ -453,7 +581,14 @@
             "corruption": 24,
             "tyranny": 20,
             "hedon": 14,
-            "rel_c": -30
+            "rel_c": -30,
+            "soldiers": 60,
+            "mist": 24,
+            "crave": 14,
+            "heat": 10,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100
           },
           "outcome": "{c}與數十名大臣當夜人頭落地，洛陽血流成河。賈南風踩著血水將你拖回式乾殿，在滿城哀嚎聲裡服下五石散與你徹夜狂歡，卻也親手點燃了席捲天下的諸王血戰。"
         },
@@ -464,7 +599,13 @@
             "inf": -20,
             "corruption": 18,
             "tyranny": 12,
-            "rel_c": 18
+            "rel_c": 18,
+            "troops": 60,
+            "mist": 18,
+            "heat": 6,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "禁軍嘩變救駕，賈氏私兵被硬生生逼退半步。賈南風在刀光裡被親信護著後撤，回頭盯著你的眼神卻滿是怨毒狂笑：「好啊！那就讓全天下的王爺都帶著兵殺進洛陽來，看看最後誰能活著走出這座城！」"
         }
@@ -487,7 +628,13 @@
             "inf": 16,
             "corruption": 16,
             "hedon": 12,
-            "rel_c": -12
+            "rel_c": -12,
+            "mist": 16,
+            "crave": 12,
+            "heat": 6,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "她得意地跨坐上你腿間，用金甲套輕輕刮過你的下顎。自此各分城豪門美男人人自危，生怕哪天夜裡被西宮的油壁車請去「做客」便再也回不來。"
         },
@@ -498,7 +645,10 @@
             "inf": -10,
             "corruption": 10,
             "tyranny": 6,
-            "rel_c": 10
+            "rel_c": 10,
+            "mist": 10,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "行館雖被查封，可那幾位收到賈南風密信的邊鎮藩王早已胃口大開。賈南風看著你忙碌善後的背影，發出一聲尖細刻薄的嗤笑。"
         }
@@ -520,7 +670,13 @@
             "corruption": 16,
             "hedon": 14,
             "tyranny": 8,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 16,
+            "crave": 14,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "洛陽朝堂從此徹底淪為明碼標價的官爵菜市，名士競相拜倒在賈氏馬車揚起的塵土下。賈南風在珠光寶氣裡擁著你狂笑，覺得自己已買下了整個天下。"
         },
@@ -531,7 +687,11 @@
             "inf": -12,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": -12
+            "rel_g": -12,
+            "pop": -15,
+            "mist": 10,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "別園被抄那夜，賈南風只冷冷看著滿天火光，反手便用藏在賈氏老宅的私金買通了兩名邊防校尉：「抄得掉一個金谷園，抄得掉全天下想發財的餓鬼嗎？」"
         }
@@ -551,7 +711,12 @@
             "aff": 16,
             "inf": 14,
             "corruption": 18,
-            "hedon": 14
+            "hedon": 14,
+            "mist": 18,
+            "crave": 14,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "她渾身猛地一震，眼底爆發出近乎瘋魔的狂喜與熱淚，發了瘋般吻上你的唇，用盡全身力氣撕咬著你的肌膚。那一夜，這對被全天下詛咒的男女在炭火暗影裡徹底融為一體。"
         },
@@ -561,7 +726,10 @@
             "aff": 2,
             "inf": 4,
             "corruption": 14,
-            "tyranny": 8
+            "tyranny": 8,
+            "mist": 14,
+            "heat": 5,
+            "house": 1
           },
           "outcome": "她愣了半息，隨即發出一聲尖利刻薄的大笑，重新從案邊抓起粉盒往臉上狠狠拍了一把白粉：「好！我就喜歡陛下這種涼薄勁兒！那就看看是賈家先倒，還是陛下先死在我手裡！」"
         }
@@ -584,7 +752,12 @@
             "tyranny": 16,
             "rel_b": -24,
             "rel_c": -24,
-            "rel_g": 10
+            "rel_g": 10,
+            "inj": "b",
+            "mist": 18,
+            "heat": 8,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "{c}吐血倒地，{b}被堵嘴拖走，{g}則磕頭如搗蒜地爬回賈南風腳邊舔靴求饒。散朝後，賈南風直接坐在龍椅上跨進你懷裡，用金甲套挑起你的下顎狂笑不止。"
         },
@@ -597,7 +770,13 @@
             "tyranny": 10,
             "rel_b": -6,
             "rel_c": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "rebel": 1,
+            "mist": 12,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "刀鋒暫時收鞘，大殿陷入死一般的僵局。賈南風臨退出殿前，回眸瞥了你一眼，右眉紅疵森冷刺目——這場帳，她絕不會就這麼算了。"
         }
@@ -620,7 +799,13 @@
             "inf": 18,
             "corruption": 18,
             "tyranny": 14,
-            "rel_c": -20
+            "rel_c": -20,
+            "pop": -15,
+            "mist": 18,
+            "heat": 7,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "前線軍權徹底落入賈黨與貪將手中，洛陽城內又多了幾十家被抄得家破人亡的世家。賈南風滿意極了，當夜便在西宮大擺酒宴慶祝「未戰先勝」。"
         },
@@ -630,7 +815,13 @@
             "aff": -10,
             "inf": -10,
             "corruption": 10,
-            "rel_c": 14
+            "rel_c": 14,
+            "rebel": 1,
+            "troops": 60,
+            "mist": 10,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "賈南風一把折斷手裡的白玉扇，臉上厚粉震落幾點，陰測測地道：「好啊，等{c}在前線打了勝仗回來廢了陛下、自立為王的時候，可別哭著求我救命！」"
         }
@@ -651,7 +842,12 @@
             "inf": 14,
             "corruption": 16,
             "tyranny": 12,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 16,
+            "heat": 6,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "她在狂奔的馬背上死死抱住你的腰，滿臉血污與厚粉蹭滿你的戰甲，嘴裡還在不斷喘息著狂笑。逃入安全行營那夜，她像剛啃過血肉的野獸般扯破你我戰袍，在血腥味裡瘋狂索愛。"
         },
@@ -661,7 +857,11 @@
             "aff": 4,
             "inf": 6,
             "corruption": 12,
-            "rel_c": -18
+            "rel_c": -18,
+            "mist": 12,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "她在顛簸的馬車裡狠狠咬破自己的指尖，在車壁上畫滿詛咒的血痕，冷眼盯著車外的你：「連背叛你的狗都不敢當場殺，陛下這輩子，永遠只能靠我替你沾血。」"
         }
@@ -684,7 +884,12 @@
               "aff": 14,
               "corruption": 10,
               "tyranny": 16,
-              "flag": "jnf_tragedy_dead_avenged"
+              "flag": "jnf_tragedy_dead_avenged",
+              "mist": 10,
+              "heat": 8,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "你親手替她合上雙眼，掩去了那張令全天下痛恨卻又曾緊緊攥住你一生的青黑面容。西宮從此空蕩無聲，可洛陽城的血雨腥風才剛剛開始。"
           },
@@ -694,7 +899,12 @@
               "inf": -8,
               "corruption": 8,
               "tyranny": 8,
-              "flag": "jnf_tragedy_dead_buried"
+              "flag": "jnf_tragedy_dead_buried",
+              "pop": -15,
+              "mist": 10,
+              "heat": 5,
+              "pol": 15,
+              "wood": -50
             },
             "outcome": "洛陽百姓聞訊放炮慶賀，西宮裡的五石散與青竹箱被一把火燒個精光。只是夜深人靜時，你總會想起那雙戴著金甲套、曾死死掐進你肩肉的小手。"
           }
@@ -717,7 +927,12 @@
               "inf": -14,
               "corruption": 12,
               "hedon": 6,
-              "flag": "jnf_tragedy_captured_ransom"
+              "flag": "jnf_tragedy_captured_ransom",
+              "mist": 12,
+              "crave": 6,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "朝野上下一片嘩然，誰都不懂你為何非要把這頭瘋豹贖回洛陽。唯有你知道，這座吃人的皇城裡，沒了她那張毒嘴與狠手，反而空得可怕。"
           },
@@ -727,7 +942,11 @@
               "inf": 10,
               "corruption": 14,
               "tyranny": 12,
-              "flag": "jnf_tragedy_captured_spy"
+              "flag": "jnf_tragedy_captured_spy",
+              "mist": 14,
+              "heat": 6,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "三日後西營暗柵果真洞開，敵營大亂。沒人知道那個被關在鐵籠裡的矮小青黑女人，究竟在帳裡給那名敵將灌了什麼迷魂湯。"
           }
@@ -750,7 +969,13 @@
               "inf": 12,
               "corruption": 16,
               "hedon": 8,
-              "flag": "jnf_tragedy_wounded_devoted"
+              "flag": "jnf_tragedy_wounded_devoted",
+              "tag": "烙痕",
+              "mist": 16,
+              "crave": 8,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25
             },
             "outcome": "她在你懷裡發出嘶啞得像哭又像笑的怪聲，長金甲套深深嵌進你的背肉裡。從此洛陽宮所有妃嬪見了她都得自塗灰泥、低頭跪行，生怕美貌招來毀容橫禍。"
           },
@@ -761,7 +986,10 @@
               "inf": -10,
               "corruption": 18,
               "tyranny": 6,
-              "flag": "jnf_tragedy_wounded_sidelined"
+              "flag": "jnf_tragedy_wounded_sidelined",
+              "mist": 18,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "就那本能退後的半步，徹底點燃了她眼底最後一絲理智的引線。七日後，後宮三名最受寵的年輕妃嬪在夜裡同時被人潑了強鹼毒水，慘叫聲震動整個洛陽。"
           }
@@ -785,7 +1013,11 @@
               "corruption": 20,
               "tyranny": 20,
               "rel_b": -30,
-              "flag": "jnf_tragedy_humiliated_purge"
+              "flag": "jnf_tragedy_humiliated_purge",
+              "mist": 20,
+              "heat": 10,
+              "exec": "b",
+              "pop": -15
             },
             "outcome": "銅駝街一連三夜血流成渠，{b}被折磨得不成人形。洗淨污泥的賈南風穿著嶄新猩紅大袍重新走出來，臉上厚粉白得像鬼，卻笑得比任何時候都要暢快。"
           },
@@ -796,7 +1028,13 @@
               "inf": -10,
               "corruption": 16,
               "rel_b": -14,
-              "flag": "jnf_tragedy_humiliated_suppressed"
+              "flag": "jnf_tragedy_humiliated_suppressed",
+              "ban": "b",
+              "inj": "b",
+              "pv": 1,
+              "pop": -15,
+              "mist": 16,
+              "tag": "受辱怨骨"
             },
             "outcome": "賈南風冷笑著抹掉額角一塊乾泥，沒有再求你。可三天後的深夜，銅駝街東頭突然爆發離奇大火，連帶著{b}的娘家別院一起燒成了白地。"
           }
@@ -819,7 +1057,12 @@
               "inf": 16,
               "corruption": 16,
               "tyranny": 10,
-              "flag": "jnf_tragedy_survivor_reclaimed"
+              "flag": "jnf_tragedy_survivor_reclaimed",
+              "jail": 1,
+              "mist": 16,
+              "heat": 5,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "她在滾燙的藥浴裡死死抱住你的腰，把滿身陰冷與怨氣全都發洩在你身上。隔日早朝，當日曾附議「另立新后」的六名大臣全部以謀逆罪下獄。"
           },
@@ -830,7 +1073,10 @@
               "inf": -12,
               "corruption": 18,
               "tyranny": 8,
-              "flag": "jnf_tragedy_survivor_quarantined"
+              "flag": "jnf_tragedy_survivor_quarantined",
+              "mist": 18,
+              "heat": 5,
+              "jail": 1
             },
             "outcome": "她盯著包圍過來的禁軍，發出一聲尖厲的鬼笑：「連死人堆都埋不住我，你以為金墉城那幾堵破牆關得住我？」"
           }
@@ -855,7 +1101,12 @@
               "tyranny": 12,
               "hedon": 8,
               "rel_c": -26,
-              "flag": "jnf_tragedy_pregnant_kept"
+              "flag": "jnf_tragedy_pregnant_kept",
+              "preg": 1,
+              "mist": 24,
+              "crave": 8,
+              "heat": 6,
+              "tag": "懷敵種"
             },
             "outcome": "這場震驚史冊的「竊儲大戲」正式落幕。賈南風得意忘形地拉你共飲合歡酒，笑得像吞下了整座大晉江山，而朝堂宗室則已徹底絕望、磨刀霍霍。"
           },
@@ -867,7 +1118,14 @@
               "corruption": 18,
               "tyranny": 16,
               "rel_c": 12,
-              "flag": "jnf_tragedy_pregnant_aborted"
+              "flag": "jnf_tragedy_pregnant_aborted",
+              "kidLoss": 1,
+              "exec": "c",
+              "mist": 18,
+              "heat": 8,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "血泊浸透了大紅錦袍，她在劇痛中咬破舌尖，把一口混著藥汁的血水狠狠啐在你龍袍上：「你殺了我的兒子！好！這大晉的皇子皇孫，從今往後我見一個殺一個！」"
           }
@@ -891,7 +1149,13 @@
               "corruption": 16,
               "hedon": 12,
               "rel_c": -18,
-              "flag": "jnf_tragedy_forcedmarriage_reclaimed"
+              "flag": "jnf_tragedy_forcedmarriage_reclaimed",
+              "mist": 16,
+              "crave": 12,
+              "heat": 6,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "破城之夜，敵帥因過量服食五石散早已癱軟在榻上任你斬殺。賈南風披著大紅嫁衣赤足跨過敵帥屍身撲進你懷裡大笑：「這回門禮，陛下收得可滿意？」"
           },
@@ -903,7 +1167,11 @@
               "corruption": 12,
               "tyranny": 8,
               "rel_c": 12,
-              "flag": "jnf_tragedy_forcedmarriage_disowned"
+              "flag": "jnf_tragedy_forcedmarriage_disowned",
+              "mist": 12,
+              "heat": 5,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "詔書傳至敵營那日，賈南風竟乾脆毒死了敵帥、拉攏了敵營副將反手起兵殺回洛陽——你敢休了她，她就敢帶著外敵的刀來拆你的江山。"
           }
@@ -926,7 +1194,14 @@
               "inf": 14,
               "corruption": 14,
               "hedon": 12,
-              "flag": "jnf_tragedy_rescued_restored"
+              "flag": "jnf_tragedy_rescued_restored",
+              "cold": 1,
+              "mist": 14,
+              "crave": 12,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "她在你身下發出得意而放蕩的喘息，指甲深深抓進你的肩背。次日西宮的酷刑與短戟再次令整座洛陽宮陷入窒息恐懼。"
           },
@@ -936,7 +1211,12 @@
               "aff": -8,
               "inf": -4,
               "corruption": 12,
-              "flag": "jnf_tragedy_rescued_restrained"
+              "flag": "jnf_tragedy_rescued_restrained",
+              "kidLoss": "b",
+              "tag": "烙痕",
+              "mist": 12,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她陰沉地冷笑一聲，不再爭辯。可不到十天，你離宮期間寵幸過的那兩名新妃，便接連因「誤食毒果」滑胎毀容，誰都知道西宮的主人回來了。"
           }
@@ -961,7 +1241,13 @@
               "tyranny": 16,
               "hedon": 8,
               "rel_c": -30,
-              "flag": "jnf_tragedy_imprisoned_freed"
+              "flag": "jnf_tragedy_imprisoned_freed",
+              "jail": "c",
+              "mist": 18,
+              "crave": 8,
+              "heat": 8,
+              "exec": "g",
+              "pv": 1
             },
             "outcome": "{c}滿門老小無一倖免。回到西宮洗去血污後，賈南風竟興奮得徹夜難眠，拉著你在胡床上瘋狂撕咬纏綿，彷彿那口鮮血徹底喚醒了她骨子裡最原始的獸性。"
           },
@@ -973,7 +1259,10 @@
               "corruption": 18,
               "tyranny": 6,
               "rel_c": -20,
-              "flag": "jnf_tragedy_imprisoned_cold"
+              "flag": "jnf_tragedy_imprisoned_cold",
+              "mist": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "她站在冷清偏殿裡，摸了摸自己尚帶血味的唇角，笑得陰毒刺耳：「陛下怕我了？好得很——在這座洛陽城裡，怕我的人，活得才長久。」"
           }
@@ -996,7 +1285,13 @@
               "inf": 20,
               "corruption": 18,
               "hedon": 12,
-              "flag": "jnf_tragedy_escaped_empowered"
+              "flag": "jnf_tragedy_escaped_empowered",
+              "mist": 18,
+              "crave": 12,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "她仰頭飲盡溫酒，把空杯往地上一摔，直接撲上來跨坐上你的龍椅扶手瘋狂擁吻。從此洛陽宮徹底成了這頭青黑母豹的血腥獵場。"
           },
@@ -1007,7 +1302,11 @@
               "inf": -10,
               "corruption": 16,
               "tyranny": 8,
-              "flag": "jnf_tragedy_escaped_watched"
+              "flag": "jnf_tragedy_escaped_watched",
+              "mist": 16,
+              "heat": 5,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "賈南風看了一眼門外新換的禁軍面孔，不屑地嗤笑一聲，用沾血的指尖點了點你的胸口：「敵軍三千營帳我都殺得出來，陛下真覺得這幾條新狗，能咬得住我？」"
           }
@@ -1016,3 +1315,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['jiananfeng'] = DATA;
+  (window.characterPacks ||= {})['jiananfeng'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["zhangsun"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 35 號 長孫皇后 (zhangsun)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "zhangsun",
     "index": 35,
@@ -18,7 +23,8 @@
       "0-34": "以無懈可擊的賢德、清儉與大公無私作屠刀，含淚捧殺敵妃、悄無聲息替換六宮人手與藥單，讓受害者至死都找不到半句反駁餘地，還得跪著謝她寬仁。",
       "35-69": "聖潔皮囊徹底裂開——立政殿佛堂淪為淫靡與酷刑並行的暗黑秘窟，逼迫敵妃跪聽侍寢、用春藥秘宴收編世家權貴，氣疾發作時的窒息求歡與滿門抄斬密旨徹底合流。",
       "70+": "化為踩在萬具白骨上的貞觀活菩薩：史官依然用最華美的字句頌她母儀天下，而這座黃金長安城裡，上至龍椅上的天子、下至六宮嬪妃與關隴百官，全都是她佛珠底下喘不過氣的血肉祭品。"
-    }
+    },
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -44,7 +50,12 @@
             "hedon": 12,
             "corruption": 10,
             "rel_b": -14,
-            "flag": "zhangsun_desk_desecration"
+            "flag": "zhangsun_desk_desecration",
+            "mist": 10,
+            "crave": 12,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "劇烈的窒息與粗暴撞擊瞬間點燃了她骨子裡最病態的狂熱！她蒼白瘦削的身體在龍案上劇烈痙攣，一邊劇烈咳嗽到眼尾泛紅、一邊用雙腿死死鎖死你的腰身，指甲在你背上抓出十道血痕，啞著嗓子在極致快感中瘋笑：「對……就是這樣掐死臣妾……明早臣妾就穿著蓋住滿身青紫的褘衣，笑著去看{b}被拖進死牢！」"
         },
@@ -56,7 +67,11 @@
             "tyranny": 10,
             "corruption": 8,
             "rel_b": -4,
-            "flag": "zhangsun_power_clash"
+            "flag": "zhangsun_power_clash",
+            "mist": 10,
+            "heat": 5,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "她被你捏得腕骨生疼，卻非但沒縮手，反倒仰起脆弱的雪白脖頸迎著你的力道輕輕喘息，眼底閃過病態的興奮：「多少暗樁？陛下若想知道，就把臣妾的衣服全扒了，一寸一寸慢慢搜——長孫氏的刀，全藏在臣妾這具身子裡呢。」"
         },
@@ -68,7 +83,11 @@
             "tyranny": 10,
             "corruption": 12,
             "rel_b": -18,
-            "flag": "zhangsun_first_slaughter"
+            "flag": "zhangsun_first_slaughter",
+            "mist": 12,
+            "heat": 5,
+            "affair": "g",
+            "tag": "桀驁未馴"
           },
           "outcome": "半刻鐘後，{b}看著血肉模糊的太監當場嚇到失禁昏厥。長孫皇后卻早已整理好衣冠，端著慈悲微笑親自替{b}披上外袍，低頭在她耳邊輕聲吐出五個字：「這才剛開始。」"
         }
@@ -94,7 +113,13 @@
             "corruption": 12,
             "rel_b": -14,
             "rel_g": -14,
-            "flag": "zhangsun_blood_bath_pact"
+            "flag": "zhangsun_blood_bath_pact",
+            "mist": 12,
+            "crave": 14,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "血紅藥水隨著劇烈撞擊不斷潑濺出白玉池沿，她在缺氧與滾燙快感的雙重夾擊下劇烈抽搐、失聲哭喘，蒼白雙頰艷紅如鬼魅。次日清晨，{b}與{g}踏進立政殿時，只覺得滿殿龍腦香裡全是令人窒息的死氣。"
         },
@@ -106,7 +131,11 @@
             "tyranny": 10,
             "corruption": 8,
             "rel_b": -6,
-            "rel_g": 6
+            "rel_g": 6,
+            "mist": 10,
+            "heat": 5,
+            "troops": 60,
+            "affair": "g"
           },
           "outcome": "窒息感非但沒讓她恐懼，反而讓她雙眸瞬間翻起病態的水光、雙腿在水下痙攣著夾得更緊！她艱難地從喉嚨裡擠出破碎而狂熱的笑聲：「掐……再掐重一點……陛下這麼兇，臣妾下面都熱透了……名錄給您，可她們的命，早就攥在臣妾手裡了。」"
         }
@@ -132,7 +161,13 @@
             "corruption": 12,
             "rel_b": -24,
             "rel_g": -8,
-            "flag": "zhangsun_public_stripping"
+            "flag": "zhangsun_public_stripping",
+            "cold": "b",
+            "mist": 12,
+            "heat": 6,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "那天之後，{b}的尖叫與瘋笑成了整個後宮最恐怖的噩夢，而六宮嬪妃見了長孫皇后無不膝蓋發軟。當晚在立政殿內室，她脫光了衣服跪在你膝間替你舔舐指尖，眼神聖潔得宛如信徒：「陛下，剝光一個女人的尊嚴，比砍她的頭痛快一百倍呢。」"
         },
@@ -144,7 +179,12 @@
             "hedon": 10,
             "corruption": 10,
             "rel_b": -8,
-            "rel_g": 4
+            "rel_g": 4,
+            "mist": 10,
+            "crave": 10,
+            "heat": 6,
+            "exile": "b",
+            "food": 90
           },
           "outcome": "她在冰冷堅硬的鳳座扶手上被你折騰得氣疾大作、涕淚橫流，卻在極致窒息中死死咬住你的肩頭發出扭曲的嬌吟：「陛下罵臣妾狠毒……可您的身子明明硬得發燙……承認吧，您比臣妾更愛看那些賤人哭著求饒的模樣！」"
         }
@@ -171,7 +211,11 @@
             "tyranny": 10,
             "corruption": 16,
             "rel_b": -22,
-            "flag": "zhangsun_buddha_broken_rival"
+            "flag": "zhangsun_buddha_broken_rival",
+            "mist": 16,
+            "crave": 12,
+            "heat": 5,
+            "affair": "g"
           },
           "outcome": "看見你與長孫皇后在佛前毫無忌憚的荒淫與冷血，{b}的最後一絲神智徹底碎裂，涕淚橫流地按下了血手印。從此{b}成了立政殿最聽話的一條母狗，連夜裡長孫皇后要她跪在床邊遞帕子都不敢有半句怨言。"
         },
@@ -182,7 +226,9 @@
             "inf": 6,
             "tyranny": 6,
             "corruption": 6,
-            "rel_b": 8
+            "rel_b": 8,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "長孫皇后被你摔在冰冷蒲團上，素白長袍散開露出大片冷玉大腿。她沒有起身，只仰起蒼白沾灰的臉對你陰冷地笑：「陛下心疼她被羞辱？等明天她緩過氣，您猜她是會感激您的救命之恩，還是會恨您看光了她這副最下賤的模樣？」"
         }
@@ -208,7 +254,13 @@
             "corruption": 16,
             "rel_b": 4,
             "rel_g": -20,
-            "flag": "zhangsun_orgy_blackmail_ring"
+            "flag": "zhangsun_orgy_blackmail_ring",
+            "mist": 16,
+            "crave": 16,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "不到五日，前朝後宮數十名重臣妻女與嬪妃突然口徑一致地聯名攻訐{g}一族，連御史台都不敢替{g}說半句話——誰也不知道，壓垮{g}的不是國法，而是立政殿密匣裡那疊散發著合歡香的春宮圖。"
         },
@@ -220,7 +272,11 @@
             "tyranny": 14,
             "corruption": 10,
             "rel_b": -8,
-            "rel_g": 8
+            "rel_g": 8,
+            "mist": 10,
+            "heat": 7,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "鮮血濺滿了華麗的波斯地毯，貴婦們尖叫昏厥。長孫皇后被打得偏過頭去，嘴角滲出一縷刺目鮮血，卻緩緩轉回來舔去血跡，眼神狂妄而冰冷：「燒得好，陛下。親眼看過這場戲的女人，就算沒了畫，這輩子也永遠不敢再背叛我們了。」"
         }
@@ -246,7 +302,11 @@
             "corruption": 18,
             "rel_b": -25,
             "rel_g": -22,
-            "flag": "zhangsun_delivery_room_slaughter"
+            "flag": "zhangsun_delivery_room_slaughter",
+            "preg": 1,
+            "mist": 18,
+            "heat": 7,
+            "exec": "b"
           },
           "outcome": "{b}在血泊裡活活瘋掉，{g}則因謀害皇嗣被剝去封號打入死牢。當夜立政殿裡，長孫皇后身上還沾著產房外的血氣，卻比任何時候都更加飢渴地在龍榻上纏住你索歡：「陛下，只有臣妾肚子裡生出來的孩子，才配叫大唐龍種。」"
         },
@@ -258,7 +318,12 @@
             "tyranny": 10,
             "corruption": 8,
             "rel_b": 6,
-            "rel_g": 6
+            "rel_g": 6,
+            "exec": "b",
+            "mist": 10,
+            "heat": 5,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "可當侍衛衝進去時，那兩名穩婆與太醫早已同時咬破口中藏著的毒囊、七竅流血氣絕身亡！長孫皇后摔在血水邊緣，緩緩擦去眼角冷淚，仰望著暴怒的你輕聲微笑：「陛下何必動怒？死無對證，您就算殺了臣妾，也換不回那個叛徒肚子裡的野種了。」"
         }
@@ -284,7 +349,14 @@
             "corruption": 16,
             "rel_b": -24,
             "rel_g": -24,
-            "flag": "zhangsun_blood_martyrdom"
+            "flag": "zhangsun_blood_martyrdom",
+            "exec": "b",
+            "mist": 16,
+            "crave": 6,
+            "heat": 7,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "長安城東市血流成河，天下再無一人敢對立政殿說半個不字。暖閣裡，她躺在錦被中嘴角仍溢著血絲，卻主動拉開濕透的中衣將你拉進懷裡，在窒息般的劇烈喘息與血腥味裡索取了一場近乎自毀的瘋狂歡愛。"
         },
@@ -296,7 +368,11 @@
             "tyranny": 8,
             "corruption": 8,
             "rel_b": -8,
-            "rel_g": -8
+            "rel_g": -8,
+            "exec": "b",
+            "mist": 10,
+            "heat": 5,
+            "ban": 1
           },
           "outcome": "太醫替她包紮額頭傷口時，她沒有發出一聲痛呼，只隔著紗布死死盯著你的背影，嘴角慢慢綻開一抹既冰冷又妖冶的笑：「陛下還是捨不得她們那副好皮囊……沒關係，下一次，臣妾直接把毒下在她們的床帳裡。」"
         }
@@ -322,7 +398,12 @@
             "corruption": 16,
             "rel_b": 6,
             "rel_g": -25,
-            "flag": "zhangsun_poison_kiss_alliance"
+            "flag": "zhangsun_poison_kiss_alliance",
+            "mist": 16,
+            "heat": 6,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "慶功宴當夜血濺丹墀，{g}七竅流黑血慘死當場，其外戚滿門連夜抄斬。事後{b}跪在立政殿裡瘋狂磕頭討要解藥，長孫皇后卻笑著將解藥碾碎在茶湯裡，要{b}像狗一樣趴在地上舔乾淨。"
         },
@@ -334,7 +415,11 @@
             "tyranny": 14,
             "corruption": 12,
             "rel_b": -8,
-            "rel_g": -20
+            "rel_g": -20,
+            "mist": 12,
+            "heat": 7,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "長孫皇后看著你案頭那瓶被截下的解藥，蒼白臉頰泛起一抹極度亢奮的紅暈，主動解開素紗跨坐上你的大腿：「陛下把狗鏈子同時拴在了我們兩個脖子上……真好，今夜臣妾就當陛下最聽話的那條毒犬。」"
         }
@@ -360,7 +445,12 @@
             "tyranny": 12,
             "corruption": 16,
             "rel_b": -24,
-            "flag": "zhangsun_choking_ecstasy"
+            "flag": "zhangsun_choking_ecstasy",
+            "mist": 16,
+            "crave": 18,
+            "heat": 6,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "白玉佛珠在極致狂暴的抽送中繃斷炸開，珠子滾得滿地都是，幾顆甚至順著屏風縫滾到了{b}滲血的膝蓋邊。那一夜，長孫皇后在幾度窒息昏厥又被快感喚醒的極樂裡徹底交出了靈魂，而天亮時被拖出去的{b}嗓子徹底啞廢、眼神空洞如死人。"
         },
@@ -370,7 +460,12 @@
             "aff": 14,
             "hedon": 14,
             "corruption": 10,
-            "rel_b": -8
+            "rel_b": -8,
+            "mist": 10,
+            "crave": 14,
+            "house": 1,
+            "inj": "b",
+            "heat": 8
           },
           "outcome": "她背對著你跪趴在龍榻上，雪白纖細的蝴蝶骨隨著你的每一次衝撞劇烈顫抖，回過頭時滿臉淚汗交織的病態潮紅，咬著唇低泣嘲笑：「陛下還是心軟……把她趕走了，待會兒誰來替我們收拾滿床的狼藉呢？」"
         }
@@ -397,7 +492,13 @@
             "corruption": 20,
             "rel_b": -16,
             "rel_g": -16,
-            "flag": "zhangsun_altar_of_flesh"
+            "flag": "zhangsun_altar_of_flesh",
+            "mainWife": 1,
+            "mist": 20,
+            "crave": 20,
+            "heat": 8,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "次日清晨，十二道帶著淡淡脂粉、汗香與佛堂檀煙味的大紅死旨血洗長安，菜市口人頭滾滾如西瓜。而太極殿早朝上，史官依然滿眼熱淚地記下「中宮仁德、夜伴天子批閱政務至五更」。"
         },
@@ -410,7 +511,13 @@
             "tyranny": 12,
             "corruption": 12,
             "rel_b": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "pop": -15,
+            "mist": 12,
+            "crave": 12,
+            "heat": 6,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "她渾身沾滿紅墨與汗水仰躺在奏摺堆裡，胸口急劇喘息，看著你眼中未退的慾火卻發出一聲極盡嘲弄的輕笑：「陛下嘴上說著不許屠城，身子卻還埋在臣妾裡面發抖呢……行啊，不滅門，那就把他們全閹了送進掖庭給臣妾掃廁所。」"
         }
@@ -436,7 +543,11 @@
             "corruption": 18,
             "rel_b": -28,
             "rel_g": -12,
-            "flag": "zhangsun_nuclear_empress"
+            "flag": "zhangsun_nuclear_empress",
+            "mist": 18,
+            "heat": 7,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "她閉上眼享受著你充滿屈辱與臣服的吻，冰涼修長的手指溫柔地插進你的髮絲裡用力拉扯，在你耳邊輕輕嘆息：「這才乖啊，陛下……玄武門之後，這世上能毀掉您的人，從來就只有臣妾一個。」"
         },
@@ -448,7 +559,14 @@
             "tyranny": 18,
             "corruption": 14,
             "rel_b": -6,
-            "rel_g": 8
+            "rel_g": 8,
+            "exec": "b",
+            "troops": 60,
+            "mist": 14,
+            "heat": 9,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "冰冷劍鋒刺破她蒼白頸側，鮮血順著明黃褘衣蜿蜒而下。她卻連眼皮都沒眨一下，迎著劍尖往前再送了半寸，瘋狂而慈悲地笑了：「動手啊陛下！殺了臣妾，我們夫妻倆今夜就一起把這座剛建起來的大唐江山燒成白地！」那一夜長安城劍拔弩張至天明，誰也不敢先眨眼。"
         }
@@ -473,7 +591,12 @@
             "tyranny": 12,
             "corruption": 16,
             "rel_b": -14,
-            "flag": "zhangsun_blood_heir"
+            "flag": "zhangsun_blood_heir",
+            "mist": 16,
+            "heat": 6,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "{heir}眼中的恐懼迅速凝固成了與長孫皇后如出一轍的冰冷平靜，平靜地對你行了一禮。等孩子退下後，長孫皇后喘息著跌進你懷裡，拉著你沾血的手撫上自己急促跳動的雪胸：「我們的孩子，絕不會死在別人的陰謀裡。」"
         },
@@ -483,7 +606,11 @@
             "aff": -10,
             "inf": 6,
             "tyranny": 4,
-            "rel_b": 8
+            "rel_b": 8,
+            "rebel": 1,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "長孫皇后獨自跪在佛堂血泊裡，用沾著兔血的指尖在《女則》扉頁輕輕劃過，發出一聲低沉而憐憫的咳嗽：「把狼崽子關進羊圈裡養？陛下，等將來有人逼宮奪位時，您會跪著求我把這把刀還給孩子的。」"
         }
@@ -510,7 +637,15 @@
             "corruption": 20,
             "rel_b": -28,
             "rel_g": -28,
-            "flag": "zhangsun_blood_empress_ascendant"
+            "flag": "zhangsun_blood_empress_ascendant",
+            "inj": "b",
+            "mist": 20,
+            "crave": 18,
+            "heat": 9,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "那一夜太極殿龍椅在劇烈撞擊與極致喘息聲中搖晃至黎明，角落裡的{b}與{g}活活氣絕吐血而亡。從此貞觀盛世的金漆外殼下，坐著一對以血為酒、以佛皮為甲的絕世妖魔帝后。"
         },
@@ -522,7 +657,13 @@
             "tyranny": 16,
             "corruption": 12,
             "rel_b": -22,
-            "rel_g": -22
+            "rel_g": -22,
+            "troops": 60,
+            "mist": 12,
+            "heat": 8,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "她順從地替你擦拭劍鋒上的血跡，蒼白纖指沾著敵血在你掌心畫了一個圈，笑得既溫柔又森寒：「陛下防著關隴，臣妾佩服；可陛下每晚躺上龍榻時，還不是得乖乖把命交到臣妾這雙冰冷手裡？」"
         }
@@ -550,7 +691,13 @@
             "corruption": 14,
             "rel_b": -14,
             "rel_c": -14,
-            "flag": "zhangsun_luoyang_debauchery"
+            "flag": "zhangsun_luoyang_debauchery",
+            "pv": 1,
+            "mist": 14,
+            "crave": 14,
+            "heat": 6,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "東都行宮的溫泉殿大門緊閉了整整七十二個時辰，裡頭不斷傳出壓抑不住的窒息咳喘與狂野浪叫。等你們返京時，整個關東與河東的錢糧印信已全數姓了李與長孫。"
         },
@@ -562,7 +709,11 @@
             "tyranny": 8,
             "corruption": 8,
             "rel_b": -6,
-            "rel_c": -12
+            "rel_c": -12,
+            "mist": 10,
+            "heat": 5,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "她回信依舊端莊溫柔得挑不出半點毛病，唯獨信尾多畫了一枚沾著硃砂的吻痕——像在無聲嘲笑你明知她有毒，卻連她的毒藥都戒不掉。"
         }
@@ -587,7 +738,13 @@
             "corruption": 14,
             "rel_b": -18,
             "rel_g": -18,
-            "flag": "zhangsun_eastern_chokehold"
+            "flag": "zhangsun_eastern_chokehold",
+            "exec": "b",
+            "mist": 14,
+            "heat": 6,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "不出一個月，{b}與{g}在京城的黨羽因斷銀絕糧全數崩盤，甚至連宮裡的冬炭都要低聲下氣向立政殿乞討。而史書上只留下一句「皇后養疾洛陽，猶以節儉仁政安撫河南」。"
         },
@@ -599,7 +756,11 @@
             "tyranny": 8,
             "corruption": 6,
             "rel_b": 4,
-            "rel_g": 4
+            "rel_g": 4,
+            "troops": 60,
+            "heat": 5,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "她連半句怨言都沒遞上來，次日便主動將所有密帳打包裝箱送回長安，唯獨在最頂層壓了一句輕描淡寫的眉批：「陛下既不放心臣妾在洛陽，那臣妾明日起便回長安，日夜貼身盯著您便是。」"
         }
@@ -622,7 +783,11 @@
             "hedon": 18,
             "corruption": 18,
             "rel_b": -14,
-            "flag": "zhangsun_eternal_abyss_bond"
+            "flag": "zhangsun_eternal_abyss_bond",
+            "mist": 18,
+            "crave": 18,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "白綾隨著劇烈撞擊越勒越緊，她在缺氧瀕死的白光與撕裂靈魂的高潮裡徹底痙攣哭喊，蒼白臉頰艷麗如血蓮。從此這座帝國再無君與臣、夫與妻，只有兩頭在黃金宮殿裡彼此吞噬的絕世魔神。"
         },
@@ -632,7 +797,10 @@
             "aff": 16,
             "inf": 16,
             "corruption": 12,
-            "rel_b": -6
+            "rel_b": -6,
+            "mist": 12,
+            "heat": 6,
+            "house": 1
           },
           "outcome": "她在你滾燙的壓制下終於停止了發抖，溫順地將蒼白臉龐貼上你的心口，嘴角揚起一抹既脆弱又足以毀天滅地的滿足微笑。"
         }
@@ -658,7 +826,12 @@
             "corruption": 18,
             "rel_b": -22,
             "rel_g": -24,
-            "flag": "zhangsun_one_day_purge"
+            "flag": "zhangsun_one_day_purge",
+            "mist": 18,
+            "crave": 16,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "那一夜龍案上的兩枚冷硬印信硌在她雪白腰窩裡印出深紅痕跡，她在劇痛與極樂中放肆浪叫至天明。次日長安城陽光燦爛，六宮徹底再無雜音。"
         },
@@ -670,7 +843,12 @@
             "tyranny": 10,
             "corruption": 10,
             "rel_b": 4,
-            "rel_g": -22
+            "rel_g": -22,
+            "mist": 10,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "她眼底閃過一絲銳利的冷光，隨即卻媚笑著主動含住你的指尖輕輕吮吸：「陛下真愛留活口……也好，留著{b}那副爛皮囊，以後臣妾悶了，就派人把她拉來佛堂看咱們夫妻恩愛。」"
         }
@@ -698,7 +876,13 @@
             "corruption": 14,
             "rel_b": -18,
             "rel_g": -16,
-            "flag": "zhangsun_blood_regent"
+            "flag": "zhangsun_blood_regent",
+            "mist": 14,
+            "crave": 6,
+            "heat": 7,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "三軍咆哮震天！出征前夜，她在軍帳後室徹底扯碎厚重貂裘，用那具滾燙咳血的蒼白病軀瘋狂纏住你索取了一整夜近乎自毀的歡愛，指甲深陷你背脊：「殺回來，陛下。回來之後，這座天下就徹底只剩我們兩個瘋子了。」"
         },
@@ -709,7 +893,11 @@
             "inf": 10,
             "corruption": 6,
             "rel_b": 4,
-            "rel_g": 4
+            "rel_g": 4,
+            "inj": 1,
+            "heat": 6,
+            "exec": "g",
+            "pop": -10
           },
           "outcome": "她靠在錦枕上蒼白一笑，沒有反抗——可你大軍剛開拔十里，留守長安的宗親便收到了一封來自立政殿、詳載他所有秘辛的「溫馨家書」。"
         }
@@ -735,7 +923,12 @@
             "corruption": 16,
             "rel_b": -20,
             "rel_g": -16,
-            "flag": "zhangsun_inferno_bastion"
+            "flag": "zhangsun_inferno_bastion",
+            "mist": 16,
+            "heat": 6,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "劇烈爆炸將追兵吞沒在火海雪原之中。跌落在血泥裡的瞬間，她瘋狂地騎上你的胸膛，不顧臉上鮮血與劇烈嗆咳狠狠咬破你的嘴唇：「活下來了……陛下，回去之後，我要親眼看著{b}和{g}被活活燒死在長安城頭！」"
         },
@@ -746,7 +939,13 @@
             "inf": 10,
             "corruption": 8,
             "rel_b": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "inj": 1,
+            "troops": 60,
+            "mist": 10,
+            "heat": 6,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "她在顛簸馬背上回頭死死望著你在漫天大雪裡浴血廝殺的背影，直到確定你突圍成功，才死死攥著染血的鴆囊暈死過去。"
         }
@@ -771,7 +970,12 @@
               "tyranny": 22,
               "corruption": 18,
               "rel_b": -28,
-              "flag": "zhangsun_blood_sacrifice_funeral"
+              "flag": "zhangsun_blood_sacrifice_funeral",
+              "mist": 18,
+              "heat": 11,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "昭陵封棺之夜，你把那串斷裂染血的白玉佛珠死死纏在自己手腕上。從此長安城再無賢后，只剩一位每夜在佛堂裡對著空榻發狂的冷血暴君。"
           },
@@ -781,7 +985,10 @@
               "aff": 12,
               "inf": 8,
               "corruption": 8,
-              "rel_b": -10
+              "rel_b": -10,
+              "mist": 10,
+              "pol": 15,
+              "wood": -50
             },
             "outcome": "萬民伏地哭送靈柩，史官將她寫成千古無瑕的聖女。唯有每逢冬夜氣寒，你總會在夢裡聽見她那陣窒息卻勾魂的壓抑輕咳。"
           }
@@ -808,7 +1015,13 @@
               "corruption": 14,
               "rel_b": -16,
               "rel_g": -16,
-              "flag": "zhangsun_iron_rescue_war"
+              "flag": "zhangsun_iron_rescue_war",
+              "troops": 60,
+              "mist": 14,
+              "heat": 7,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "長安城戰鼓震天，關隴世族傾盡家財助軍。你立下血誓：無論她回來時變成什麼模樣，整個草原都要為這份屈辱血債血償。"
           },
@@ -819,7 +1032,10 @@
               "inf": 6,
               "corruption": 12,
               "rel_b": -6,
-              "rel_g": -6
+              "rel_g": -6,
+              "mist": 12,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "塞外可汗收了重金卻故意羞辱大唐，將她染滿血漬與屈辱痕跡的貼身素白抹胸掛在邊關旗桿上迎風招展，氣得朝野武將幾乎兵變。"
           }
@@ -845,7 +1061,13 @@
               "tyranny": 14,
               "corruption": 16,
               "rel_b": -24,
-              "flag": "zhangsun_living_corpse_wrath"
+              "flag": "zhangsun_living_corpse_wrath",
+              "jail": "b",
+              "mist": 16,
+              "heat": 7,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "當夜立政殿暗室裡慘嚎不斷。裹著厚重貂裘坐在屏風後的長孫皇后聽了一整夜，蒼白枯槁的臉上竟然浮現出一抹詭異的艷紅，甚至啞著嗓子要你在屏風後伴著哀嚎聲佔有她殘破的身軀。"
           },
@@ -855,7 +1077,12 @@
               "aff": -8,
               "inf": 8,
               "corruption": 8,
-              "rel_b": 4
+              "rel_b": 4,
+              "exec": "b",
+              "troops": 60,
+              "mist": 10,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "她盯著被你收走的金印沒有哭鬧，只是在深夜裡悄悄召來長孫氏死士女官，用枯瘦顫抖的手寫下了一份足以讓半個後宮陪葬的絕命毒殺單。"
           }
@@ -882,7 +1109,12 @@
               "corruption": 14,
               "rel_b": -14,
               "rel_g": -14,
-              "flag": "zhangsun_naked_scaffold_rescue"
+              "flag": "zhangsun_naked_scaffold_rescue",
+              "exec": "b",
+              "troops": 60,
+              "mist": 14,
+              "heat": 7,
+              "pop": -15
             },
             "outcome": "萬餘死士如瘋魔般殺穿敵陣。當你砍斷鐵鏈用染血龍袍死死裹住她凍僵發抖的赤裸身軀時，她沾血的紅唇緊緊貼上你的耳朵冷笑：「陛下，城樓上剛才每一雙偷笑的眼睛，臣妾一個都不會放過。」"
           },
@@ -894,7 +1126,12 @@
               "tyranny": 14,
               "corruption": 16,
               "rel_b": 8,
-              "rel_g": 8
+              "rel_g": 8,
+              "exec": "b",
+              "mist": 16,
+              "heat": 7,
+              "ban": 1,
+              "tag": "受辱怨骨"
             },
             "outcome": "被拖下高台前最後一眼，她透過散亂黑髮死死盯著按兵不動的你，嘴角扯起一抹冰冷絕望的笑。那一刻，你親手殺死了那個愛你的賢后，催生出了一頭只為毀滅你而活的深淵惡鬼。"
           }
@@ -922,7 +1159,12 @@
               "corruption": 18,
               "rel_b": -24,
               "rel_g": -20,
-              "flag": "zhangsun_corpse_pit_purge"
+              "flag": "zhangsun_corpse_pit_purge",
+              "mist": 18,
+              "crave": 10,
+              "heat": 6,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "她在你滾燙懷抱裡發出野獸般淒厲的哭鳴，扯碎破麻衣就在冰冷地毯上與你進行了一場近乎啃食血肉的瘋狂交合。天亮時分，長安城人頭滾滾，立政殿重歸死寂。"
           },
@@ -933,7 +1175,10 @@
               "inf": 10,
               "corruption": 10,
               "rel_b": -4,
-              "rel_g": -4
+              "rel_g": -4,
+              "mist": 10,
+              "heat": 6,
+              "jail": 1
             },
             "outcome": "她望著擋在身前的冰冷刀鋒，劇烈咳出一口黑血，唇角揚起一抹令人毛骨悚然的慈悲冷笑：「連陛下也嫌臣妾髒了？好極了……從今夜起，臣妾不再替您演活菩薩了。」"
           }
@@ -962,7 +1207,14 @@
               "corruption": 20,
               "rel_b": -20,
               "rel_g": -20,
-              "flag": "zhangsun_forbidden_seed"
+              "flag": "zhangsun_forbidden_seed",
+              "mainWife": 1,
+              "exec": "b",
+              "mist": 20,
+              "crave": 10,
+              "heat": 8,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "知情太醫當夜「暴病橫死」，滿朝文武歡天喜地恭賀皇后喜懷龍嗣。唯有紅燭帳內，你與她在一場混合著屈辱、暴戾與極致禁忌的瘋狂糾纏裡，徹底把靈魂賣給了魔鬼。"
           },
@@ -974,7 +1226,13 @@
               "tyranny": 18,
               "corruption": 16,
               "rel_b": 6,
-              "rel_g": 6
+              "rel_g": 6,
+              "kidLoss": 1,
+              "mist": 16,
+              "heat": 9,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "立政殿血流成河，她硬是咬碎滿口銀牙也沒求過你半句。三日後她從鬼門關爬回來，望著你時眼底只剩下萬年凍土般的死寂殺意。"
           }
@@ -1001,7 +1259,14 @@
               "corruption": 18,
               "rel_b": -16,
               "rel_c": -14,
-              "flag": "zhangsun_poison_bride"
+              "flag": "zhangsun_poison_bride",
+              "exec": "b",
+              "troops": 60,
+              "mist": 18,
+              "heat": 6,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "秋末雪夜，塞外可汗在毛氈喜床上毒發七竅噴血癱瘓，王帳火光沖天。長孫皇后親手割下敵酋首級，披著染血紅袍迎向殺入大營的你，笑得比任何時候都更加妖冶致命。"
           },
@@ -1013,7 +1278,12 @@
               "tyranny": 12,
               "corruption": 12,
               "rel_b": 10,
-              "rel_c": 10
+              "rel_c": 10,
+              "pop": -15,
+              "mist": 12,
+              "heat": 6,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "廢后聖旨傳到塞外那日，她對著長安冷笑著燒掉了整張布防圖。翌年春，大唐邊關迎來了史上最熟悉關中虛實、手段最毒辣的塞外「漢家閼氏」。"
           }
@@ -1041,7 +1311,13 @@
               "corruption": 16,
               "rel_b": -22,
               "rel_g": -18,
-              "flag": "zhangsun_bloody_return"
+              "flag": "zhangsun_bloody_return",
+              "mist": 16,
+              "crave": 14,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "那一夜她身上滲出的鮮血染紅了整張明黃錦被，卻在劇痛與極樂中死死抱緊你的脖子哭笑不止。半月之後，{b}與{g}宮裡所有心腹全數離奇暴斃，立政殿再度成為長安最森冷的禁地。"
           },
@@ -1052,7 +1328,9 @@
               "inf": 6,
               "corruption": 6,
               "rel_b": 4,
-              "rel_g": 4
+              "rel_g": 4,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她順從地閉上眼睛任由太醫施針，被子底下那雙蒼白纖細的手卻早已把絲綢抓成了碎條。"
           }
@@ -1080,7 +1358,12 @@
               "corruption": 18,
               "rel_b": -26,
               "rel_c": -24,
-              "flag": "zhangsun_gold_shackle_massacre"
+              "flag": "zhangsun_gold_shackle_massacre",
+              "exec": "b",
+              "troops": 60,
+              "pv": 1,
+              "mist": 18,
+              "heat": 9
             },
             "outcome": "佛閣內鮮血飛濺上金佛慈悲的臉龐。她拖著還沒劈開的沉重金鐐，赤腳踩過叛將尚在抽搐的殘骸撲進你懷裡，染血紅唇瘋狂吻住你：「別砸開這副金鐐……帶回立政殿，換陛下您親手鎖住臣妾。」"
           },
@@ -1091,7 +1374,11 @@
               "inf": 6,
               "corruption": 10,
               "rel_b": -8,
-              "rel_c": -8
+              "rel_c": -8,
+              "pv": 1,
+              "mist": 10,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "雖將她及時搶回，卻打草驚蛇讓{b}與{c}連夜銷毀了所有通敵原件。馬車裡，她低頭撫摸著腳踝滲血的磨痕，靠在你肩頭輕聲冷笑：「陛下這份憐香惜玉，可是放跑了兩條最肥的毒蛇呢。」"
           }
@@ -1120,7 +1407,13 @@
               "corruption": 18,
               "rel_b": -24,
               "rel_g": -16,
-              "flag": "zhangsun_untamed_asura_empress"
+              "flag": "zhangsun_untamed_asura_empress",
+              "mist": 18,
+              "crave": 16,
+              "heat": 8,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "太極殿大門在文武百官震駭的目光中轟然合攏。她在冰冷龍椅上不顧滿身血污跨坐上你的大腿，冰涼紅唇瘋狂撕咬著你的唇舌。從此大唐江山再無人敢直視這尊披著佛皮的修羅國母。"
           },
@@ -1132,7 +1425,13 @@
               "tyranny": 16,
               "corruption": 12,
               "rel_b": 4,
-              "rel_g": 4
+              "rel_g": 4,
+              "house": 1,
+              "troops": 60,
+              "mist": 12,
+              "heat": 8,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "她站在高階之上，望著圍上來的侍衛緩緩笑了，連一絲氣疾都未曾發作：「軟禁？陛下是不是忘了，這座太極殿裡替您端茶、守門、煎藥的人，有一半都是臣妾從玄武門那天起親自養大的。」"
           }
@@ -1141,3 +1440,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['zhangsun'] = DATA;
+  (window.characterPacks ||= {})['zhangsun'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

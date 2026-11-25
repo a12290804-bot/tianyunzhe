@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["pingyang"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 32 號 平陽昭公主 (pingyang)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "pingyang",
     "index": 32,
@@ -18,7 +23,8 @@
       "0-34": "凱旋入長安的開國鐵血公主，胡漢混血骨相英挺豔烈、明光鎧下裹著修長結實的戰女胴體，不屑後宮脂粉爭寵，直接以兵權與豪氣壓迫六宮。",
       "35-69": "徹底軍閥化的娘子軍女帥，將軍營酷刑引入後宮血洗政敵與孕嬪，同時在司竹園大營以酒色與軍法馴服大批綠林猛將充當私人死士與帳中男寵。",
       "70+": "凌駕十六衛與六宮之上的鐵血女軍閥。長安城外七萬娘子軍只聽她一聲令下，她在明光鎧與血色紅帳間肆意掠奪江山與男色，連天子都成了她戰利品帳裡最珍貴的俘虜。"
-    }
+    },
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -40,7 +46,14 @@
             "aff": 14,
             "inf": 14,
             "corruption": 8,
-            "hedon": 12
+            "hedon": 12,
+            "troops": 80,
+            "soldiers": 60,
+            "mist": 10,
+            "crave": 12,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "鐵甲與明黃錦被撞出一室狂野春色，她雙腿如鐵鉗般死死夾緊你的腰、在激烈交鋒裡不斷反客為主地撕咬你的肩背。次日詔書一出，長安城正式迎來史上最危險的帶兵女帥。"
         },
@@ -50,7 +63,10 @@
             "aff": -2,
             "inf": 0,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "troops": 80,
+            "mist": 10,
+            "office": 1
           },
           "outcome": "她脊背撞在紅柱上卻不退反笑，高挑胸口隨著粗重呼吸緊緊貼壓上你的胸膛：「想收本帥的兵符？行啊——只要陛下在床上能真正壓得住我，我就交一半給你。」"
         },
@@ -60,7 +76,12 @@
             "aff": 10,
             "inf": 6,
             "corruption": 10,
-            "hedon": 12
+            "hedon": 12,
+            "mist": 10,
+            "crave": 12,
+            "affair": "g",
+            "heat": 6,
+            "tag": "桀驁未馴"
           },
           "outcome": "那一夜龍榻幾乎被兩人拆成木柴。天明密報遞上：那批昔日威震關中的綠林豪傑何潘仁、李仲文等人，竟只認平陽公主的金刀令、對朝廷調令視若無睹。"
         }
@@ -82,7 +103,13 @@
             "corruption": 12,
             "tyranny": 8,
             "rel_b": -14,
-            "rel_g": 12
+            "rel_g": 12,
+            "troops": 80,
+            "mist": 12,
+            "heat": 5,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "她暢快大笑著將橫刀「鏘」地歸鞘，當場解開白色中衣在兵器架旁與你激烈纏綿。自此太極宮內有了她的獨立刀斧手，{b}與關隴大族徹底噤聲。"
         },
@@ -93,7 +120,11 @@
             "inf": -6,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": -8
+            "rel_g": -8,
+            "troops": 80,
+            "mist": 10,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "娘子軍親兵整齊劃一地退出了宮門，卻全數紮營在了宮城外三里處——鎧甲寒光日夜對準太極宮，無聲宣告誰才是這座長安城真正的持刀人。"
         }
@@ -114,7 +145,13 @@
             "inf": 18,
             "corruption": 16,
             "tyranny": 16,
-            "rel_b": -30
+            "rel_b": -30,
+            "troops": 80,
+            "mist": 16,
+            "heat": 8,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "{b}在絕望尖叫中被娘子軍拖走，整個後宮妃嬪嚇得三日不敢踏出房門半步。當夜平陽昭公主未洗血氣便跨上龍榻，鐵甲與狂熱肉體讓你徹底明白什麼叫「以武壓宮」。"
         },
@@ -125,7 +162,13 @@
             "inf": -8,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 8
+            "rel_b": 8,
+            "exec": "b",
+            "troops": 80,
+            "mist": 12,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "她鬆開刀柄任你拿走，卻彎下修長腰身捏起{b}嚇得發抖的下巴，貼著她耳邊冷冷笑道：「這次陛下救了你。下次再敢碰我東西，我連你娘家滿門一起按軍法屠了。」"
         }
@@ -148,7 +191,12 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 16,
-            "rel_g": -30
+            "rel_g": -30,
+            "troops": 80,
+            "mist": 18,
+            "heat": 8,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "{g}當夜在軍法酷刑中氣絕身亡。平陽昭公主洗淨汗水後在帥帳虎皮榻上瘋狂壓制索愛，彷彿處決叛徒後的血腥快感是世上最烈的催情酒。"
         },
@@ -158,7 +206,10 @@
             "aff": -12,
             "inf": -8,
             "corruption": 12,
-            "rel_g": 8
+            "rel_g": 8,
+            "mist": 12,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "她看著被抬走的{g}嗤笑一聲，用舌尖舔掉手背濺到的一點血星：「交給刑部？行啊——我那幫在刑部當差的司竹園老弟兄，自然會替我『好好照顧』她的。」"
         }
@@ -180,7 +231,13 @@
             "corruption": 16,
             "hedon": 14,
             "rel_g": 14,
-            "rel_c": -18
+            "rel_c": -18,
+            "mist": 16,
+            "crave": 14,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "全營響起山呼海嘯般的歡呼！酒宴未散，平陽昭公主便帶著滿身酒氣與烤肉香把你拖進帥帳裡瘋狂壓倒，徹底將關中兵馬與你的床榻焊成鐵板一塊。"
         },
@@ -192,7 +249,12 @@
             "corruption": 12,
             "tyranny": 8,
             "rel_g": -10,
-            "rel_c": 14
+            "rel_c": 14,
+            "troops": 80,
+            "mist": 12,
+            "heat": 5,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "{c}剛念完聖旨，營中數百名綠林悍將竟齊齊拔刀怒視嚇得他屁滾尿流！平陽昭公主斜倚在帥椅上擦著指甲冷笑：「{c}大人，聖旨我接了——至於我這幫兄弟願不願放下刀，您自己去勸吧。」"
         }
@@ -213,7 +275,10 @@
             "inf": 16,
             "corruption": 16,
             "tyranny": 16,
-            "rel_b": -26
+            "rel_b": -26,
+            "mist": 16,
+            "heat": 8,
+            "exec": "b"
           },
           "outcome": "羽箭離弦正中靶心，小旗手當場斃命。平陽昭公主丟下長弓翻身上馬貼近你，修長有力的手臂一把攬住你的腰，在血腥硝煙味裡狠狠吻了下來。"
         },
@@ -224,7 +289,10 @@
             "inf": -10,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 8
+            "rel_b": 8,
+            "mist": 12,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "弓弦崩斷抽紅了她的手背，她連眉頭都沒皺，直勾勾迎上你猜忌的目光大笑：「是真的又如何？是假的又如何？我平陽帶兵打仗、收服綠林猛漢，用什麼手段拴住他們的命，輪得到{b}這隻深宮母雞來指手畫腳？」"
         }
@@ -246,7 +314,13 @@
             "corruption": 16,
             "tyranny": 14,
             "rel_b": -28,
-            "rel_c": -28
+            "rel_c": -28,
+            "jail": "b",
+            "troops": 80,
+            "mist": 16,
+            "heat": 7,
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "宮外三萬娘子軍老兵齊呼萬歲，聲震長安！這一手「以兵威逼宮、以黑料反殺」玩得爐火純青，從此朝堂上再無人敢提「削平陽兵權」半個字。"
         },
@@ -258,7 +332,11 @@
             "corruption": 14,
             "tyranny": 8,
             "rel_b": -6,
-            "rel_c": 8
+            "rel_c": 8,
+            "troops": 80,
+            "mist": 14,
+            "heat": 5,
+            "ban": 1
           },
           "outcome": "你把虎符揣進袖中時，平陽昭公主死死盯著你的眼睛，嘴角緩緩勾起一抹危險至極的弧度：「陛下真敢收？那便試試看，沒有我平陽在場，那塊冷冰冰的銅塊調不調得動司竹園一兵一卒。」"
         }
@@ -279,7 +357,13 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 14,
-            "rel_g": 12
+            "rel_g": 12,
+            "kidLoss": "g",
+            "mist": 18,
+            "heat": 7,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "翌日城南官道馬車翻覆、新妃血崩滑胎且容顏盡毀，文官集團的希望一夜破滅。平陽昭公主與{g}在雨夜軍帳裡摔碗大笑，盡顯女軍閥的粗暴冷血。"
         },
@@ -289,7 +373,11 @@
             "aff": -10,
             "inf": -10,
             "corruption": 12,
-            "rel_g": -12
+            "rel_g": -12,
+            "troops": 80,
+            "soldiers": 60,
+            "mist": 12,
+            "inj": "c"
           },
           "outcome": "十餘名死士在官道上咬毒自盡沒留活口。平陽昭公主擦拭著橫刀冷笑：「陛下為了保護文官的小白蓮，連我的兄弟都下得去手？好得很。」"
         }
@@ -312,7 +400,12 @@
             "inf": 12,
             "corruption": 14,
             "hedon": 20,
-            "rel_b": -16
+            "rel_b": -16,
+            "mist": 14,
+            "crave": 20,
+            "heat": 6,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "戰馬嘶鳴聲中，兩人在乾草與馬革香裡展開了一場近乎原始野獸般的狂烈交歡直至深夜。次日清晨，她滿意地牽著你的馬走出馬廄，{b}從此再不敢與她爭鋒。"
         },
@@ -323,7 +416,11 @@
             "inf": 0,
             "corruption": 12,
             "tyranny": 8,
-            "rel_b": 6
+            "rel_b": 6,
+            "mist": 12,
+            "heat": 5,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "被你粗暴反剪雙手壓在柵欄上，她非但沒有半點屈服，反而偏過頭舔著唇角血絲、眼神炙熱得像要吃人：「這才對味嘛！陛下就該這麼狠——用力點，別跟在{b}屋裡一樣娘們唧唧的！」"
         }
@@ -345,7 +442,13 @@
             "corruption": 20,
             "hedon": 14,
             "tyranny": 10,
-            "rel_c": -6
+            "rel_c": -6,
+            "troops": 80,
+            "mist": 20,
+            "crave": 14,
+            "heat": 5,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "你轉身消失在寒風裡，身後帥帳的放浪狂笑與喘息聲猶如利刃刺耳。平陽昭公主徹底掌控了關中群盜的心與肉體，成了無人能動的鐵血女軍閥。"
         },
@@ -356,7 +459,14 @@
             "inf": -16,
             "corruption": 18,
             "tyranny": 18,
-            "rel_c": 14
+            "rel_c": 14,
+            "exec": "b",
+            "soldiers": 60,
+            "mist": 18,
+            "crave": 6,
+            "heat": 9,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "鮮血噴濺滿戰鼓與她的亮銀鎖子甲！平陽昭公主赤身浴血地站在兩具猛將屍體之間，非但不跪，反倒抽出橫刀與你對峙冷笑：「殺了這兩個？陛下知道他們身後站著多少鄠縣降兵嗎？沒有老娘用這副身子和刀壓著這群綠林野狼，陛下這座長安城明天就得亂成一鍋粥！」"
         },
@@ -367,7 +477,12 @@
             "inf": 12,
             "corruption": 22,
             "hedon": 24,
-            "rel_c": -18
+            "rel_c": -18,
+            "mist": 22,
+            "crave": 24,
+            "heat": 6,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "悍將們倉皇滾出帥帳。戰鼓之上，平陽昭公主看著你眼底燒得漆黑的暴戾佔有慾，竟發出一聲狂野至極的興奮大笑，雙腿如鐵鉗般鎖住你的腰在鼓聲咚咚中徹夜沉淪！"
         }
@@ -389,7 +504,13 @@
             "corruption": 18,
             "tyranny": 18,
             "hedon": 10,
-            "rel_b": -30
+            "rel_b": -30,
+            "inj": "b",
+            "mist": 18,
+            "crave": 10,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "{b}在第三圈還未跑完便活活累吐血摔死在馬蹄旁，滿場士卒齊聲歡呼平陽帥威武。自此長安後宮徹底臣服在她的馬靴之下。"
         },
@@ -400,7 +521,12 @@
             "inf": -10,
             "corruption": 14,
             "tyranny": 6,
-            "rel_b": 12
+            "rel_b": 12,
+            "inj": "b",
+            "mist": 14,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "平陽昭公主看著你抱走{b}的背影，眼中閃過一抹森冷的譏諷，對身旁數千名瞬間安靜下來的悍將朗聲道：「弟兄們瞧見沒？咱們在關中流的血，有時候還不如宮裡一隻嬌弱小金絲雀的眼淚值錢呢！」"
         }
@@ -421,7 +547,13 @@
             "inf": 22,
             "corruption": 24,
             "tyranny": 20,
-            "rel_b": -30
+            "rel_b": -30,
+            "troops": 80,
+            "mist": 24,
+            "heat": 10,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "血腥的軍閥暴力徹底壓倒了皇室血統。平陽昭公主看著你收劍入鞘，走上前用帶著淡淡鐵鏽味的滾燙雙唇封住你的嘴：「記住今天的教訓，陛下——這大唐的皇嗣，只能由我平陽點頭才能活。」"
         },
@@ -432,7 +564,16 @@
             "inf": -16,
             "corruption": 18,
             "tyranny": 12,
-            "rel_b": 16
+            "rel_b": 16,
+            "jail": 1,
+            "inj": 1,
+            "troops": 80,
+            "soldiers": 60,
+            "mist": 18,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "鮮血順著她暖玉般的肩頭滑落，她卻仰天發出震徹暴雨夜的狂笑：「好！夠種！那就讓十六衛跟我七萬娘子軍在朱雀大街上真刀真槍見個高低！」"
         }
@@ -454,7 +595,14 @@
             "corruption": 24,
             "tyranny": 22,
             "hedon": 14,
-            "rel_c": -30
+            "rel_c": -30,
+            "troops": 80,
+            "mist": 24,
+            "crave": 14,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "soldiers": -50
           },
           "outcome": "{c}人頭落地，朱雀大街響起震耳欲聾的軍號與鼓吹！當夜她在太極殿龍榻上半卸黃金鎧甲跨坐上你腰間，徹底開啟了大唐史上最狂野的鐵血女帥霸權。"
         },
@@ -465,7 +613,12 @@
             "inf": -20,
             "corruption": 18,
             "tyranny": 14,
-            "rel_c": 18
+            "rel_c": 18,
+            "mist": 18,
+            "heat": 7,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "數千張強弓在夜色中對峙拉滿！平陽昭公主迎著壓進頸皮的劍鋒發出一聲豪邁又危險的大笑：「這才像我大唐的皇帝！可惜啊，你這一劍刺下去，長安城明天就得燒成白地！」"
         }
@@ -488,7 +641,12 @@
             "inf": 18,
             "corruption": 16,
             "tyranny": 8,
-            "rel_c": -16
+            "rel_c": -16,
+            "mist": 16,
+            "heat": 5,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "她爽快地大笑吻上你的嘴角，滿口烈酒與羊肉香。自此葦澤關正式被天下稱為「娘子關」，成為只聽平陽昭公主一人號令的鐵血雄關。"
         },
@@ -499,7 +657,11 @@
             "inf": -10,
             "corruption": 10,
             "tyranny": 6,
-            "rel_c": 14
+            "rel_c": 14,
+            "troops": 80,
+            "food": 100,
+            "mist": 10,
+            "affair": "g"
           },
           "outcome": "詔書送達娘子關那日，守關悍將竟直接稱「關外有突厥游騎、恕難離職」將朝廷文官扣在關外喝西北風。平陽昭公主靠在榻上擦刀冷笑，毫無退讓之意。"
         }
@@ -521,7 +683,13 @@
             "corruption": 18,
             "tyranny": 10,
             "hedon": 10,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 18,
+            "crave": 10,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "長安地下世界徹底歸入平陽赤旗之下，朝野大臣但凡在城外有點見不得光的勾當，隔天便會收到平陽殿送來的「問候短刀」。"
         },
@@ -532,7 +700,11 @@
             "inf": -12,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": -12
+            "rel_g": -12,
+            "troops": 80,
+            "soldiers": 60,
+            "mist": 10,
+            "rebel": 1
           },
           "outcome": "官兵撲了個空，只查封了幾間空馬廄；當夜京兆尹自家書房的柱子上卻多了一把插著赤旗布條的娘子軍飛刀，嚇得官員連夜稱病請辭。"
         }
@@ -552,7 +724,12 @@
             "aff": 18,
             "inf": 16,
             "corruption": 18,
-            "hedon": 16
+            "hedon": 16,
+            "mist": 18,
+            "crave": 16,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "她在秋雨與低沉鼓聲裡發出暢快又熾熱的回應，修長有力的雙腿死死鎖緊你的腰。你們之間既有軍閥與君王的危險角力，更有唯有嗜血強者才懂的極致情慾。"
         },
@@ -562,7 +739,10 @@
             "aff": 2,
             "inf": 4,
             "corruption": 14,
-            "tyranny": 8
+            "tyranny": 8,
+            "mist": 14,
+            "heat": 5,
+            "house": 1
           },
           "outcome": "她眸中那絲罕見的柔光瞬間凝結成關中堅冰。她從你膝頭利落地翻身站起，重新抓起靠在床頭的唐橫刀冷笑：「交出刀去當籠子裡的金絲雀？陛下，平陽寧可穿著明光鎧死在衝鋒路上，也絕不交出這把刀！」"
         }
@@ -585,7 +765,12 @@
             "tyranny": 18,
             "rel_b": -28,
             "rel_c": -28,
-            "rel_g": -22
+            "rel_g": -22,
+            "jail": "b",
+            "mist": 18,
+            "heat": 9,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "三方徹底覆滅，太極殿內無人敢再出聲。平陽昭公主緩緩收刀歸鞘，對著龍椅上的你微微頷首一笑，盡顯大唐鐵血女霸主的無雙威儀。"
         },
@@ -598,7 +783,14 @@
             "tyranny": 10,
             "rel_b": -6,
             "rel_c": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "troops": 80,
+            "soldiers": 60,
+            "mist": 12,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "太極殿暫時恢復死寂。平陽昭公主跨出殿門前，回眸瞥了一眼滿殿瑟瑟發抖的文武百官，冷笑道：「刀既已經拔出來了，陛下覺得還按得回鞘裡嗎？」"
         }
@@ -621,7 +813,12 @@
             "inf": 20,
             "corruption": 18,
             "tyranny": 12,
-            "rel_c": -24
+            "rel_c": -24,
+            "troops": 80,
+            "mist": 18,
+            "heat": 6,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "娘子關大開，平陽赤旗如烈火席捲塞外，突厥大軍慘敗北遁！大唐國威震動西域，而擁兵十萬、滿載戰馬凱旋的平陽昭公主也徹底成了天下無人可制的鐵血女霸主。"
         },
@@ -631,7 +828,12 @@
             "aff": -10,
             "inf": -8,
             "corruption": 10,
-            "rel_c": 14
+            "rel_c": 14,
+            "soldiers": 60,
+            "mist": 10,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "平陽昭公主冷笑著抓起被她掃落的木牌拍回沙盤：「好啊，那{c}大人就帶著十六衛慢慢在關裡喝茶吧——只盼突厥人的彎刀，別砍得比你們喝茶還快。」"
         }
@@ -652,7 +854,12 @@
             "inf": 18,
             "corruption": 16,
             "tyranny": 12,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 16,
+            "heat": 6,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "她在狂奔戰馬上緊貼著你滾燙的背脊揮刀連斬數名突厥追兵，血腥與鐵甲碰撞聲令人熱血沸騰。戰後破帳裡，兩人連碎甲都沒卸完便瘋狂交纏在一起。"
         },
@@ -662,7 +869,11 @@
             "aff": 4,
             "inf": 6,
             "corruption": 10,
-            "rel_c": -18
+            "rel_c": -18,
+            "inj": "c",
+            "mist": 10,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "她被你硬拉回關門前，還回頭冷冷看著在雪地裡哀嚎的{c}：「軍前叛將當場砍了最省事，陛下帶回長安，是怕關隴老頭們沒戲看嗎？」"
         }
@@ -685,7 +896,12 @@
               "aff": 18,
               "corruption": 10,
               "tyranny": 18,
-              "flag": "py_tragedy_dead_avenged"
+              "flag": "py_tragedy_dead_avenged",
+              "mist": 10,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "震天軍鼓與號角送走了這名史無前例的女大帥。半年後你踏平突厥王庭，可回到空蕩冰冷的太極殿，再也沒人穿著明光鎧、踩著馬靴囂張地把你按在龍榻上了。"
           },
@@ -695,7 +911,12 @@
               "inf": -8,
               "corruption": 10,
               "tyranny": 10,
-              "flag": "py_tragedy_dead_buried"
+              "flag": "py_tragedy_dead_buried",
+              "troops": 80,
+              "mist": 10,
+              "heat": 5,
+              "pol": 15,
+              "wood": -50
             },
             "outcome": "兵權終於徹底收歸朝廷，司竹園老將含淚解甲。只是每當關中起風、戰鼓遙響，你總覺得太極宮寢殿門外還響著她沉穩傲慢的馬靴聲。"
           }
@@ -718,7 +939,13 @@
               "inf": -16,
               "corruption": 12,
               "hedon": 8,
-              "flag": "py_tragedy_captured_ransom"
+              "flag": "py_tragedy_captured_ransom",
+              "troops": 80,
+              "mist": 12,
+              "crave": 8,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "朝臣痛斥喪權辱國，七萬娘子軍卻齊齊感恩跪拜。你紅著眼簽下贖約，心知這頭受盡折辱的母獅歸來後必將掀起毀天滅地的血色報復。"
           },
@@ -728,7 +955,11 @@
               "inf": 12,
               "corruption": 14,
               "tyranny": 14,
-              "flag": "py_tragedy_captured_spy"
+              "flag": "py_tragedy_captured_spy",
+              "mist": 14,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "十日後草原大火衝天、萬馬驚奔！金帳內傳來突厥可汗最後一聲慘嚎——沒人能真正馴服平陽昭公主。"
           }
@@ -751,7 +982,14 @@
               "inf": 14,
               "corruption": 16,
               "hedon": 14,
-              "flag": "py_tragedy_wounded_devoted"
+              "flag": "py_tragedy_wounded_devoted",
+              "troops": 80,
+              "mist": 16,
+              "crave": 14,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "她在劇痛裡發出壓抑到極致的嘶吼，雙臂死死勒住你的脖頸。自此長安多了一位坐著玄鐵輪輿巡營、比從前更加冷血多疑的鐵血女暴君。"
           },
@@ -762,7 +1000,12 @@
               "inf": -10,
               "corruption": 18,
               "tyranny": 6,
-              "flag": "py_tragedy_wounded_sidelined"
+              "flag": "py_tragedy_wounded_sidelined",
+              "troops": 80,
+              "soldiers": 60,
+              "mist": 18,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "她死死盯著你半息，突然爆出一陣令人背脊發寒的冷笑：「好啊，真是卸磨殺驢的好皇帝！」半月後，你派去接管司竹園的兩名十六衛將軍便離奇「墜馬斷頸」。"
           }
@@ -786,7 +1029,12 @@
               "corruption": 20,
               "tyranny": 22,
               "rel_b": -30,
-              "flag": "py_tragedy_humiliated_purge"
+              "flag": "py_tragedy_humiliated_purge",
+              "troops": 80,
+              "mist": 20,
+              "heat": 11,
+              "exec": "b",
+              "pop": -15
             },
             "outcome": "那一夜長安三坊血流成渠，{b}在司竹園軍營裡受盡折辱而亡。洗去泥血的平陽昭公主重新披上黃金明光鎧，徹底成了長安城無人敢直視的活殺神。"
           },
@@ -797,7 +1045,13 @@
               "inf": -10,
               "corruption": 16,
               "rel_b": -14,
-              "flag": "py_tragedy_humiliated_suppressed"
+              "flag": "py_tragedy_humiliated_suppressed",
+              "cold": "b",
+              "troops": 80,
+              "mist": 16,
+              "heat": 6,
+              "ban": 1,
+              "tag": "受辱怨骨"
             },
             "outcome": "她冷笑著甩開你的手大步回營。七日後，{b}的冷宮與關隴那三座幕後大宅同夜遭「不明馬賊」血洗焚毀，雞犬不留。"
           }
@@ -820,7 +1074,11 @@
               "inf": 18,
               "corruption": 16,
               "tyranny": 12,
-              "flag": "py_tragedy_survivor_reclaimed"
+              "flag": "py_tragedy_survivor_reclaimed",
+              "troops": 80,
+              "mist": 16,
+              "heat": 6,
+              "tag": "死人堆爬歸"
             },
             "outcome": "滾燙藥浴融化了她身上的冰雪，她在水霧裡如母獅般瘋狂啃咬索取你的體溫。次日七萬娘子軍齊聲歡呼女帥歸來，朝堂反對派徹底嚇破膽。"
           },
@@ -831,7 +1089,12 @@
               "inf": -12,
               "corruption": 18,
               "tyranny": 8,
-              "flag": "py_tragedy_survivor_quarantined"
+              "flag": "py_tragedy_survivor_quarantined",
+              "troops": 80,
+              "soldiers": 60,
+              "mist": 18,
+              "heat": 5,
+              "jail": 1
             },
             "outcome": "她丟下馬韁，望著團團圍上來的十六衛冷酷一笑：「突厥十萬鐵騎都沒能留住我平陽，陛下這幾塊盾牌，關得住誰？」"
           }
@@ -856,7 +1119,12 @@
               "tyranny": 14,
               "hedon": 10,
               "rel_c": -28,
-              "flag": "py_tragedy_pregnant_kept"
+              "flag": "py_tragedy_pregnant_kept",
+              "mist": 24,
+              "crave": 10,
+              "heat": 7,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "這場瘋狂至極的帝國豪賭就此拍板。平陽昭公主大笑著將唐橫刀入鞘，拉過你的手重重按在她結實溫熱的小腹上：「好！十年後，咱們一起看他踏平陰山！」"
           },
@@ -868,7 +1136,13 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_c": 14,
-              "flag": "py_tragedy_pregnant_aborted"
+              "flag": "py_tragedy_pregnant_aborted",
+              "kidLoss": 1,
+              "mist": 20,
+              "heat": 8,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "猩紅鮮血浸透了白衫與虎皮地毯。她在劇痛中咬破嘴唇硬是一聲未吭，一雙霜鷹般的利眼死死鎖著你：「為了這點可笑的酸腐臉面，親手倒掉了整片漠北草原……陛下，你配不上這座大唐天下。」"
           }
@@ -892,7 +1166,14 @@
               "corruption": 16,
               "hedon": 14,
               "rel_c": -18,
-              "flag": "py_tragedy_forcedmarriage_reclaimed"
+              "flag": "py_tragedy_forcedmarriage_reclaimed",
+              "troops": 80,
+              "mist": 16,
+              "crave": 14,
+              "heat": 6,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "火光照亮大漠，你一刀斬殺宿醉未醒的突厥可汗。金帳內，平陽昭公主披著半敞的大紅草原嫁衣提刀大笑，撲進你懷裡在可汗新床上上演了最狂野的勝利歡愛！"
           },
@@ -904,7 +1185,11 @@
               "corruption": 12,
               "tyranny": 8,
               "rel_c": 12,
-              "flag": "py_tragedy_forcedmarriage_disowned"
+              "flag": "py_tragedy_forcedmarriage_disowned",
+              "mist": 12,
+              "heat": 5,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "除名詔書傳至草原那日，平陽昭公主冷笑著一刀斬碎詔書——半月後，突厥可汗離奇暴斃洞房，而她竟憑無雙膽色與策反的漢人降將收編了三萬草原狼騎自立一方！"
           }
@@ -927,7 +1212,14 @@
               "inf": 16,
               "corruption": 16,
               "hedon": 18,
-              "flag": "py_tragedy_rescued_restored"
+              "flag": "py_tragedy_rescued_restored",
+              "troops": 80,
+              "soldiers": 60,
+              "mist": 16,
+              "crave": 18,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100
             },
             "outcome": "那一夜平陽殿裡烈酒與喘息交織至天明。次日司竹園戰鼓震天，大唐最強的赤旗鐵騎再次燃起滅世烽火。"
           },
@@ -937,7 +1229,12 @@
               "aff": -8,
               "inf": -4,
               "corruption": 12,
-              "flag": "py_tragedy_rescued_restrained"
+              "flag": "py_tragedy_rescued_restrained",
+              "troops": 80,
+              "food": 100,
+              "mist": 12,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她冷哼一聲拉上白衫，銳利鳳眼裡滿是不屑：「民力凋敝？我娘子軍吃的是自己收的商稅、騎的是自己搶的戰馬——陛下不點頭，我照樣自己出關殺敵！」"
           }
@@ -962,7 +1259,13 @@
               "tyranny": 18,
               "hedon": 12,
               "rel_c": -30,
-              "flag": "py_tragedy_imprisoned_freed"
+              "flag": "py_tragedy_imprisoned_freed",
+              "troops": 80,
+              "mist": 18,
+              "crave": 12,
+              "heat": 9,
+              "exec": "g",
+              "pv": 1
             },
             "outcome": "{c}一族徹底從關隴版圖抹除。回到平陽殿後，她在滾燙藥浴裡拉著你瘋狂宣洩殺意與情慾，彷彿鮮血讓她這具戰女之軀更加滾燙迷人。"
           },
@@ -974,7 +1277,10 @@
               "corruption": 18,
               "tyranny": 6,
               "rel_c": -20,
-              "flag": "py_tragedy_imprisoned_cold"
+              "flag": "py_tragedy_imprisoned_cold",
+              "mist": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "她站在偏院門口撫摸著手腕上的深紅鐵印，回眸冷笑：「怕我這雙手太狠？陛下別忘了，您坐著的那張龍椅，也是靠我這雙沾血的手替您搶回來的。」"
           }
@@ -997,7 +1303,13 @@
               "inf": 22,
               "corruption": 20,
               "hedon": 16,
-              "flag": "py_tragedy_escaped_empowered"
+              "flag": "py_tragedy_escaped_empowered",
+              "mist": 20,
+              "crave": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "她在沾血的龍案上暢快狂笑，修長健美的大腿直接勾緊你的腰身。從此大唐江山正式迎來了帝王與鐵血女大帥共主天下的狂烈盛世。"
           },
@@ -1008,7 +1320,13 @@
               "inf": -10,
               "corruption": 16,
               "tyranny": 8,
-              "flag": "py_tragedy_escaped_watched"
+              "flag": "py_tragedy_escaped_watched",
+              "troops": 80,
+              "soldiers": 60,
+              "mist": 16,
+              "heat": 5,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "平陽昭公主擦去臉頰敵血，掃了一眼門外層層包圍的十六衛，手按橫刀冷傲大笑：「突厥十萬鐵騎都鎖不住我平陽，陛下這點小陣仗，可別把門外的弟兄白白送了命！」"
           }
@@ -1017,3 +1335,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['pingyang'] = DATA;
+  (window.characterPacks ||= {})['pingyang'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

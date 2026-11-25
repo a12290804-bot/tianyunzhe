@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["xiaji"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 27 號 夏姬 (xiaji)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "xiaji",
     "index": 27,
@@ -18,7 +23,8 @@
       "0-34": "自鄭國與陳國株林入宮的神秘寡婦，冰肌玉骨宛如少女卻眼含萬種銷魂媚意，已開始在枕畔施展素女吐納秘術，並將貼身香衵化作試探君臣底線的毒餌。",
       "35-69": "正式上演「君臣共衵」與借刀亡國的荒淫大戲；一面在株林別館同時周旋於天子與數名重臣之間采補精氣，一面讓所有政敵妃嬪的父兄拜倒在她裙下自相殘殺。",
       "70+": "踏過無數君卿屍骨卻愈發青春妖豔的不老慾魔。視天子、卿士、諸侯霸主皆為延續她美貌與權勢的活體藥鼎，所到之處禮崩樂壞、父子相殘、國破家亡。"
-    }
+    },
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -40,7 +46,12 @@
             "aff": 14,
             "inf": 12,
             "corruption": 8,
-            "hedon": 12
+            "hedon": 12,
+            "mist": 10,
+            "crave": 12,
+            "heat": 6,
+            "marry": 1,
+            "preg": 1
           },
           "outcome": "那一夜你徹底領教了何謂「素女銷魂」。她如水蛇般緊密纏繞、吐納吸攝，令你彷彿魂魄離體般沉淪至五更；天明醒來時你渾身虛軟無力，她卻面色紅潤光澤照人，彷彿憑空又年輕了三歲。"
         },
@@ -50,7 +61,11 @@
             "aff": -2,
             "inf": 0,
             "corruption": 8,
-            "tyranny": 4
+            "tyranny": 4,
+            "marry": 1,
+            "mist": 10,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "錦繡衵服在火盆裡燒出濃烈異香。她絲毫不惱，反而貼近火光輕笑，雪白胸口隨著呼吸起落：「燒了一件，妾身箱裡還有十件呢——且看陛下這雙眼睛，能忍得住幾夜不看妾身。」"
         },
@@ -60,7 +75,12 @@
             "aff": 10,
             "inf": 6,
             "corruption": 10,
-            "hedon": 12
+            "hedon": 12,
+            "mist": 10,
+            "crave": 12,
+            "affair": "g",
+            "heat": 6,
+            "tag": "桀驁未馴"
           },
           "outcome": "極致的肉體銷魂讓你幾乎忘了早朝。可太史密報卻讓你背脊一涼：她過往三位夫君皆在極度沉迷與爭風吃醋中暴斃或橫死，而她每次守寡後，容貌竟都比從前更嬌豔動人。"
         }
@@ -82,7 +102,13 @@
             "corruption": 12,
             "hedon": 10,
             "rel_b": -12,
-            "rel_g": 10
+            "rel_g": 10,
+            "mist": 12,
+            "crave": 10,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "她柔媚地踮起腳尖含住你的耳垂輕吸一口，令你半邊身子發麻。不出十日，朝堂上彈劾夏姬的聲音徹底消失，反倒多了數名對她言聽計從的紅眼權卿。"
         },
@@ -93,7 +119,11 @@
             "inf": -6,
             "corruption": 8,
             "tyranny": 6,
-            "rel_g": -8
+            "rel_g": -8,
+            "affair": "g",
+            "mist": 10,
+            "troops": 60,
+            "heat": 6
           },
           "outcome": "親衛衝出門外時馬車早已空無一人，只留下一縷濃郁蘭香。夏姬靠在銅柱邊輕笑，指尖繞著一縷烏髮：「陛下這麼小心眼，可把大臣們都嚇壞了——其實他們昨夜，連妾身的裙角都還沒摸著呢。」"
         }
@@ -115,7 +145,13 @@
             "corruption": 14,
             "hedon": 10,
             "tyranny": 8,
-            "rel_b": -30
+            "rel_b": -30,
+            "mist": 14,
+            "crave": 10,
+            "heat": 5,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "{b}在親哥哥冷漠的眼神與全場竊笑中徹底瘋癲。當夜夏姬脫下外袍只著新換的杏黃衵服纏上你，在極致銷魂的喘息裡證明：沒有任何男人的忠誠能敵過她一夜的株林溫柔。"
         },
@@ -126,7 +162,12 @@
             "inf": -4,
             "corruption": 10,
             "tyranny": 6,
-            "rel_b": 6
+            "rel_b": 6,
+            "troops": 60,
+            "mist": 10,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "那名將軍被奪兵符卻連看都不看{b}一眼，只癡迷地回頭望著夏姬。夏姬對著你露出一個無辜又妖冶的微笑：「陛下生氣的樣子真好看——只是他們自己要往火裡撲，妾身哪裡推得開呀？」"
         }
@@ -149,7 +190,11 @@
             "inf": 14,
             "corruption": 16,
             "tyranny": 12,
-            "rel_g": -28
+            "rel_g": -28,
+            "mist": 16,
+            "heat": 6,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "{g}絕望的詛咒聲被堵嘴拖遠。夏姬起身拂去裙上藥漬，如水蛇般滑進你懷裡，雪白滑膩的胴體散發著令人迷醉的少女暖香：「陛下只喜歡看永遠年輕的臉，對不對？」"
         },
@@ -159,7 +204,10 @@
             "aff": -10,
             "inf": -8,
             "corruption": 12,
-            "rel_g": 8
+            "rel_g": 8,
+            "mist": 12,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "香膏流滿一地。夏姬望著碎瓶輕輕嘆了口氣，唇角卻掛著一抹神秘的冷笑：「砸了外敷的膏子有什麼用？妾身真正駐顏的法子，從來都不是靠瓶瓶罐罐，而是靠男人心甘情願獻上來的精氣呀。」"
         }
@@ -181,7 +229,13 @@
             "corruption": 16,
             "hedon": 14,
             "rel_g": 14,
-            "rel_c": -16
+            "rel_c": -16,
+            "mist": 16,
+            "crave": 14,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "兩名權卿被揮退後，夏姬在滿室催情蘭煙裡徹底解開紅衵纏上你。自此朝堂上再無人理會{c}的禮法死諫，半數卿大夫皆成了株林裙下之臣。"
         },
@@ -193,7 +247,12 @@
             "corruption": 12,
             "tyranny": 8,
             "rel_g": -10,
-            "rel_c": 14
+            "rel_c": 14,
+            "exec": "g",
+            "mist": 12,
+            "heat": 5,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "兩名卿大夫血濺株林花叢，臨死前竟還癡癡望著夏姬笑。夏姬踩過溫熱血泊披上深衣，輕聲對{c}嘆息：「殺了兩個，明天還會有四個爬牆進來——{c}大人，您手裡的刀砍得完男人的色心嗎？」"
         }
@@ -214,7 +273,10 @@
             "inf": 16,
             "corruption": 16,
             "tyranny": 12,
-            "rel_b": -26
+            "rel_b": -26,
+            "mist": 16,
+            "heat": 6,
+            "exec": "b"
           },
           "outcome": "殺人不用自己沾一滴血，反而還讓替她殺人的男人更加死心塌地。當夜夏姬在暖帳裡用素女吐納術讓你徹底沉醉，笑得像一隻剛吸飽魂魄的九尾妖狐。"
         },
@@ -225,7 +287,11 @@
             "inf": -10,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 6
+            "rel_b": 6,
+            "exec": "b",
+            "mist": 12,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "那名大夫被拖走時竟高喊「願為夏姬死、絕不後悔」。夏姬望著他的背影輕輕掩唇一笑，轉頭望向你的眼神滿是幽深誘惑：「陛下瞧見沒？男人蠢起來，是多麼可愛的刀子呀。」"
         }
@@ -247,7 +313,12 @@
             "corruption": 16,
             "tyranny": 12,
             "rel_b": -26,
-            "rel_c": -26
+            "rel_c": -26,
+            "jail": "b",
+            "mist": 16,
+            "heat": 6,
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "原本要斬她祭天的神聖宗廟，轉眼成了她反殺政敵的刑場。祭典散後，她在宗廟帷幔後悄悄貼近你，素白祭服下竟直接露出猩紅錦衵，帶著極致的禁忌刺激邀你共歡。"
         },
@@ -258,7 +329,10 @@
             "inf": -6,
             "corruption": 12,
             "rel_b": -6,
-            "rel_c": 8
+            "rel_c": 8,
+            "mist": 12,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "夏姬柔順地垂下長睫，彷彿受了天大委屈。可不出三日，那名大巫祝便「畏罪自焚」於神壇，而覆查的兩名宗室長老也在赴過一次株林酒宴後，異口同聲宣稱夏姬乃是大吉之祥瑞。"
         }
@@ -280,7 +354,13 @@
             "corruption": 18,
             "hedon": 10,
             "tyranny": 10,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 18,
+            "crave": 10,
+            "heat": 5,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "次日黎明，和親公主與護衛衣衫不整的醜聞轟動宮廷，公主羞憤自盡。夏姬與{g}在紅帳裡舉爵相慶，兩條毒蛇再次為了權力緊緊纏在一起。"
         },
@@ -290,7 +370,10 @@
             "aff": -10,
             "inf": -10,
             "corruption": 12,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 12,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "夏姬看著被倒掉的迷酒，柔媚地掩唇輕笑：「陛下真講究邦交禮儀呀。沒關係，既然公主碰不得，那妾身直接去把她那位年輕英俊的兄長迷昏頭，也是一樣的。」"
         }
@@ -313,7 +396,12 @@
             "inf": 12,
             "corruption": 16,
             "hedon": 20,
-            "rel_b": -16
+            "rel_b": -16,
+            "mist": 16,
+            "crave": 20,
+            "heat": 6,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "那一夜你徹底失去了時間概念，天亮時虛脫得連早朝都無法起身，而她卻容光煥發、雪白肌膚透著奪目的粉紅光澤。從此宮裡再年輕的少女，在你眼裡都淡如白水。"
         },
@@ -324,7 +412,11 @@
             "inf": -4,
             "corruption": 12,
             "tyranny": 4,
-            "rel_b": 8
+            "rel_b": 8,
+            "mist": 12,
+            "house": 1,
+            "inj": "b",
+            "heat": 8
           },
           "outcome": "被你硬生生掙脫，她赤裸著雪白身子倒在紅錦上，望著你倉皇逃離的背影發出銀鈴般的妖笑：「跑得了一夜，跑得了一輩子嗎？陛下今晚回去抱著{b}的時候，腦子裡想的，還是妾身這副身子呢。」"
         }
@@ -346,7 +438,12 @@
             "corruption": 24,
             "hedon": 24,
             "tyranny": 10,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 24,
+            "crave": 24,
+            "heat": 5,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "禮崩樂壞至此達到了前所未有的巔峰！朝堂成了炫耀女人褻衣的笑話，忠臣痛哭辭官，敵國探子大喜過望，而你在夏姬不老的妖豔肉體間徹底忘卻了亡國之音。"
         },
@@ -357,7 +454,12 @@
             "inf": -16,
             "corruption": 16,
             "tyranny": 18,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 16,
+            "crave": 6,
+            "heat": 9,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "鮮血濺滿了猩紅錦衵與她雪白如玉的胴體。夏姬跪在兩名權卿的熱血裡，卻仰起臉舔去唇邊血珠，笑得比鬼還美：「殺得好……他們兩個的精氣本來也快被妾身吸乾了。現在，這張大帳裡只剩陛下一個人陪妾身了。」"
         },
@@ -368,7 +470,11 @@
             "inf": 8,
             "corruption": 18,
             "hedon": 18,
-            "rel_c": -14
+            "rel_c": -14,
+            "mist": 18,
+            "crave": 18,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "{c}衣衫不整連滾帶爬逃出株林。紅帳內，夏姬在你的暴怒征服裡發出極盡銷魂的浪笑，雪白雙腿死死絞住你的腰：「陛下吃醋發狠的樣子，比剛才那兩個廢物帶勁一百倍呢。」"
         }
@@ -390,7 +496,12 @@
             "corruption": 18,
             "tyranny": 16,
             "hedon": 12,
-            "rel_b": -30
+            "rel_b": -30,
+            "mist": 18,
+            "crave": 12,
+            "heat": 8,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "{b}在親族的冷笑與極致羞辱中咬舌自盡、血濺株林。夏姬看都沒看屍體一眼，只柔滑地吻上你的唇，整個後宮從此再無人敢與這名不老妖姬為敵。"
         },
@@ -400,7 +511,11 @@
             "aff": -14,
             "inf": -10,
             "corruption": 14,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 14,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "夏姬收回玉足，柔聲輕嘆一聲，眼中卻毫無悔意：「陛下真愛當好人……可惜她的親族早就不認她了，您救得了她今晚，救得了她往後孤苦伶仃的一輩子嗎？」"
         }
@@ -422,7 +537,14 @@
             "corruption": 24,
             "tyranny": 20,
             "hedon": 14,
-            "rel_b": -30
+            "rel_b": -30,
+            "cold": "b",
+            "mist": 24,
+            "crave": 14,
+            "heat": 10,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "骨肉血冷、酒宴未歇，此等滅絕人倫的慘劇徹底引爆了全國怒火。而你在夏姬不老的胴體懷抱裡，已徹底聽不見城外響起的亡國喪鐘。"
         },
@@ -433,7 +555,12 @@
             "inf": -16,
             "corruption": 18,
             "tyranny": 12,
-            "rel_b": 16
+            "rel_b": 16,
+            "mist": 18,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "衛將人頭落地，夏姬被鐵鏈鎖走時卻回眸對你綻出一個淒美銷魂的笑：「陛下為了兒子鎖我？好呀……只怕不到三夜，陛下自己就會拿著鑰匙，爬進大牢來求妾身替您暖床。」"
         }
@@ -455,7 +582,14 @@
             "corruption": 24,
             "tyranny": 20,
             "hedon": 16,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 24,
+            "crave": 16,
+            "heat": 10,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "你踩著{c}尚未冷卻的屍首走進紅帳，她在火光與血腥味裡發出極致銷魂的顫慄喘息，雪白玉腿死死絞住你的腰——你贏下了她，卻也徹底輸掉了這座搖搖欲墜的王朝。"
         },
@@ -466,7 +600,13 @@
             "inf": -18,
             "corruption": 18,
             "tyranny": 14,
-            "rel_c": -10
+            "rel_c": -10,
+            "mist": 18,
+            "crave": 6,
+            "heat": 7,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "劍鋒劃破她雪白肩頭滲出紅珠，{c}見心愛妖姬受創竟瞬間亂了陣腳遭親衛擊退。夏姬舔去肩頭鮮血，對你露出從未有過的詭異冷笑：「陛下終於捨得對妾身動刀子了？真讓人興奮呢……」"
         }
@@ -489,7 +629,13 @@
             "inf": 16,
             "corruption": 16,
             "hedon": 12,
-            "rel_c": -14
+            "rel_c": -14,
+            "mist": 16,
+            "crave": 12,
+            "heat": 6,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "她滿意地伏進你懷裡吐納蘭香。自此株林別殿成了列國權貴的銷金情報窟，只是你也隱隱察覺——這群被她釣著的餓狼，早晚會為了搶奪她而大兵壓境。"
         },
@@ -500,7 +646,10 @@
             "inf": -12,
             "corruption": 10,
             "tyranny": 6,
-            "rel_c": 12
+            "rel_c": 12,
+            "affair": "c",
+            "mist": 10,
+            "troops": 80
           },
           "outcome": "香箋化作焦灰，三城守將人頭落地。夏姬卻看著火盆裡飄起的蘭灰輕笑：「燒了紙條又如何？只要我夏姬還活著、還長著這副身子，全天下的男人照樣會隔著千里發瘋。」"
         }
@@ -522,7 +671,14 @@
             "corruption": 18,
             "hedon": 14,
             "tyranny": 8,
-            "rel_g": 12
+            "rel_g": 12,
+            "pv": 1,
+            "mist": 18,
+            "crave": 14,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "株林莊園成了中原最陰暗奢靡的權力中心，無數王公為求一粒秘藥與她一眼垂青甘當走狗。而她則在滾滾精氣與金銀裡愈發青春妖冶。"
         },
@@ -533,7 +689,11 @@
             "inf": -12,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": -12
+            "rel_g": -12,
+            "pv": 1,
+            "mist": 10,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "莊園付之一炬，可最核心的那卷素女秘術早已刻在夏姬的骨血裡。她望著城外沖天火光，對你柔聲笑道：「燒了屋子，可燒不掉男人骨子裡的饞蟲呀。」"
         }
@@ -553,7 +713,12 @@
             "aff": 18,
             "inf": 14,
             "corruption": 20,
-            "hedon": 20
+            "hedon": 20,
+            "mist": 20,
+            "crave": 20,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "她在你耳畔發出一聲極輕、極滿足的嘆息，素女吐納的熱浪再次將你徹底吞沒。你明知她是亡國毒藥，卻已甘心飲鴆止渴、至死方休。"
         },
@@ -563,7 +728,10 @@
             "aff": 2,
             "inf": 4,
             "corruption": 14,
-            "tyranny": 8
+            "tyranny": 8,
+            "mist": 14,
+            "heat": 5,
+            "house": 1
           },
           "outcome": "她微微一怔，隨即柔媚地掩唇輕笑，指尖輕輕點過你劇烈跳動的喉結：「嘴上說得這麼狠，可陛下的身子，一碰著妾身就軟了呢——那咱們就瞧瞧，最後是您馴服我，還是我送您上路。」"
         }
@@ -586,7 +754,12 @@
             "tyranny": 16,
             "rel_b": -24,
             "rel_c": -24,
-            "rel_g": -18
+            "rel_g": -18,
+            "jail": "b",
+            "mist": 18,
+            "heat": 8,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "大殿瞬間亂成一鍋粥，{b}發瘋般撲上去撕打{g}，{c}百口莫辯氣絕倒地。夏姬站在修羅場中央掩唇輕笑，像看戲般優雅地牽起你的手退回紅帳。"
         },
@@ -599,7 +772,13 @@
             "tyranny": 10,
             "rel_b": -6,
             "rel_c": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "ban": 1,
+            "mist": 12,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "四方暫時被迫止戈。夏姬退出大殿時柔順地回眸一笑，眼底卻暗藏幽火——她知道，只要男人心裡的猜忌與慾望還在，這把火遲早會重新燒起來。"
         }
@@ -623,7 +802,13 @@
             "corruption": 16,
             "hedon": 10,
             "tyranny": 6,
-            "rel_c": -22
+            "rel_c": -22,
+            "mist": 16,
+            "crave": 10,
+            "heat": 6,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "香箋送出不過五日，敵營果真爆發主帥與大夫為了爭奪「破城後誰先佔有夏姬」而互相火併的荒唐內亂！守軍趁機夜襲大破強敵，夏姬以一具肉體瓦解了十萬大軍。"
         },
@@ -633,7 +818,12 @@
             "aff": -10,
             "inf": -8,
             "corruption": 10,
-            "rel_c": 14
+            "rel_c": 14,
+            "affair": "c",
+            "mist": 10,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "夏姬柔順地退下高階，回眸瞥了一眼滿臉肅殺的{c}，唇角勾起一抹冰冷的嘲弄：「好呀，那就看看{c}大人那張老臉，能不能替陛下擋住城外十萬虎狼。」"
         }
@@ -655,7 +845,13 @@
             "corruption": 16,
             "tyranny": 10,
             "hedon": 10,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 16,
+            "crave": 10,
+            "heat": 5,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "她在疾馳馬背上緊緊貼著你的胸膛，紅衵在熱風裡獵獵飛揚，身上的蘭香壓過了整座城池的焦臭。哪怕國破城焚，只要懷裡抱著她，你便覺得自己仍是贏家。"
         },
@@ -665,7 +861,12 @@
             "aff": 4,
             "inf": 6,
             "corruption": 10,
-            "rel_c": -18
+            "rel_c": -18,
+            "soldiers": 60,
+            "mist": 10,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "夏姬裹上你的披風，回頭看著血泊裡仍死死盯著自己長腿的叛將{c}，輕輕掩唇笑道：「連快死的人都捨不得移開眼呢……陛下這副正經模樣，又能裝到幾時？」"
         }
@@ -688,7 +889,12 @@
               "aff": 16,
               "corruption": 10,
               "tyranny": 18,
-              "flag": "xj_tragedy_dead_avenged"
+              "flag": "xj_tragedy_dead_avenged",
+              "mist": 10,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "你親手替她理順如瀑烏髮，心知這世上再也不會有第二個女人能帶來那般毀滅性的銷魂。株林別殿從此長閉，唯有幽香夜夜入夢。"
           },
@@ -698,7 +904,11 @@
               "inf": -8,
               "corruption": 8,
               "tyranny": 8,
-              "flag": "xj_tragedy_dead_buried"
+              "flag": "xj_tragedy_dead_buried",
+              "mist": 10,
+              "heat": 5,
+              "pol": 15,
+              "wood": -50
             },
             "outcome": "滿朝忠臣叩首慶賀「妖星墜落」。只是往後每當你望見任何年輕妃嬪的紅衵，總覺得寡淡無味，胸口永遠缺了一塊滾燙的毒肉。"
           }
@@ -721,7 +931,12 @@
               "inf": -14,
               "corruption": 12,
               "hedon": 8,
-              "flag": "xj_tragedy_captured_ransom"
+              "flag": "xj_tragedy_captured_ransom",
+              "mist": 12,
+              "crave": 8,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "朝臣痛哭罵你為一妖姬亡國，你卻紅著眼簽下屈辱和約——只要能把那副不老的柔骨重新抱回株林，割讓幾座城池又算什麼？"
           },
@@ -731,7 +946,11 @@
               "inf": 12,
               "corruption": 14,
               "tyranny": 12,
-              "flag": "xj_tragedy_captured_spy"
+              "flag": "xj_tragedy_captured_spy",
+              "mist": 14,
+              "heat": 6,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "半月後，那名癡戀夏姬的敵國重臣果然憤而叛國、帶著半數精銳反殺敵帥！世人再度震驚於夏姬「所到之處、必亡人國」的可怕詛咒。"
           }
@@ -754,7 +973,13 @@
               "inf": 12,
               "corruption": 16,
               "hedon": 18,
-              "flag": "xj_tragedy_wounded_devoted"
+              "flag": "xj_tragedy_wounded_devoted",
+              "mist": 16,
+              "crave": 18,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "她在劇痛與極度貪婪中瘋狂吸攝著你的體溫，天亮時她蒼白的臉頰果然重現妖異紅潤，而你則彷彿老了三歲，徹底成了滋養她不老容顏的活體藥鼎。"
           },
@@ -764,7 +989,10 @@
               "aff": -14,
               "inf": -8,
               "corruption": 16,
-              "flag": "xj_tragedy_wounded_sidelined"
+              "flag": "xj_tragedy_wounded_sidelined",
+              "mist": 16,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "她喝下安神藥安靜睡去，可十日後的深夜，兩名守在株林殿外的年輕精壯衛士卻被發現昏迷在花叢裡、面色慘白如紙——她絕不會允許自己老去哪怕一天。"
           }
@@ -789,7 +1017,12 @@
               "tyranny": 18,
               "hedon": 10,
               "rel_b": -30,
-              "flag": "xj_tragedy_humiliated_purge"
+              "flag": "xj_tragedy_humiliated_purge",
+              "mist": 20,
+              "crave": 10,
+              "heat": 9,
+              "exec": "b",
+              "pop": -15
             },
             "outcome": "當夜株林別殿上演了一場令人毛骨悚然的瘋狂戲碼，{b}親眼看著自己收買的漢子被夏姬灌下催情散後反過來撕扯自己，徹底瘋癲。夏姬的魔性從此無人可擋。"
           },
@@ -800,7 +1033,11 @@
               "inf": -10,
               "corruption": 16,
               "rel_b": -14,
-              "flag": "xj_tragedy_humiliated_suppressed"
+              "flag": "xj_tragedy_humiliated_suppressed",
+              "ban": "b",
+              "inj": "b",
+              "mist": 16,
+              "tag": "受辱怨骨"
             },
             "outcome": "夏姬柔媚地垂眸一笑：「陛下真講國法呢。」可不出半月，{b}的親弟弟竟為了搶奪夏姬丟在街上的一隻繡鞋與人決鬥橫死街頭，氣得{b}當場吐血而亡。"
           }
@@ -823,7 +1060,13 @@
               "inf": 16,
               "corruption": 16,
               "hedon": 14,
-              "flag": "xj_tragedy_survivor_reclaimed"
+              "flag": "xj_tragedy_survivor_reclaimed",
+              "exec": "b",
+              "mist": 16,
+              "crave": 14,
+              "heat": 6,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "兩名敵卒至死仍癡癡笑著望向夏姬。那一夜你在極致的敬畏與慾望中與她徹夜交纏，深知自己早已成了她永恆青春的俘虜。"
           },
@@ -834,7 +1077,10 @@
               "inf": -12,
               "corruption": 18,
               "tyranny": 8,
-              "flag": "xj_tragedy_survivor_quarantined"
+              "flag": "xj_tragedy_survivor_quarantined",
+              "mist": 18,
+              "heat": 5,
+              "jail": 1
             },
             "outcome": "她走進宗廟偏殿前，回眸對看守的年輕甲士輕輕眨了眨眼——不過三天，看守偏殿的整隊甲士便為了誰能替她端洗腳水而拔刀內訌。"
           }
@@ -859,7 +1105,12 @@
               "tyranny": 12,
               "hedon": 10,
               "rel_c": -26,
-              "flag": "xj_tragedy_pregnant_kept"
+              "flag": "xj_tragedy_pregnant_kept",
+              "mist": 24,
+              "crave": 10,
+              "heat": 6,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "你親手把一顆滅國定時炸彈寫進了宗廟玉牒。夏姬歡喜得像少女般撲進你懷裡，在蘭香四溢的紅帳裡輕笑著撫平你的眉心。"
           },
@@ -871,7 +1122,13 @@
               "corruption": 18,
               "tyranny": 16,
               "rel_c": 12,
-              "flag": "xj_tragedy_pregnant_aborted"
+              "flag": "xj_tragedy_pregnant_aborted",
+              "kidLoss": 1,
+              "mist": 18,
+              "heat": 8,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "猩紅鮮血染透了素白錦席。她在劇痛裡咬破嬌嫩的下唇，抬起那雙沾滿淚水卻冷得像蛇蠍的眼睛望著你：「陛下真是狠心呢……那往後這座王宮裡，誰生的孩子都別想平平安安長大。」"
           }
@@ -895,7 +1152,14 @@
               "corruption": 16,
               "hedon": 14,
               "rel_c": -18,
-              "flag": "xj_tragedy_forcedmarriage_reclaimed"
+              "flag": "xj_tragedy_forcedmarriage_reclaimed",
+              "pv": 1,
+              "mist": 16,
+              "crave": 14,
+              "heat": 6,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "火光照亮敵營行宮，你踩著敗逃敵軍的屍首挑開大紅洞房帷幔。夏姬正赤足披著半敞紅嫁衣搖著青銅爵，見你進來便如飛燕般撲進你懷裡在敵帥新床上縱情歡好。"
           },
@@ -907,7 +1171,11 @@
               "corruption": 12,
               "tyranny": 8,
               "rel_c": 12,
-              "flag": "xj_tragedy_forcedmarriage_disowned"
+              "flag": "xj_tragedy_forcedmarriage_disowned",
+              "mist": 12,
+              "heat": 5,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "詔書傳至敵營那日，夏姬輕笑著把詔書丟進薰爐——不到半年，她便誘使那位迷戀她的敵國重臣帶她私奔強晉，引發了席捲中原的數國大戰。"
           }
@@ -930,7 +1198,13 @@
               "inf": 14,
               "corruption": 16,
               "hedon": 18,
-              "flag": "xj_tragedy_rescued_restored"
+              "flag": "xj_tragedy_rescued_restored",
+              "mist": 16,
+              "crave": 18,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "蘭湯翻湧直至天明，她的素女吐納術讓你徹底忘卻了她在敵帳裡經歷過什麼。次日株林別殿絲竹再起，比從前更加靡麗奢華。"
           },
@@ -940,7 +1214,10 @@
               "aff": -6,
               "inf": -4,
               "corruption": 12,
-              "flag": "xj_tragedy_rescued_restrained"
+              "flag": "xj_tragedy_rescued_restrained",
+              "mist": 12,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她柔順地依偎在你懷裡，眼底卻閃過一抹玩味——她最清楚不過，越是想把她關起來的男人，最後陷得越深。"
           }
@@ -965,7 +1242,13 @@
               "tyranny": 14,
               "hedon": 14,
               "rel_c": -30,
-              "flag": "xj_tragedy_imprisoned_freed"
+              "flag": "xj_tragedy_imprisoned_freed",
+              "exec": "c",
+              "pop": -15,
+              "mist": 18,
+              "crave": 14,
+              "heat": 7,
+              "pv": 1
             },
             "outcome": "{c}一族徹底覆滅。回到株林別殿後，你在敬畏與迷狂中再次沉溺進她滑膩滾燙的懷抱，彷彿也在甘願奉獻自己的陽壽。"
           },
@@ -977,7 +1260,11 @@
               "corruption": 18,
               "tyranny": 6,
               "rel_c": -20,
-              "flag": "xj_tragedy_imprisoned_cold"
+              "flag": "xj_tragedy_imprisoned_cold",
+              "ban": 1,
+              "mist": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "夏姬立在高台朱欄邊，望著你落荒而逃的背影柔聲輕笑：「陛下怕我吸乾您？可高台上的風這麼冷，不出十夜，陛下自己就會忍不住上來找妾身暖手呢。」"
           }
@@ -1000,7 +1287,13 @@
               "inf": 18,
               "corruption": 18,
               "hedon": 16,
-              "flag": "xj_tragedy_escaped_empowered"
+              "flag": "xj_tragedy_escaped_empowered",
+              "troops": 60,
+              "mist": 18,
+              "crave": 16,
+              "heat": 6,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "她在你懷裡發出銀鈴般妖豔的輕笑，兩枚沾血敵軍虎符靜靜躺在空蕩蕩的大殿玉階上，見證著這名春秋妖姬徹底掌控了整座王朝的魂魄。"
           },
@@ -1011,7 +1304,12 @@
               "inf": -10,
               "corruption": 16,
               "tyranny": 8,
-              "flag": "xj_tragedy_escaped_watched"
+              "flag": "xj_tragedy_escaped_watched",
+              "troops": 60,
+              "mist": 16,
+              "heat": 5,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "夏姬優雅地收起笑容，指尖帶著濃郁蘭香輕輕劃過你的胸口：「敵國十萬大軍都鎖不住妾身的紅衵，陛下這幾十名年輕英俊的守衛，倒像是特意挑來送給妾身解悶的新玩具呢。」"
           }
@@ -1020,3 +1318,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['xiaji'] = DATA;
+  (window.characterPacks ||= {})['xiaji'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["xuzhaopei"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 25 號 徐昭佩 (xuzhaopei)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "xuzhaopei",
     "index": 25,
@@ -18,7 +23,8 @@
       "0-34": "東海徐氏高門走出的怨妒熟女，終日與烈酒為伴，以「半面妝」冷笑挑釁天子，對年輕貌美的新寵充滿尖銳殺意，並已暗中透過舊僕與宮外美男傳詩往來。",
       "35-69": "嗜酒殺妾與私通情夫並行的宮廷惡鬼；凡有妃嬪顯懷便遭她借酒行兇、暗下絕藥，同時在佛寺禪房與別院以白角枕約會俊僧與才子，將情夫網化作窺探朝政的毒爪。",
       "70+": "徹底踏碎佛門清規與皇室尊嚴的醉酒毒后。半面濃妝永遠沾著酒漬與血氣，當眾羞君、僧俗同床、血洗產殿皆成她下酒的狂歡，整個蕭梁後宮都在她的酒氣與瘋笑裡戰慄。"
-    }
+    },
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -40,7 +46,12 @@
             "aff": 14,
             "inf": 10,
             "corruption": 8,
-            "hedon": 12
+            "hedon": 12,
+            "mist": 10,
+            "crave": 12,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "濃烈的胭脂與酒氣瞬間糊了你滿臉。她在你身下沒有半分求饒，豐腴雪白的大腿死死夾緊你的腰，在激烈撞擊裡一邊狂笑一邊用指甲把你的背脊抓得鮮血淋漓，徹底點燃了一場危險的熟女風暴。"
         },
@@ -50,7 +61,10 @@
             "aff": -6,
             "inf": -2,
             "corruption": 10,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "冰水潑頭澆下，她左臉的濃豔胭脂化作一道道血紅淚痕順著雪白胸口流下。她抹了一把臉，非但不怕，反倒笑得陰森妖豔：「澆得好！陛下越恨我，就越忘不了我這張半面臉！」"
         },
@@ -60,7 +74,14 @@
             "aff": 8,
             "inf": 6,
             "corruption": 10,
-            "hedon": 10
+            "hedon": 10,
+            "wood": -60,
+            "stone": -60,
+            "mist": 10,
+            "crave": 10,
+            "affair": "g",
+            "heat": 6,
+            "tag": "桀驁未馴"
           },
           "outcome": "熟透的肉體與烈酒讓人幾乎溺斃在紅帳裡。可天亮後寺人密報卻讓你眉頭一跳：她隨身帶進宮的妝奩暗格裡，竟藏著一隻刻滿豔詩的白角枕，落款不是你，而是一位江陵知名美男。"
         }
@@ -82,7 +103,14 @@
             "corruption": 12,
             "hedon": 10,
             "rel_b": -10,
-            "rel_g": 10
+            "rel_g": 10,
+            "affair": "g",
+            "pv": 1,
+            "mist": 12,
+            "crave": 10,
+            "heat": 6,
+            "office": 1,
+            "food": -60
           },
           "outcome": "她眼底閃過一抹計謀得逞的嘲弄，當場把你拉倒在散滿玫瑰醉膏的軟榻上瘋狂纏綿。只是那座香火別院剛批下來，便成了她與城南俊僧、美男夜夜幽會的合法淫窟。"
         },
@@ -93,7 +121,12 @@
             "inf": -6,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": -8
+            "rel_g": -8,
+            "affair": "g",
+            "inj": "g",
+            "mist": 10,
+            "troops": 60,
+            "heat": 6
           },
           "outcome": "徐昭佩盯著你撕碎那張密札，臉上左邊紅妝笑得妖冶、右邊素臉冷得像死人：「查吧！陛下把江陵城裡的和尚全殺光了，本宮還有建康城的才子呢！」"
         }
@@ -115,7 +148,13 @@
             "corruption": 14,
             "tyranny": 8,
             "hedon": 10,
-            "rel_b": -26
+            "rel_b": -26,
+            "mist": 14,
+            "crave": 10,
+            "heat": 5,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "{b}當場嚇破了膽、從此一聽見酒罈碰撞聲便縮在被窩裡發抖，徹底失寵。而徐昭佩在你的肩頭張狂大笑，用滿是酒味與胭脂香的紅唇堵住你的嘴，宣告這座後宮的熟女惡霸正式歸位。"
         },
@@ -126,7 +165,11 @@
             "inf": -8,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 8
+            "rel_b": 8,
+            "mist": 12,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "她被禁軍架出門時，滿身酒水淋漓、半面濃妝糊成血紅一片，卻回頭對著{b}露出森冷的笑：「鎖我十日？等十日後出來，姐姐保證送妹妹一杯不會醒的斷腸酒。」"
         }
@@ -149,7 +192,12 @@
             "inf": 14,
             "corruption": 16,
             "tyranny": 12,
-            "rel_g": -28
+            "rel_g": -28,
+            "exec": "g",
+            "mist": 16,
+            "heat": 6,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "次日宮中只傳{g}飲酒過量突發心疾暴斃。當夜徐昭佩洗淨滿身酒氣爬上龍榻，熟透飽滿的身子帶著剛殺完人的滾燙興奮死死纏上你，瘋狂得令人窒息。"
         },
@@ -159,7 +207,10 @@
             "aff": -14,
             "inf": -10,
             "corruption": 12,
-            "rel_g": 8
+            "rel_g": 8,
+            "inj": "g",
+            "mist": 12,
+            "tag": "毀容@b"
           },
           "outcome": "{g}撿回半條命卻已毒傷肺腑失了聲音。徐昭佩拍掉手上的紙灰，冷笑著直視你：「陛下這麼想知道那首詩是誰寫的？寫詩的人說，『徐娘雖老，猶尚多情』——比陛下會哄人多了！」"
         }
@@ -181,7 +232,13 @@
             "corruption": 16,
             "hedon": 14,
             "rel_g": 14,
-            "rel_c": -14
+            "rel_c": -14,
+            "mist": 16,
+            "crave": 14,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "不出兩月，蕭梁朝野半數高官的夫人與宮中女史都成了禪房的常客。徐昭佩握著滿城權貴的風流把柄，連篤信佛法的{c}也拿她毫無辦法。"
         },
@@ -193,7 +250,14 @@
             "corruption": 12,
             "tyranny": 8,
             "rel_g": -10,
-            "rel_c": 12
+            "rel_c": 12,
+            "exec": "g",
+            "wood": -60,
+            "stone": -60,
+            "mist": 12,
+            "heat": 5,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "佛寺一夜血洗，{g}嚇得魂飛魄散。徐昭佩卻裹著一件搶來的錦緞袈裟大搖大擺走出禪院，醉眼斜睨著臉色鐵青的{c}：「和尚殺了還能再剃度，可{c}大人，您府上那位守寡的弟媳，昨夜好像也來上過香呢？」"
         }
@@ -214,7 +278,10 @@
             "inf": 14,
             "corruption": 16,
             "tyranny": 14,
-            "rel_b": -24
+            "rel_b": -24,
+            "exec": "b",
+            "mist": 16,
+            "heat": 7
           },
           "outcome": "江水吞沒了才子的最後一聲嗚咽。回程畫舫上，徐昭佩渾身帶著血味與烈酒香跨坐上你的膝頭，熟透豐滿的身軀滾燙得發抖：「男人果然都靠不住——除了把命和秘密都交在我手裡的。」"
         },
@@ -225,7 +292,11 @@
             "inf": -12,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 6
+            "rel_b": 6,
+            "affair": "g",
+            "mist": 12,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "才子雖被押入大牢，可當晚便在獄中離奇吞金自盡，連那幾張豔詩也不翼而飛——東海徐氏在建康與江陵根深蒂固的門生，遠比你想像的更無孔不入。"
         }
@@ -247,7 +318,13 @@
             "corruption": 16,
             "tyranny": 12,
             "rel_b": -26,
-            "rel_c": -24
+            "rel_c": -24,
+            "jail": "b",
+            "food": 100,
+            "mist": 16,
+            "heat": 6,
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "滿殿嘩然，沒人再敢提半句「徐娘半老」的嘲歌。退朝後徐昭佩靠在偏殿紅柱上仰頭大笑，把一壺新開的烈酒直接澆進你我交纏的衣襟裡。"
         },
@@ -258,7 +335,12 @@
             "inf": -8,
             "corruption": 12,
             "rel_b": -6,
-            "rel_c": 8
+            "rel_c": 8,
+            "affair": "g",
+            "food": 100,
+            "mist": 12,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "徐昭佩冷笑著甩袖退下：「並查？好啊！只要陛下不怕把這半座朝堂的髒褲衩全翻出來曬太陽，我徐昭佩奉陪到底！」"
         }
@@ -279,7 +361,13 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 12,
-            "rel_g": 12
+            "rel_g": 12,
+            "kidLoss": "b",
+            "mist": 18,
+            "heat": 6,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "不出五夜，東宮便傳出淒厲尖叫與滿床鮮血，年輕新妃滑胎後徹底瘋癲。當夜徐昭佩帶著一身醉香走進你寢殿，熟潤的身軀壓上來冷笑：「年輕又怎樣？活不到明年的花，哪比得上我這棵毒老樹？」"
         },
@@ -289,7 +377,10 @@
             "aff": -10,
             "inf": -10,
             "corruption": 12,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 12,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "毒花撒了一地。徐昭佩被禁軍堵在門外，半面濃妝在冷風裡笑得淒厲：「陛下救得了她這隻枕頭，救得了她往後三百六十五夜的飯碗嗎？」"
         }
@@ -312,7 +403,12 @@
             "inf": 10,
             "corruption": 14,
             "hedon": 18,
-            "rel_b": -14
+            "rel_b": -14,
+            "mist": 14,
+            "crave": 18,
+            "heat": 6,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "酒氣、血味與熟女的滾燙汗香充斥了整個長夜。她在你身下瘋狂扭動哭笑，直到精疲力竭仍死死用雙腿鎖著你的腰不肯放行。次日清晨，{b}門前便被潑了整整十桶酸腐殘酒。"
         },
@@ -323,7 +419,11 @@
             "inf": -8,
             "corruption": 16,
             "tyranny": 6,
-            "rel_b": 8
+            "rel_b": 8,
+            "mist": 16,
+            "house": 1,
+            "inj": "b",
+            "heat": 8
           },
           "outcome": "她跌坐在冰冷酒泊裡，仰頭發出令全殿宮婢魂飛魄散的狂笑：「好！你嫌我老、嫌我瘋！那今晚我便去找外頭那些喊我『猶尚多情』的俊俏小郎君，看看誰才是真沒本事的廢物！」"
         }
@@ -345,7 +445,12 @@
             "corruption": 18,
             "hedon": 10,
             "tyranny": 12,
-            "rel_c": 8
+            "rel_c": 8,
+            "mist": 18,
+            "crave": 10,
+            "heat": 6,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "你轉身消失在夜色裡，身後暖閣的浪笑與喘息愈發刺耳。徐昭佩渾然不知死神已站在窗外，反而越發瘋狂地將佛門與朝野俊傑拖進她的紅帳。"
         },
@@ -356,7 +461,12 @@
             "inf": -16,
             "corruption": 18,
             "tyranny": 18,
-            "rel_c": 12
+            "rel_c": 12,
+            "exec": "c",
+            "mist": 18,
+            "heat": 9,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "鮮血濺滿了白角枕與紅袈裟。徐昭佩披著染血袈裟跪在兩具男屍之間，非但不求饒，反而指著你大笑到咳血：「殺吧！殺了他們兩個，全建康還有一百個男人排著隊想嘗嘗我徐昭佩的滋味！誰叫你自己沒本事讓我痛快呢！」"
         },
@@ -367,7 +477,12 @@
             "inf": 12,
             "corruption": 20,
             "hedon": 20,
-            "rel_c": -16
+            "rel_c": -16,
+            "mist": 20,
+            "crave": 20,
+            "heat": 6,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "詩人與和尚連滾帶爬破窗逃命。徐昭佩看著你眼底燒得漆黑的暴虐慾火，發出一聲近乎變態的狂喜尖笑，赤身扯過紅袈裟將你我一同捲進白角枕間，徹夜沉淪在禁忌的荒淫深淵裡。"
         }
@@ -389,7 +504,13 @@
             "corruption": 18,
             "tyranny": 16,
             "hedon": 8,
-            "rel_b": -30
+            "rel_b": -30,
+            "tag": "毀容@b",
+            "mist": 18,
+            "crave": 8,
+            "heat": 8,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "{b}肩背燙傷潰爛、從此徹底毀容發瘋。滿宮年輕妃嬪聞風喪膽，見了徐昭佩的紫貂大氅便如同見了催命閻羅，連大氣都不敢喘。"
         },
@@ -399,7 +520,11 @@
             "aff": -16,
             "inf": -10,
             "corruption": 14,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 14,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "滾燙醋酒濺濕了她的紫貂裙角。她緩緩抹去嘴角血絲，半面紅妝笑得像條毒蛇：「陛下越護著這些嫩骨頭，我手裡的刀和酒，就越管不住自己。」"
         }
@@ -420,7 +545,13 @@
             "inf": 18,
             "corruption": 22,
             "tyranny": 18,
-            "rel_b": -30
+            "rel_b": -30,
+            "preg": 1,
+            "mist": 22,
+            "heat": 9,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "{b}在絕望中懸樑自盡。自此「徐娘殺子」成為蕭梁後宮最恐怖的詛咒，所有妃嬪寧可暗中喝絕子藥也不敢懷孕，生怕引來那名拎著酒壺的半面惡鬼。"
         },
@@ -431,7 +562,12 @@
             "inf": -16,
             "corruption": 18,
             "tyranny": 12,
-            "rel_b": 14
+            "rel_b": 14,
+            "mist": 18,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "鮮血順著她雪白鎖骨流進暗紅衣襟，她卻在禁軍拖行中瘋狂大笑，笑聲響徹整個暴雨夜：「關得住我的人，關得住我這張嘴嗎？明日全建康都會知道，堂堂天子連自己兒子都護不住！」"
         }
@@ -453,7 +589,14 @@
             "corruption": 24,
             "tyranny": 20,
             "hedon": 14,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 24,
+            "crave": 14,
+            "heat": 10,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "{c}當場被白綾勒斃於丹墀下。徐昭佩大笑著踩過屍身，將你直接拖回龍榻，在滿城兵火與濃烈酒氣裡上演了一場最瘋狂荒誕的權力加冕。"
         },
@@ -464,7 +607,12 @@
             "inf": -20,
             "corruption": 18,
             "tyranny": 12,
-            "rel_c": 18
+            "rel_c": 18,
+            "mist": 18,
+            "heat": 6,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "刀鋒冰涼，她卻仰起半面濃妝的臉迎著刀刃瘋笑，眼中沒有半分懼意：「好極了！陛下終於拿出點男人的狠勁了——只是這一刀不砍下去，下回躺在白綾裡的，可就是陛下自己了！」"
         }
@@ -487,7 +635,13 @@
             "inf": 16,
             "corruption": 16,
             "hedon": 12,
-            "rel_c": -12
+            "rel_c": -12,
+            "mist": 16,
+            "crave": 12,
+            "heat": 6,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "她得意地舔去唇邊酒汁，赤足跨坐上你的腿間。自此江陵、建康、襄陽三城的風吹草動全逃不過她的白角香盒，連地方大員都驚懼於自己枕邊是不是早睡了徐娘的情郎。"
         },
@@ -498,7 +652,11 @@
             "inf": -10,
             "corruption": 10,
             "tyranny": 6,
-            "rel_c": 12
+            "rel_c": 12,
+            "jail": "c",
+            "mist": 10,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "十餘名風流才子連夜下獄。徐昭佩卻連眉頭都沒皺，只仰頭乾了一碗燒酒冷笑：「抓吧！這天下想嘗嘗老娘滋味又想往上爬的聰明男人多著呢，抓完一批再換一批就是！」"
         }
@@ -520,7 +678,13 @@
             "corruption": 16,
             "hedon": 12,
             "tyranny": 8,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 16,
+            "crave": 12,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "佛鐘長鳴之下，權貴們的銀子與把柄源源不斷流入徐昭佩手裡。她在功德箱旁拉開你的衣襟，笑得妖冶又荒誕：「佛祖慈悲，連我們這對惡鬼也照樣保佑。」"
         },
@@ -531,7 +695,11 @@
             "inf": -12,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": -12
+            "rel_g": -12,
+            "food": 100,
+            "mist": 10,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "功德箱被抬走那夜，後山禪房燃起無名大火，所有權貴名錄化作飛灰。徐昭佩看著火光乾了一壺酒：「陛下燒了我的香火錢，明日國庫缺銀子時，可別又來找東海徐家借！」"
         }
@@ -551,7 +719,12 @@
             "aff": 18,
             "inf": 14,
             "corruption": 16,
-            "hedon": 16
+            "hedon": 16,
+            "mist": 16,
+            "crave": 16,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "一滴滾燙的淚滑過她眼角，隨即化作最熾熱瘋狂的回應。那一夜沒有酒氣與胭脂，只有兩具互相撕咬了半生的靈魂，在徹底的墮落與怨愛中緊緊相融。"
         },
@@ -561,7 +734,9 @@
             "aff": 2,
             "inf": 4,
             "corruption": 14,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 14,
+            "house": 1
           },
           "outcome": "她眼底那一瞬難得的脆弱瞬間結冰。她緩緩起身，重新從妝奩裡抓起胭脂盒，慢條斯理地又替自己左半邊臉塗上最濃豔的紅妝，回眸冷笑：「說得好！那就繼續互相噁心、互相撕咬到死吧！」"
         }
@@ -584,7 +759,11 @@
             "tyranny": 16,
             "rel_b": -24,
             "rel_c": -24,
-            "rel_g": 10
+            "rel_g": 10,
+            "mist": 18,
+            "heat": 8,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "{c}氣得當場昏厥，{b}臉色慘白如鬼，{g}更是嚇得連連磕頭求饒。一場足以讓她萬劫不復的圍剿，硬生生被她一壺毒酒掀翻了整張桌子。"
         },
@@ -597,7 +776,13 @@
             "tyranny": 10,
             "rel_b": -6,
             "rel_c": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "ban": 1,
+            "mist": 12,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "正殿陷入窒息的死寂。徐昭佩彎腰撿起地上的銀酒壺，回眸對你舉壺遙敬，左臉紅妝笑得肆無忌憚：「陛下這招『捂蓋子』學得真快——只怕蓋得越緊，裡頭爛得越臭！」"
         }
@@ -621,7 +806,13 @@
             "corruption": 16,
             "hedon": 10,
             "tyranny": 6,
-            "rel_c": -20
+            "rel_c": -20,
+            "food": 100,
+            "mist": 16,
+            "crave": 10,
+            "heat": 6,
+            "troops": 100,
+            "soldiers": 80
           },
           "outcome": "二十萬石糧草解了燃眉之急，而徐昭佩派出的酒色細作果然在半月內令敵軍先鋒大亂。江陵守住了，但整座城池的命脈也徹底攥進了這名醉酒毒婦掌中。"
         },
@@ -631,7 +822,13 @@
             "aff": -10,
             "inf": -8,
             "corruption": 10,
-            "rel_c": 14
+            "rel_c": 14,
+            "troops": 60,
+            "food": 100,
+            "mist": 10,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "徐昭佩冷笑著收起糧倉鑰匙，在帳門口回頭丟下一句毒話：「好啊，那就看{c}大人啃著清白名聲，能不能啃退城外十萬鐵騎！」"
         }
@@ -652,7 +849,12 @@
             "inf": 14,
             "corruption": 16,
             "tyranny": 10,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 16,
+            "heat": 5,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "她在疾馳的馬背上緊緊貼著你滾燙的胸口，熟潤的身軀因劫後狂喜而不停輕顫。逃入安全行營那夜，她在滿身硝煙裡扯碎殘衣瘋狂索愛，烈度遠勝往昔。"
         },
@@ -662,7 +864,11 @@
             "aff": 4,
             "inf": 6,
             "corruption": 10,
-            "rel_c": -18
+            "rel_c": -18,
+            "inj": "c",
+            "mist": 10,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "她被拉上馬車前，冷冷朝癱在地上的{c}吐了一口帶血的唾沫，對你的「留待公審」露出滿滿的嘲弄與不屑。"
         }
@@ -685,7 +891,14 @@
               "aff": 15,
               "corruption": 10,
               "tyranny": 18,
-              "flag": "xzp_tragedy_dead_avenged"
+              "flag": "xzp_tragedy_dead_avenged",
+              "pol": 12,
+              "energy": 25,
+              "mist": 10,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "你親手擦去她左臉最後一點胭脂，看著那張徹底素淨卻冰冷的臉，才驚覺這座深宮往後再沒人敢這樣對你摔酒壺、罵瘋話了。"
           },
@@ -695,7 +908,11 @@
               "inf": -10,
               "corruption": 8,
               "tyranny": 8,
-              "flag": "xzp_tragedy_dead_buried"
+              "flag": "xzp_tragedy_dead_buried",
+              "mist": 10,
+              "heat": 5,
+              "pol": 15,
+              "wood": -50
             },
             "outcome": "西偏殿很快被重新粉刷，燒酒味散了個乾淨。只是每逢雨夜獨酌，你總覺得對面空榻上，仍有半張濃豔的紅臉在冷冷笑著看你。"
           }
@@ -718,7 +935,12 @@
               "inf": -14,
               "corruption": 12,
               "hedon": 8,
-              "flag": "xzp_tragedy_captured_ransom"
+              "flag": "xzp_tragedy_captured_ransom",
+              "mist": 12,
+              "crave": 8,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "朝臣們看你的眼神像看個瘋子，唯有你知道——把這頭熟女毒蛇留在敵營，遲早連北地半壁江山都會被她攪得天翻地覆。"
           },
@@ -728,7 +950,11 @@
               "inf": 10,
               "corruption": 14,
               "tyranny": 12,
-              "flag": "xzp_tragedy_captured_spy"
+              "flag": "xzp_tragedy_captured_spy",
+              "mist": 14,
+              "heat": 6,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "三更火光炸裂夜空，敵軍大營瞬間崩潰。沒人知道那座燈火通明的敵帥金帳裡，究竟有多少猛將死在了這名「半老徐娘」的溫柔酒壺之下。"
           }
@@ -751,7 +977,13 @@
               "inf": 12,
               "corruption": 16,
               "hedon": 12,
-              "flag": "xzp_tragedy_wounded_devoted"
+              "flag": "xzp_tragedy_wounded_devoted",
+              "mist": 16,
+              "crave": 12,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "她的瘋笑戛然而止，眼眶瞬間通紅，發了瘋般扯開你的龍袍將你死死壓進錦被裡。從此整個後宮無人敢直視她的右臉，更無人敢在她面前展露半點嬌美。"
           },
@@ -762,7 +994,11 @@
               "inf": -10,
               "corruption": 18,
               "tyranny": 6,
-              "flag": "xzp_tragedy_wounded_sidelined"
+              "flag": "xzp_tragedy_wounded_sidelined",
+              "tag": "烙痕",
+              "mist": 18,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "殿門關上的瞬間，她一酒壺砸碎了銅鏡。十日內，後宮三名最年輕貌美的才人全在睡夢中被蒙面人用短刃劃花了右臉——她要讓全宮女人都陪她一起當半面鬼。"
           }
@@ -786,7 +1022,11 @@
               "corruption": 20,
               "tyranny": 20,
               "rel_b": -30,
-              "flag": "xzp_tragedy_humiliated_purge"
+              "flag": "xzp_tragedy_humiliated_purge",
+              "mist": 20,
+              "heat": 10,
+              "exec": "b",
+              "pop": -15
             },
             "outcome": "當夜江陵街頭血洗三里，{b}在西偏殿的慘叫聲直到黎明才徹底斷絕。洗淨血污與酸酒的徐昭佩重新化起最豔麗的半面妝，成了無人敢惹的嗜血惡神。"
           },
@@ -797,7 +1037,10 @@
               "inf": -10,
               "corruption": 16,
               "rel_b": -14,
-              "flag": "xzp_tragedy_humiliated_suppressed"
+              "flag": "xzp_tragedy_humiliated_suppressed",
+              "ban": "b",
+              "mist": 16,
+              "tag": "受辱怨骨"
             },
             "outcome": "她冷笑著吐出一口帶血的唾沫，轉身大步走出大殿。七日後，{b}的寢宮與那條長街上的五家大酒樓同夜化作一片烈焰火海，無人倖免。"
           }
@@ -820,7 +1063,12 @@
               "inf": 14,
               "corruption": 16,
               "hedon": 14,
-              "flag": "xzp_tragedy_survivor_reclaimed"
+              "flag": "xzp_tragedy_survivor_reclaimed",
+              "mist": 16,
+              "crave": 14,
+              "heat": 6,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "她在熱水浴池裡把你拉進滿是花瓣與酒香的水中瘋狂吻咬，彷彿要用最濃烈的肉體溫度證明自己依舊活得張狂肆意。"
           },
@@ -831,7 +1079,10 @@
               "inf": -12,
               "corruption": 18,
               "tyranny": 8,
-              "flag": "xzp_tragedy_survivor_quarantined"
+              "flag": "xzp_tragedy_survivor_quarantined",
+              "mist": 18,
+              "heat": 5,
+              "jail": 1
             },
             "outcome": "她看著把守院門的侍衛，仰頭把最後半壇燒酒澆在門檻上狂笑：「死人堆都埋不住老娘，陛下這幾塊破木板擋得住誰？」"
           }
@@ -856,7 +1107,12 @@
               "tyranny": 12,
               "hedon": 10,
               "rel_c": -26,
-              "flag": "xzp_tragedy_pregnant_kept"
+              "flag": "xzp_tragedy_pregnant_kept",
+              "preg": 1,
+              "mist": 24,
+              "crave": 10,
+              "heat": 6,
+              "tag": "懷敵種"
             },
             "outcome": "這樁震驚南朝的荒唐「龍種案」正式拍板。徐昭佩得意地靠在你懷裡大笑，徹底把蕭梁皇室的體面與血脈踩成了一場醉酒狂歡。"
           },
@@ -868,7 +1124,14 @@
               "corruption": 18,
               "tyranny": 16,
               "rel_c": 12,
-              "flag": "xzp_tragedy_pregnant_aborted"
+              "flag": "xzp_tragedy_pregnant_aborted",
+              "exec": "c",
+              "mist": 18,
+              "heat": 8,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "鮮血浸透了素白絲袍，她在劇痛裡嘶吼著咬破了按住她的侍衛耳朵，一雙塗著紅妝的毒眼死死盯著你：「殺吧！殺了我唯一的指望——往後這大梁江山，老娘要看著它徹底斷子絕孫！」"
           }
@@ -892,7 +1155,13 @@
               "corruption": 16,
               "hedon": 12,
               "rel_c": -18,
-              "flag": "xzp_tragedy_forcedmarriage_reclaimed"
+              "flag": "xzp_tragedy_forcedmarriage_reclaimed",
+              "mist": 16,
+              "crave": 12,
+              "heat": 6,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "烈火燒斷敵軍浮橋，你提著染血長劍挑開紅羅帳時，她正披著半敞的北地大紅嫁衣赤足搖著酒壺。她哈哈大笑著撲進你懷裡：「還是舊夫君帶勁些——這身嫁衣，今晚正好留給陛下撕！」"
           },
@@ -904,7 +1173,12 @@
               "corruption": 12,
               "tyranny": 8,
               "rel_c": 12,
-              "flag": "xzp_tragedy_forcedmarriage_disowned"
+              "flag": "xzp_tragedy_forcedmarriage_disowned",
+              "troops": 60,
+              "mist": 12,
+              "heat": 5,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "休書傳到敵營三日後，那名北地敵帥竟離奇毒死在洞房裡，而徐昭佩則捲走了敵帥半數金銀與數名俊俏親兵，在江南山水間徹底活成了無人能管的逍遙女魔頭。"
           }
@@ -927,7 +1201,13 @@
               "inf": 14,
               "corruption": 16,
               "hedon": 16,
-              "flag": "xzp_tragedy_rescued_restored"
+              "flag": "xzp_tragedy_rescued_restored",
+              "mist": 16,
+              "crave": 16,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "水花漫過青磚，她在你的激烈佔有中徹底洗去了敵營的陰霾。次日西偏殿酒香再起，整座蕭梁後宮重回這位半面毒婦的恐怖統治之下。"
           },
@@ -937,7 +1217,10 @@
               "aff": -8,
               "inf": -4,
               "corruption": 12,
-              "flag": "xzp_tragedy_rescued_restrained"
+              "flag": "xzp_tragedy_rescued_restrained",
+              "mist": 12,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她冷笑著推開你的手，自己赤足走回鏡台前重新點上左臉紅妝：「陛下捨不得動你的新歡？沒關係，老娘這雙手，還沒生鏽呢。」"
           }
@@ -962,7 +1245,13 @@
               "tyranny": 14,
               "hedon": 12,
               "rel_c": -30,
-              "flag": "xzp_tragedy_imprisoned_freed"
+              "flag": "xzp_tragedy_imprisoned_freed",
+              "pop": -15,
+              "mist": 18,
+              "crave": 12,
+              "heat": 7,
+              "exec": "g",
+              "pv": 1
             },
             "outcome": "{c}全族伏誅，三百壇陳年老酒運進西偏殿。當夜徐昭佩踩著那條斷鏈把你按在錦褥上，笑得又瘋又烈：「這世上想關住老娘的男人，最後都得變成下酒菜！」"
           },
@@ -974,7 +1263,10 @@
               "corruption": 18,
               "tyranny": 6,
               "rel_c": -20,
-              "flag": "xzp_tragedy_imprisoned_cold"
+              "flag": "xzp_tragedy_imprisoned_cold",
+              "mist": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "她站在冷殿台階上，望著你漸遠的背影嗤笑一聲，順手從懷裡摸出一瓶偷藏的烈酒仰頭灌下：「冷殿好啊，清靜——正好方便老娘晚上約和尚來喝兩杯。」"
           }
@@ -997,7 +1289,13 @@
               "inf": 18,
               "corruption": 18,
               "hedon": 16,
-              "flag": "xzp_tragedy_escaped_empowered"
+              "flag": "xzp_tragedy_escaped_empowered",
+              "mist": 18,
+              "crave": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "她在龍椅上張狂大笑，豐腴雪白的雙腿直接勾住你的腰身將你拉進懷裡。從此蕭梁宮廷徹底被這名嗜酒嗜血的半面毒婦踩在腳下。"
           },
@@ -1008,7 +1306,11 @@
               "inf": -10,
               "corruption": 16,
               "tyranny": 8,
-              "flag": "xzp_tragedy_escaped_watched"
+              "flag": "xzp_tragedy_escaped_watched",
+              "mist": 16,
+              "heat": 5,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "徐昭佩從龍椅上慢悠悠起身，用沾血的指尖在你的臉頰上抹了一道紅印，笑得毛骨悚然：「連北地十萬大營都鎖不住我徐昭佩，陛下這座破籠子，能關老娘幾天？」"
           }
@@ -1017,3 +1319,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['xuzhaopei'] = DATA;
+  (window.characterPacks ||= {})['xuzhaopei'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

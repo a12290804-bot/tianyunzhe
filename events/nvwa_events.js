@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["nvwa"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 30 號 女媧 (nvwa)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "nvwa",
     "index": 30,
@@ -18,7 +23,8 @@
       "0-34": "初降凡宮的上古神女，神性冷漠、雙瞳偶縮豎金，視凡人帝王如精緻泥偶，已開始以「高禖賜嗣」之名干預後宮血脈與宗廟祭祀。",
       "35-69": "徹底愛上凡間血肉歡愉與權力香火的墮落蛇神；在後宮以黃土泥偶詛咒奪胎、將情敵化作活泥傀，並於高禖神廟大開無遮香火淫祭收割男巫與權臣精氣。",
       "70+": "盤踞龍椅之上的滅世母神。不再掩飾半人半蛇的冷豔妖軀，以五色神石與冰滑蛇尾絞死一切凡人禮法，令整座王朝與天子匍匐在她冷玉鱗片下日夜獻祭。"
-    }
+    },
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -40,7 +46,12 @@
             "aff": 14,
             "inf": 14,
             "corruption": 8,
-            "hedon": 14
+            "hedon": 14,
+            "mist": 10,
+            "crave": 14,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "那一夜明黃錦被化作冰火神壇，她冰滑的雙腿如巨蛇般死死絞緊你的腰背，在神威與極致肉慾的窒息擠壓下，你徹底淪為這尊冷豔蛇神的裙下祭司。"
         },
@@ -50,7 +61,11 @@
             "aff": 2,
             "inf": 2,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "exec": "b",
+            "mist": 10,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "她金色的豎瞳微亮，彷彿發現了一件極有趣的玩具，唇角綻出一抹危險冷笑：「一塊自己長出骨氣的泥巴？有意思——本尊倒要看看，你這副凡骨能硬得過本尊幾次絞殺。」"
         },
@@ -60,7 +75,12 @@
             "aff": 10,
             "inf": 6,
             "corruption": 10,
-            "hedon": 12
+            "hedon": 12,
+            "mist": 10,
+            "crave": 12,
+            "affair": "g",
+            "heat": 6,
+            "tag": "桀驁未馴"
           },
           "outcome": "五更時分你渾身留滿冰涼紅痕醒來，她已無聲離去。太史令顫抖著呈上古簡：凡有帝王引入高禖活神者，皆因沉溺神慾而令後宮百花枯萎、萬民盡淪神奴。"
         }
@@ -82,7 +102,12 @@
             "corruption": 14,
             "tyranny": 8,
             "rel_b": -16,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 14,
+            "heat": 5,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "她優雅地走下泥壇，冰涼滑膩的身軀貼上你胸膛，賜予你一個帶著神血甜香的深吻。自此後宮妃嬪聞「泥偶」色變，紛紛跪伏高禖閣前獻血求饒。"
         },
@@ -93,7 +118,11 @@
             "inf": -6,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": -8
+            "rel_g": -8,
+            "mist": 10,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "泥偶碎成滿地黃土，女媧卻連眉頭都沒皺一下，只冷冷看著你沾滿泥灰的劍鋒：「泥巴碎了可以再捏——只是凡君，你拿著凡鐵指著創世神的時候，手怎麼在發抖呢？」"
         }
@@ -115,7 +144,13 @@
             "corruption": 14,
             "tyranny": 12,
             "hedon": 10,
-            "rel_b": -30
+            "rel_b": -30,
+            "mist": 14,
+            "crave": 10,
+            "heat": 6,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "蛇尾鬆開，{b}摔在地上徹底淪為見影便哭的瘋婦。當夜高禖神閣帷幔深垂，女媧用那條剛絞碎情敵神智的冰涼虹鱗蛇尾死死纏住你，在極致敬畏與肉慾裡徹底征服了你的靈魂。"
         },
@@ -125,7 +160,11 @@
             "aff": -8,
             "inf": -4,
             "corruption": 12,
-            "rel_b": 6
+            "rel_b": 6,
+            "mist": 12,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "虹鱗如水霧般褪去，重新化回一雙修長雪白的凡人玉腿。女媧赤足落回地面，冷漠地瞥了昏死的{b}一眼：「凡人的膽子真是越來越小了——既怕神，又敢對神拔劍。」"
         }
@@ -148,7 +187,11 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 16,
-            "rel_g": -30
+            "rel_g": -30,
+            "mist": 18,
+            "heat": 8,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "{g}徹底失去了語言與行動能力，如一尊活著的恐怖泥像被擺在神閣角落。從此凡入高禖神閣者，無不雙膝發軟、不敢對女媧生出半點二心。"
         },
@@ -158,7 +201,10 @@
             "aff": -12,
             "inf": -8,
             "corruption": 12,
-            "rel_g": 8
+            "rel_g": 8,
+            "mist": 12,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "{g}撿回一命卻徹底斷了右臂、神智呆滯。女媧望著你手裡的五色殘石輕笑一聲：「凡君留著這塊石頭也好——晚上放在枕頭邊，它會替本尊看著你夢見了誰。」"
         }
@@ -180,7 +226,13 @@
             "corruption": 18,
             "hedon": 16,
             "rel_g": 14,
-            "rel_c": -16
+            "rel_c": -16,
+            "mist": 18,
+            "crave": 16,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "高禖香火一夜之間壓倒了皇家宗廟。滿朝權貴的後院全成了女媧的狂熱信徒，{c}的彈劾奏章甚至還沒出門就被自家夫人偷偷燒成了灰。"
         },
@@ -192,7 +244,11 @@
             "corruption": 12,
             "tyranny": 8,
             "rel_g": -10,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 12,
+            "heat": 5,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "男巫祝血濺神壇，香火頓滅。女媧高坐神座不動如山，金色豎瞳冷冷盯著滿手鮮血的{c}：「凡人敢在母神壇前動刀見血？很好——本尊就讓你們看看，什麼叫天降神罰。」"
         }
@@ -213,7 +269,11 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 16,
-            "rel_b": -26
+            "rel_b": -26,
+            "exec": "b",
+            "mist": 18,
+            "crave": 6,
+            "heat": 8
           },
           "outcome": "最後一聲脆響過後，男巫徹底沒了生息。女媧收回巨尾化作雪白雙腿赤足走向你，帶著神血與泥土的冰涼氣息緊貼上來，在血腥神壇前邀你共赴極樂。"
         },
@@ -224,7 +284,10 @@
             "inf": -10,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 6
+            "rel_b": 6,
+            "mist": 12,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "蛇尾緩緩鬆開，摔在地上的男巫卻早已五臟碎裂氣絕身亡。女媧淡淡拂去鱗間血珠：「凡人的身子骨太脆了，本尊才用了三分力，他就碎了呢。」"
         }
@@ -246,7 +309,13 @@
             "corruption": 18,
             "tyranny": 14,
             "rel_b": -28,
-            "rel_c": -28
+            "rel_c": -28,
+            "food": -80,
+            "mist": 18,
+            "heat": 7,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "傾盆大雨洗淨了所有「蛇妖」罵名，萬民對女媧的崇拜達到狂熱頂峰！雨幕之中，全身濕透的薄紗緊緊貼住她雪白神軀，她在高台上回眸一笑，從此神權徹底凌駕於皇權之上。"
         },
@@ -257,7 +326,10 @@
             "inf": -4,
             "corruption": 12,
             "rel_b": -6,
-            "rel_c": 8
+            "rel_c": 8,
+            "mist": 12,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "女媧淋著大雨走下高台，貼近你耳畔吐出冰涼水霧：「凡君怕了？怕本尊能喚來這場雨，也能隨時喚來一場把這座皇宮沖進海裡的大洪水？」"
         }
@@ -278,7 +350,14 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 14,
-            "rel_g": 12
+            "rel_g": 12,
+            "kidLoss": "g",
+            "inj": "g",
+            "mist": 18,
+            "heat": 7,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "翌日東宮古鏡無故炸裂，新妃血崩滑胎後徹底瘋魔。高禖神閣裡香火愈發鼎盛，{g}吞下神血丹後雙瞳竟也隱隱透出一絲非人的妖豔微光。"
         },
@@ -288,7 +367,10 @@
             "aff": -10,
             "inf": -10,
             "corruption": 12,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 12,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "女媧看著被潑在地上的藥汁，那灘藥汁竟在青磚上嘶嘶冒起白煙。她冷漠一笑：「凡君寧可護著一塊破銅鏡，也不願順著造物主的心意？真是叛逆的泥偶呀。」"
         }
@@ -311,7 +393,13 @@
             "inf": 14,
             "corruption": 16,
             "hedon": 22,
-            "rel_b": -16
+            "rel_b": -16,
+            "exec": "b",
+            "mist": 16,
+            "crave": 22,
+            "heat": 6,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "虹鱗神尾與明黃龍袍在暗夜裡激烈絞纏直至五更，你在瀕臨窒息與極致高潮間徹底喪失了凡人理智。次日清晨，{b}驚恐地發現自己妝匣裡所有玉簪全變成了冰冷的黃土塊。"
         },
@@ -322,7 +410,11 @@
             "inf": 4,
             "corruption": 14,
             "tyranny": 8,
-            "rel_b": 4
+            "rel_b": 4,
+            "mist": 14,
+            "heat": 5,
+            "house": 1,
+            "inj": "b"
           },
           "outcome": "被凡人粗暴扯住長髮反壓，女媧金色豎瞳先是閃過一絲毀滅雷光，旋即竟化作一種被徹底激起獸性的狂熱妖笑：「敢這樣褻瀆母神的凡人……本尊萬年來還是頭一回見！」"
         }
@@ -344,7 +436,12 @@
             "corruption": 24,
             "hedon": 24,
             "tyranny": 10,
-            "rel_c": -26
+            "rel_c": -26,
+            "mist": 24,
+            "crave": 24,
+            "heat": 5,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "女媧揮退諸男巫，巨型虹鱗蛇尾興奮地將你捲上白玉神盤正中！在萬眾信徒的狂熱跪拜與神煙裡，你徹底淪為這尊血慾母神最沉淪的凡間大祭司。"
         },
@@ -355,7 +452,11 @@
             "inf": -16,
             "corruption": 18,
             "tyranny": 18,
-            "rel_c": 16
+            "rel_c": 16,
+            "mist": 18,
+            "heat": 9,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "神廟血流成河，十餘名男巫祝笑著死在刀下。女媧披著血色神紗懸於半空，金色豎瞳冰冷得像在看一群發瘋的螞蟻：「殺光了這批祭品，凡君打算用自己的命，替他們補齊今晚欠本尊的香火嗎？」"
         },
@@ -366,7 +467,12 @@
             "inf": 12,
             "corruption": 20,
             "hedon": 22,
-            "rel_c": -14
+            "rel_c": -14,
+            "mist": 20,
+            "crave": 22,
+            "heat": 6,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "男巫與權貴倉皇逃出神廟。白玉盤上，女媧看著你眼底焚天般的妒火與褻瀆衝動，發出一聲驚心動魄的妖笑，冰滑蛇尾死死鎖住你的腰背與你徹夜翻雲覆雨。"
         }
@@ -388,7 +494,12 @@
             "corruption": 20,
             "tyranny": 18,
             "hedon": 10,
-            "rel_b": -30
+            "rel_b": -30,
+            "mist": 20,
+            "crave": 10,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "{b}在冰冷風乾的厚重泥殼裡活活凍瘋。整個後宮徹底淪為高禖神閣的奴僕群，再無人敢在女媧面前直起脊背。"
         },
@@ -398,7 +509,11 @@
             "aff": -16,
             "inf": -10,
             "corruption": 14,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 14,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "女媧垂下金色豎瞳望著你滿手黃泥，唇角勾起一抹極冷的嘲弄：「凡君真有趣——泥巴心疼起泥巴來了。那今晚凡君就抱著這塊濕泥睡吧。」"
         }
@@ -419,7 +534,12 @@
             "inf": 22,
             "corruption": 24,
             "tyranny": 20,
-            "rel_b": -30
+            "rel_b": -30,
+            "kidLoss": "b",
+            "inj": "b",
+            "mist": 24,
+            "heat": 10,
+            "tag": "奪嗣毒手"
           },
           "outcome": "自此後宮凡有孕者皆須先跪進高禖神閣獻血求生，女媧不點頭的胎兒一個也活不到落地。你親手把王朝的命脈交給了這尊冷血母神。"
         },
@@ -430,7 +550,12 @@
             "inf": -16,
             "corruption": 18,
             "tyranny": 12,
-            "rel_b": 16
+            "rel_b": 16,
+            "mist": 18,
+            "heat": 6,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "五色石像應聲崩裂、神火四濺！女媧長髮狂舞、雙瞳金光刺目得令人無法直視：「好！凡人竟敢弒神拆壇！那就看看你這座凡間皇朝，扛不扛得住母神的怒火！」"
         }
@@ -452,7 +577,16 @@
             "corruption": 24,
             "tyranny": 22,
             "hedon": 16,
-            "rel_c": -30
+            "rel_c": -30,
+            "pol": 12,
+            "energy": 25,
+            "mist": 24,
+            "crave": 16,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "{c}血祭神壇，萬民齊聲歡呼。你在高台龍椅上徹底臣服於她半人半蛇的絕世神軀之下，開啟了血腥而荒淫的上古神權統治。"
         },
@@ -463,7 +597,12 @@
             "inf": -20,
             "corruption": 18,
             "tyranny": 14,
-            "rel_c": 18
+            "rel_c": 18,
+            "mist": 18,
+            "heat": 7,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "劍鋒劃破她眉心滲出一滴璀璨金血！神火驟然一震，狂熱軍民瞬間驚醒騷動。女媧捂著眉心金血仰天大笑，眼中第一次燃起對凡人的平等戰意：「敢傷本尊神血的凡君……今晚這筆帳，本尊會連本帶利討回來！」"
         }
@@ -487,7 +626,14 @@
             "corruption": 18,
             "hedon": 12,
             "tyranny": 8,
-            "rel_c": -16
+            "rel_c": -16,
+            "troops": 60,
+            "mist": 18,
+            "crave": 12,
+            "heat": 5,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "三城徹底化作高禖神教的狂熱領地，源源不斷的黃金與狂信死士湧入京師，朝廷律法從此讓位於母神香火。"
         },
@@ -498,7 +644,11 @@
             "inf": -12,
             "corruption": 10,
             "tyranny": 6,
-            "rel_c": 14
+            "rel_c": 14,
+            "food": 100,
+            "mist": 10,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "官兵推倒分祠那日，三城竟爆發狂熱信徒抗官暴動。女媧從靈泉裡赤足走出，冷笑道：「凡君拆得了泥瓦廟，拆得了刻在他們骨頭裡的敬畏嗎？」"
         }
@@ -520,7 +670,13 @@
             "corruption": 18,
             "hedon": 12,
             "tyranny": 10,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 18,
+            "crave": 12,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "天下豪強徹底淪為高禖神藥的癮君子，對京師言聽計從。女媧在滿屋黃金與神煙中擁住你，笑得宛如真正戲弄蒼生的墮落古神。"
         },
@@ -531,7 +687,10 @@
             "inf": -12,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 10,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "藥坊化作烈火，可城外卻響起了數十名毒癮發作的王公絕望的哀嚎——沒了神藥，這群權貴反而更加瘋狂地跪求女媧原諒。"
         }
@@ -551,7 +710,12 @@
             "aff": 18,
             "inf": 14,
             "corruption": 20,
-            "hedon": 18
+            "hedon": 18,
+            "mist": 20,
+            "crave": 18,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "她的金色豎瞳驟然綻出奪目神光，冰滑神尾化現而出將你溫柔卻不容掙脫地徹底包裹。那一夜人神界線徹底消融，你們成了這世間最瘋狂的共犯。"
         },
@@ -561,7 +725,10 @@
             "aff": 4,
             "inf": 4,
             "corruption": 14,
-            "tyranny": 8
+            "tyranny": 8,
+            "mist": 14,
+            "heat": 5,
+            "house": 1
           },
           "outcome": "她微微抬頭凝視你片刻，唇角緩緩勾起一抹極具侵略性的神性冷笑：「越是不肯跪下的泥偶，捏起來越讓人上癮呢——那本尊便慢慢陪你耗到你白髮蒼蒼的那一天。」"
         }
@@ -584,7 +751,12 @@
             "tyranny": 18,
             "rel_b": -26,
             "rel_c": -26,
-            "rel_g": -20
+            "rel_g": -20,
+            "jail": "b",
+            "mist": 18,
+            "heat": 9,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "三方徹底崩盤、哀嚎著被拖出大殿。滿朝文武再無一人敢直視女媧的金瞳，高禖神威徹底覆蓋了整座帝國。"
         },
@@ -597,7 +769,12 @@
             "tyranny": 10,
             "rel_b": -6,
             "rel_c": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "mist": 12,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "女媧收起五色石光，回眸深深瞥了你一眼，眼底滿是玩味與冷酷：「凡君想同時拴住神和鬼？好啊，看你的手握不握得穩。」"
         }
@@ -620,7 +797,12 @@
             "inf": 20,
             "corruption": 20,
             "tyranny": 18,
-            "rel_c": -26
+            "rel_c": -26,
+            "troops": 60,
+            "mist": 20,
+            "heat": 9,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "那一夜天降五色烈火，敵軍十萬大軍在非人慘嚎中化作漫天焦灰，城外三十里徹底淪為死地。全天下震怖於「活神降世」，再無人敢冒犯你的疆界，卻也視你為滅世魔君。"
         },
@@ -630,7 +812,12 @@
             "aff": -10,
             "inf": -8,
             "corruption": 10,
-            "rel_c": 14
+            "rel_c": 14,
+            "troops": 60,
+            "mist": 10,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "女媧冷冷拂袖轉身，雲紗帶起一陣刺骨寒風：「凡人總愛拿可笑的仁義給自己挖墳——那本尊便在高台上看著，你這批泥偶兵能撐幾日。」"
         }
@@ -651,7 +838,13 @@
             "inf": 18,
             "corruption": 18,
             "tyranny": 14,
-            "rel_c": -30
+            "rel_c": -30,
+            "exec": "c",
+            "mist": 18,
+            "heat": 7,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "伴隨一聲震徹戰場的骨裂悶響，叛將{c}斃命當場，周遭敵兵嚇得以為真神降罪紛紛棄甲潰逃！當夜血火未滅，女媧在帥帳裡纏上你，神血與戰意將兩人燒成一體。"
         },
@@ -661,7 +854,11 @@
             "aff": 4,
             "inf": 6,
             "corruption": 10,
-            "rel_c": -18
+            "rel_c": -18,
+            "inj": "c",
+            "mist": 10,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "蛇尾鬆開將重傷的{c}砸在地上。馬背上，女媧冰涼的身體緊貼著你，嘴角勾起一抹對凡人規矩的淡淡輕蔑：「這麼好的祭品不殺，凡君真是浪費。」"
         }
@@ -684,7 +881,14 @@
               "aff": 18,
               "corruption": 10,
               "tyranny": 18,
-              "flag": "nw_tragedy_dead_avenged"
+              "flag": "nw_tragedy_dead_avenged",
+              "pol": 12,
+              "energy": 25,
+              "mist": 10,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "你死死攥著那尊帶著她最後體溫的血泥偶，整座皇宮彷彿瞬間墜入無邊黑夜。半年後敵國王城化作血海，可這人間再也不會有第二尊冷豔蛇神為你降臨。"
           },
@@ -694,7 +898,11 @@
               "inf": -8,
               "corruption": 8,
               "tyranny": 8,
-              "flag": "nw_tragedy_dead_buried"
+              "flag": "nw_tragedy_dead_buried",
+              "mist": 10,
+              "heat": 5,
+              "pol": 15,
+              "wood": -50
             },
             "outcome": "百官叩賀人道重興，高禖香火漸熄。只是每當雷雨夜降臨、空氣裡飄起濕潤黃土氣息時，你總覺得床榻邊有一條冰涼的蛇尾正無聲盤過你的腳踝。"
           }
@@ -717,7 +925,12 @@
               "inf": -16,
               "corruption": 12,
               "hedon": 8,
-              "flag": "nw_tragedy_captured_ransom"
+              "flag": "nw_tragedy_captured_ransom",
+              "mist": 12,
+              "crave": 8,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "朝臣痛哭罵你為一妖神葬送河山，你卻紅著眼簽下和約——你絕不能讓任何凡人畜生再多碰她冰玉般的一寸肌膚。"
           },
@@ -727,7 +940,11 @@
               "inf": 12,
               "corruption": 14,
               "tyranny": 14,
-              "flag": "nw_tragedy_captured_spy"
+              "flag": "nw_tragedy_captured_spy",
+              "mist": 14,
+              "heat": 7,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "十日後月食降臨，敵營金帳驟然爆出沖天五色雷火！玄鐵鎖鏈寸寸崩斷，敵營慘叫震徹百里，大軍趁勢一舉踏平敵巢。"
           }
@@ -750,7 +967,13 @@
               "inf": 14,
               "corruption": 18,
               "hedon": 16,
-              "flag": "nw_tragedy_wounded_devoted"
+              "flag": "nw_tragedy_wounded_devoted",
+              "mist": 18,
+              "crave": 16,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "你的熱血與體溫安撫了受傷暴走的蛇神。她在你的懷抱裡漸漸平息顫抖，卻從此將你視作唯一能觸碰她神血傷口的禁忌私產。"
           },
@@ -761,7 +984,10 @@
               "inf": -10,
               "corruption": 18,
               "tyranny": 6,
-              "flag": "nw_tragedy_wounded_sidelined"
+              "flag": "nw_tragedy_wounded_sidelined",
+              "mist": 18,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "她抹去唇邊金血與你的紅血，看著你逃離的背影發出冰冷嘶笑：「原來在凡君眼裡，受傷流血的神明，終究只是一條令人作嘔的毒蛇呀。」"
           }
@@ -785,7 +1011,12 @@
               "corruption": 22,
               "tyranny": 22,
               "rel_b": -30,
-              "flag": "nw_tragedy_humiliated_purge"
+              "flag": "nw_tragedy_humiliated_purge",
+              "troops": 60,
+              "mist": 22,
+              "heat": 11,
+              "exec": "b",
+              "pop": -15
             },
             "outcome": "當夜三條長街血染青石，{b}在絕望的哀嚎裡徹底失去了人樣。洗盡穢血的女媧重新坐回五色石座，整座皇城陷入了無人敢言的絕對神權恐懼。"
           },
@@ -796,7 +1027,11 @@
               "inf": -10,
               "corruption": 16,
               "rel_b": -14,
-              "flag": "nw_tragedy_humiliated_suppressed"
+              "flag": "nw_tragedy_humiliated_suppressed",
+              "ban": "b",
+              "pop": -15,
+              "mist": 16,
+              "tag": "受辱怨骨"
             },
             "outcome": "女媧冷漠地抽回手，走回神壇熄滅了靈火。三日後，{b}的冷殿與那三條街的井水竟同時化作腥紅泥漿，飲者皆腹痛瘋癲而亡——神明報仇，從不需凡君恩准。"
           }
@@ -819,7 +1054,12 @@
               "inf": 16,
               "corruption": 18,
               "hedon": 14,
-              "flag": "nw_tragedy_survivor_reclaimed"
+              "flag": "nw_tragedy_survivor_reclaimed",
+              "mist": 18,
+              "crave": 14,
+              "heat": 6,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "靈泉蒸騰起璀璨金霧，她在水中用蛻皮後更加細膩冰滑的胴體死死纏住你，彷彿宣告無論多少劫難，你都只能永生永世屬於她。"
           },
@@ -830,7 +1070,10 @@
               "inf": -12,
               "corruption": 18,
               "tyranny": 8,
-              "flag": "nw_tragedy_survivor_quarantined"
+              "flag": "nw_tragedy_survivor_quarantined",
+              "mist": 18,
+              "heat": 5,
+              "jail": 1
             },
             "outcome": "她站在高禖閣台階上俯視著門外林立的凡鐵長矛，發出一聲輕蔑至極的低笑：「連鎮神雷火都燒不死本尊，凡君倒想拿幾根木頭棍子看住我？」"
           }
@@ -855,7 +1098,12 @@
               "tyranny": 14,
               "hedon": 10,
               "rel_c": -28,
-              "flag": "nw_tragedy_pregnant_kept"
+              "flag": "nw_tragedy_pregnant_kept",
+              "mist": 24,
+              "crave": 10,
+              "heat": 7,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "全城烏雲化作妖異五色霞光。女媧滿意地拉過你的手按在她微微發燙、跳動著奇異神脈的小腹上，微笑著宣告人間王朝正式邁入半神紀元。"
           },
@@ -867,7 +1115,14 @@
               "corruption": 20,
               "tyranny": 18,
               "rel_c": 14,
-              "flag": "nw_tragedy_pregnant_aborted"
+              "flag": "nw_tragedy_pregnant_aborted",
+              "exec": "c",
+              "mist": 20,
+              "heat": 9,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "璀璨的淡金色神血浸透了五色白玉榻！女媧在劇烈抽搐中發出響徹雲霄的悽厲神嘯，雙瞳徹底染成血紅：「凡君……你親手殺了本尊唯一的神胎！本尊詛咒你的江山，從此血雨千年、寸草不生！」"
           }
@@ -891,7 +1146,13 @@
               "corruption": 18,
               "hedon": 14,
               "rel_c": -18,
-              "flag": "nw_tragedy_forcedmarriage_reclaimed"
+              "flag": "nw_tragedy_forcedmarriage_reclaimed",
+              "mist": 18,
+              "crave": 14,
+              "heat": 6,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "敵王與諸將果真毒發癱軟任你宰割。你挑開大紅神帳時，女媧正赤足披著半敞嫁衣微笑搖爵，見你進來便如蛇般纏上你，在敵王洞房裡上演了一場極致褻瀆的勝利狂歡。"
           },
@@ -903,7 +1164,11 @@
               "corruption": 12,
               "tyranny": 8,
               "rel_c": 12,
-              "flag": "nw_tragedy_forcedmarriage_disowned"
+              "flag": "nw_tragedy_forcedmarriage_disowned",
+              "mist": 12,
+              "heat": 5,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "三日後敵國大營依舊化作五色雷火煉獄，敵王暴斃！而身披紅嫁衣的女媧再未回頭看你一眼，竟直接收服敵國殘部自立神國，成了懸在你頭頂永恆的末日陰影。"
           }
@@ -926,7 +1191,15 @@
               "inf": 16,
               "corruption": 18,
               "hedon": 18,
-              "flag": "nw_tragedy_rescued_restored"
+              "flag": "nw_tragedy_rescued_restored",
+              "pol": 12,
+              "energy": 25,
+              "mist": 18,
+              "crave": 18,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "水花與神煙交織整夜，她在你滾燙粗暴的佔有裡重新找回了凌駕眾生的神威。次日高禖神火燃得比以往任何時候都更熾烈血腥。"
           },
@@ -936,7 +1209,10 @@
               "aff": -8,
               "inf": -4,
               "corruption": 12,
-              "flag": "nw_tragedy_rescued_restrained"
+              "flag": "nw_tragedy_rescued_restrained",
+              "mist": 12,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她冷冷披上雲紗，金色豎瞳裡閃過一絲寒芒：「凡君總喜歡教神明怎麼做事……罷了，等本尊神力全復，自會替自己討回公道。」"
           }
@@ -961,7 +1237,13 @@
               "tyranny": 16,
               "hedon": 12,
               "rel_c": -30,
-              "flag": "nw_tragedy_imprisoned_freed"
+              "flag": "nw_tragedy_imprisoned_freed",
+              "pop": -15,
+              "mist": 20,
+              "crave": 12,
+              "heat": 8,
+              "exec": "g",
+              "pv": 1
             },
             "outcome": "{c}一族徹底從史冊蒸發，可「女媧一指化活人為泥」的傳說卻在朝堂暗處瘋傳，令天下百官聞名即跪。"
           },
@@ -973,7 +1255,12 @@
               "corruption": 18,
               "tyranny": 6,
               "rel_c": -20,
-              "flag": "nw_tragedy_imprisoned_cold"
+              "flag": "nw_tragedy_imprisoned_cold",
+              "pol": 12,
+              "energy": 25,
+              "mist": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "她站在被法陣包圍的冷閣裡，回眸對你露出一抹令你魂魄發冷的微笑：「凡君也在怕自己哪天變成一灘泥巴嗎？放心，你比他們好玩多了，本尊捨不得這麼快捏碎你。」"
           }
@@ -996,7 +1283,13 @@
               "inf": 22,
               "corruption": 22,
               "hedon": 18,
-              "flag": "nw_tragedy_escaped_empowered"
+              "flag": "nw_tragedy_escaped_empowered",
+              "mist": 22,
+              "crave": 18,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "她在雷聲與神光中發出一聲傲視天地的滿足長吟，冰滑神軀將你死死鎖進懷中。從此凡間天子徹底甘為創世蛇神膝下最忠誠、也最沉淪的祭司。"
           },
@@ -1007,7 +1300,11 @@
               "inf": -10,
               "corruption": 16,
               "tyranny": 8,
-              "flag": "nw_tragedy_escaped_watched"
+              "flag": "nw_tragedy_escaped_watched",
+              "mist": 16,
+              "heat": 5,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "女媧從龍案上優雅滑落，指尖沾著一滴金血點過你的眉心冷笑：「凡君心裡藏著的那點小算盤，逃不過母神的眼睛——去鍛你的破鐵鏈吧，看下次鎖得住誰。」"
           }
@@ -1016,3 +1313,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['nvwa'] = DATA;
+  (window.characterPacks ||= {})['nvwa'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

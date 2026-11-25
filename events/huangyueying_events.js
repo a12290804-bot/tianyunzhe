@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["huangyueying"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 22 號 黃月英 (huangyueying)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "huangyueying",
     "index": 22,
@@ -18,7 +23,8 @@
       "0-34": "荊州名門出身的冷面奇女，素衣束袖、指腹帶著木工細繭，看似不沾脂粉爭寵，實則已暗中測繪後宮夾牆與水渠，準備用工巧替自己撬開權力第一道鎖。",
       "35-69": "後宮暗網的真正建築師，在各宮佈滿銅管竊聽與暗格毒機，開始以精密「意外」剪除政敵血脈，並在工坊密室裡以奇技器具縱情支配天子與年輕工匠。",
       "70+": "視眾人血肉皆為齒輪與零件的機關暴君。不再遮掩工坊深處的冰冷與淫奢，將後宮與軍械工部化作任她拉扯絲線的巨型傀儡箱，連天子的呼吸節奏與皇城兵甲命脈都由她親手校準。"
-    }
+    },
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -40,7 +46,12 @@
             "aff": 12,
             "inf": 12,
             "corruption": 6,
-            "hedon": 8
+            "hedon": 8,
+            "pv": 1,
+            "crave": 8,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "圖紙與銅尺嘩啦散落一地。她在你身下並未柔順求饒，反倒用修長有力的雙腿死死絞住你的腰，指腹薄繭抓破了你的衣領，在急促低啞的喘息裡反客為主地掌控著每一次起伏的節奏。"
         },
@@ -50,7 +61,10 @@
             "aff": 4,
             "inf": 2,
             "corruption": 8,
-            "tyranny": 4
+            "tyranny": 4,
+            "mist": 10,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "她低頭看著被你攥住的手腕，淡金褐色的長髮散落肩頭，露出一抹興味十足的冷笑：「防著我？很好。越難撬開的鎖，撬開那刻的聲音越動聽。」"
         },
@@ -60,7 +74,13 @@
             "aff": 8,
             "inf": 6,
             "corruption": 10,
-            "hedon": 10
+            "hedon": 10,
+            "pv": 1,
+            "mist": 10,
+            "crave": 10,
+            "affair": "g",
+            "heat": 6,
+            "tag": "桀驁未馴"
           },
           "outcome": "那一夜兩人在圖紙與松油香裡幾乎像在搏鬥般縱情交纏。可三日後親信回報：她運進別院的明明只是尋常桑木與青銅管，拼在一起卻已經能把隔壁三座宮殿的談話聽得一清二楚。"
         }
@@ -82,7 +102,12 @@
             "corruption": 12,
             "tyranny": 6,
             "rel_b": -12,
-            "rel_g": 10
+            "rel_g": 10,
+            "mist": 12,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "她眼中閃過近乎狂熱的亮光，當著{g}退去後，便把你按在聽得見{b}殿內動靜的夾牆邊，借著偷窺他人的禁忌快感與你激烈纏綿。自此後宮再無秘密，唯獨她的工坊成了最黑的暗室。"
         },
@@ -92,7 +117,11 @@
             "aff": -6,
             "inf": -6,
             "corruption": 8,
-            "rel_g": -6
+            "rel_g": -6,
+            "mist": 10,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "黃月英面無表情地拔出牆角那截明面上的銅管，指尖卻極快地將另一條埋在地龍水溝底下的暗管開關推上。她擦去手上的桐油，淡淡道：「陛下喜歡當聾子，妾身自當照辦。」"
         }
@@ -113,7 +142,14 @@
             "inf": 16,
             "corruption": 12,
             "tyranny": 8,
-            "rel_b": -22
+            "rel_b": -22,
+            "wood": -60,
+            "stone": -60,
+            "mist": 12,
+            "heat": 5,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "諸宮妃嬪嚇得人人自危，生怕自己頭頂的房樑哪天也「自然斷裂」。當夜黃月英在暖閣裡跨坐上你的膝頭，拉著你的手撫過她因用力而繃緊的腰線，低笑道：「誰再敢動我的圖紙，下回掉下來的就不是木板了。」"
         },
@@ -123,7 +159,11 @@
             "aff": -4,
             "inf": 4,
             "corruption": 8,
-            "rel_b": -10
+            "rel_b": -10,
+            "mist": 10,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "她順從地把真榫放進你掌心，指尖卻故意在你掌心裡撓了一下，眼底閃過一抹玩味：「陛下把證據收起來了，卻不拿去給廷尉看——看來陛下心裡，也挺厭煩她那張吵人的嘴。」"
         }
@@ -146,7 +186,12 @@
             "inf": 14,
             "corruption": 16,
             "tyranny": 12,
-            "rel_g": -28
+            "rel_g": -28,
+            "cold": 1,
+            "mist": 16,
+            "heat": 6,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "一炷香後，{g}徹底眼神渙散地癱在木椅上。黃月英拔掉香球，當著昏迷不醒的昔日盟友，直接跨上你的腰肢在工坊長案上瘋狂索取，彷彿親手拆毀背叛者能帶給她最極致的感官快感。"
         },
@@ -156,7 +201,11 @@
             "aff": -8,
             "inf": -6,
             "corruption": 10,
-            "rel_g": -10
+            "rel_g": -10,
+            "pv": 1,
+            "mist": 10,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "黃月英冷笑著按動暗鈕，銅環「咔嗒」彈開。可{g}被帶出別院不到兩個時辰，便在半路「失足」摔下石階折斷了腰骨——沒有人能完整地走出黃月英的工坊。"
         }
@@ -178,7 +227,13 @@
             "corruption": 14,
             "hedon": 10,
             "rel_g": 14,
-            "rel_c": -12
+            "rel_c": -12,
+            "mist": 14,
+            "crave": 10,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "黃月英遣散眾人後，就在仍帶著餘溫的鍛造台邊扯開你的衣襟，滿身熱汗與鐵鏽味地纏上來。從此尚方署與少府鐵庫成了她的私人王國，{c}的奏章再也壓不住她的手。"
         },
@@ -190,7 +245,10 @@
             "corruption": 10,
             "tyranny": 6,
             "rel_g": -8,
-            "rel_c": 10
+            "rel_c": 10,
+            "mist": 10,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "{c}查封了兩間外院庫房，卻根本找不到地下暗室的入口。三日後，{c}乘車上朝時車軸竟在鬧市當街斷裂，摔得他臥床兩月——工部上下從此再沒人敢查黃月英的帳。"
         }
@@ -211,7 +269,13 @@
             "inf": 16,
             "corruption": 14,
             "tyranny": 10,
-            "rel_b": -24
+            "rel_b": -24,
+            "ban": "b",
+            "wood": -60,
+            "stone": -60,
+            "mist": 14,
+            "heat": 5,
+            "exec": "b"
           },
           "outcome": "{b}嘶喊著「木匣是她動了手腳」卻無人敢信。當晚黃月英坐在你懷裡，拿著細刻刀輕輕削著一枚木偶，笑道：「論栽贓，寫假信太粗糙；讓敵人親手把證據送進我設好的機關裡，才叫省力。」"
         },
@@ -221,7 +285,10 @@
             "aff": -8,
             "inf": -6,
             "corruption": 10,
-            "rel_b": -8
+            "rel_b": -8,
+            "mist": 10,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "黃月英眉梢微挑，毫不介意地收起刻刀。可複查那夜，那名女官竟在牢房裡被一張「自行觸發」的鐵絲套索勒斷了氣，留給{b}一輩子洗不掉的謀逆疑雲。"
         }
@@ -243,7 +310,14 @@
             "corruption": 14,
             "tyranny": 8,
             "rel_b": -24,
-            "rel_c": -16
+            "rel_c": -16,
+            "wood": -60,
+            "stone": -60,
+            "mist": 14,
+            "heat": 5,
+            "jail": "b",
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "原本用來毀滅她的「妖女」流言，轉眼成了襯托她智計無雙的墊腳石。散場後她在長廊拐角堵住你，溫熱帶繭的指尖滑進你衣襟低笑：「世人越愚蠢，我的機關就越像神蹟。」"
         },
@@ -254,7 +328,12 @@
             "inf": -4,
             "corruption": 10,
             "rel_b": -8,
-            "rel_c": 6
+            "rel_c": 6,
+            "wood": -60,
+            "stone": -60,
+            "mist": 10,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "她面無表情地親手砸碎了那幾面銅鏡，飛濺的銅片劃破了她的手背，她卻看也不看，只用染血的指尖在桌面上畫出下一套更隱蔽的機關草圖。"
         }
@@ -275,7 +354,12 @@
             "inf": 16,
             "corruption": 16,
             "tyranny": 12,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 16,
+            "heat": 6,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "十日後，新妃果然在霧氣瀰漫的暖池裡「體虛昏厥」香消玉殞，水閘檢修時卻絲毫看不出破綻。黃月英與{g}在雨夜裡舉杯對飲，沒有半句溫情，唯有兩個冷血共犯的默契。"
         },
@@ -285,7 +369,10 @@
             "aff": -10,
             "inf": -10,
             "corruption": 10,
-            "rel_g": -12
+            "rel_g": -12,
+            "mist": 10,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "黃月英看著被拆下的改裝水閥，只平靜地收起圖紙：「陛下保得住她這一回的澡盆，保得住她往後每天喝的水、睡的床嗎？」新妃得知真相後嚇得徹夜不敢合眼，從此再不敢靠近尚方署一步。"
         }
@@ -308,7 +395,14 @@
             "inf": 10,
             "corruption": 12,
             "hedon": 16,
-            "rel_b": -12
+            "rel_b": -12,
+            "wood": -60,
+            "stone": -60,
+            "mist": 12,
+            "crave": 16,
+            "heat": 6,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "滑輪輕響伴著壓抑的喘息持續到五更。她騎在你身上精準掌控著每一分快感與窒息感，直到你徹底沉淪在她帶繭的手掌下，她才俯身咬住你的耳垂低語：「往後不許再帶著她的脂粉味進我的工坊。」"
         },
@@ -319,7 +413,13 @@
             "inf": -4,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 6
+            "rel_b": 6,
+            "wood": -60,
+            "stone": -60,
+            "mist": 12,
+            "house": 1,
+            "inj": "b",
+            "heat": 8
           },
           "outcome": "手腕被你反剪在身後，她卻沒有半分畏懼，反而仰起蜜色脖頸露出近乎興奮的喘息笑意：「原來陛下更喜歡反過來壓制我？那下回，我把這套絲繩換成更耐拉的冰蠶弦。」"
         }
@@ -341,7 +441,13 @@
             "corruption": 18,
             "hedon": 14,
             "tyranny": 8,
-            "rel_c": -6
+            "rel_c": -6,
+            "troops": 60,
+            "mist": 18,
+            "crave": 14,
+            "heat": 5,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "你悄然合上通風暗格。下方傳來齒輪轉動與壓抑的狂亂低吟，黃月英渾然不覺自己最黑暗淫奢的秘密已被你看穿——或者她早已從通風口的微風察覺了你的存在，卻故意演給你看。"
         },
@@ -352,7 +458,14 @@
             "inf": -16,
             "corruption": 16,
             "tyranny": 14,
-            "rel_c": 12
+            "rel_c": 12,
+            "troops": 60,
+            "wood": -60,
+            "stone": -60,
+            "mist": 16,
+            "heat": 7,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "親衛破門時，她竟從容地披上一件沾著松油的外袍，看著那幾名私奴至死都在替她擋刀，冷笑道：「陛下覺得噁心？可正是這些被我用身子和機關拴住的男人，替陛下造出了邊關最鋒利的連弩。殺光他們，陛下的仗找誰打？」"
         },
@@ -363,7 +476,14 @@
             "inf": 14,
             "corruption": 20,
             "hedon": 20,
-            "rel_c": -16
+            "rel_c": -16,
+            "wood": -60,
+            "stone": -60,
+            "mist": 20,
+            "crave": 20,
+            "heat": 6,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "鐵門重重關上。黃月英眼中迸發出前所未有的狂熱光芒，一把扯斷你身上的外袍，將那些原本套在別人身上的黑皮帶與滑輪轉而繫在自己與你之間。那一夜，君妃二人在隔音暗室裡徹底墜入無底淫慾深淵。"
         }
@@ -384,7 +504,11 @@
             "inf": 14,
             "corruption": 18,
             "tyranny": 18,
-            "rel_b": -28
+            "rel_b": -28,
+            "mist": 18,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "{b}在絕望的尖叫中徹底瘋癲。黃月英眼中閃過近乎癡迷的崇拜，當場拉著你的手按在自己加速跳動的胸口上：「世上只有陛下懂我的手藝……其他人，都不過是會發聲的劣質木頭罷了。」"
         },
@@ -394,7 +518,12 @@
             "aff": -14,
             "inf": -10,
             "corruption": 14,
-            "rel_b": 10
+            "rel_b": 10,
+            "pv": 1,
+            "mist": 14,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "木屑飛濺間，黃月英安靜地退後兩步，看著你扶起渾身發抖的{b}，嘴角勾起一抹極冷的弧度：「陛下今日毀了我這具木籠，可別忘了，整座未央宮的鎖，都是我親手換的。」"
         }
@@ -415,7 +544,14 @@
             "inf": 18,
             "corruption": 20,
             "tyranny": 16,
-            "rel_b": -30
+            "rel_b": -30,
+            "wood": -60,
+            "stone": -60,
+            "mist": 20,
+            "heat": 8,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "{b}哭瞎了雙眼卻求告無門。當夜黃月英伏在你懷裡，修長帶繭的手指輕輕撫平你緊皺的眉心，語氣溫柔得令人不寒而慄：「別難過，陛下。這座江山的繼承人，應該像最精密的機關一樣，由我們親手挑選、親手打造。」"
         },
@@ -426,7 +562,12 @@
             "inf": -16,
             "corruption": 16,
             "tyranny": 10,
-            "rel_b": 14
+            "rel_b": 14,
+            "mist": 16,
+            "heat": 5,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "鮮血順著她緊緻的蜜色肩頭滑入深青衣領。她盯著被鮮血染紅的劍尖，緩緩笑了：「陛下把我關進暴室？好啊，正好讓我瞧瞧，暴室那幾道老鐵門，能攔住我幾炷香。」"
         }
@@ -448,7 +589,16 @@
             "corruption": 22,
             "tyranny": 18,
             "hedon": 10,
-            "rel_c": -30
+            "rel_c": -30,
+            "wood": -60,
+            "stone": -60,
+            "mist": 22,
+            "crave": 10,
+            "heat": 9,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "一輪箭雨過後，{c}伏誅階下。當夜黃月英把滿手雨水與血腥味擦在你的龍袍上，將你按在龍椅上肆無忌憚地索取歡愛。從此大殿之上唯見天子，暗室之內全是她的齒輪聲。"
         },
@@ -459,7 +609,14 @@
             "inf": -20,
             "corruption": 16,
             "tyranny": 12,
-            "rel_c": 16
+            "rel_c": 16,
+            "wood": -60,
+            "stone": -60,
+            "mist": 16,
+            "heat": 6,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "總鑰奪下那刻，她非但沒露懼色，反而就著你壓制她的姿勢湊近你唇邊，咬著你的下唇低笑：「反應真快啊，陛下……看來我替你留的那三道備用暗機，還真沒白裝。」"
         }
@@ -482,7 +639,12 @@
             "inf": 16,
             "corruption": 14,
             "tyranny": 6,
-            "rel_c": -12
+            "rel_c": -12,
+            "pv": 1,
+            "mist": 14,
+            "heat": 6,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "她滿意地放下細鋸，赤足走過來坐在你腿上，帶著松油香的唇輕輕吻過你的喉結。自此各分城官員驚恐地發現：自家地窖裡藏了幾塊金餅，天子與尚方別院竟比自己還清楚。"
         },
@@ -493,7 +655,10 @@
             "inf": -10,
             "corruption": 8,
             "tyranny": 6,
-            "rel_c": 10
+            "rel_c": 10,
+            "mist": 10,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "三處工坊被封前夜便已燒成白地，沒留下一張完整圖紙。黃月英平靜地交回督運印信，只是當晚替你斟茶時，眼底冷得像剛淬過冰水的精鋼。"
         }
@@ -515,7 +680,14 @@
             "corruption": 16,
             "hedon": 10,
             "tyranny": 8,
-            "rel_g": 12
+            "rel_g": 12,
+            "pv": 1,
+            "mist": 16,
+            "crave": 10,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "那些曾大罵後宮干政的清流大員，短短一月內全成了尚方別院最忠誠的喉舌。黃月英在檔案櫃前拉開你的衣襟，笑得既淫靡又冷血：「看吧，陛下，這才是治國最省力的齒輪。」"
         },
@@ -526,7 +698,11 @@
             "inf": -12,
             "corruption": 8,
             "tyranny": 6,
-            "rel_g": -12
+            "rel_g": -12,
+            "pv": 1,
+            "mist": 10,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "大火燒了一整夜，可黃月英早就把最致命的幾十份母本刻在了青銅薄片上藏進別院井底。她看著火光，只淡淡說了一句：「陛下替他們燒了恥辱，他們可未必會感激陛下。」"
         }
@@ -546,7 +722,12 @@
             "aff": 16,
             "inf": 14,
             "corruption": 16,
-            "hedon": 14
+            "hedon": 14,
+            "mist": 16,
+            "crave": 14,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "圓規滑落在地。她在你懷裡發出極少見的低啞笑聲，修長有力的雙腿死死纏上你的腰，帶著近乎獻祭般的狂熱與你交融。自此這座冰冷的皇宮裡，唯有你們二人能聽懂彼此心跳的刻度。"
         },
@@ -556,7 +737,9 @@
             "aff": 6,
             "inf": 4,
             "corruption": 12,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 12,
+            "house": 1
           },
           "outcome": "她聞言挑起眉，指腹的薄繭重重劃過你的下唇，眼底閃過一抹炙熱的勝負慾：「主軸？那陛下可得抓緊了——要是哪天陛下轉慢了半拍，這枚齒輪可會反過來帶著主軸走。」"
         }
@@ -579,7 +762,11 @@
             "tyranny": 12,
             "rel_b": -22,
             "rel_c": -22,
-            "rel_g": 10
+            "rel_g": 10,
+            "mist": 16,
+            "heat": 6,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "{b}與{c}當場啞口無言、冷汗涔涔，{g}更是嚇得當場跪伏在黃月英腳邊。待眾人退盡，黃月英直接坐在你剛批閱完的奏章堆上，勾著你的脖頸笑道：「多謝陛下替我清場。」"
         },
@@ -592,7 +779,12 @@
             "tyranny": 10,
             "rel_b": -6,
             "rel_c": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "jail": 1,
+            "mist": 10,
+            "heat": 5,
+            "cold": "b",
+            "food": -70
           },
           "outcome": "四方暫時僵持休兵。黃月英整理好衣袖，離去前低頭在你耳畔留下一句冷語：「陛下把火藥和火星鎖在同一個盒子裡，早晚會炸得比今天更響。」"
         }
@@ -615,7 +807,12 @@
             "inf": 16,
             "corruption": 16,
             "tyranny": 10,
-            "rel_c": -18
+            "rel_c": -18,
+            "mist": 16,
+            "heat": 5,
+            "troops": 100,
+            "soldiers": 80,
+            "food": -100
           },
           "outcome": "黃月英帶著工坊私奴與滿車連弩奔赴前線。半月後谷口一戰火光沖天，敵軍先鋒幾乎全軍覆沒，焦臭味百里不散，連己方士卒望向那位站在高坡上冷靜記錄傷亡數字的女子時，眼中都充滿敬畏與恐懼。"
         },
@@ -625,7 +822,11 @@
             "aff": -8,
             "inf": -8,
             "corruption": 8,
-            "rel_c": 12
+            "rel_c": 12,
+            "mist": 10,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "黃月英面無表情地收起毒箭匣，冷笑道：「好啊，等前線斷糧折兵、{c}將軍哭著求救的時候，可別怪我那批『尋常木牛』走得太慢。」"
         }
@@ -646,7 +847,12 @@
             "inf": 16,
             "corruption": 14,
             "tyranny": 10,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 14,
+            "heat": 5,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "她在火光中反手勾住你的脖頸，唇齒帶著硝煙與血腥味狠狠吻上來。那一夜殘營未滅，兩人就在堆滿箭匣的帥帳裡瘋狂交纏，彷彿唯有在生死邊緣才能點燃她最滾燙的慾望。"
         },
@@ -656,7 +862,11 @@
             "aff": 4,
             "inf": 6,
             "corruption": 10,
-            "rel_c": -18
+            "rel_c": -18,
+            "mist": 10,
+            "inj": 1,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "她任由軍醫上藥，卻連眉頭都沒皺一下，只冷冷望著被押走的{c}：「審來審去太費時間。要是哪天他從大牢裡跑了，陛下可別怪我沒提醒過。」"
         }
@@ -679,7 +889,15 @@
               "aff": 15,
               "corruption": 10,
               "tyranny": 18,
-              "flag": "hyy_tragedy_dead_avenged"
+              "flag": "hyy_tragedy_dead_avenged",
+              "pv": 1,
+              "wood": -60,
+              "stone": -60,
+              "mist": 10,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "尚方別院的水車停了，再也沒人能像她那樣拆解整座皇城。三個月後你用她留下的機關圖燒毀了敵軍大營，可每當聽見銅漏滴水聲，你總覺得她仍在暗處替你校準時間。"
           },
@@ -689,7 +907,12 @@
               "inf": -10,
               "corruption": 8,
               "tyranny": 6,
-              "flag": "hyy_tragedy_dead_buried"
+              "flag": "hyy_tragedy_dead_buried",
+              "pv": 1,
+              "wood": -60,
+              "stone": -60,
+              "mist": 10,
+              "pol": 15
             },
             "outcome": "別院上了三道鐵鎖，柏木與松油香漸漸散去。只是往後每逢宮中暗鎖卡死，滿朝工匠竟再無一人修得開她當年留下的機括。"
           }
@@ -712,7 +935,14 @@
               "inf": -12,
               "corruption": 10,
               "hedon": 6,
-              "flag": "hyy_tragedy_captured_ransom"
+              "flag": "hyy_tragedy_captured_ransom",
+              "wood": -60,
+              "stone": -60,
+              "mist": 10,
+              "crave": 6,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "你頂著朝臣反對送出贖金。你知道黃月英在敵帳裡受的每一道傷，將來都會變成更可怕的機關反噬回來。"
           },
@@ -722,7 +952,12 @@
               "inf": 10,
               "corruption": 14,
               "tyranny": 12,
-              "flag": "hyy_tragedy_captured_spy"
+              "flag": "hyy_tragedy_captured_spy",
+              "troops": 60,
+              "mist": 14,
+              "heat": 6,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "你冷靜地將那道刻痕壓在心底。遠在敵營鐵匠棚裡的黃月英收到暗號後，擦掉嘴角被敵帥咬出的血絲，在昏暗油燈下露出一個冰冷得像死神的微笑。"
           }
@@ -745,7 +980,14 @@
               "inf": 12,
               "corruption": 14,
               "hedon": 8,
-              "flag": "hyy_tragedy_wounded_devoted"
+              "flag": "hyy_tragedy_wounded_devoted",
+              "pv": 1,
+              "mist": 14,
+              "crave": 8,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "她在劇痛裡發出低啞的笑聲，用完好的左手死死按住你的後頸吻下來。此後未央宮流傳著一個令人聞風喪膽的傳說：尚方別院那位娘娘的右手是精鋼鑄的，凡是被她盯上的人，連骨頭都能被她捏碎。"
           },
@@ -756,7 +998,10 @@
               "inf": -8,
               "corruption": 16,
               "tyranny": 4,
-              "flag": "hyy_tragedy_wounded_sidelined"
+              "flag": "hyy_tragedy_wounded_sidelined",
+              "mist": 16,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "她靜靜看著工具被搬空，沒有哭鬧。可七日後的深夜，親衛卻發現她用牙齒咬開繃帶、靠著一隻左手和一把拆下來的窗栓，已經把偏殿的門鎖改成了只有她能開的死鎖。"
           }
@@ -780,7 +1025,11 @@
               "corruption": 18,
               "tyranny": 18,
               "rel_b": -28,
-              "flag": "hyy_tragedy_humiliated_purge"
+              "flag": "hyy_tragedy_humiliated_purge",
+              "mist": 18,
+              "heat": 9,
+              "exec": "b",
+              "pop": -15
             },
             "outcome": "半個月內，那幾十名起鬨地痞接連在城中遭遇「屋瓦墜落、馬車失控」橫死街頭，{b}更是被她親手送進了刻漏站籠。洗淨黑泥的黃月英，從此成了長安最可怕的無形死神。"
           },
@@ -791,7 +1040,11 @@
               "inf": -10,
               "corruption": 16,
               "rel_b": -14,
-              "flag": "hyy_tragedy_humiliated_suppressed"
+              "flag": "hyy_tragedy_humiliated_suppressed",
+              "ban": "b",
+              "inj": "b",
+              "mist": 16,
+              "tag": "受辱怨骨"
             },
             "outcome": "她冷冷地披上外袍，轉身走進工坊深處重重關上門。不到半月，{b}的寢殿便在一場「無人查得出起火點」的深夜大火中燒成焦炭，連半塊完好的瓦片都沒留下。"
           }
@@ -814,7 +1067,12 @@
               "inf": 16,
               "corruption": 14,
               "tyranny": 8,
-              "flag": "hyy_tragedy_survivor_reclaimed"
+              "flag": "hyy_tragedy_survivor_reclaimed",
+              "pv": 1,
+              "mist": 14,
+              "heat": 5,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "她在滾燙的浴池裡靠在你胸口，任由你替她一點點洗去焦灰，眼底燃燒著冰冷的殺意。次日起，尚方別院重新動工，而第一批送進去「試機」的，便是那幾名以為她已死的朝中內鬼。"
           },
@@ -825,7 +1083,10 @@
               "inf": -12,
               "corruption": 18,
               "tyranny": 8,
-              "flag": "hyy_tragedy_survivor_quarantined"
+              "flag": "hyy_tragedy_survivor_quarantined",
+              "mist": 18,
+              "heat": 5,
+              "jail": 1
             },
             "outcome": "她看著把守偏院的刀斧手，發出一聲極輕的冷笑，當著你的面將手裡那半截燒焦的髮絲割斷丟在地上：「連烈火都燒不死的東西，陛下倒想用這幾道木門來驗我的忠心？」"
           }
@@ -849,7 +1110,11 @@
               "corruption": 22,
               "tyranny": 10,
               "rel_c": -24,
-              "flag": "hyy_tragedy_pregnant_kept"
+              "flag": "hyy_tragedy_pregnant_kept",
+              "mist": 22,
+              "heat": 5,
+              "preg": 1,
+              "tag": "懷敵種"
             },
             "outcome": "她轉過身，蜜色臉龐上綻出一抹近乎瘋狂的笑意，拉著你的手重重按在自己微溫的小腹上：「果然只有陛下配做這台大機器的主人。放心，這孩子睜眼第一天，我就會教他怎麼拆了他親生父親的骨頭。」"
           },
@@ -861,7 +1126,13 @@
               "corruption": 18,
               "tyranny": 16,
               "rel_c": 12,
-              "flag": "hyy_tragedy_pregnant_aborted"
+              "flag": "hyy_tragedy_pregnant_aborted",
+              "mist": 18,
+              "heat": 8,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "鮮血染紅了素白錦褥，她在劇痛裡硬是一聲沒吭，只用那雙冷得像精鋼的眼睛死死盯著你：「陛下連最順手的武器都嫌髒……好，那往後這座宮裡，也別想再有任何一個孩子活著長大。」"
           }
@@ -885,7 +1156,13 @@
               "corruption": 16,
               "hedon": 10,
               "rel_c": -16,
-              "flag": "hyy_tragedy_forcedmarriage_reclaimed"
+              "flag": "hyy_tragedy_forcedmarriage_reclaimed",
+              "mist": 16,
+              "crave": 10,
+              "heat": 6,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "子時一聲驚天巨響，敵城軍械庫化作烈焰火球。火光盡頭，黃月英穿著半敞染灰的敵國大紅嫁衣策馬而來，翻身躍進你懷裡大笑：「新郎官送去見閻王了，這身紅嫁衣，今晚正好留給陛下撕。」"
           },
@@ -897,7 +1174,11 @@
               "corruption": 12,
               "tyranny": 8,
               "rel_c": 10,
-              "flag": "hyy_tragedy_forcedmarriage_disowned"
+              "flag": "hyy_tragedy_forcedmarriage_disowned",
+              "mist": 12,
+              "heat": 5,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "三日後敵城依舊爆發了驚天大火，敵將與半數軍械俱焚。只是火海之後，黃月英並未回到長安，而是帶著殘餘工匠消失在群山之間，成了令兩國都寢食難安的地下軍火霸主。"
           }
@@ -920,7 +1201,14 @@
               "inf": 14,
               "corruption": 14,
               "hedon": 14,
-              "flag": "hyy_tragedy_rescued_restored"
+              "flag": "hyy_tragedy_rescued_restored",
+              "pv": 1,
+              "mist": 14,
+              "crave": 14,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "那一夜木屑與血痕沾滿了兩人的肌膚。天亮後，她換上全新的玄青工坊服走出別院，第一道命令便是將兩名趁機侵吞鐵料的官員送進了她新改良的審訊室。"
           },
@@ -930,7 +1218,10 @@
               "aff": -6,
               "inf": -4,
               "corruption": 10,
-              "flag": "hyy_tragedy_rescued_restrained"
+              "flag": "hyy_tragedy_rescued_restrained",
+              "mist": 10,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她冷靜地收回手，看著手腕上那圈發青的鐵印，淡淡說了一句：「陛下總覺得溫水能養好傷，卻忘了鐵唯有燒紅了再砸，才不會生鏽。」"
           }
@@ -955,7 +1246,13 @@
               "tyranny": 14,
               "hedon": 8,
               "rel_c": -30,
-              "flag": "hyy_tragedy_imprisoned_freed"
+              "flag": "hyy_tragedy_imprisoned_freed",
+              "pv": 1,
+              "pop": -15,
+              "mist": 16,
+              "crave": 8,
+              "heat": 7,
+              "exec": "g"
             },
             "outcome": "{c}滿門抄斬，莊園化作廢墟。回到別院後，黃月英竟把那段撬開的斷鏈熔成了一對精巧的銅手環，夜裡纏綿時最愛親自扣在你我腕間。"
           },
@@ -967,7 +1264,10 @@
               "corruption": 18,
               "tyranny": 6,
               "rel_c": -20,
-              "flag": "hyy_tragedy_imprisoned_cold"
+              "flag": "hyy_tragedy_imprisoned_cold",
+              "mist": 18,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "她看著偏院那把嶄新的大銅鎖，嗤笑一聲，用指尖輕輕叩了叩鎖芯：「陛下嫌我髒，又怕我太危險——可惜，這世上還沒人造得出能關住黃月英的鎖。」"
           }
@@ -990,7 +1290,16 @@
               "inf": 18,
               "corruption": 16,
               "hedon": 10,
-              "flag": "hyy_tragedy_escaped_empowered"
+              "flag": "hyy_tragedy_escaped_empowered",
+              "pv": 1,
+              "wood": -60,
+              "stone": -60,
+              "mist": 16,
+              "crave": 10,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "她在你懷裡發出暢快又狂妄的大笑，帶著硝煙與汗味的唇直接堵住了你的嘴。自此她的尚方別院成了凌駕六部之上的鐵血神機府，整座帝國都在她的齒輪上轟鳴前行。"
           },
@@ -1001,7 +1310,12 @@
               "inf": -10,
               "corruption": 16,
               "tyranny": 8,
-              "flag": "hyy_tragedy_escaped_watched"
+              "flag": "hyy_tragedy_escaped_watched",
+              "pv": 1,
+              "mist": 16,
+              "heat": 5,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "黃月英擦去臉上的黑灰，掃了一眼門外新增的雙倍守衛，眼神冷得像冰：「連敵軍三萬大營都困不住我，陛下真以為這幾條看門狗，能鎖住我的腦子？」"
           }
@@ -1010,3 +1324,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['huangyueying'] = DATA;
+  (window.characterPacks ||= {})['huangyueying'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();

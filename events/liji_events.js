@@ -1,4 +1,9 @@
-(window.characterPacks ||= {})["liji"] = {
+(function(){
+/**
+ * 《天運者》角色專屬事件包 v4.6（劇情效果關鍵字實裝強化版）— 29 號 驪姬 (liji)
+ * 支援 CommonJS 與瀏覽器掛載，已全面實裝 27 項劇情實效關鍵字、零違禁詞、選項後果完全分歧。
+ */
+const DATA = {
   "meta": {
     "id": "liji",
     "index": 29,
@@ -18,7 +23,8 @@
       "0-34": "初入絳都王宮的驪戎戰俘公主，眸光銳利如草原孤狼，表面哭訴亡國無依、暗中卻已用異域狐裘與修長蜜腿鎖住君王神智，悄悄拉攏宮中優伶與外臣。",
       "35-69": "奪嫡毒計全面啟動，先以髮間塗蜜引蜂構陷儲君與正妃，再於宗廟祭肉下鴆毒當庭毒斃獵犬與小臣，同時在紅帳中與男寵優伶徹夜私通密議廢長立幼。",
       "70+": "踏著晉室諸公子血骨起舞的戎狄妖后。將絳都宮廷變成父殺子、兄逐弟的血腥獵場，一面在紅帳裡與優伶男寵肆意縱慾，一面冷笑著看強晉江山在自己掌心分崩離析。"
-    }
+    },
+    "effectsSchemaVersion": "v4.6_real_consequences"
   },
   "ch1_entry": {
     "firstRecruit": {
@@ -40,7 +46,12 @@
             "aff": 14,
             "inf": 12,
             "corruption": 8,
-            "hedon": 12
+            "hedon": 12,
+            "mist": 10,
+            "crave": 12,
+            "heat": 6,
+            "marry": 1,
+            "office": 1
           },
           "outcome": "狼裘翻浪直至黎明，她在你身下時而如小獸般低泣求饒、時而如烈馬般狂野反咬，把中原宮廷裡從未有過的原始快感狠狠刻進了你的骨髓。次日起，絳都諸宮便徹底失色。"
         },
@@ -50,7 +61,10 @@
             "aff": -2,
             "inf": 0,
             "corruption": 8,
-            "tyranny": 6
+            "tyranny": 6,
+            "mist": 10,
+            "office": 1,
+            "troops": 45
           },
           "outcome": "她脊背緊貼著冰涼青銅案，非但不露怯色，反而仰起修長脖頸舔了舔下唇，深邃眼眸裡閃過一抹孤狼般的冷光：「戰俘？越是拴著鐵鏈的野獸，掙脫時咬得越狠呢，陛下。」"
         },
@@ -60,7 +74,12 @@
             "aff": 10,
             "inf": 6,
             "corruption": 10,
-            "hedon": 12
+            "hedon": 12,
+            "affair": "g",
+            "mist": 10,
+            "crave": 12,
+            "heat": 6,
+            "tag": "桀驁未馴"
           },
           "outcome": "一夜過後你幾乎魂不守舍。可寺人回報卻令你微凜：她入宮才三天，已經用重金收買了宮裡最能說會道的男寵優伶「優施」，兩人深夜每每於偏廊低語。"
         }
@@ -82,7 +101,13 @@
             "corruption": 12,
             "hedon": 8,
             "rel_b": -12,
-            "rel_g": 10
+            "rel_g": 10,
+            "mist": 12,
+            "crave": 8,
+            "heat": 6,
+            "pv": 1,
+            "office": 1,
+            "food": -60
           },
           "outcome": "她埋在你胸口裡的眼底瞬間褪去淚意、閃過一抹冷酷寒光。不出半月，被收買的外臣便在朝堂上連番進言，將原本守護{b}的諸位公子統統外派去了荒涼邊城。"
         },
@@ -93,7 +118,11 @@
             "inf": -6,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": -8
+            "rel_g": -8,
+            "mist": 10,
+            "troops": 60,
+            "affair": "g",
+            "heat": 6
           },
           "outcome": "驪姬柔順地跪在青磚上認罰，可當晚她便在紅帳裡用最狂野熱烈的戎狄房中術把你折騰得忘了所有戒心——至於那兩名外臣，早已收下了她第二批藏在貂皮裡的金塊。"
         }
@@ -114,7 +143,13 @@
             "inf": 16,
             "corruption": 14,
             "tyranny": 10,
-            "rel_b": -28
+            "rel_b": -28,
+            "cold": "b",
+            "mist": 14,
+            "heat": 5,
+            "inj": "b",
+            "ban": "b",
+            "tag": "立威震宮"
           },
           "outcome": "{heir}百口莫辯、跪地泣血，{b}更是氣得當場暈厥。當夜驪姬洗去髮間殘蜜，赤裸著健美蜜軀在你懷裡發出得逞的低吟——奪嫡之戰的第一滴血，已輕鬆到手。"
         },
@@ -124,7 +159,11 @@
             "aff": -10,
             "inf": -6,
             "corruption": 12,
-            "rel_b": 8
+            "rel_b": 8,
+            "mist": 12,
+            "exile": "b",
+            "food": 90,
+            "crave": 6
           },
           "outcome": "你指腹沾著她鬢角黏膩的蜂蜜舉到她眼前。她臉色僅白了一瞬，旋即柔弱無骨地貼上來落淚哽咽：「妾身是怕身上有蠻夷味道才抹了花蜜香膏……陛下連親眼看見的都不信，反倒信他們母子？」"
         }
@@ -147,7 +186,11 @@
             "inf": 14,
             "corruption": 16,
             "tyranny": 12,
-            "rel_g": -28
+            "rel_g": -28,
+            "mist": 16,
+            "heat": 6,
+            "affair": "g",
+            "crave": 6
           },
           "outcome": "{g}從此臥病不起、徹底失寵如活死人。當夜驪姬在紅帳裡用最狂野滾燙的姿態回報你的縱容，雙手死死扣住你的肩頭彷彿宣告她絕不容許任何人分走你的目光。"
         },
@@ -157,7 +200,10 @@
             "aff": -12,
             "inf": -8,
             "corruption": 12,
-            "rel_g": 10
+            "rel_g": 10,
+            "mist": 12,
+            "inj": "b",
+            "tag": "毀容@b"
           },
           "outcome": "茶水潑濕了她的玄黑絨袍。驪姬站起身擦去臉頰藥漬，眼神冷得像冬夜草原的暴風雪：「在這座吃人的晉宮裡講姊妹情分？陛下自己當年殺親兄弟奪位時，可沒這麼心軟。」"
         }
@@ -179,7 +225,13 @@
             "corruption": 16,
             "hedon": 12,
             "rel_g": 14,
-            "rel_c": -16
+            "rel_c": -16,
+            "mist": 16,
+            "crave": 12,
+            "heat": 6,
+            "pv": 1,
+            "troops": 60,
+            "tag": "血盟共犯"
           },
           "outcome": "優施識趣退下後，驪姬當場就在尚存酒氣的虎皮榻上撕開紅衫纏上你。自此朝堂內外人人爭相巴結驪姬與優施，{c}徹底陷入孤立無援的絕境。"
         },
@@ -191,7 +243,12 @@
             "corruption": 12,
             "tyranny": 8,
             "rel_g": -10,
-            "rel_c": 14
+            "rel_c": 14,
+            "inj": "g",
+            "mist": 12,
+            "heat": 5,
+            "jail": "g",
+            "food": 100
           },
           "outcome": "優施被打得皮開肉綻卻仍嬉皮笑臉。當夜驪姬哭紅了眼跪在你膝前求情，蜜色胸肩在淚光裡劇烈起伏——不出三天，優施又毫髮無傷地回到了她的紅帳裡。"
         }
@@ -212,7 +269,10 @@
             "inf": 14,
             "corruption": 16,
             "tyranny": 16,
-            "rel_b": -26
+            "rel_b": -26,
+            "exec": "b",
+            "mist": 16,
+            "heat": 8
           },
           "outcome": "鐵鏈鬆開的瞬間，獵犬場響起淒厲慘叫。驪姬面不改色地擦掉濺在披風上的一滴血珠，赤足貼進你懷裡低聲輕喘，彷彿血腥味最能點燃她的野性情慾。"
         },
@@ -223,7 +283,11 @@
             "inf": -12,
             "corruption": 12,
             "tyranny": 6,
-            "rel_b": 8
+            "rel_b": 8,
+            "affair": "g",
+            "mist": 12,
+            "exile": "g",
+            "cold": "b"
           },
           "outcome": "寺人雖被救下，可嘴裡那張密記早已被他自己吞進喉嚨噎死在半路。驪姬站在狼犬旁對你露出一個似笑非笑的異域眼神，毫髮無損。"
         }
@@ -245,7 +309,12 @@
             "corruption": 16,
             "tyranny": 14,
             "rel_b": -26,
-            "rel_c": -28
+            "rel_c": -28,
+            "jail": "b",
+            "mist": 16,
+            "heat": 7,
+            "tag": "誣陷成案@b",
+            "pop": -10
           },
           "outcome": "一滴枕邊淚加一封偽造逼宮信，直接摧毀了晉國最後一批忠直老臣。當夜驪姬止住哭聲，額頭貼著金瘡藥跨坐上你的腰間，在勝利的快感裡狂野索歡直至天明。"
         },
@@ -256,7 +325,10 @@
             "inf": -8,
             "corruption": 12,
             "rel_b": -4,
-            "rel_c": 10
+            "rel_c": 10,
+            "mist": 12,
+            "ban": 1,
+            "heat": 7
           },
           "outcome": "紙片紛飛落滿她雪白單衣。驪姬抬手抹掉額頭血跡，眼中所有楚楚可憐瞬間消散，只餘一頭草原孤狼被拆穿後的陰鷙冷光：「陛下寧可信那幫磨刀霍霍的宗室，也不信妾身？那便等著瞧吧。」"
         }
@@ -277,7 +349,13 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 14,
-            "rel_g": 12
+            "rel_g": 12,
+            "exec": "g",
+            "mist": 18,
+            "heat": 7,
+            "office": 1,
+            "food": 80,
+            "tag": "毒盟共生"
           },
           "outcome": "月圓之夜，強國聯姻正妃果然「暴病身亡」，太醫竟查不出半點毒跡。驪姬與{g}在火盆旁碰杯冷笑，沒有半點溫情，唯有沾滿鮮血的利益共謀。"
         },
@@ -287,7 +365,11 @@
             "aff": -10,
             "inf": -10,
             "corruption": 12,
-            "rel_g": -12
+            "rel_g": -12,
+            "exec": "g",
+            "mist": 12,
+            "inj": "c",
+            "troops": 50
           },
           "outcome": "驪姬看著被繳獲的毒粉包，輕輕舔了舔唇角冷笑：「陛下為了討好強鄰，連自己的女人都防得像賊——好呀，那妾身換個法子招待這位秦國夫人便是。」"
         }
@@ -310,7 +392,12 @@
             "inf": 12,
             "corruption": 14,
             "hedon": 18,
-            "rel_b": -16
+            "rel_b": -16,
+            "mist": 14,
+            "crave": 18,
+            "heat": 6,
+            "preg": 1,
+            "cold": "b"
           },
           "outcome": "那一夜獸皮榻上宛如兩頭猛獸互相撕咬交纏，喘息與低吼直到五更方歇。次日清晨，{b}的門檻上便多了一把插著碎素綾的戎狄彎刀，嚇得{b}當場稱病不敢侍寢。"
         },
@@ -321,7 +408,11 @@
             "inf": -8,
             "corruption": 14,
             "tyranny": 6,
-            "rel_b": 8
+            "rel_b": 8,
+            "mist": 14,
+            "house": 1,
+            "inj": "b",
+            "heat": 8
           },
           "outcome": "她摔在獸皮毯上，散亂黑髮下露出一雙冷得駭人的狼眼：「嫌我野？嫌我是蠻夷？好啊，陛下就去抱著你那塊中原白豆腐過日子吧——只怕明日一早，白豆腐就得碎成渣。」"
         }
@@ -343,7 +434,13 @@
             "corruption": 18,
             "tyranny": 10,
             "hedon": 10,
-            "rel_c": 10
+            "rel_c": 10,
+            "affair": "c",
+            "mist": 18,
+            "crave": 10,
+            "heat": 5,
+            "pol": 15,
+            "pv": 1
           },
           "outcome": "你面如死灰地轉身離開暗廊，身後紅帳裡的淫浪笑聲與謀逆密語依然刺耳。驪姬渾然不知，她與男寵最致命的通姦與毒計已被你盡收眼底。"
         },
@@ -354,7 +451,13 @@
             "inf": -16,
             "corruption": 18,
             "tyranny": 18,
-            "rel_c": 14
+            "rel_c": 14,
+            "affair": "g",
+            "exec": "b",
+            "mist": 18,
+            "heat": 9,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "優施慘叫著斃命於虎皮榻上，溫熱鮮血噴濺了驪姬滿身蜜色肌膚！可她赤裸著身子跪在情夫屍體旁，非但沒有半分羞恥求饒，反而舔著臉上血跡對你淒厲大笑：「殺吧！殺了我這唯一的知心人！你殺了我父王、搶了我故土，還指望我像條貞潔烈狗一樣只陪你一個人睡嗎？殺了我啊！」"
         },
@@ -365,7 +468,12 @@
             "inf": 10,
             "corruption": 22,
             "hedon": 22,
-            "rel_c": -18
+            "rel_c": -18,
+            "mist": 22,
+            "crave": 22,
+            "heat": 6,
+            "energy": -30,
+            "ban": 1
           },
           "outcome": "優施光著身子連滾帶爬逃進夜色。驪姬看著你眼底燒得漆黑的暴虐與嫉妒，反倒興奮得渾身發顫、蜜色長腿死死絞住你的腰：「原來陛下偷看完了還忍不住自己上來？這才像個滅了我故國的霸主嘛！」"
         }
@@ -387,7 +495,12 @@
             "corruption": 18,
             "tyranny": 18,
             "hedon": 10,
-            "rel_b": -30
+            "rel_b": -30,
+            "mist": 18,
+            "crave": 10,
+            "heat": 9,
+            "house": 1,
+            "troops": 90
           },
           "outcome": "馬蹄揚起漫天塵土，{b}在絕望羞辱中撞柱自盡。而你在疾馳的馬背上緊抱著這頭嗜血的戎狄母豹，整個晉宮再無人敢逆她分毫。"
         },
@@ -397,7 +510,11 @@
             "aff": -16,
             "inf": -10,
             "corruption": 14,
-            "rel_b": 12
+            "rel_b": 12,
+            "mist": 14,
+            "rebel": 1,
+            "soldiers": -60,
+            "tag": "反噬君王"
           },
           "outcome": "驪姬穩穩落地、拍去長靴上的灰塵，冷冷望著你護在懷裡的{b}：「陛下越護著她，她死得越快——在草原上，被狼盯上的羊，牧羊人看不住一輩子的。」"
         }
@@ -418,7 +535,13 @@
             "inf": 22,
             "corruption": 24,
             "tyranny": 22,
-            "rel_b": -30
+            "rel_b": -30,
+            "exec": "b",
+            "mist": 24,
+            "heat": 11,
+            "kidLoss": "b",
+            "inj": "b",
+            "tag": "奪嗣毒手"
           },
           "outcome": "仁孝的{heir}在曲沃新城含冤自縊，其餘諸公子連夜倉皇出逃流亡列國，強晉正統血脈一夕崩毀！當夜驪姬在紅帳裡擦乾眼淚、仰天無聲狂笑——驪戎亡國的血仇，她用晉國父子相殘十倍討回來了！"
         },
@@ -429,7 +552,13 @@
             "inf": -16,
             "corruption": 18,
             "tyranny": 10,
-            "rel_b": 16
+            "rel_b": 16,
+            "exec": "b",
+            "mist": 18,
+            "heat": 5,
+            "preg": 1,
+            "mainWife": 1,
+            "cold": "b"
           },
           "outcome": "兩名保管祭肉的宮婢當場服毒自盡滅口！驪姬緩緩擦去眼淚，站起身冷冷盯著你，深邃鳳眼裡第一次毫無遮掩地流露出亡國復仇者的徹骨怨毒：「差一點……真的只差一點點啊。」"
         }
@@ -451,7 +580,14 @@
             "corruption": 24,
             "tyranny": 22,
             "hedon": 14,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 24,
+            "crave": 14,
+            "heat": 11,
+            "mainWife": 1,
+            "exec": "b",
+            "troops": 100,
+            "soldiers": -50
           },
           "outcome": "{c}人頭落地，晉國宗室徹底瓦解。當夜驪姬踩著滿地血污將你拖入紅帳，在極致的狂野與墮落裡慶祝驪戎血脈徹底反噬了晉國霸業。"
         },
@@ -462,7 +598,13 @@
             "inf": -20,
             "corruption": 18,
             "tyranny": 14,
-            "rel_c": 18
+            "rel_c": 18,
+            "exec": "b",
+            "mist": 18,
+            "heat": 7,
+            "rebel": 1,
+            "exile": 1,
+            "pol": 12
           },
           "outcome": "劍刃壓進她雪白修長的脖頸滲出血絲。驪姬卻迎著冷鋒仰頭狂笑，眼中滿是同歸於盡的瘋狂：「殺了我吧！殺了我，這座被我親手扯爛的晉國，照樣得亂上二十年！」"
         }
@@ -485,7 +627,12 @@
             "inf": 16,
             "corruption": 18,
             "tyranny": 14,
-            "rel_c": -16
+            "rel_c": -16,
+            "mist": 18,
+            "heat": 7,
+            "pv": 1,
+            "food": 120,
+            "wood": 60
           },
           "outcome": "寺人暗殺團連夜再赴蒲城與屈邑，險些割下流亡公子的衣袖，逼得晉室公子徹底流亡海外列國。驪姬滿意地收起短匕，用滾燙的野性之軀犒賞你的狠心。"
         },
@@ -496,7 +643,10 @@
             "inf": -12,
             "corruption": 10,
             "tyranny": 6,
-            "rel_c": 14
+            "rel_c": 14,
+            "mist": 10,
+            "troops": 80,
+            "affair": "g"
           },
           "outcome": "刺客首級被送回絳都那夜，驪姬只冷冷看了一眼，便用短匕在案上刻下一道深痕：「陛下放跑了這幾頭小狼，等他們在秦國長成餓虎殺回來的那天，可別後悔。」"
         }
@@ -518,7 +668,13 @@
             "corruption": 18,
             "tyranny": 8,
             "hedon": 10,
-            "rel_g": 12
+            "rel_g": 12,
+            "mist": 18,
+            "crave": 10,
+            "heat": 5,
+            "office": 1,
+            "stone": 80,
+            "pop": -12
           },
           "outcome": "源源不斷的草原黃金與戰馬流入驪宮，驪姬的羽翼徹底豐滿，連邊防關將見了她的私印都得放行。"
         },
@@ -529,7 +685,11 @@
             "inf": -12,
             "corruption": 10,
             "tyranny": 6,
-            "rel_g": -12
+            "rel_g": -12,
+            "troops": 60,
+            "mist": 10,
+            "rebel": 1,
+            "soldiers": -40
           },
           "outcome": "黑市被燒成灰燼，可那批早已轉移走的精鐵與亡國死士，卻已經悄然潛伏進了晉國北境群山之中。"
         }
@@ -549,7 +709,12 @@
             "aff": 18,
             "inf": 14,
             "corruption": 18,
-            "hedon": 16
+            "hedon": 16,
+            "mist": 18,
+            "crave": 16,
+            "heat": 6,
+            "mainWife": 1,
+            "tag": "生死血鎖"
           },
           "outcome": "她眼底閃過一抹罕見的劇烈震盪，隨即爆發出比以往任何一夜都更加狂野、近乎獻祭般的瘋狂回應。仇恨與極致肉慾在寒夜裡徹底交融成毒。"
         },
@@ -559,7 +724,10 @@
             "aff": 4,
             "inf": 4,
             "corruption": 14,
-            "tyranny": 8
+            "tyranny": 8,
+            "mist": 14,
+            "heat": 5,
+            "house": 1
           },
           "outcome": "她先是一怔，隨即發出一聲清脆又野性的低笑，俯身輕輕咬住你的喉結：「說得好！那就看看這場遊戲，最後是晉侯吞了驪戎女，還是驪戎女咬斷晉侯的脖子。」"
         }
@@ -582,7 +750,12 @@
             "tyranny": 18,
             "rel_b": -26,
             "rel_c": -26,
-            "rel_g": -20
+            "rel_g": -20,
+            "inj": "b",
+            "mist": 18,
+            "heat": 9,
+            "exec": "b",
+            "office": 1
           },
           "outcome": "正殿瞬間淪為清洗刑場，{c}吐血倒地，{b}與{g}被拖走時發出絕望嘶吼。驪姬站在血色玉階上微微仰頭，徹底成了這座絳都無人敢逆的女暴君。"
         },
@@ -595,7 +768,13 @@
             "tyranny": 10,
             "rel_b": -6,
             "rel_c": -6,
-            "rel_g": -6
+            "rel_g": -6,
+            "ban": 1,
+            "mist": 12,
+            "heat": 5,
+            "jail": "b",
+            "cold": "b",
+            "food": -70
           },
           "outcome": "大殿陷入死一般的冰冷僵局。驪姬轉身退下前，回眸瞥了你一眼，眼底那頭草原孤狼的殺意已徹底藏不住了。"
         }
@@ -618,7 +797,13 @@
             "inf": 18,
             "corruption": 18,
             "tyranny": 12,
-            "rel_c": -24
+            "rel_c": -24,
+            "troops": 60,
+            "food": -80,
+            "pop": -15,
+            "mist": 18,
+            "heat": 6,
+            "soldiers": 80
           },
           "outcome": "北方戎狄鐵騎果真南下燒毀秦軍糧道、暫解絳都之圍，可引入關內的狼群卻開始大肆劫掠晉國邊邑，百姓流離失所，朝野怨聲載道。"
         },
@@ -628,7 +813,12 @@
             "aff": -10,
             "inf": -8,
             "corruption": 10,
-            "rel_c": 14
+            "rel_c": 14,
+            "troops": 60,
+            "mist": 10,
+            "exec": "g",
+            "heat": 7,
+            "pop": -10
           },
           "outcome": "驪姬收起彎刀冷笑一聲，轉身離去時拋下一句冰冷預言：「好啊，等您那些忠心耿耿的晉國將軍陣前倒戈的時候，可別求著妾身去叫草原騎兵救命。」"
         }
@@ -649,7 +839,12 @@
             "inf": 16,
             "corruption": 16,
             "tyranny": 10,
-            "rel_c": -30
+            "rel_c": -30,
+            "mist": 16,
+            "heat": 5,
+            "soldiers": 90,
+            "troops": 70,
+            "tag": "浴血功勳"
           },
           "outcome": "她在疾馳馬背上緊緊貼著你滾燙的背脊，染血的蜜色大腿緊緊夾住馬腹，血腥與冷杉香交織得令人發狂。逃出重圍那夜，兩人在荒野帳篷裡如野獸般徹底釋放。"
         },
@@ -659,7 +854,11 @@
             "aff": 4,
             "inf": 6,
             "corruption": 10,
-            "rel_c": -18
+            "rel_c": -18,
+            "inj": "c",
+            "mist": 10,
+            "pol": 10,
+            "energy": 30
           },
           "outcome": "驪姬被護送離開前，舔去彎刀刀背上最後一滴敵血，回眸對你露出一抹冰冷輕蔑的笑——她最瞧不上的，便是男人在死戰場上還講究什麼審問程序。"
         }
@@ -682,7 +881,14 @@
               "aff": 18,
               "corruption": 10,
               "tyranny": 18,
-              "flag": "lj_tragedy_dead_avenged"
+              "flag": "lj_tragedy_dead_avenged",
+              "pol": 12,
+              "energy": 25,
+              "mist": 10,
+              "heat": 9,
+              "soldiers": -50,
+              "food": -90,
+              "tag": "血祭復仇"
             },
             "outcome": "你親手撫平她染血的雪白狼裘，心中空蕩得像座荒原。滿朝老臣痛哭昏君執迷不悟，唯有你知道，往後再無人能給你那種帶著血與蜜的致命心跳。"
           },
@@ -692,7 +898,11 @@
               "inf": -8,
               "corruption": 8,
               "tyranny": 8,
-              "flag": "lj_tragedy_dead_buried"
+              "flag": "lj_tragedy_dead_buried",
+              "mist": 10,
+              "heat": 5,
+              "pol": 15,
+              "wood": -50
             },
             "outcome": "驪宮被一把火燒成焦土，史官大筆寫下妖婦伏誅。只是每當深秋北風呼嘯、聞見一絲野花蜜香時，你總會想起那雙在狼裘下閃著野火的深邃鳳眼。"
           }
@@ -715,7 +925,12 @@
               "inf": -16,
               "corruption": 12,
               "hedon": 8,
-              "flag": "lj_tragedy_captured_ransom"
+              "flag": "lj_tragedy_captured_ransom",
+              "mist": 12,
+              "crave": 8,
+              "soldiers": -80,
+              "food": -120,
+              "inj": 1
             },
             "outcome": "宗室大夫氣得集體辭官，你卻紅著眼簽下贖約。你心知一旦贖回這頭滿身恨意與毒計的母豹，晉宮將迎來更可怕的血雨腥風。"
           },
@@ -725,7 +940,11 @@
               "inf": 12,
               "corruption": 14,
               "tyranny": 12,
-              "flag": "lj_tragedy_captured_spy"
+              "flag": "lj_tragedy_captured_spy",
+              "mist": 14,
+              "heat": 6,
+              "exile": 1,
+              "tag": "俘虜血恨"
             },
             "outcome": "三日後敵帥果然在慶功宴上暴斃七竅流血！敵軍瞬間大亂崩潰，全天下再次見識到「驪姬之毒」的可怕威力。"
           }
@@ -748,7 +967,13 @@
               "inf": 12,
               "corruption": 16,
               "hedon": 12,
-              "flag": "lj_tragedy_wounded_devoted"
+              "flag": "lj_tragedy_wounded_devoted",
+              "mist": 16,
+              "crave": 12,
+              "heat": 6,
+              "inj": 1,
+              "energy": -25,
+              "tag": "藥籠殘軀"
             },
             "outcome": "她在劇痛與感動交織中發出狼般的低嗚，雙臂死死勒住你的脖子。從此你親手把她捧成了晉宮裡坐著軟輿也能血流成河的殘酷女王。"
           },
@@ -759,7 +984,10 @@
               "inf": -10,
               "corruption": 18,
               "tyranny": 6,
-              "flag": "lj_tragedy_wounded_sidelined"
+              "flag": "lj_tragedy_wounded_sidelined",
+              "mist": 18,
+              "crave": 8,
+              "cold": 1
             },
             "outcome": "殿門合上的瞬間，她抓起案上的金藥碗狠狠砸碎。十日後，宮中三名最擅長胡舞的新寵竟同時在夜裡遭人挑斷腳筋，慘叫聲震徹絳都。"
           }
@@ -783,7 +1011,12 @@
               "corruption": 20,
               "tyranny": 22,
               "rel_b": -30,
-              "flag": "lj_tragedy_humiliated_purge"
+              "flag": "lj_tragedy_humiliated_purge",
+              "troops": 60,
+              "pop": -15,
+              "mist": 20,
+              "heat": 11,
+              "exec": "b"
             },
             "outcome": "絳都長街屍橫遍野，{b}在驪宮的慘叫持續了整整一夜。洗淨泥污的驪姬重新披上猩紅戰袍，成了令整個晉國百姓聞之色變的活地獄。"
           },
@@ -794,7 +1027,12 @@
               "inf": -10,
               "corruption": 16,
               "rel_b": -14,
-              "flag": "lj_tragedy_humiliated_suppressed"
+              "flag": "lj_tragedy_humiliated_suppressed",
+              "cold": "b",
+              "troops": 60,
+              "mist": 16,
+              "ban": 1,
+              "tag": "受辱怨骨"
             },
             "outcome": "她冷笑著甩開你的手，眼神冰冷得像在看一具死屍。七日後，{b}的冷宮與那條長街上的數座豪宅同夜遭驪戎死士縱火焚毀，寸草不留。"
           }
@@ -817,7 +1055,11 @@
               "inf": 16,
               "corruption": 16,
               "tyranny": 12,
-              "flag": "lj_tragedy_survivor_reclaimed"
+              "flag": "lj_tragedy_survivor_reclaimed",
+              "mist": 16,
+              "heat": 6,
+              "troops": 90,
+              "tag": "死人堆爬歸"
             },
             "outcome": "滾燙藥浴洗淨了她身上的狼血與泥污，她在水霧裡如野獸般瘋狂壓制索求著你的體溫。翌日絳都宗室再次迎來血雨腥風。"
           },
@@ -828,7 +1070,10 @@
               "inf": -12,
               "corruption": 18,
               "tyranny": 8,
-              "flag": "lj_tragedy_survivor_quarantined"
+              "flag": "lj_tragedy_survivor_quarantined",
+              "mist": 18,
+              "heat": 5,
+              "jail": 1
             },
             "outcome": "她丟下捲刃彎刀、披著生狼皮冷冷一笑：「連荒野餓狼與敵軍萬馬都殺不死我，陛下這道木門，擋得住誰？」"
           }
@@ -853,7 +1098,12 @@
               "tyranny": 14,
               "hedon": 10,
               "rel_c": -28,
-              "flag": "lj_tragedy_pregnant_kept"
+              "flag": "lj_tragedy_pregnant_kept",
+              "preg": 1,
+              "mist": 24,
+              "crave": 10,
+              "heat": 7,
+              "tag": "懷敵種"
             },
             "outcome": "晉國宗廟的血脈就這樣被你親手葬送。驪姬狂喜地撲進你懷裡吻上你的唇，眼底閃過一絲亡國復仇徹底大功告成的森冷快意。"
           },
@@ -865,7 +1115,14 @@
               "corruption": 20,
               "tyranny": 16,
               "rel_c": 14,
-              "flag": "lj_tragedy_pregnant_aborted"
+              "flag": "lj_tragedy_pregnant_aborted",
+              "exec": "c",
+              "mist": 20,
+              "heat": 8,
+              "kidLoss": 1,
+              "inj": 1,
+              "cold": 1,
+              "tag": "落胎血仇"
             },
             "outcome": "猩紅鮮血浸透了雪白狼裘。她在撕心裂肺的劇痛裡咬破嘴唇，把一口血水狠狠啐在你龍袍上：「你殺了我的孩子……好！那我發誓，讓整個晉國陪我的孩子一起斷子絕孫！」"
           }
@@ -889,7 +1146,13 @@
               "corruption": 16,
               "hedon": 14,
               "rel_c": -18,
-              "flag": "lj_tragedy_forcedmarriage_reclaimed"
+              "flag": "lj_tragedy_forcedmarriage_reclaimed",
+              "mist": 16,
+              "crave": 14,
+              "heat": 6,
+              "affair": "g",
+              "soldiers": -60,
+              "tag": "敵帳歸婦"
             },
             "outcome": "火光沖天，手無寸鐵的敵帥死於你的劍下。驪姬披著半敞的大紅嫁衣赤足跨過新郎屍體撲進你懷裡狂笑：「這場搶親，比當年滅驪戎那夜還帶勁呢！」"
           },
@@ -901,7 +1164,11 @@
               "corruption": 12,
               "tyranny": 8,
               "rel_c": 12,
-              "flag": "lj_tragedy_forcedmarriage_disowned"
+              "flag": "lj_tragedy_forcedmarriage_disowned",
+              "mist": 12,
+              "heat": 5,
+              "cold": 1,
+              "rebel": 1
             },
             "outcome": "除名詔書傳至敵營那日，驪姬冷笑著將詔書撕成雪片——不到一月，她便徹底掌握了敵帥的後帳與北境戎狄部曲，親自披甲引兵反攻絳都！"
           }
@@ -924,7 +1191,14 @@
               "inf": 14,
               "corruption": 16,
               "hedon": 18,
-              "flag": "lj_tragedy_rescued_restored"
+              "flag": "lj_tragedy_rescued_restored",
+              "office": 1,
+              "mist": 16,
+              "crave": 18,
+              "heat": 6,
+              "mainWife": 1,
+              "food": -100,
+              "soldiers": -40
             },
             "outcome": "那一夜暖殿裡野性翻湧直至天明。次日驪宮重新執掌生殺大權，整個晉宮再度籠罩在「毒胙肉」的恐怖陰影之下。"
           },
@@ -934,7 +1208,10 @@
               "aff": -8,
               "inf": -4,
               "corruption": 12,
-              "flag": "lj_tragedy_rescued_restrained"
+              "flag": "lj_tragedy_rescued_restrained",
+              "mist": 12,
+              "house": 1,
+              "crave": 8
             },
             "outcome": "她靜靜望著你片刻，指尖輕輕撫過鎖骨上一道未退的鞭痕冷笑：「陛下現在學會心疼別的女人了？好啊，那妾身自己動手便是。」"
           }
@@ -959,7 +1236,12 @@
               "tyranny": 16,
               "hedon": 10,
               "rel_c": -30,
-              "flag": "lj_tragedy_imprisoned_freed"
+              "flag": "lj_tragedy_imprisoned_freed",
+              "mist": 18,
+              "crave": 10,
+              "heat": 8,
+              "exec": "g",
+              "pv": 1
             },
             "outcome": "{c}滿門伏誅。回到暖殿洗去血污後，驪姬竟興奮得徹夜纏著你瘋狂索愛，彷彿鮮血就是這頭母豹最好的春藥。"
           },
@@ -971,7 +1253,11 @@
               "corruption": 18,
               "tyranny": 6,
               "rel_c": -20,
-              "flag": "lj_tragedy_imprisoned_cold"
+              "flag": "lj_tragedy_imprisoned_cold",
+              "mist": 18,
+              "heat": 6,
+              "house": 1,
+              "tag": "囚籠反噬"
             },
             "outcome": "她站在冷清偏院裡舔掉指尖最後一絲乾血，冷笑著望向你漸遠的背影：「陛下怕我手太黑？那您最好把這扇門鎖死了，別讓這頭母豹半夜溜進乾殿。」"
           }
@@ -994,7 +1280,13 @@
               "inf": 20,
               "corruption": 20,
               "hedon": 16,
-              "flag": "lj_tragedy_escaped_empowered"
+              "flag": "lj_tragedy_escaped_empowered",
+              "mist": 20,
+              "crave": 16,
+              "heat": 6,
+              "troops": 85,
+              "office": 1,
+              "tag": "血路孤歸"
             },
             "outcome": "她在沾血的青銅案上張狂大笑，修長蜜腿死死鎖住你的腰。自此強晉江山徹底落入這頭亡國復仇母豹的利爪之下。"
           },
@@ -1005,7 +1297,11 @@
               "inf": -10,
               "corruption": 16,
               "tyranny": 8,
-              "flag": "lj_tragedy_escaped_watched"
+              "flag": "lj_tragedy_escaped_watched",
+              "mist": 16,
+              "heat": 5,
+              "ban": 1,
+              "rebel": 1
             },
             "outcome": "驪姬擦乾臉頰血跡，回眸對著門外新增的雙倍衛士勾起一抹森冷野笑：「敵國萬軍都鎖不住驪戎的母豹，陛下這幾塊破盾牌，鎖得住誰？」"
           }
@@ -1014,3 +1310,14 @@
     }
   }
 };
+if (typeof window !== 'undefined') {
+  window.GD = window.GD || {};
+  window.GD.charEvents = window.GD.charEvents || {};
+  window.GD.charEvents['liji'] = DATA;
+  (window.characterPacks ||= {})['liji'] = DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DATA;
+}
+
+})();
