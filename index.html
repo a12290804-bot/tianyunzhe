@@ -4265,6 +4265,55 @@ function notEnoughTurn(add){spouses().filter(x=>S.order.includes(x)&&!hst(x)).fo
 {const _hne=haremEvent;haremEvent=function(cb){try{notEnoughTurn(feedPush)}catch(e){console.error(e)}return _hne(cb)}}
 /* 華彩顯示 */
 {const _gs6=gridSheet;gridSheet=function(id){_gs6(id);const l=bloomLv(id);if(l<=0||!S.order.includes(id))return;const box=document.querySelector('#sheetIn .frame.small');if(!box)return;box.insertAdjacentHTML('afterend',`<div class="frame small" style="padding:6px 8px;margin-bottom:8px;border-color:#ffd0f0"><b style="color:#ffd0f0">華彩 ${l} 階</b>・${bloomDesc(id)}${hs(id).after?`<div style="color:#ffd76a">不死之後：${AFTN[hs(id).after]}</div>`:''}</div>`)}}
+/* ===== 悲歌：勝利自動結算、重複挑戰、隨機戰場、跨時空亂入、新悲歌 ===== */
+function registerWorld(w){if(!w||!w.id||WORLDS.some(x=>x.id===w.id))return;w.rev=w.rev||w.bg;WORLDS.push(w);w.sides.forEach(s=>WSIDE[s.id]=s)}
+[{id:'bawang',n:'八王之亂・金屑酒',era:'西晉・300',lv:[28,44],arrive:70,limit:15,bg:'bg_night',heroes:['jiananfeng','mulan'],rescue:'jiananfeng',tragedy:'趙王倫矯詔廢后，金屑酒已端到賈南風面前。八王之亂從這一杯開始，中原將血流成河。',goal:'擊破矯詔禁軍本陣，攔下那杯金屑酒',sides:[{id:'w_lun',n:'趙王倫亂兵',kind:'war',color:'#b0504a',img:'fl_huangjin',mark:'倫',leader:'司馬倫殘影',caps:['孫秀','齊王冏']},{id:'w_bawang',n:'宗室亂兵',kind:'war',color:'#8a7ab0',img:'fl_qin',mark:'王',leader:'八王亂影',caps:['成都王穎','東海王越']}]},
+ {id:'yongjia',n:'永嘉之亂',era:'西晉・311',lv:[30,46],arrive:76,limit:15,bg:'bg_polluted',heroes:['mulan','chenqingzhi','jiananfeng'],rescue:'mulan',tragedy:'洛陽城破，宮殿焚盡，十萬士民倒在胡塵與黑霧裡。五胡亂華，從這一夜開始。',goal:'擊破霧騎本陣，護送洛陽士民南渡',sides:[{id:'w_hanzhao',n:'漢趙霧騎',kind:'war',color:'#d08a3a',img:'fa_xiongnu',mark:'趙',leader:'劉曜殘影',caps:['石勒','王彌']},{id:'w_huchen',n:'黑霧胡塵',kind:'cult',color:'#7a5aa0',img:'en_crawler',mark:'塵',leader:'胡塵霧母',caps:['霧騎','焚城火']}]},
+ {id:'kaifeng',n:'汴京陷落',era:'後晉・947',lv:[32,48],arrive:82,limit:15,bg:'bg_tide',heroes:['zhaokuangyin','huhou'],rescue:'zhaokuangyin',tragedy:'契丹鐵騎入汴，晉帝北遷。宮人與百姓被成串擄往塞北，五代的血還遠遠沒有流完。',goal:'擊破霧騎王帳，截回北遷的宮人',sides:[{id:'w_qidan',n:'契丹霧騎',kind:'war',color:'#5f8fd0',img:'fa_xiongnu',mark:'遼',leader:'耶律德光殘影',caps:['張彥澤','蕭翰']},{id:'w_jinxiang',n:'後晉降軍',kind:'war',color:'#c0a060',img:'fl_huangjin',mark:'晉',leader:'杜重威',caps:['李守貞','降卒']}]},
+ {id:'qianji',n:'牽機',era:'北宋・978',lv:[34,50],arrive:88,limit:15,bg:'bg_tower2',heroes:['liqingzhao','zhaokuangyin'],rescue:'liqingzhao',tragedy:'七夕夜，一碗牽機藥送進了違命侯府。南唐的最後一首詞，就要和詞人一起斷在今夜。',goal:'擊碎牽機毒陣，救下詞人與小周后',sides:[{id:'w_qianji',n:'牽機毒陣',kind:'cult',color:'#6ab08a',img:'en_huapi_e',mark:'毒',leader:'牽機藥靈',caps:['皇城司','毒霧']},{id:'w_huangcheng',n:'皇城司',kind:'war',color:'#a04a4a',img:'fl_qin',mark:'皇',leader:'皇城司使',caps:['察子','禁衛']}]}].forEach(registerWorld);
+/* 勝利後自動退出並結算 */
+{const _wc=worldClear;worldClear=function(id,add){const before=wst(id).state;_wc(id,add);const x=wst(id);if(before==='cleared'||x.state!=='cleared')return;const run=x.runs||0;x.best=Math.max(x.best||0,run+1);let bonus=null;if(run){bonus={core:2*run,energy:60*run,gift:run};evApply(bonus,{})}S.wExit={id,rev:x.rev,run,bonus:bonus?evText(bonus,{}):'',kills:(x.intrKill||[]).slice()};wExitWatch()}}
+function wExitWatch(){let n=0;const iv=setInterval(()=>{n++;const scr=document.querySelector('.scr.on');const busy=$('#celebrate').classList.contains('on')||$('#sheet').classList.contains('on')||!scr||scr.id!=='game';if(!busy||n>600){clearInterval(iv);if(S.wExit)wExitDo()}},500)}
+function wExitDo(){const e=S.wExit;S.wExit=null;if(!e||!WD(e.id))return;const w=WD(e.id),x=wst(e.id);if(S.cur===e.id)switchWorld('home');
+ sheet(`<h3>悲歌結算・${w.n}</h3><p style="font-family:Noto Serif TC,serif;color:${e.rev?'var(--jade)':'#ffb39e'}">${e.rev?'逆轉悲歌：悲劇沒有發生，這條世界線的歷史改寫了。':'平定淪陷：雖然來遲了，但這裡的人們終於能喘口氣。'}</p><div class="frame small" style="padding:6px 8px"><div>第 ${e.run+1} 輪・難度 ${wDiffN(e.run)}</div>${e.bonus?`<div>重複挑戰加成：${e.bonus}</div>`:''}${e.kills.length?`<div>擊退亂入者：${e.kills.join('、')}</div>`:''}<div>遠征部隊已歸建，回到燈塔。</div></div><p class="small" style="color:var(--dim);margin-top:6px">這場悲歌可以在「世界線」裡再次挑戰，難度會上升，戰場與亂入者也會不同。</p><button class="btn" style="width:100%;margin-top:8px" data-sheetx>回到燈塔</button>`);render()}
+/* 重複挑戰 */
+const wDiffN=r=>['普通','困難','煉獄','絕望','永劫'][Math.min(4,r)]+(r>4?`+${r-4}`:'');
+function wReplay(id){const w=WD(id),x=wst(id);if(!w||x.state!=='cleared')return;S.wExit=null;if(S.cur===id)switchWorld('home');x.runs=(x.runs||0)+1;x.state='open';x.cdOn=0;x.deadline=null;x.entered=0;x.t0=null;x.done=[];x.rev=false;x.intrKill=[];x.mod=null;if(S.ctx)delete S.ctx[id];closeSheet();switchWorld(id);toast(`重返悲歌・${w.n}（${wDiffN(x.runs)}）`)}
+{const _wsh=worldSheet;worldSheet=function(){_wsh();const C=WORLDS.filter(w=>wst(w.id).state==='cleared');const box=$('#sheetIn');if(!box)return;box.insertAdjacentHTML('beforeend',`<h3 style="margin-top:10px">重返悲歌</h3><p class="small" style="color:var(--dim)">打過的悲歌可以再打。每多一輪，敵人更強、戰場地形和異變隨機改變，也更容易有跨時空的污染者亂入。進入後才開始倒數。</p>${C.length?C.map(w=>{const x=wst(w.id);return`<div class="opt frame" style="margin-bottom:6px"><span class="t"><b>${w.n}</b> <span class="small">已通關 ${x.best||1} 輪・下一輪：${wDiffN((x.runs||0)+1)}</span><br><button class="btn sm" data-wre="${w.id}">再次挑戰</button></span></div>`}).join(''):'<p class="small">還沒有打過的悲歌。</p>'}`)}}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-wre]');if(!b)return;e.stopPropagation();wReplay(b.dataset.wre)},true);
+/* 隨機戰場、異變、難度、亂入 */
+const WMOD=[['血月','敵軍攻擊 +8',()=>S.enemies.forEach(e=>e.atk+=8)],['霧潮倒灌','戰場大半被污染',()=>S.tiles.flat().forEach(t=>{if(t.t!=='X'&&!t.own&&Math.random()<.45)t.pol=true})],['地裂','山石崩落，地形更險',()=>S.tiles.flat().forEach(t=>{if(t.t==='s'&&!t.own&&!t.fac&&Math.random()<.3)t.t='M'})],['迷霧','視野被遮蔽',()=>S.tiles.flat().forEach(t=>{if(!t.own&&t.t!=='X')t.seen=false})],['敵援','敵方援軍趕到',()=>{const s0=WD(S.cur||'')?null:null}],['亂流','時空亂流不止，亂入者更多',()=>{}],['天助','你的部隊士氣高昂（敵軍兵力 −10%）',()=>S.enemies.forEach(e=>{e.troops=Math.round(e.troops*.9);e.max=Math.round(e.max*.9)})]];
+const INTR=[['污染錦衣衛','fl_huangjin','明'],['黃巾霧屍','en_crawler','東漢末'],['赤眉亡魂','en_huapi_e','新莽'],['安史霧影','fl_xiongnu','唐'],['倭寇霧船','fl_qin','明'],['焚書方士','en_taotie_e','秦'],['北府霧兵','fl_qin','東晉'],['夜叉羅剎','en_crawler','異域'],['燭龍信徒','en_taotie_e','上古']];
+function wIntrReg(){Object.entries(S.wIntr||{}).forEach(([k,v])=>{WSIDE[k]=v})}
+{const _gb=genBattle;genBattle=function(W){_gb(W);try{wVary(W)}catch(err){console.error(err)}}}
+function wVary(W){const x=wst(W.id),run=x.runs||0;const box=S.tiles.flat().filter(t=>t.t!=='X');
+ /* 地圖形狀隨機外擴 */
+ const grow=R(4,10)+run*3;for(let i=0;i<grow;i++){const a=pick(S.tiles.flat().filter(t=>t.t!=='X'));const n=nb(a.r,a.c).filter(t=>t.t==='X');if(n.length){const t=pick(n);t.t=pick(['s','s','F','M','R','L']);t.seen=true;t.visited=true;t.looted=true}}
+ S.tiles.flat().forEach(t=>{if(t.t!=='X'&&!t.own&&!t.fac&&!'BK'.includes(t.t)&&Math.random()<.35)t.t=pick(['s','F','M','R','L'])});
+ /* 難度 */
+ const k=1+.3*run;S.enemies.forEach(e=>{e.troops=Math.round(e.troops*k);e.max=Math.round(e.max*k);e.atk+=4*run});
+ const s0=W.sides[0];const cells=()=>S.tiles.flat().filter(t=>t.t!=='X'&&!t.own&&t.t!=='K'&&!S.enemies.some(e=>e.r===t.r&&e.c===t.c));
+ for(let i=0;i<Math.min(4,run);i++){const q=pick(cells());if(q){const tr=300+run*80;S.enemies.push({id:'wx'+i+W.id+S.t,n:`${s0.n}・援軍`,img:s0.img,troops:tr,max:tr,atk:52+run*4,r:q.r,c:q.c,fac:s0.id,eld:s0.kind==='cult',front:true,still:true})}}
+ /* 異變 */
+ const mods=[];const nm=run===0?(Math.random()<.4?1:0):Math.min(3,1+Math.floor(run/2));const pool=WMOD.slice();for(let i=0;i<nm&&pool.length;i++){const m=pool.splice(R(0,pool.length-1),1)[0];try{m[2]()}catch(e){}mods.push(m[0]+'：'+m[1])}x.mod=mods;
+ if(mods.some(m=>m.startsWith('敵援'))){for(let i=0;i<2;i++){const q=pick(cells());if(q)S.enemies.push({id:'wy'+i+W.id+S.t,n:`${s0.n}・援軍`,img:s0.img,troops:350+run*60,max:350+run*60,atk:54+run*4,r:q.r,c:q.c,fac:s0.id,front:true,still:true})}}
+ /* 跨時空亂入 */
+ const chance=run===0?.3:Math.min(.95,.45+.15*run)+(mods.some(m=>m.startsWith('亂流'))?.3:0);const nI=Math.random()<chance?Math.min(3,1+Math.floor(run/2)+(mods.some(m=>m.startsWith('亂流'))?1:0)):0;x.intr=[];
+ const pool2=Object.keys(HD).filter(h=>!W.heroes.includes(h)&&!(S.cur&&S.enemies.some(e=>e.officer===h)));
+ for(let i=0;i<nI;i++){const A=pick(INTR),h=pick(pool2);if(!h)break;pool2.splice(pool2.indexOf(h),1);const fid='x_'+W.id+'_'+i;const own=!!S.heroes[h];const recr=!own&&Math.random()<.5;
+  const def={id:fid,n:A[0],kind:'cult',color:'#a050c0',img:A[1],mark:'異',leader:`污染・${H(h).n}`,caps:[A[0]]};(S.wIntr??={})[fid]=def;WSIDE[fid]=def;
+  const q=pick(cells());if(!q)break;S.facs[fid]={id:fid,alive:true,troops:100,seat:{r:q.r,c:q.c},gid:'xi'+fid,news:[],noArmy:true};
+  const tr=520+run*90;S.enemies.push({id:'xi'+fid,n:own?`污染的同位體・${H(h).n}`:`${A[0]}・污染的${H(h).n}`,img:h,troops:tr,max:tr,atk:58+run*5,r:q.r,c:q.c,fac:fid,eld:true,still:true,intr:h,...(own?{officer:h,variant:true}:recr?{officer:h}:{})});
+  for(let j=0;j<1+Math.floor(run/2);j++){const p=pick(cells());if(p)S.enemies.push({id:'xm'+j+fid,n:A[0],img:A[1],troops:260+run*50,max:260+run*50,atk:50+run*4,r:p.r,c:p.c,fac:fid,eld:true,still:true})}
+  x.intr.push({h,n:A[0],own,recr,era:A[2]})}
+ S.map={base:{...BASE},city:{...CITY},nest:{...NEST}};wIntrStory(W,x)}
+/* 亂入的聯動劇情 */
+function wIntrStory(W,x){const L=[];(x.intr||[]).forEach(o=>{const N=H(o.h).n;if(o.own){L.push(`【跨時空亂入】另一條世界線、被黑霧污染的${N}闖進了${W.n}。她認得你，也認得燈塔裡的那個自己。`);const st=hs(o.h);if(st){st.heat=(st.heat||0)+2;hxPush(o.h,`「那是……我？被污染的我？」她的手在發抖：「別讓她靠近你。」`,'亂入')}}
+  else L.push(`【跨時空亂入】${o.n}撕開時空闖了進來，帶頭的是被污染的${N}${o.recr?'——擊敗她／他，或許能把人帶回燈塔':''}。`);
+  spouses().filter(s=>S.order.includes(s)&&H(s).era&&H(o.h).era&&H(s).era.slice(0,2)===H(o.h).era.slice(0,2)&&s!==o.h).slice(0,1).forEach(s=>{hxPush(s,`「${N}……他／她怎麼會在這裡？」她盯著戰報看了很久。`,'舊識');hs(s).heat=(hs(s).heat||0)+1;L.push(`　└ ${H(s).n}認得這個人`)})});
+ if(x.mod&&x.mod.length)L.unshift(`【戰場異變】${x.mod.join('；')}`);L.forEach(s=>feedPush(s,'neg'))}
+function wIntrCheck(){if(!inWorld())return;const x=wst(S.cur);(x.intr||[]).forEach(o=>{if(o.done)return;const e=S.enemies.find(e=>e.intr===o.h);if(e&&e.troops>0)return;o.done=1;(x.intrKill??=[]).push(H(o.h).n);evApply({core:1,energy:40},{});feedPush(`【擊退亂入者】污染的${H(o.h).n}被擊退了（晶核 +1、能量 +40）${o.own?'——她的殘影融進了燈塔裡的那個自己':''}`,'pos');if(o.recr&&S.heroes[o.h]){mistAdd(o.h,40);hs(o.h).aff=Math.min(hs(o.h).aff|0,20);(hs(o.h).dtag??={})['異界污染']=S.t;feedPush(`【異界來客】被污染的${H(o.h).n}留在了燈塔。她來自另一條世界線，身上的黑霧很重`,'neg')}})}
+{const _rww=render;render=function(...a){try{wIntrReg();wIntrCheck()}catch(e){}return _rww.apply(this,a)}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
