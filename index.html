@@ -409,50 +409,8 @@ window.addEventListener('error',function(e){show((e.message||'')+' @'+(e.filenam
 <script src="court_mibazi.js"></script>
 <script src="court_liurushi.js"></script>
 <script src="court_nvwa_huhou.js"></script>
-<script src="events/mulan_events.js"></script>
-<script src="events/change_events.js"></script>
-<script src="events/xiaoqiao_events.js"></script>
-<script src="events/wuzetian_events.js"></script>
-<script src="events/zhenmi_events.js"></script>
-<script src="events/lianghongyu_events.js"></script>
-<script src="events/yuji_events.js"></script>
-<script src="events/fuhao_events.js"></script>
-<script src="events/qinliangyu_events.js"></script>
-<script src="events/diaochan_events.js"></script>
-<script src="events/shangguan_events.js"></script>
-<script src="events/liqingzhao_events.js"></script>
-<script src="events/xishi_events.js"></script>
-<script src="events/yangguifei_events.js"></script>
-<script src="events/zhuowenjun_events.js"></script>
-<script src="events/wangzhaojun_events.js"></script>
-<script src="events/daji_events.js"></script>
-<script src="events/lvzhi_events.js"></script>
-<script src="events/sunshangxiang_events.js"></script>
-<script src="events/caiwenji_events.js"></script>
-<script src="events/zhaofeiyan_events.js"></script>
-<script src="events/huangyueying_events.js"></script>
-<script src="events/jiananfeng_events.js"></script>
-<script src="events/liuchuyu_events.js"></script>
-<script src="events/xuzhaopei_events.js"></script>
-<script src="events/wanzhener_events.js"></script>
-<script src="events/xiaji_events.js"></script>
-<script src="events/liji_events.js"></script>
-<script src="events/fengxiaolian_events.js"></script>
-<script src="events/mibazi_events.js"></script>
-<script src="events/nvwa_events.js"></script>
-<script src="events/pingyang_events.js"></script>
-<script src="events/huhou_events.js"></script>
-<script src="events/liurushi_events.js"></script>
-<script src="events/zhangsun_events.js"></script>
 <script src="events/nemesis_text.js"></script>
-<script src="events/v40_text.js"></script>
-<script src="events/v41_text.js"></script>
 <script src="events/v4_3_crave_system.js"></script>
-<script src="events/v4_4_sig_house_inter_ret.js"></script>
-<script src="events/v42_text.js"></script>
-<script src="events/v4_5_mutation_system.js"></script>
-<script src="events/v4_6_text.js"></script>
-<script src="events/engine.js"></script>
 <script src="rewrite_01z_qing_terms.js"></script>
 <script>
 {
@@ -1338,7 +1296,9 @@ function renderPools(){
 function roll(pool){const c=Object.keys(HD).filter(id=>(HD[id][2]!=='在野'||['elope','exec'].includes(S.gone?.[id]?.k))&&(!pool||HD[id][2]===pool)&&(!S.heroes[id]||(S.gone&&S.gone[id]&&!['exile','resign','rebel','strip','captive'].includes(S.gone[id].k))));if(!c.length)return null;
  const sw=(T_('e2')?1.5:1)+(T_('e7a')?.25:0),w=c.map(id=>HD[id][3]==='SSR'?sw:1.8);let t=Math.random()*w.reduce((a,b)=>a+b,0);for(let i=0;i<c.length;i++){t-=w[i];if(t<=0)return c[i]}return c[c.length-1]}
 let packRuntime;
+window.__packReset=()=>{packRuntime=undefined};
 function charEvents(){
+ if(!window.__packsReady||!window.makeCharacterEvents){const noop=new Proxy({},{get:(o,k)=>(...a)=>{const cb=a.find(x=>typeof x==='function');if(cb&&k==='show')return cb();return k==='notice'?'':undefined}});return noop}
  return packRuntime??=window.makeCharacterEvents({S,H,hs,wed,hp,mistState,rankOf,relG,relAdd,activePlace,barAdd,sheet,closeSheet,save,feedPush,$,goneHero,setHst});
 }
 function addHero(id,aff=0){if(S.heroes[id])return;S.heroes[id]={aff,star:1,task:'idle',met:false};S.order.push(id);hs(id).packRecruitAt=S.t;charEvents().enqueue(id,'firstRecruit');
@@ -3696,7 +3656,7 @@ setTimeout(()=>{Object.values(CRAVE).forEach(c=>c[3].forEach((n,i)=>{if(!DKTAGD[
 setTimeout(()=>{const g=globalThis;[g.CRAVE_TEXT||{},...Object.values(g.CRAVE_CHAR||{}).map(c=>({x:c.tiers||[]}))].forEach(o=>Object.values(o).forEach(L=>(L||[]).forEach(x=>{if(x&&x.name&&x.desc)DKTAGD[x.name]=x.desc})))},50);
 function craveHtml(id){const k=craveOf(id),C=CRAVE[k],tr=craveTier(id),a=craveApp(id),nx=CRAVE_T[tr+1];
  return`<div class="small" style="margin:5px 0 3px"><b style="color:${C[1]}">本性・${C[0]}</b>　<b style="color:${C[1]}">「${(craveTxt(id,k,tr)||{}).name||C[3][tr]}」</b><span style="color:var(--dim)">（${CRAVE_TN[tr]}）</span></div><div class="meter" style="margin:2px 0"><i style="width:${nx?Math.round((a-CRAVE_T[tr])/(nx-CRAVE_T[tr])*100):100}%;background:${C[1]}"></i></div><div class="small" style="color:var(--dim)">${C[5]}・${nx?'胃口再長 '+Math.ceil(nx-a)+' 就更深一層':'已經沒有底了'}・越滿足她、胃口長得越快</div>`}
-{const _rw=render;render=function(...a){try{if(S&&S.heroes&&typeof spouses==='function')spouses().forEach(id=>wishDone(id))}catch(e){}return _rw.apply(this,a)}}
+{const _rw=render;let _wl=0;render=function(...a){try{const n=Date.now();if(n-_wl>250&&S&&S.heroes&&typeof spouses==='function'){_wl=n;spouses().forEach(id=>wishDone(id))}}catch(e){}return _rw.apply(this,a)}}
 /* ===== 紅顏私宅：佔用城中格子、帶給全城能力 ===== */
 const PVCITY={mianshou:{affAll:.02,hedon:1,food:-.02},sibing:{def:.01,sol:-4,food:-.03},xingfang:{atk:.01,affAll:-.04,tyranny:1},fotang:{clean:1,food:-.03},liandan:{energy:3,clean:-1},jinwu:{market:-.06,food:-.04},mishi:{rate:.01,affAll:-.03},jiuchi:{affAll:.03,food:-.06,hedon:1},dujiao:{eld:.02,popg:-1,clean:-1},jitan:{atk:.03,clean:-2},xiulou:{def:.01,affAll:-.02},jiaochang:{train:1,food:-.03},yuying:{popg:1,food:-.03},shishe:{talent:.03,market:-.03}};
 const PVKN={affAll:'好感成長',hedon:'昏庸',tyranny:'暴政',fear:'威懾',def:'我軍減傷',sol:'士兵',food:'糧食產出',atk:'我軍傷害',clean:'淨化',energy:'能量',market:'市集收入',rate:'戰法發動',eld:'對污染體傷害',popg:'流民',train:'訓練度',talent:'天賦點'};
@@ -4028,7 +3988,7 @@ function todoList(){const L=[];const go=(lab,act)=>({lab,act});
  return L}
 function todoSheet(){const L=todoList();sheet(`<h3>📋 本旬待辦</h3>${L.length?L.map((x,i)=>`<div class="frame" style="padding:7px 9px;margin-bottom:6px;display:flex;align-items:center;gap:8px"><span style="font-size:18px">${x.i}</span><span style="flex:1" class="small">${x.t}</span>${x.b.map((b,j)=>`<button class="btn sm" data-todo="${i}|${j}">${b.lab}</button>`).join('')}</div>`).join(''):'<p class="small">這一旬沒有待辦的事了，可以結束本旬。</p>'}<button class="btn ghost" style="width:100%;margin-top:6px" data-sheetx>關閉</button>`);
  $$('[data-todo]').forEach(b=>b.onclick=()=>{const[i,j]=b.dataset.todo.split('|').map(Number);const a=L[i].b[j].act;closeSheet();try{(new Function('return '+a)).call(null)}catch(e){try{eval(a)}catch(e2){}}})}
-{const _rt=render;render=function(...a){const r=_rt.apply(this,a);try{const n=todoList().length;const el=document.getElementById('statusStrip');if(el){const chip=`<span id="todoChip" style="flex:none;background:#d9b56a;color:#1a1408;border-radius:12px;padding:2px 10px;font-weight:700;cursor:pointer">📋 待辦 ${n}</span>`;if(!el.innerHTML.trim()){el.setAttribute('style','display:flex;gap:6px;overflow-x:auto;padding:4px 8px;font-size:12px;white-space:nowrap')}el.insertAdjacentHTML('afterbegin',chip)}}catch(e){}return r}}
+{const _rt=render;render=function(...a){const r=_rt.apply(this,a);try{const now=Date.now();if(!window.__todoC||now-window.__todoC.t>400||window.__todoC.st!==S.t+'|'+S.ap)window.__todoC={t:now,st:S.t+'|'+S.ap,n:todoList().length};const n=window.__todoC.n;const el=document.getElementById('statusStrip');if(el){const chip=`<span id="todoChip" style="flex:none;background:#d9b56a;color:#1a1408;border-radius:12px;padding:2px 10px;font-weight:700;cursor:pointer">📋 待辦 ${n}</span>`;if(!el.innerHTML.trim()){el.setAttribute('style','display:flex;gap:6px;overflow-x:auto;padding:4px 8px;font-size:12px;white-space:nowrap')}el.insertAdjacentHTML('afterbegin',chip)}}catch(e){}return r}}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#todoChip');if(!b)return;e.stopPropagation();todoSheet()},true);
 /* ===== v4.6 文本接口：請求、入宮前自主、昏暴、虧空、敵種、變質請求 ===== */
 const T46=(o,...ks)=>{try{let x=globalThis[o];for(const k of ks){if(x==null)return null;x=x[k]}return Array.isArray(x)?(x.length?pick(x):null):(typeof x==='string'?x:null)}catch(e){return null}};
@@ -5448,5 +5408,13 @@ function ending(win){if(!win){if(typeof towerBreach==='function')towerBreach();r
  $('#again').onclick=()=>location.reload()}
 }
 </script>
+<script>
+/* 背景載入角色事件與文本包：封面先能按，文本隨後補上 */
+(function(){var L=["events/mulan_events.js", "events/change_events.js", "events/xiaoqiao_events.js", "events/wuzetian_events.js", "events/zhenmi_events.js", "events/lianghongyu_events.js", "events/yuji_events.js", "events/fuhao_events.js", "events/qinliangyu_events.js", "events/diaochan_events.js", "events/shangguan_events.js", "events/liqingzhao_events.js", "events/xishi_events.js", "events/yangguifei_events.js", "events/zhuowenjun_events.js", "events/wangzhaojun_events.js", "events/daji_events.js", "events/lvzhi_events.js", "events/sunshangxiang_events.js", "events/caiwenji_events.js", "events/zhaofeiyan_events.js", "events/huangyueying_events.js", "events/jiananfeng_events.js", "events/liuchuyu_events.js", "events/xuzhaopei_events.js", "events/wanzhener_events.js", "events/xiaji_events.js", "events/liji_events.js", "events/fengxiaolian_events.js", "events/mibazi_events.js", "events/nvwa_events.js", "events/pingyang_events.js", "events/huhou_events.js", "events/liurushi_events.js", "events/zhangsun_events.js", "events/v40_text.js", "events/v41_text.js", "events/v4_4_sig_house_inter_ret.js", "events/v42_text.js", "events/v4_5_mutation_system.js", "events/v4_6_text.js", "events/engine.js"],i=0,el=null;window.characterPacks=window.characterPacks||{};
+function tip(){if(!el){el=document.createElement('div');el.id='packTip';el.style.cssText='position:fixed;right:8px;top:8px;z-index:9999;background:#1a1408cc;color:#d9b56a;border:1px solid #6a5a30;border-radius:10px;padding:3px 9px;font:12px sans-serif;pointer-events:none';document.body.appendChild(el)}el.textContent='劇情載入中 '+Math.round(i/L.length*100)+'%'}
+function next(){if(i>=L.length){window.__packsReady=true;if(window.__packReset)window.__packReset();if(el)el.remove();return}tip();var s=document.createElement('script');s.src=L[i];s.onload=s.onerror=function(){i++;next()};document.body.appendChild(s)}
+if(document.readyState==='complete')setTimeout(next,50);else window.addEventListener('load',function(){setTimeout(next,50)});})();
+</script>
+<script>if('serviceWorker' in navigator&&location.protocol==='https:'){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}</script>
 </body>
 </html>
