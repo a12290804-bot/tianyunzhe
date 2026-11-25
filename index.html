@@ -3958,6 +3958,13 @@ window.TY_SCENE=function(e,r){const out=[],id=e.id,c=e.cast||{};const body=(r.bo
  if(e.key==='heirAndFamily'&&c.b&&wed(c.b)&&!wed(c.b).preg&&!(S.kids||[]).some(k=>k.mom===c.b&&!k.adult)){wed(c.b).preg=S.t+4;out.push(`${H(c.b).n}懷上了孩子`)}
  if(/未婚先孕|珠胎暗結/.test(body)&&!wed(id)){const s=TY_FX.preg(id,1);if(s)out.push(s)}
  return out};
+/* ===== 敵種血脈：懷孕歸來生下的孩子 ===== */
+INH['敵種血脈']=['生父是囚禁母親的敵人','武力 +10、統率 +5；儲位天生受質疑',{6:10,5:5}];
+{const _ki=kidInh;kidInh=function(k){if(!k.inh&&k.mom&&hs(k.mom)&&('懷敵種' in (hs(k.mom).dtag||{}))){k.inh='敵種血脈';k.esteem=(k.esteem||0)-20;k.enemyKid=1;delete hs(k.mom).dtag['懷敵種'];feedPush(`【敵種】${H(k.mom).n}生下了那個孩子——宮裡沒有人敢說出口，但每個人都知道他的生父是誰`,'rum');spouses().filter(x=>x!==k.mom).forEach(x=>relAdd(x,k.mom,-5))}return _ki(k)}}
+function enemyKidTurn(add){(S.kids||[]).filter(k=>k.enemyKid).forEach(k=>{if(Math.random()<.06){const F=(typeof curFacs==='function'?curFacs():[]).filter(d=>FS(d.id)&&FS(d.id).alive);if(F.length&&!S.extort){S.extort={fid:pick(F).id};add(`【敵種】敵方派人來認${k.n||'那個孩子'}，說那是他們的骨血——不交人，就開戰`,'neg')}}
+ if(Math.random()<.05){k.esteem=Math.max(0,(k.esteem||0)-5);const r=pick(spouses().filter(x=>x!==k.mom));if(r){relAdd(r,k.mom,-6);add(`【敵種】${H(r).n}在朝堂上質問${k.n||'那個孩子'}的血統（聲望 −5）`,'rum')}}
+ if(k.adult&&k.id&&S.order.includes(k.id)&&(hs(k.id).aff|0)<40&&Math.random()<.04){goneHero(k.id,'exile',20);add(`【敵種】${H(k.id).n}留下一封信，投奔了生父`,'neg')}})}
+{const _hek=haremEvent;haremEvent=function(cb){try{enemyKidTurn(feedPush)}catch(e){}return _hek(cb)}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
