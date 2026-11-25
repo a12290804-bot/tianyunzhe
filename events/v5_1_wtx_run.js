@@ -1,9 +1,6 @@
-// 《天運者》v5.1 B 部分：15 場悲歌分輪文本（重複挑戰用）
-// 直接放入 events/v5_1_wtx_run.js 即可自動載入 window.WTX_RUN
-// 涵蓋 11 場舊悲歌 + 4 場新悲歌（bawang / yongjia / kaifeng / qianji），每場 1–4 輪（4 亦適用於第 4 輪以上永劫輪次）
-
+// 《天運者》v5.4 更新版分輪變質文本 — window.WTX_RUN（15 場悲歌 × 第 1–4 輪，已對齊 muye ID）
 (function (root) {
-  const WTX_RUN = {
+  const WTX_RUN_DATA = {
   "wuyue": {
     "1": {
       "brief": "困難・吳宮反撲：姑蘇台已被腥熱黑霧重重鎖死，被你上一輪救走又重演命運的吳越仇火正雙倍反噬。",
@@ -400,7 +397,7 @@
       ]
     }
   },
-  "zhaoge": {
+  "muye": {
     "1": {
       "brief": "困難・鹿台魔火：牧野崩潰的速度比上一輪快了一倍，酒池肉林已徹底淪為血紅毒火與發狂宮人的淫亂煉獄。",
       "open": [
@@ -2975,11 +2972,8 @@
     }
   }
 };
-
-  if (root && typeof root === 'object') {
-    root.WTX_RUN = WTX_RUN;
-  }
+  root.WTX_RUN = WTX_RUN_DATA;
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { WTX_RUN };
+    module.exports = WTX_RUN_DATA;
   }
 })(typeof window !== 'undefined' ? window : globalThis);
