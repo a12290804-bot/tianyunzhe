@@ -4376,6 +4376,39 @@ function crossTurn(add){S.order.forEach(id=>{if(isPreg(id)&&busyArmy(id)&&Math.r
 {const _m0b=mods0;mods0=function(our,en,M0){M0=_m0b(our,en,M0);try{if(our&&our.gens)our.gens.forEach(g=>{if(!S.heroes[g]||H(g).sex!=='f')return;const key=g+'@'+S.t;S.bAuto??={};let ev=S.bAuto[key];if(ev===undefined){ev=null;if(Math.random()<.3){const T=loveTypes(g);ev=T.includes('zealot')?'charge':T.includes('doom')?'die':T.includes('flaunt')||T.includes('play')?'flirt':T.includes('cage')||craveOf(g)==='own'?'guard':T.includes('dominate')?'order':null}S.bAuto[key]=ev;const N=H(g).n;const L={charge:`【陣前・${N}】她不要命地衝在最前面（本戰攻擊 +15%）`,die:`【陣前・${N}】她說要和敵人同歸於盡，殺紅了眼（攻擊 +20%，戰後受傷）`,flirt:`【陣前・${N}】她在陣前和敵將調笑，軍心浮動（攻擊 −10%）`,guard:`【陣前・${N}】她只顧著把你的旗護在身後（攻擊 +5%）`,order:`【陣前・${N}】她無視你的軍令，自己指揮全軍（攻擊 +10%，威 −1）`};if(ev){const fs=WTp('WORLD_TEXT','front',ev,g)||WTp('WORLD_TEXT','front',ev,'_');if(fs)L[ev]=L[ev].replace(/】[^（]*/,'】'+WT(fs,N));feedPush(L[ev],ev==='flirt'?'neg':'');if(ev==='die')setTimeout(()=>setHst(g,'inj',2),0);if(ev==='order')weiAdd(-1)}}
   M0.atk+=({charge:.15,die:.2,flirt:-.1,guard:.05,order:.1})[ev]||0})}catch(e){}return M0}}
 {const _hfx=haremEvent;haremEvent=function(cb){try{covetTurn(feedPush);hostageTurn(feedPush);karmaTurn(feedPush);wevTurn(feedPush);crossTurn(feedPush)}catch(e){console.error(e)}return _hfx(()=>covetEvent(cb))}}
+/* ===== 地格事件重做：一定能離開、買不起會標示、紅顏插話、珍寶商 ===== */
+const TWIST={greed:['「直接搶了他。」',(u,id)=>{evApply({food:60,wood:40,stone:30,energy:20},{});barAdd('tyranny',2);hs(id).heat=(hs(id).heat||0)+1;return'商隊被洗劫一空（糧 +60、木 +40、石 +30、能量 +20，暴虐 +2）'}],
+ vanity:['「那盒胭脂，我要。」',(u,id)=>{S.food-=20;bloomAdd(id,3);if(wed(id))wed(id).fav=Math.min(100,wed(id).fav+5);return'她當場抹上了胭脂，對著銅鏡笑了很久（糧 −20、華彩 +3、寵愛 +5）'}],
+ power:['「把他的護衛收編了。」',(u,id)=>{if(u)u.troops+=30;else S.soldiers=(S.soldiers||0)+30;hp(id).inf=Math.min(100,(hp(id).inf|0)+3);return'護衛們跪成一排，宣誓效忠的卻是她（兵 +30、她權勢 +3）'}],
+ lust:['「讓他留下來，陪我說說話。」',(u,id)=>{barAdd('hedon',2);hs(id).heat=(hs(id).heat||0)+2;weiAdd(-1);return'商隊首領在她帳裡待到天亮才走，滿營的人都看見了（昏庸 +2、威 −1）'}],
+ blood:['「殺了，貨歸我們。」',(u,id)=>{evApply({food:70,wood:40,stone:40,energy:20},{});barAdd('tyranny',3);mistAdd(id,10);return'她親手了結了這件事，回來時袖口是濕的（資源大量入帳，暴虐 +3、她污染 +10）'}],
+ own:['「扣下他，以後只替我們做生意。」',(u,id)=>{S.merchant={until:S.t+10,by:id};hp(id).inf=Math.min(100,(hp(id).inf|0)+2);return'商隊從此成了她的私產，每旬送糧進城（十旬內每旬糧 +15）'}],
+ immortal:['「你有沒有長生藥？」',(u,id)=>{S.energy-=20;hs(id).lifeP=Math.min(100,(hs(id).lifeP||0)+5);return'她用能量換了一顆來路不明的丹藥，一口吞了（能量 −20、她長生 +5）'}]};
+const TWIST2={greed:['「能帶走的，全部帶走。」',(u,id)=>{evApply({food:40,wood:30,stone:30,energy:15},{});hs(id).heat=(hs(id).heat||0)+1;return'她讓人把這裡搬空了（糧 +40、木 +30、石 +30、能量 +15）'}],
+ vanity:['「這裡的東西，配我。」',(u,id)=>{bloomAdd(id,3);S.energy-=10;return'她在這裡待了很久，回來時美得讓人不敢認（華彩 +3、能量 −10）'}],
+ power:['「這塊地方，歸我管。」',(u,id)=>{hp(id).inf=Math.min(100,(hp(id).inf|0)+4);weiAdd(-1);return'她插上了自己的旗，沒有問你（她權勢 +4、威 −1）'}],
+ lust:['「今晚就在這裡紮營。」',(u,id)=>{barAdd('hedon',1);hs(id).heat=(hs(id).heat||0)+2;if(wed(id))wed(id).fav=Math.min(100,wed(id).fav+4);if(u)u.troops=Math.max(1,u.troops-10);return'部隊停了一夜，她說這裡的月色只配你們兩個人看（昏庸 +1、寵愛 +4、兵 −10）'}],
+ blood:['「放把火，燒乾淨。」',(u,id)=>{evApply({food:30,energy:30},{});barAdd('tyranny',2);mistAdd(id,8);return'火光沖天，她站在火前笑（糧 +30、能量 +30、暴虐 +2、她污染 +8）'}],
+ own:['「把這裡圈起來，只屬於我們。」',(u,id)=>{S.merchant={until:S.t+10,by:id};hp(id).inf=Math.min(100,(hp(id).inf|0)+2);return'她派人守住了這裡，十旬內每旬送糧進城（每旬糧 +15）'}],
+ immortal:['「這裡有沒有能讓人不死的東西？」',(u,id)=>{S.energy-=15;hs(id).lifeP=Math.min(100,(hs(id).lifeP||0)+4);return'她挖出了一塊會發光的東西，含在嘴裡化了（能量 −15、她長生 +4）'}]};
+function twistWho(u){const f=u?u.gens.filter(g=>H(g).sex==='f'&&S.order.includes(g)):[];if(f.length)return{id:pick(f),how:'在陣中'};const sp=spouses().filter(x=>S.order.includes(x)&&!hst(x));if(sp.length&&Math.random()<.6)return{id:pick(sp),how:'派人快馬傳話'};return null}
+const canPay=ef=>!['energy','core','food','wood','stone'].some(k=>ef[k]<0&&(S[k]||0)<-ef[k]);
+tileEvents=function(cb){const it=tileEv.shift();if(!it)return cb();const e=it.e,u=it.u&&S.units.includes(it.u)?it.u:null;const lead=u?u.gens[0]:null;
+ const tg=e.c.map(c=>({aff:c[1].aff&&(c[1].aff[0]==='army'?(lead||evTarget('rnd')):evTarget(c[1].aff[0]))}));const tx=(c,i)=>[evText(c[1],tg[i]),c[1].heal?(u?'部隊兵力回滿':''):''].filter(Boolean).join('、');
+ const trade=/商|旅|市|販|貨|驛/.test(e.t+e.d);const tw=twistWho(u);const T=tw?(trade?TWIST:TWIST2)[craveOf(tw.id)]:null;
+ const treK=trade&&Math.random()<.5?pick(Object.keys(TRE).filter(k=>!(S.tre||{})[k])):null;const treC=treK?Object.fromEntries(Object.entries(TRE[treK][2]).map(([r,v])=>[r,Math.ceil(v*.6)])):null;
+ sheet(`<div class="evimg" style="background-image:url(img/${e.img||it.img||'bg_day'}.jpg)"></div><div class="small" style="letter-spacing:.2em;color:var(--gold)">${it.wild?'荒野遭遇':'地格事件・'+(it.where||'')}${lead?'・'+H(lead).n+'的部隊':''}</div><h2>${e.t}</h2><p style="font-family:Noto Serif TC,serif;font-size:16px;margin:8px 0 12px">${e.d}</p>
+ ${e.c.map((c,i)=>{const ok=canPay(c[1]);return`<button class="opt frame" data-i="${i}" style="margin-bottom:8px;${ok?'':'opacity:.45'}"><span class="t"><b>${c[0]}</b><div>${tx(c,i)||'無明顯變化'}${ok?'':' <span style="color:#ff8a7a">（不夠）</span>'}</div></span></button>`}).join('')}
+ ${treK?`<button class="opt frame" data-tre="1" style="margin-bottom:8px;border-color:#e0bf74"><span class="t"><b>💎 他壓箱底的東西：${TRE[treK][0]}</b><div>${TRE[treK][1]}・${evText(Object.fromEntries(Object.entries(treC).map(([r,v])=>[r,-v])),{})}${Object.entries(treC).some(([r,v])=>(S[r]||0)<v)?' <span style="color:#ff8a7a">（不夠）</span>':''}</div></span></button>`:''}
+ ${T?`<button class="opt frame" data-tw="1" style="margin-bottom:8px;border-color:${(CRAVE[craveOf(tw.id)]||[0,'#ff9ad0'])[1]}"><span class="t"><b>${H(tw.id).n}${tw.how}：${T[0]}</b><div style="color:var(--dim)">照她的意思做——後果自負</div></span></button>`:''}
+ <button class="btn ghost" data-leave="1" style="width:100%;margin-top:4px">離開</button>`,true);sfx('page');
+ const done=()=>{sfx('ok');closeSheet();render();tileEvents(cb)};
+ $$('#sheetIn [data-i]').forEach(o=>o.onclick=()=>{const i=+o.dataset.i,ef={...e.c[i][1]};if(!canPay(ef)){sfx('deny');return toast('資源不夠，選別的或離開')}if(u){if(ef.sol){u.troops=clamp(u.troops+ef.sol,1,Math.round(u.max*1.2));delete ef.sol}if(ef.heal)u.troops=Math.max(u.troops,u.max)}delete ef.heal;const hid=ef._hero,hch=ef._ch;delete ef._hero;delete ef._ch;evApply(ef,tg[i]);if(hid){if(!hch||Math.random()<hch){addHero(hid);hs(hid).task='idle';setTimeout(()=>celebrate(hid,'英靈加入',H(hid).n,`「${H(hid).line}」`,hid),300)}else toast('祂搖搖頭，消失在霧裡……')}done()});
+ const tb=$('#sheetIn [data-tre]');if(tb)tb.onclick=()=>{if(Object.entries(treC).some(([r,v])=>(S[r]||0)<v)){sfx('deny');return toast('資源不夠')}Object.entries(treC).forEach(([r,v])=>S[r]-=v);(S.tre=S.tre||{})[treK]={who:null};sfx('ssr');feedPush(`【珍寶】從商隊手裡買下了${TRE[treK][0]}`,'pos');done()};
+ const twb=$('#sheetIn [data-tw]');if(twb)twb.onclick=()=>{const s=T[1](u,tw.id);feedPush(`【${H(tw.id).n}】${s}`,'neg');hxPush(tw.id,s,'插手');done()};
+ $('#sheetIn [data-leave]').onclick=()=>{closeSheet();tileEvents(cb)}};
+function merchantTurn(add){if(S.merchant&&S.merchant.until>=S.t){S.food+=15}else if(S.merchant)delete S.merchant}
+{const _hmc=haremEvent;haremEvent=function(cb){try{merchantTurn(feedPush)}catch(e){}return _hmc(cb)}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
