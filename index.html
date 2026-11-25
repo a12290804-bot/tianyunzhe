@@ -440,6 +440,8 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 <script src="events/huhou_events.js"></script>
 <script src="events/liurushi_events.js"></script>
 <script src="events/zhangsun_events.js"></script>
+<script src="events/v4_3_crave_system.js"></script>
+<script src="events/v4_4_sig_house_inter_ret.js"></script>
 <script src="events/engine.js"></script>
 <script src="rewrite_01z_qing_terms.js"></script>
 <script>
@@ -3625,13 +3627,18 @@ const CRAVE={
  vanity:['虛榮','#ff9ad0',['嬌貴','嬌憨','驕縱','端麗','虛榮','爭寵'],['愛美','好妝飾','爭奇鬥豔','揮霍無度','窮奢極侈'],['compete','grantT','build','party'],'珍寶、賞賜、排場，永遠要比別人多一件']};
 const CRAVE_T=[0,15,40,80,140],CRAVE_TN=['微露','漸深','熾烈','成癮','無底'];
 const craveTxt=(id,k,tr)=>{try{const g=globalThis,c=g.CRAVE_CHAR&&g.CRAVE_CHAR[id];if(c&&c.tiers&&c.tiers[tr]&&(!c.crave||c.crave===k))return c.tiers[tr];return g.CRAVE_TEXT&&g.CRAVE_TEXT[k]&&g.CRAVE_TEXT[k][tr]||null}catch(e){return null}};
-function craveOf(id){const st=hs(id);if(st.crave&&CRAVE[st.crave])return st.crave;{const c=globalThis.CRAVE_CHAR&&globalThis.CRAVE_CHAR[id];if(c&&CRAVE[c.crave])return st.crave=c.crave}const tags=(ntagAll(id)||[]).concat(PTAG[id]||[]).join(' ');
+function craveOf(id){const st=hs(id);const c=globalThis.CRAVE_CHAR?.[id];
+ if(c&&CRAVE[c.crave]){
+  const old=CRAVE[st.crave];if(!st.cravePack43&&old&&st.dtag)for(const tag of old[3])if(!(tag==='縱慾'&&st.pv?.mianshou))delete st.dtag[tag];
+  st.cravePack43=true;return st.crave=c.crave
+ }
+ if(st.crave&&CRAVE[st.crave])return st.crave;const tags=(ntagAll(id)||[]).concat(PTAG[id]||[]).join(' ');
  let best=null,bs=-1;Object.entries(CRAVE).forEach(([k,c],i)=>{const s=c[2].filter(x=>tags.includes(x)).length*10+((id.charCodeAt(0)+id.length*7+i*13)%9)/10;if(s>bs){bs=s;best=k}});return st.crave=best}
 const craveApp=id=>(hs(id)&&hs(id).app)||0;
 const craveTier=id=>{const a=craveApp(id);let t=0;CRAVE_T.forEach((v,i)=>{if(a>=v)t=i});return t};
 function craveTurn(add){spouses().forEach(id=>{if(!S.order.includes(id))return;const st=hs(id),w=wed(id),k=craveOf(id),C=CRAVE[k],t0=craveTier(id);
  const items=(st.items||[]).filter(x=>S.t-x.t<=1).length,vis=(S.vT||{})[id]>=S.t-1,wn=(st.wishN||0)>(st.craveWN||0);st.craveWN=st.wishN||0;
- const fed=vis||items||wn;if(fed)st.craveFed=S.t;const starve=S.t-(st.craveFed??S.t);
+ const fed=vis||items||wn;if(fed||st.craveFed==null)st.craveFed=S.t;const starve=S.t-st.craveFed;
  st.app=(st.app||0)+.6+eraE()*.8+(fed?2:0)+(starve>6?1:0)+(st.pv&&st.pv.fotang?-.5:0);const tr=craveTier(id),m=1+tr;
  // 標籤：本性的層級標籤取代上一級
  const TN=i=>{const x=craveTxt(id,k,i);return x&&x.name||C[3][i]};const d=st.dtag||(st.dtag={});C[3].map((_,i)=>TN(i)).forEach((n,i)=>{if(i!==tr&&d[n]&&!(k==='lust'&&n==='縱慾'&&st.pv&&st.pv.mianshou))delete d[n]});if(!d[TN(tr)])d[TN(tr)]=S.t;const X=craveTxt(id,k,tr);
@@ -3766,7 +3773,17 @@ const SIGN={mulan:[['sortie','代父出征'],['recruitPriv','收攏邊軍']],cha
 const SIGDEF={lust:[['orgy','夜宴']],power:[['seizeEdict','擅改詔令']],greed:[['siphon','掏空國庫']],own:[['poisonCup','除掉情敵']],blood:[['paoluo','酷刑取樂']],immortal:[['immortalRite','求仙']],vanity:[['dance','爭奇鬥豔']]};
 const sigOf=id=>SIGN[id]||SIGDEF[craveOf(id)]||[['salon','雅集']];
 const BIG=['seizeEdict','humanSwine','paoluo','poisonCup','siphon','orgy','sortie','heirGambit'];
-function sigAct(id,add){const L=sigOf(id);let[k,n]=pick(L);let s=null;try{s=SIGT[k](id,MAG(id))}catch(e){s=null}if(!s)return null;try{const T=globalThis.SIG_TEXT&&SIG_TEXT[id]&&SIG_TEXT[id][k];if(T){if(T.name)n=T.name;const D=wed(id)?T.harem:T.pre;const nums=(s.match(/（[^（）]*）$/)||[''])[0];if(D&&D.length)s=pick(D).replace(/\{b\}/g,'對手')+nums;if(T.say&&T.say.length&&Math.random()<.3&&typeof hxPush==='function')hxPush(id,pick(T.say),n)}}catch(e){}const st=hs(id);st.heat=(st.heat||0)+2;(st.acts??=[]).push({t:S.t,s,n,seen:true,sig:1});if(st.acts.length>30)st.acts.shift();add(`<b style="color:#ffb86a">【${H(id).n}・${n}】</b>${s}`,'neg');if(BIG.includes(k))bigQ(id,n,s);return`${n}：${s}`}
+function sigAct(id,add){
+ const [k,label]=pick(sigOf(id)), queued=S.retQ?.length||0;
+ let effect;try{effect=SIGT[k](id,MAG(id))}catch(e){return null}if(!effect)return null;
+ const victim=S.retQ?.slice(queued).find(x=>x.vs===id)?.by;
+ const other=victim||foeOf(id), T=globalThis.SIG_TEXT?.[id]?.[k], n=T?.name||label;
+ const line=pool=>{const choices=(pool||[]).filter(x=>other||!x.includes('{b}'));return choices.length?pick(choices).replaceAll('{b}',other?H(other).n:''):''};
+ const story=line(wed(id)?T?.harem:T?.pre),s=story?story+' '+effect:effect;
+ if(T&&Math.random()<.3){const say=line(T.say);if(say)hxPush(id,say,n)}
+ const st=hs(id);st.heat=(st.heat||0)+2;(st.acts??=[]).push({t:S.t,s,n,seen:true,sig:1});if(st.acts.length>30)st.acts.shift();
+ add(`<b style="color:#ffb86a">【${H(id).n}・${n}】</b>${s}`,'neg');if(BIG.includes(k))bigQ(id,n,s,victim);return `${n}：${s}`
+}
 /* A. 頻率拉高＋招牌動作 */
 {const _pt0=preTurn;preTurn=function(add){_pt0(add);femFree().forEach(id=>{if(hst(id)||busyArmy(id)||!S.order.includes(id))return;if(Math.random()<.35+eraE()*.3+Math.min(.3,heatOf(id)*.006))sigAct(id,add)})}}
 {const _at0=autoTurn;autoTurn=function(add){_at0(add);spouses().forEach(id=>{if(!S.order.includes(id)||hst(id)||wed(id).cold||busyArmy(id))return;const n=1+(Math.random()<.4+eraE()*.4?1:0)+(heatTier(id)>=2?1:0);for(let i=0;i<n;i++)sigAct(id,add)})}}
@@ -3785,6 +3802,8 @@ function retTurn(add){const q=S.retQ||[];S.retQ=q.filter(x=>x.at>S.t);q.filter(x
  if(r<.4){hurtFav(x.vs,5+x.sev*3);s=`在你面前告了${H(x.vs).n}一狀（${H(x.vs).n}${wed(x.vs)?'寵愛':'好感'} −${5+x.sev*3}）`}
  else if(r<.7){setHst(x.vs,'inj',1+x.sev);s=`找人把${H(x.vs).n}打傷了（臥床 ${1+x.sev} 旬）`}
  else{hp(x.by).inf=Math.min(100,(hp(x.by).inf|0)+3);if(x.sev>=3&&wed(x.by))(S.retQ??=[]).push({by:x.vs,vs:x.by,at:S.t+2,sev:x.sev-1});s=`暗中聯絡${H(x.vs).n}的仇家，準備下一步（權勢 +3）`}
+ const pool=globalThis.RET_TEXT?.[r<.4?'accuse':r<.7?'beat':'plot'];
+ if(pool?.length)s=pick(pool).replaceAll('{a}',H(x.by).n).replaceAll('{b}',H(x.vs).n)+' '+s;
  add(`<b style="color:#ff7a8a">【報復・${H(x.by).n}】</b>${s}`,'neg')})}
 /* C. 介入（獨立額度：每旬最多 2 件） */
 function interEvent(cb){const q=S.interQ||[];S.interQ=[];const L=q.filter(x=>S.order.includes(x.id)).slice(-2);const step=i=>{if(i>=L.length)return cb();const x=L[i],N=H(x.id).n;
@@ -3797,12 +3816,13 @@ const HOUSEO={power:['別起來了。今日的朝會，我替你去。','你累�
 function houseCheck(cb){const h=S.house;if(!h)return cb();if(h.done){delete S.house;return cb()}const id=h.by;if(!S.order.includes(id)||!wed(id)){delete S.house;return cb()}h.done=1;const N=H(id).n,C=CRAVE[craveOf(id)]||['','#ff9ad0'],col=C[1];
  const L=[];const add=s=>L.push(String(s).replace(/<[^>]+>/g,''));for(let i=0;i<3;i++)sigAct(id,add);const c=actCtx(id);for(let i=0;i<2;i++){const A=AUTOACT.filter(a=>a[0]!=='confine').map(a=>[a,Math.max(0,a[3](c))]).filter(x=>x[1]>0);const sum=A.reduce((s,x)=>s+x[1],0);if(!sum)break;let r=Math.random()*sum;const[a]=A.find(x=>(r-=x[1])<0)||A[0];try{const s=a[4](id,c);if(s)L.push(`【${N}・${a[1]}】${s}`)}catch(e){}}
  hp(id).inf=Math.min(100,(hp(id).inf|0)+8);wed(id).fav=Math.min(100,wed(id).fav+10);loveAdd(id,60,true);
- const HT=globalThis.HOUSE_TEXT||{};const op=pick((HT[id]&&HT[id].open)||(HT['_'+craveOf(id)]&&HT['_'+craveOf(id)].open)||HOUSEO[craveOf(id)]||HOUSEO.own);const say=s=>s.replace(/^【[^】]*】/,'').replace(/（/g,'<span style="color:#f0d79a;font-size:.85em">（').replace(/）/g,'）</span>');
+ const HT=globalThis.HOUSE_TEXT||{};const k=craveOf(id),report=HT[id]||HT['_'+({own:'possess',blood:'bloodlust'}[k]||k)],op=pick(report?.open||HOUSEO[k]||HOUSEO.own);const say=s=>s.replace(/^【[^】]*】/,'').replace(/（/g,'<span style="color:#f0d79a;font-size:.85em">（').replace(/）/g,'）</span>');
  sheet(`<div class="evimg" style="background-image:url(img/${face(id)}.jpg);background-position:center 15%;height:200px"></div>
  <h2 style="font-family:Noto Serif TC,serif;color:${col};letter-spacing:2px;text-shadow:0 0 12px ${col}88">軟禁・${N}</h2>
  <p style="font-family:Noto Serif TC,serif;font-size:1.15em;color:${col};margin:8px 0">「${op}」</p>
- <div class="small" style="color:var(--dim);margin-bottom:4px">這一旬你被關在寢殿裡，什麼都不能做。她告訴你，外面發生了這些事——</div>
- ${L.map((s,i)=>`<p style="font-family:Noto Serif TC,serif;margin:6px 0;padding-left:8px;border-left:3px solid ${col};color:${i%2?'#f3d0dc':'#ffe9c8'}">「我${say(s)}。」</p>`).join('')||`<p style="font-family:Noto Serif TC,serif;color:${col}">「什麼也沒發生。你只是陪了我一整旬。」</p>`}
+ <div class="small" style="color:var(--dim);margin-bottom:4px">${report?.reportOpen||'這一旬你被關在寢殿裡。她告訴你，外面發生了這些事——'}</div>
+ ${L.map((s,i)=>`<p style="font-family:Noto Serif TC,serif;margin:6px 0;padding-left:8px;border-left:3px solid ${col};color:${i%2?'#f3d0dc':'#ffe9c8'}">${say(s)}</p>`).join('')||`<p style="font-family:Noto Serif TC,serif;color:${col}">「什麼也沒發生。你只是陪了我一整旬。」</p>`}
+ ${report?.reportEnd?'<p>'+report.reportEnd+'</p>':''}
  <p class="small" style="color:#f0d79a;margin-top:8px">${N}權勢 +8、寵愛 +10、情深上升</p>
  <button class="btn" id="houseOk" style="width:100%;margin-top:8px">……</button>`,true);
  feedPush(`【軟禁】${N}把你關了一旬，替你做了 ${L.length} 件事`,'neg');if(typeof chronAdd==='function')chronAdd(`${N}軟禁天運者一旬`);
