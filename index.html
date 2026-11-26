@@ -4563,7 +4563,7 @@ function storyPlay(key,id,ctx,fallback,cb){ctx=ctx||{};let L=storyLines(key,id,c
 /* 大事件改成小劇情 */
 bigPopEvent=function(cb){const Q=(S.bigPop||[]).filter(x=>x.t>=S.t-1);S.bigPop=[];if(!Q.length)return cb();const L=Q.slice(0,5);if(Q.length>5)feedPush(`【大事】另外還有 ${Q.length-5} 件大事，記在動態裡`);
  const step=i=>{if(i>=L.length){S.bigDoneT=S.t;return cb()}const x=L[i];const title=(x.s.match(/【([^】]+)】/)||[0,x.tag])[1];const rest=x.s.replace(/^\s*【[^】]+】\s*/,'');const {body,fx}=splitFx(rest);
-  const key=storyKey(title);const b=S.order.find(y=>y!==x.id&&H(y)&&rest.includes(H(y).n));
+  const key=x.k||storyKey(title);const b=x.b||S.order.find(y=>y!==x.id&&H(y)&&rest.includes(H(y).n));
   sfx(/死|奪|陷落|刺客|兵變|叛|喪|墮/.test(title)?'alarm':'gong');
   const fb=[['s',`【${title}】`],['n',body]].concat(x.id&&S.heroes[x.id]&&H(x.id).line&&Math.random()<.5?[]:[]);
   storyPlay(!x.id&&window.STORY_TEXT&&STORY_TEXT[key+'・無人']?key+'・無人':key,x.id,{b,fx,bg:x.id?face(x.id):'bg_night'},fb,()=>step(i+1))};step(0)};
@@ -4575,6 +4575,70 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
 {const _sce=sedCaughtEvent;sedCaughtEvent=function(cb){const c=(S.sedCaught||[])[0];if(!c||!S.order.includes(c.id)||!window.STORY_TEXT||!STORY_TEXT['out_'+c.o])return _sce(cb);storyPlay('out_'+c.o,c.id,{b:c.m},[],()=>_sce(cb))}}
 /* 處置後果的劇情：等對話框關掉再播 */
 {const _rst=render;render=function(...a){const r=_rst.apply(this,a);try{if((S.storyNext||[]).length&&!$('#sheet').classList.contains('on')&&document.querySelector('.scr.on')?.id==='game'){const n=S.storyNext.shift();setTimeout(()=>storyPlay(n.key,n.id,{},[],()=>{}),300)}}catch(e){}return r}}
+/* ===== 墮心：她們自己的心爛掉 ===== */
+const DKN=['','怨','毒','惡','賤','絕'],DKT=[0,60,140,240,360,500],DKC=['#888','#a07070','#b04060','#9a1a3a','#7a0a4a','#2a0010'];
+const dkv=id=>(hs(id)&&hs(id).dk)||0;const dkStage=id=>{const v=dkv(id);let s=0;DKT.forEach((t,i)=>{if(i&&v>=t)s=i});return Math.max(s,(hs(id)&&hs(id).dkFloor)||0)};
+function dkAdd(id,n,why){const st=hs(id);if(!st||!H(id)||H(id).sex!=='f')return;const s0=dkStage(id);st.dk=Math.max(DKT[st.dkFloor||0]||0,Math.min(700,(st.dk||0)+n));const s1=dkStage(id);if(s1>s0){st.dkFloor=Math.max(st.dkFloor||0,s1);dkBig(id,'dk_stage_'+s1,`【墮心・${DKN[s1]}】${H(id).n}${['','開始把每一次委屈都記在帳上','的手第一次伸向了別人的藥碗','不再掩飾，她開始以折磨別人為樂','什麼都可以賣，連自己也是——她要拉所有人一起爛','什麼都不在乎了。這一次，回不去了'][s1]}${why?'（因為'+why+'）':''}`)}}
+function dkBig(id,key,text,b){(S.bigPop??=[]).push({s:text,id,k:key,b,tag:'墮心',t:S.t,c:'neg'});feedPush(text,'neg')}
+/* 來源：每旬 */
+function dkTurn(add){S.order.filter(x=>H(x)&&H(x).sex==='f'&&hs(x)).forEach(id=>{const st=hs(id),w=wed(id);let n=0;
+ if(grudge(id))n+=4;if(['不滿','委屈'].includes(st.emo))n+=2;if(w&&['嫉恨','冷戰','癲狂'].includes(md2(id)))n+=3;n+=mistState(id).band;n+=heatTier(id);if(w&&w.fav<30)n+=3;if(w&&w.cold)n+=6;
+ n+=Math.floor((S.tyranny||0)/30)+Math.floor((S.hedon||0)/40);if('喪子之恨' in (st.dtag||{})&&!st.dkLoss){st.dkLoss=1;n+=50}
+ S.order.filter(y=>y!==id&&dkStage(y)>=4&&relG(id,y)>=20).forEach(()=>n+=3);
+ if(dkStage(id)>=1&&w&&w.fav>=80&&!grudge(id))n-=2;if(n)dkAdd(id,n,null)})}
+/* 來源：事件 */
+{const _sh=setHst;setHst=function(id,k,n){_sh(id,k,n);try{if(k==='ban')dkAdd(id,12,'被禁足');if(k==='jail')dkAdd(id,20,'被下獄');if(k==='inj')dkAdd(id,5)}catch(e){}}}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-rq="n"],[data-sd="no"],[data-sd="other"],[data-cv="give"],[data-care]');if(!b)return;try{if(b.dataset.rq){const id=document.querySelector('#sheetIn')?.dataset.rqid;if(id)dkAdd(id,8,'被你拒絕')}else if(b.dataset.sd==='no'){const q=S.order.find(x=>document.querySelector('#sheetIn h2')?.textContent===H(x).n);if(q)dkAdd(q,6,'被你拒絕')}else if(b.dataset.sd==='other'){const q=S.order.find(x=>document.querySelector('#sheetIn h2')?.textContent===H(x).n);if(q)dkAdd(q,15,'你當著她的面召了別人')}else if(b.dataset.cv==='give'){const c=S.covetLast;if(c)dkAdd(c,60,'被你交給了敵國')}else if(b.dataset.care){const[id,k]=b.dataset.care.split('|');if(k==='cold')dkAdd(id,10,'被你冷落');if(k==='punish')dkAdd(id,14,'被你懲罰')}}catch(err){}},true);
+{const _cve=covetEvent;covetEvent=function(cb){if(S.covet)S.covetLast=S.covet.id;return _cve(cb)}}
+/* 被賜死、被殺：召回時保留記憶並更黑化 */
+{const _gh=goneHero;goneHero=function(id,k,n){if(k==='exec'&&hs(id)){hs(id).dkDeaths=(hs(id).dkDeaths||0)+1}return _gh(id,k,n)}}
+{const _sm2=summon;summon=function(pool,after){const pre=new Set(S.order);return _sm2(pool,()=>{const nid=S.order.find(x=>!pre.has(x));if(nid&&hs(nid)&&hs(nid).mem==='exec'&&H(nid).sex==='f'&&(hs(nid).dkRev||0)<(hs(nid).dkDeaths||0)){const st=hs(nid);st.dkRev=st.dkDeaths;const by=st.dkKilledBy;dkAdd(nid,120+40*(st.dkDeaths-1),'帶著被殺的記憶回來');if(by&&S.order.includes(by)){relAdd(nid,by,-60);setGrudge(nid,20)}dkBig(nid,'dk_revive',`【墮心・歸來】${H(nid).n}帶著死去那一刻的記憶，從星盤裡走了出來${by&&H(by)?'。她第一眼看的，是'+H(by).n:''}`,by)}after&&after()})}}
+/* 惡行 */
+const DKACT=[
+ [2,'poison','毒殺情敵',(id,v)=>{if(!v)return null;const st3=dkStage(id)>=3&&Math.random()<.15*dkStage(id);if(st3){hs(v).dkKilledBy=id;goneHero(v,'exec');return[`${H(v).n}喝下了那碗湯，再也沒有醒來`,`${H(v).n}死了（可召喚回來，但她會記得）`]}setHst(v,'inj',2);harm(id,v,3);return[`${H(v).n}的湯裡被下了東西，嘔血倒地`,`${H(v).n}重傷`]}],
+ [2,'frame','栽贓',(id,v)=>{if(!v)return null;setHst(v,'jail',3);relAdd(v,id,-20);return[`一封偽造的密信出現在${H(v).n}的妝奩裡`,`${H(v).n}下獄三旬`]}],
+ [2,'steal','偷空國庫',(id)=>{const f=R(40,90),en=R(20,50);S.food-=f;S.energy-=en;hs(id).hoard=(hs(id).hoard||0)+10;return['庫房的帳對不上了，對不上的部分都在她的私庫裡',`糧 −${f}、能量 −${en}`]}],
+ [2,'abuse','虐殺宮人',(id)=>{S.pop=Math.max(0,(S.pop||0)-R(3,8));weiAdd(-2);return['她的寢殿後院，又抬出去兩具宮人的屍體','人口減少、威 −2']}],
+ [3,'scandal','散播你的醜聞',(id)=>{weiAdd(-4);barAdd('hedon',1);return['城裡的說書人都在講天運者的床笫醜事，每一段都繪聲繪影','威 −4、昏庸 +1']}],
+ [3,'arson','縱火',(id)=>{const sl=pick((S.slots||[]).filter(s=>s&&s.f&&s.lv>1));if(sl){sl.lv-=1;return[`她看著${(FAC[sl.f]||['那座建築'])[0]}燒起來，笑得很開心`,`${(FAC[sl.f]||['建築'])[0]}降一級`]}S.food-=50;return['糧倉燒了一夜','糧 −50']}],
+ [3,'torture','折磨',(id,v)=>{if(!v)return null;harm(id,v,4);setHst(v,'inj',3);if(wed(v))wed(v).fav=Math.max(0,wed(v).fav-10);return[`她把${H(v).n}關進密室，三天後才放出來`,`${H(v).n}重傷三旬、寵愛 −10`]}],
+ [3,'leak','洩漏軍情',(id)=>{S.dkAmbush=(S.dkAmbush||0)+1;const d=pick(homeFacs());if(d)FS(d.id).troops+=60;return['你的布防圖出現在敵營的案上',`下一戰會中伏${d?'、'+d.n+'兵力 +60':''}`]}],
+ [4,'debauch','當眾放蕩',(id)=>{barAdd('hedon',2);weiAdd(-3);spouses().filter(x=>x!==id).forEach(x=>hs(x).heat=(hs(x).heat||0)+1);return['她在宴席上當著滿朝文武自甘下賤，讓你成了全城的笑柄','昏庸 +2、威 −3']}],
+ [4,'sell','出賣自己',(id)=>{const d=pick(homeFacs());hp(id).inf=Math.min(100,(hp(id).inf|0)+8);if(d){FS(d.id).troops+=80;facRelAdd(d.id,10)}return[`她把自己賣給了${d?d.n+'的首領':'權臣'}，換來權勢與一隊私兵`,`她權勢 +8${d?'、'+d.n+'兵力 +80':''}`]}],
+ [4,'humiliate','當朝羞辱你',(id)=>{weiAdd(-4);S.apPen=(S.apPen||0)+1;return['朝會上，她當著百官的面一條一條數落你，最後笑著問你敢不敢殺她','威 −4、下旬行動 −1']}],
+ [4,'corrupt','拉人一起墮',(id,v)=>{if(!v)return null;dkAdd(v,40,H(id).n+'教唆');mistAdd(v,20);return[`她在${H(v).n}耳邊說了一整夜的話`,`${H(v).n}墮心 +40、污染 +20`]}],
+ [5,'regicide','弒君',(id)=>{jingAdd(-40);S.apPen=(S.apPen||0)+3;weiAdd(-5);return['那把刀刺進你胸口的時候，她在笑。你不會死，但你倒下了','精 −40、下旬幾乎無法行動、威 −5']}],
+ [5,'usurp','自立為王',(id)=>{try{if(rebelFound(id,[id],feedPush,'墮心已絕'))return['她帶著私兵走出了城門，豎起了自己的旗','她成了新的敵方勢力']}catch(e){}return null}],
+ [5,'drown','拖整座城墮落',(id)=>{S.pol=Math.min(100,(S.pol||0)+15);S.order.filter(x=>x!==id).slice(0,4).forEach(x=>mistAdd(x,25));return['她站在城中央，讓黑霧從她身上一層一層漫出去','主城污染 +15、身邊的人污染 +25']}],
+ [5,'destroy','毀掉她最恨的人',(id,v)=>{if(!v)return null;hs(v).dkKilledBy=id;goneHero(v,'exec');return[`她親手了結了${H(v).n}`,`${H(v).n}死了（可召喚回來，但她會記得）`]}]];
+function dkTarget(id){const L=S.order.filter(x=>x!==id&&H(x)&&!x.startsWith('kid')&&!hst(x)&&!isImmY(x));const f=L.filter(x=>H(x).sex==='f');return f.sort((a,b)=>relG(id,a)-relG(id,b))[0]||pick(L)}
+function dkActTurn(add){if(inWorld())return;S.order.filter(x=>H(x)&&H(x).sex==='f'&&!hst(x)).forEach(id=>{const s=dkStage(id);if(s<2||(S.dkLeash||{})[id]>S.t)return;if(Math.random()>[0,0,.14,.24,.34,.42][s]*Math.min(1.5,MAG(id)))return;
+ const pool=DKACT.filter(a=>a[0]<=s&&(a[0]===s||Math.random()<.5));const a=pick(pool);if(!a)return;const v=dkTarget(id);let r=null;try{r=a[3](id,v)}catch(e){}if(!r)return;
+ (hs(id).acts??=[]).push({t:S.t,s:r[0],n:'墮心・'+a[2]});const big=a[0]>=3||['poison','frame'].includes(a[1]);const text=`【墮心惡行・${a[2]}】${H(id).n}：${r[0]}（${r[1]}）`;if(big)dkBig(id,'dk_'+a[1],text,v);else add(text,'neg')})}
+/* 下一戰中伏 */
+{const _m0d=mods0;mods0=function(our,en,M0){M0=_m0d(our,en,M0);try{if(S.dkAmbush>0&&our&&our.gens&&!S.__amb){S.__amb=1;setTimeout(()=>{S.__amb=0;S.dkAmbush=Math.max(0,S.dkAmbush-1)},0);M0.atk-=.25}}catch(e){}return M0}}
+/* 你的對策 */
+function dkSheet(id){const s=dkStage(id),N=H(id).n,col=DKC[s];const bad=S.order.filter(x=>x!==id&&dkStage(x)>=3&&H(x).sex==='f');
+ sheet(`<h3 style="color:#ff5a7a">墮心・${N}</h3><div class="small">${DKN[s]||'尚未'}・${dkv(id)}${s>=5?'・<b style="color:#ff3a5a">已絕</b>':''}</div><div class="meter" style="margin:6px 0"><i style="width:${Math.min(100,dkv(id)/5)}%;background:linear-gradient(90deg,#5a0a1a,#ff3a5a)"></i></div>
+ <button class="btn ghost" style="width:100%;margin-top:6px" data-dk="vd|${id}">鎮壓（處置選單）</button>
+ ${s<=4?`<button class="btn ghost" style="width:100%;margin-top:6px" data-dk="pet|${id}">寵溺她（行動 1）：拖慢墮落</button>`:''}
+ ${s>=2?`<button class="btn" style="width:100%;margin-top:6px;border-color:#ff5a7a" data-dk="use|${id}">利用：放她出去咬敵人</button>`:''}
+ ${s>=2&&bad.length?`<button class="btn ghost" style="width:100%;margin-top:6px" data-dk="pit|${id}|${bad[0]}">以惡制惡：讓她和${H(bad[0]).n}互咬</button>`:''}
+ ${s>=2?`<button class="btn ghost" style="width:100%;margin-top:6px" data-dk="leash|${id}">派人日夜盯著（行動 1）：三旬內不准她動手</button>`:''}
+ ${s>=5&&!hs(id).dkRedeemed?`<button class="btn ghost" style="width:100%;margin-top:6px;border-color:#f0d79a" data-dk="redeem|${id}">救贖（精 −50、能量 −200、晶核 −2，只能一次）</button>`:''}
+ <button class="btn ghost" style="width:100%;margin-top:8px" data-sheetx>關閉</button>`)}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-dk],[data-dkopen]');if(!b)return;e.stopPropagation();if(b.dataset.dkopen){closeSheet();return dkSheet(b.dataset.dkopen)}const[k,id,o]=b.dataset.dk.split('|');const N=H(id).n;closeSheet();
+ if(k==='vd')return vdSheet(id);
+ if(k==='pet'){if((S.ap||0)<1)return toast('行動力不足');S.ap--;hs(id).dk=Math.max(DKT[hs(id).dkFloor||0]||0,dkv(id)-25);if(wed(id))wed(id).fav=Math.min(100,wed(id).fav+10);toast(`${N}暫時安靜了下來`)}
+ else if(k==='leash'){if((S.ap||0)<1)return toast('行動力不足');S.ap--;(S.dkLeash??={})[id]=S.t+3;dkAdd(id,6,'被監視');toast('三旬內她不會動手——但她知道你在盯著她')}
+ else if(k==='use'){const F=homeFacs().filter(d=>d.id!=='huapi');const d=pick(F);const s=dkStage(id);if(!d)return toast('沒有可以咬的敵人');const n=60+s*50;FS(d.id).troops=Math.max(0,FS(d.id).troops-n);facRelAdd(d.id,-20);dkAdd(id,15,'嚐到了血');let turn='';if(Math.random()<s*.06){turn=`——但她把咬過的血也帶了回來，反手捅了你一刀（威 −3）`;weiAdd(-3)}dkBig(id,'dk_use',`【墮心・放出去】${N}潛進${d.n}，回來時袖子是濕的（${d.n}兵力 −${n}）${turn}`)}
+ else if(k==='pit'&&o){harm(id,o,3);harm(o,id,3);setHst(pick([id,o]),'inj',2);dkAdd(id,20,'互咬');dkAdd(o,20,'互咬');relAdd(id,o,-30);dkBig(id,'dk_pit',`【墮心・互咬】${N}和${H(o).n}咬在一起，誰都沒佔到便宜`,o)}
+ else if(k==='redeem'){S.energy-=200;S.core=(S.core||0)-2;jingAdd(-50);const st=hs(id);st.dkRedeemed=1;st.dkFloor=4;st.dk=DKT[4];dkBig(id,'dk_redeem',`【墮心・救贖】你用一半的命把${N}從最深處拉了回來一點點（精 −50、能量 −200、晶核 −2）`)}
+ render()},true);
+/* 顯示 */
+{const _gc=gridCard;gridCard=function(id){let h=_gc(id);try{const v=dkv(id);if(v>0&&H(id).sex==='f'){const s=dkStage(id);h=h.replace(/<\/button>$/,`<i class="gb" title="墮心"><b style="width:${Math.min(100,v/5)}%;background:linear-gradient(90deg,#3a0010,#ff2a4a)"></b></i>${s?`<span style="position:absolute;left:4px;top:4px;background:${DKC[s]};color:#fff;border-radius:4px;padding:0 4px;font-size:11px;z-index:3">墮・${DKN[s]}</span>`:''}</button>`)}}catch(e){}return h}}
+{const _gs9=gridSheet;gridSheet=function(id){_gs9(id);try{if(!S.order.includes(id)||H(id).sex!=='f'||!dkv(id))return;const s=dkStage(id);const box=document.querySelector('#sheetIn .frame.small');if(box)box.insertAdjacentHTML('afterend',`<div class="frame small" style="padding:6px 8px;margin-bottom:8px;border-color:#ff2a4a;background:#1a0408"><b style="color:#ff5a7a">墮心</b>　${DKN[s]||'尚淺'}・${dkv(id)}${s>=5?'・已絕':''}<button class="btn sm" style="float:right" data-dkopen="${id}">對策</button></div>`)}catch(e){}}}
+{const _hdk=haremEvent;haremEvent=function(cb){try{dkTurn(feedPush);dkActTurn(feedPush)}catch(e){console.error(e)}return _hdk(cb)}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
