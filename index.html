@@ -4555,7 +4555,7 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
 /* ===== 小劇情播放器：劇情與遊戲效果對上 ===== */
 function storyKey(title){let k=String(title||'');S.order.concat(Object.keys(S.heroes||{})).forEach(x=>{if(H(x))k=k.replace('・'+H(x).n,'').replace(H(x).n,'')});return k.replace(/・$/,'').trim()}
 function splitFx(s){const m=String(s).match(/（([^（）]*[+−\-][^（）]*)）\s*$/);return m?{body:s.slice(0,m.index).trim(),fx:m[1]}:{body:String(s),fx:''}}
-function storyLines(key,id,ctx){const T=window.STORY_TEXT&&STORY_TEXT[key];if(!T)return null;let v=(id&&T[id])||T['_'+(id?craveOf(id):'')]||T._;if(!v||!v.length)return null;if(Array.isArray(v[0])&&Array.isArray(v[0][0]))v=pick(v);
+function storyLines(key,id,ctx){const T=window.STORY_TEXT&&STORY_TEXT[key];if(!T)return null;let v=(id&&T[id])||T['_'+(id?craveOf(id):'')]||T._;if(!v||!v.length)return null;if(Array.isArray(v[0])&&Array.isArray(v[0][0]))v=pick(v);const needA=v.some(x=>x[0]==='a'||String(x[1]).includes('{a}')),needB=v.some(x=>x[0]==='b'||String(x[1]).includes('{b}'));if((needA&&!(id&&H(id)))||(needB&&!(ctx.b&&H(ctx.b))&&!ctx.bn))return null;
  const N=id&&H(id)?H(id).n:'',B=ctx.b&&H(ctx.b)?H(ctx.b).n:(ctx.bn||'');const has=x=>x&&(S.heroes[x]||x===id);
  return v.map(([s,t])=>{let w=s==='a'?id:s==='b'?(ctx.b&&S.heroes[ctx.b]?ctx.b:'n'):s;if(!['n','s','p'].includes(w)&&!String(w).startsWith('x:')&&!has(w))w='n';return[w,String(t).replaceAll('{a}',N).replaceAll('{b}',B).replaceAll('{fx}',ctx.fx||'')]})}
 function storyPlay(key,id,ctx,fallback,cb){ctx=ctx||{};let L=storyLines(key,id,ctx);const used=!!L;if(!L)L=fallback||[];if(!L.length)return cb&&cb();if(ctx.fx&&!L.some(x=>x[0]==='s'&&String(x[1]).includes(ctx.fx)))L=L.concat([['s',ctx.fx]]);
