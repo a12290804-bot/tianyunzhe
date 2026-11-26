@@ -4566,7 +4566,7 @@ bigPopEvent=function(cb){const Q=(S.bigPop||[]).filter(x=>x.t>=S.t-1);S.bigPop=[
   const key=storyKey(title);const b=S.order.find(y=>y!==x.id&&H(y)&&rest.includes(H(y).n));
   sfx(/死|奪|陷落|刺客|兵變|叛|喪|墮/.test(title)?'alarm':'gong');
   const fb=[['s',`【${title}】`],['n',body]].concat(x.id&&S.heroes[x.id]&&H(x.id).line&&Math.random()<.5?[]:[]);
-  storyPlay(key,x.id,{b,fx,bg:x.id?face(x.id):'bg_night'},fb,()=>step(i+1))};step(0)};
+  storyPlay(!x.id&&window.STORY_TEXT&&STORY_TEXT[key+'・無人']?key+'・無人':key,x.id,{b,fx,bg:x.id?face(x.id):'bg_night'},fb,()=>step(i+1))};step(0)};
 /* 撞破自主行動：先播劇情，再讓你處置；處置後再播後果 */
 {const _ce=caughtEvent;caughtEvent=function(cb){const it=(S.caught||[])[0];if(!it||!S.order.includes(it.id)||!window.STORY_TEXT||!STORY_TEXT['auto_'+it.k])return _ce(cb);
  const {body,fx}=splitFx(it.s);storyPlay('auto_'+it.k,it.id,{fx:''},[],()=>_ce(cb))}}
