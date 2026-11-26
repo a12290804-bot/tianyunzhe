@@ -4647,11 +4647,11 @@ const CHASE=[
  ['hair',(id)=>{return[`一個陌生的孩子把一個錦囊塞進守門士兵手裡。裡面是一縷頭髮，還帶著${H(id).n}身上的香味`,'']}],
  ['gift',(id)=>{const n=R(20,50);S.food+=n;return[`${H(id).n}派人偷偷運來一車糧。押車的人說：「她說，餓死了你，就沒人能來抓她了。」`,`糧 +${n}`]}],
  ['clue',(id)=>{const g=S.gone[id];const f=g&&g.fid&&FS(g.fid);if(f&&f.seat){S.tiles.flat().filter(t=>Math.abs(t.r-f.seat.r)+Math.abs(t.c-f.seat.c)<=3).forEach(t=>t.seen=true);return[`你在城門上發現一枝插著的紅梅，花枝指著的方向，是${H(id).n}的大營`,'她的大營位置顯示在地圖上']}return[`有人在你枕邊留了一枝紅梅。沒有人看見是誰放的`,'']}],
- ['guard',(id)=>{const v=pick(spouses().filter(x=>S.order.includes(x)&&!hst(x)));if(!v)return null;setHst(v,'inj',1);return[`${H(v).n}在御花園被人推下了台階。推她的人留下一句話：「替她看好你。」`,`${H(v).n}受傷`]}],
+ ['guard',(id)=>{const v=pick(spouses().filter(x=>S.order.includes(x)&&!hst(x)));if(!v)return null;setHst(v,'inj',1);return[`${H(v).n}在御花園被人推下了台階。推她的人留下一句話：「替她看好你。」`,`${H(v).n}受傷`,v]}],
  ['blood',(id)=>[`${H(id).n}寄來一方染血的帕子，帕角繡著你的名字`,'']]];
 function chaseTurn(add){S.order.concat(Object.keys(S.gone||{})).filter((x,i,a)=>a.indexOf(x)===i).forEach(id=>{const st=hs(id);if(!st||!st.chase)return;
  if(S.order.includes(id)&&!(S.gone||{})[id]){const away=S.t-st.chase.t;delete st.chase;if(wed(id)){loveAdd(id,150,true);wed(id).fav=Math.min(100,wed(id).fav+15)}dkBig(id,'chase_back',`【追回】${H(id).n}回來了。離開了 ${away} 旬，她看著你，第一句話是：「你終於來了。」`);return}
- if(Math.random()>.3)return;const c=pick(CHASE);const r=c[1](id);if(!r)return;st.chase.n++;const text=`【她在等你・${H(id).n}】${r[0]}${r[1]?'（'+r[1]+'）':''}`;if(st.chase.n===1)dkBig(id,'chase_'+c[0],text);else add(text,'neg')})}
+ if(Math.random()>.3)return;const c=pick(CHASE);const r=c[1](id);if(!r)return;st.chase.n++;const text=`【她在等你・${H(id).n}】${r[0]}${r[1]?'（'+r[1]+'）':''}`;if(st.chase.n===1)dkBig(id,'chase_'+c[0],text,r[2]);else add(text,'neg')})}
 {const _hch=haremEvent;haremEvent=function(cb){try{chaseTurn(feedPush)}catch(e){console.error(e)}return _hch(cb)}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
