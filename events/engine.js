@@ -181,7 +181,7 @@ window.makeCharacterEvents = function (game) {
  function married(id){hs(id).packPalaceAt=S.t;const pending=hs(id).packPending;if(pending){apply(id,pending,{});delete hs(id).packPending}enqueue(id,'firstPowerMove')}
  function show(next,n=0) {
   if(S.packQueue)S.packQueue=S.packQueue.filter(x=>entries[x.id]?.[x.key]&&S.heroes[x.id]&&(x.key==='tragedies'||(!(S.gone&&S.gone[x.id])&&['b','c','g','peer'].every(k=>!x.cast?.[k]||!(S.gone&&S.gone[x.cast[k]])))));
-  const e=S.packQueue?.[0];if(!e||n>=SHOW_MAX)return next();
+  const e=S.packQueue?.[0];if(!e||(n>=SHOW_MAX&&e.key!=='firstRecruit'))return next();
   const d=textOf(e,true), names=k=>k==='a'?H(e.id).n:k==='heir'?(S.kids||[]).find(x=>x.id===e.cast[k])?.n:e.cast?.[k]&&S.heroes[e.cast[k]]?H(e.cast[k]).n:null;
   const fill=s=>String(s||'').replace(/\{(\w+)\}/g,(_,k)=>names(k)||'故人');
   const choices=d.choices||[{text:'知道了'}];
