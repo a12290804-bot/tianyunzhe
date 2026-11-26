@@ -4498,6 +4498,18 @@ function sedCaughtEvent(cb){const q=(S.sedCaught||[]).filter(x=>S.order.includes
  emoDlg(c.id,'被你撞見',`你親眼看見了：${c.line}<br>她發現你在看，沒有停，反而回頭對你笑。`,col,[['默許（昏庸 +1，她更放肆）',()=>{barAdd('hedon',1);hs(c.id).heat=(hs(c.id).heat||0)+3;weiAdd(-2)}],['把她拖回宮裡（她又驚又喜）',()=>{if(w){w.fav=Math.min(100,w.fav+6);loveAdd(c.id,50,true)}hs(c.id).heat=Math.max(0,(hs(c.id).heat||0)-2)}],[c.m&&S.order.includes(c.m)?`懲罰${H(c.m).n}（禁足三旬）`:'公開斥責她（寵愛 −10）',()=>{if(c.m&&S.order.includes(c.m)){setHst(c.m,'ban',3);relAdd(c.id,c.m,-5);hs(c.id).heat=(hs(c.id).heat||0)+1}else{if(w)w.fav=Math.max(0,w.fav-10);setGrudge(c.id,4)}}]]);
  $$('[data-emo]').forEach(b=>b.addEventListener('click',()=>setTimeout(cb,0)))}
 {const _hso=haremEvent;haremEvent=function(cb){try{sedOutTurn(feedPush)}catch(e){console.error(e)}return _hso(()=>sedCaughtEvent(cb))}}
+/* ===== 大事件一定跳出對話框 ===== */
+const BIGRE=/【(惡墮大事件|戰敗大事件|大事件|變質|化霧為主|長生・|不死者・|不死之威|奪壽|同命契|永生之法|華彩・|精竭|刺客|孩子被奪|掉包|奪子|喪子|雙生|叛變・|兵變|叛離|私刑|斬友|處死|吞併|聯軍|宿敵降臨|宿敵覆滅|悲歌成真|世界線降臨|陷落|亡國之象|末世昏暴|威信掃地|燈塔破防|交出夫人|替身被識破|歸來|舊帳|異界來客|情深・崩潰|情深・病態|天運血脈|血債|不死之後|流放|下獄|毀盟|爭儲)/;
+function bigCheck(s,c){const plain=String(s).replace(/<br>/g,'\n').replace(/<[^>]+>/g,'');const m=plain.match(BIGRE);if(!m)return;const Q=(S.bigPop??=[]);if(Q.some(x=>x.s===plain||x.s.includes(plain)||plain.includes(x.s)))return;const id=S.order.concat(Object.keys(S.heroes||{})).find(x=>H(x)&&plain.includes(H(x).n));Q.push({s:plain,id,c,tag:m[1].replace(/・$/,''),t:S.t});if(Q.length>12)Q.shift()}
+{const _fpb=feedPush;feedPush=function(s,c){_fpb(s,c);try{bigCheck(s,c)}catch(e){}}}
+function bigPopEvent(cb){const Q=(S.bigPop||[]).filter(x=>x.t>=S.t-1);S.bigPop=[];if(!Q.length)return cb();const L=Q.slice(0,5);if(Q.length>5)feedPush(`【大事】另外還有 ${Q.length-5} 件大事，記在動態裡`);
+ const step=i=>{if(i>=L.length){S.bigDoneT=S.t;return cb()}const x=L[i],col=x.c==='neg'?'#ff8a8a':x.c==='pos'?'var(--jade)':'#e0bf74';const title=(x.s.match(/【([^】]+)】/)||[0,x.tag])[1];const body=x.s.replace(/^\s*【[^】]+】\s*/,'');
+  sfx(/死|奪|陷落|刺客|兵變|叛|喪|墮/.test(title)?'alarm':'gong');
+  sheet(`${x.id?`<div class="evimg" style="background-image:url(img/${face(x.id)}.jpg);background-position:center 18%"></div>`:''}<div class="small" style="letter-spacing:.2em;color:${col}">大事件</div><h2 style="color:${col}">${title}</h2><p style="font-family:Noto Serif TC,serif;font-size:16px;white-space:pre-line;margin:8px 0 12px">${body}</p><button class="btn" style="width:100%" id="bigOk">……</button>`,true);
+  $('#bigOk').onclick=()=>{closeSheet();render();step(i+1)}};step(0)}
+{const _hbg=haremEvent;haremEvent=function(cb){return _hbg(()=>bigPopEvent(cb))}}
+/* 不在回合流程時（例如戰鬥中、操作中）發生的大事，等畫面空下來就跳 */
+let __bigIdle=0;{const _rbg=render;render=function(...a){const r=_rbg.apply(this,a);try{if(S.bigDoneT===S.t&&(S.bigPop||[]).length&&!__bigIdle){__bigIdle=1;setTimeout(()=>{__bigIdle=0;const scr=document.querySelector('.scr.on');if(S.bigDoneT===S.t&&(S.bigPop||[]).length&&!$('#sheet').classList.contains('on')&&!$('#celebrate').classList.contains('on')&&scr&&scr.id==='game')bigPopEvent(()=>{})},900)}}catch(e){}return r}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
