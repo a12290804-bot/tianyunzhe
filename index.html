@@ -4653,6 +4653,12 @@ function chaseTurn(add){S.order.concat(Object.keys(S.gone||{})).filter((x,i,a)=>
  if(S.order.includes(id)&&!(S.gone||{})[id]){const away=S.t-st.chase.t;delete st.chase;if(wed(id)){loveAdd(id,150,true);wed(id).fav=Math.min(100,wed(id).fav+15)}dkBig(id,'chase_back',`【追回】${H(id).n}回來了。離開了 ${away} 旬，她看著你，第一句話是：「你終於來了。」`);return}
  if(Math.random()>.3)return;const c=pick(CHASE);const r=c[1](id);if(!r)return;st.chase.n++;const text=`【她在等你・${H(id).n}】${r[0]}${r[1]?'（'+r[1]+'）':''}`;if(st.chase.n===1)dkBig(id,'chase_'+c[0],text,r[2]);else add(text,'neg')})}
 {const _hch=haremEvent;haremEvent=function(cb){try{chaseTurn(feedPush)}catch(e){console.error(e)}return _hch(cb)}}
+/* ===== 匯出存檔（給開發者檢查用） ===== */
+function exportSave(){try{save();const s=localStorage.getItem(SKEY)||JSON.stringify(S);const d=new Date();const name=`天運者存檔_${d.getMonth()+1}${String(d.getDate()).padStart(2,'0')}_${String(d.getHours()).padStart(2,'0')}${String(d.getMinutes()).padStart(2,'0')}.json`;
+ const blob=new Blob([s],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);
+ try{navigator.clipboard&&navigator.clipboard.writeText(s)}catch(e){}toast('存檔已下載（也複製到剪貼簿了）')}catch(e){toast('匯出失敗：'+e.message)}}
+{const _tds=todoSheet;todoSheet=function(){_tds();const b=document.getElementById('sheetIn');if(b)b.insertAdjacentHTML('beforeend','<button class="btn ghost sm" style="width:100%;margin-top:10px" data-expsave="1">💾 匯出存檔（傳給 Claude 檢查用）</button>')}}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-expsave]');if(!b)return;e.stopPropagation();exportSave()},true);
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
