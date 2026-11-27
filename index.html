@@ -5072,6 +5072,9 @@ function facBuildTurn(){if(typeof inWorld==='function'&&inWorld())return;homeFac
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#hzChip');if(!b)return;e.stopPropagation();const v=hz();sheet(`<h3 data-ebk>紅顏禍水：${v} / 100</h3><div class="small">她們干政、擅自花用、病嬌傷人、權勢過大，都會讓朝野把帳算在她們頭上。每旬自然消退一點。</div><div class="frame" style="padding:7px;margin:6px 0"><div class="small">40 以上：將領好感慢慢下降<br>60 以上：大臣聯名上書<br>85 以上：可能發生<b style="color:#ff5a5a">兵諫・清君側</b>——大軍要你處死她</div></div><button class="btn ghost" style="width:100%" data-shrine="1">🕯 忠烈祠</button>`)},true);
 {const st=document.createElement('style');st.textContent=`body.wartime::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:4;background:radial-gradient(ellipse at center,transparent 50%,rgba(70,0,0,.38) 100%)}body.wartime #endBtn{box-shadow:0 0 12px #a0302a}`;document.head.appendChild(st)}
 
+
+['ev_postwar','ev_war_ash','ev_warfor','ev_shiji','ev_shrine','ev_famine','ev_mawei'].forEach(k=>IMG6.add(k));
+{const _rb=reportBody;reportBody=function(rep){let h=_rb(rep);try{const sj=(rep||[]).filter(x=>/^【史冊】/.test(String(x[0])));if(sj.length){const heavy=sj.some(x=>/伏屍|敗績/.test(String(x[0])));const im=heavy?'ev_war_ash':'ev_shiji';h=`<div class="evimg" style="background-image:url(img/${im}.jpg);margin:6px 0"></div>`+h}}catch(e){}return h}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
