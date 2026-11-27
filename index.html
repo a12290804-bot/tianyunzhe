@@ -4225,11 +4225,11 @@ const JACT={
  vanity:['養顏駐色',5,6,id=>`${H(id).n}用你的精血調了脂膏，鏡子裡的她一天比一天年輕`]};
 const JTY={test:['偷取一點',3,3,id=>`你醒來時指尖多了一道細口。${H(id).n}舔著嘴唇對你笑`],play:['玩鬧偷取',3,3,id=>`${H(id).n}笑嘻嘻地說只是咬一口——咬得很深`],doom:['求你融為一體',8,7,id=>`${H(id).n}抱著你說：「把你的命分我一半，我們就永遠不會分開了。」`],zealot:['表面守護、暗中飲用',4,5,id=>`${H(id).n}替你擋下了所有來討血的人——然後在深夜，自己喝了一口`]};
 function jingAct(id){const T=loveTypes(id);for(const t of T)if(JTY[t]&&Math.random()<.5)return JTY[t];return JACT[craveOf(id)]||JTY.test}
-function jingTurn(add){S.jing=jing();jingAdd(6);if(S.immMethod||(S.order.some(isImmY))||(S.t>12&&Math.random()<.04))if(!S.jingKnown){S.jingKnown=S.t;add('<b style="color:#ff6a9a">【流言】</b>宮裡開始傳：天運者的精血能延年益壽，飲得夠多，就能和他一樣不死不滅','neg')}
+function jingTurn(add){S.jing=jing();jingAdd(10);if(S.immMethod||(S.order.some(isImmY))||(S.t>12&&Math.random()<.04))if(!S.jingKnown){S.jingKnown=S.t;add('<b style="color:#ff6a9a">【流言】</b>宮裡開始傳：天運者的精血能延年益壽，飲得夠多，就能和他一樣不死不滅','neg')}
  if(!S.jingKnown)return;const rule=S.jingRule||'free';let used=0;const W=spouses().concat(femFree().filter(x=>(hs(x).aff|0)>=50)).filter(x=>S.order.includes(x)&&!hst(x));
  W.forEach(id=>{const st=hs(id);if(isImmY(id))return;if(Math.random()>.36*Math.min(1.6,MAG(id)))return;const[n,cost,gain,txt]=jingAct(id);
   let deny=rule==='none'||(rule==='one'&&S.jingOne!==id)||(rule==='limit'&&used+cost>15);
-  if(deny){const T=loveTypes(id);if(T.some(t=>['dominate','cage','sacrifice','doom'].includes(t))||craveOf(id)==='own'){add(`<b style="color:#ff6a6a">【精氣・${H(id).n}】</b>你說不給。她就自己來拿——${txt(id).replace(/^.*?。/,'')}`,'neg');weiAdd(-2);if(wed(id))wed(id).fav=Math.min(100,wed(id).fav+2)}else{if(wed(id))wed(id).fav=Math.max(0,wed(id).fav-3);st.emo=pick(['不滿','委屈']);st.emoT=S.t;return}}
+  if(deny){const T=loveTypes(id);const forceful=T.some(t=>['dominate','cage','sacrifice','doom'].includes(t))||craveOf(id)==='own';const yt=typeof yanTier==='function'?yanTier(id):0;if(forceful&&!S.jingGuard&&Math.random()<.2+yt*.1){const c2=Math.max(2,Math.round(cost/2));jingAdd(-c2);st.lifeP=Math.min(100,(st.lifeP||0)+Math.round(gain/2));heatAdd(id,1);if(typeof dkAdd==='function')dkAdd(id,4,'強取精氣');add(`<b style="color:#ff6a6a">【強取・${H(id).n}】</b>你說不給。她趁夜自己來拿了一點——${txt(id).replace(/^.*?。/,'')}（精 −${c2}，她更放肆）`,'neg');return}if(wed(id))wed(id).fav=Math.max(0,wed(id).fav-3);st.emo=pick(['不滿','委屈']);st.emoT=S.t;if(forceful)add(`【精氣・${H(id).n}】她來討，被擋在門外${S.jingGuard?'（守衛攔下了她）':''}。她記住了`,'neg');return}
   used+=cost;jingAdd(-cost);st.lifeP=Math.min(100,(st.lifeP||0)+gain);(st.acts??=[]).push({t:S.t,s:n,n:'精氣'});add(`<b style="color:#ff6a9a">【精氣・${H(id).n}】</b>${T48('JING_TEXT','act',id,null,txt(id))}（精 −${cost}，她的長生 ${st.lifeP}%）`);
   const cr=craveOf(id);
   if(cr==='greed'){S.food+=R(20,50);const f=pick(Object.keys(S.facs||{}).filter(k=>FS(k)&&FS(k).alive));if(f){FS(f).troops+=R(20,40);S.jingSold=(S.jingSold||0)+1}}
@@ -5082,6 +5082,18 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
 
 ['ev_postwar','ev_war_ash','ev_warfor','ev_shiji','ev_shrine','ev_famine','ev_mawei'].forEach(k=>IMG6.add(k));
 {const _rb=reportBody;reportBody=function(rep){let h=_rb(rep);try{const sj=(rep||[]).filter(x=>/^【史冊】/.test(String(x[0])));if(sj.length){const heavy=sj.some(x=>/伏屍|敗績/.test(String(x[0])));const im=heavy?'ev_war_ash':'ev_shiji';h=`<div class="evimg" style="background-image:url(img/${im}.jpg);margin:6px 0"></div>`+h}}catch(e){}return h}}
+
+/* 精氣回復手段 */
+const JREC=[['rest','閉門靜養',{ap:1},'精 +20；這旬沒人能近你身，夫人們寵愛 −2',()=>{jingAdd(20);spouses().forEach(x=>favAdd(x,-2))}],
+ ['tonic','服用補藥',{food:40,energy:15},'精 +15',()=>jingAdd(15)],
+ ['doctor','召醫者調理',{energy:25},'精 +25（需要醫館或醫者英靈）',()=>jingAdd(25),()=>S.order.some(x=>['huatuo','zhangzhongjing','sunsimiao','bianque','lishizhen'].includes(x))||(typeof hasFac==='function'&&hasFac('medic'))],
+ ['guard','派守衛守寢殿',{ap:1,food:20},'本旬與下旬：她們強取精氣一律被擋下（會更不滿）',()=>{S.jingGuard=S.t+1}]];
+const jrN=k=>{const u=(S.jrUse||{})[k];return u?Math.max(0,u.n-(S.t-u.t)):0};
+const jrCost=r=>{const m=2**jrN(r[0]);const c={};Object.entries(r[2]).forEach(([k,v])=>c[k]=v*m);return c};
+{const _js=jingSheet;jingSheet=function(){_js();try{if(S.jingGuard&&S.jingGuard<S.t)S.jingGuard=0;const box=$('#sheetIn');const html=`<div class="frame small" style="padding:6px 8px;margin-top:8px;border-color:#7fd0bd"><b style="color:#7fd0bd">回復精氣</b><div class="small" style="color:var(--dim)">每旬自然回復 10；今夜獨眠也會回復 5。短時間重複同一手段，代價翻倍</div>${JREC.filter(r=>!r[5]||r[5]()).map(r=>{const c=jrCost(r),n=jrN(r[0]);const ok=Object.entries(c).every(([k,v])=>(S[k]||0)>=v);return`<button class="opt frame" data-jrec="${r[0]}" style="margin-top:4px;${ok?'':'opacity:.5'}"><span class="t"><b>${r[1]}</b> <span class="small">${lremCostTxt(c)}${n?`（第 ${n+1} 次）`:''}</span><div class="small">${r[3]}${r[0]==='guard'&&S.jingGuard>=S.t?'・<b style="color:#7fd0bd">守衛已在崗</b>':''}</div></span></button>`}).join('')}</div>`;const cl=box.querySelector('[data-sheetx]');if(cl)cl.insertAdjacentHTML('beforebegin',html);else box.insertAdjacentHTML('beforeend',html);
+ const cur=box.querySelector(`[data-jr="${S.jingRule||'free'}"]`);if(cur)cur.style.cssText+='background:#d9b56a;color:#1a1408;border-color:#d9b56a'}catch(e){console.error(e)}}}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-jrec]');if(!b)return;e.stopPropagation();const r=JREC.find(x=>x[0]===b.dataset.jrec);const c=jrCost(r);const lack=Object.entries(c).filter(([k,v])=>(S[k]||0)<v);if(lack.length){sfx('deny');return toast('不夠：'+lremCostTxt(Object.fromEntries(lack)))}Object.entries(c).forEach(([k,v])=>S[k]-=v);r[4]();(S.jrUse??={})[r[0]]={n:jrN(r[0])+1,t:S.t};toast(r[1]+'・精 '+jing());save();render();jingSheet()},true);
+{const _nd3=nightDo;nightDo=function(id,P){const r=_nd3(id,P);if(!id&&S.jingKnown)jingAdd(5);return r}}
 function pvPage(){const sp=spouses().filter(id=>S.order.includes(id));
  const rows=sp.map(id=>{const st=hs(id),tr=heatTier(id),hv=heatOf(id),pv=pvOf(id);const nx=[15,40,80,999][tr];
   const acts=(st.acts||[]).filter(o=>o.seen!==false).slice(-4).reverse();
