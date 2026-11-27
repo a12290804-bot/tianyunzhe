@@ -3713,16 +3713,23 @@ function lordTurn(add){const H0=S.hedon||0,T0=S.tyranny||0;
 }
 {const _hlt=haremEvent;haremEvent=function(cb){try{lordTurn(feedPush)}catch(e){}return _hlt(cb)}}
 AUTOACT.forEach(a=>{if(a[0]!=='rebel'&&a[0]!=='edict'&&a[0]!=='party')return;const f=a[3];a[3]=c=>{const w=f(c);const T0=S.tyranny||0,H0=S.hedon||0;return w+(a[0]==='rebel'?(T0>=85?1.5:T0>=60?.6:0):(H0>=85?1:H0>=60?.4:0))}});
-const LREM=[['zuiji','下罪己詔','行動 1、能量 30','昏庸 −8、暴虐 −8；全宮寵愛 −2（她們覺得你示弱）',6,()=>S.ap>=1&&S.energy>=30,()=>{S.ap--;S.energy-=30;barAdd('hedon',-8);barAdd('tyranny',-8);spouses().forEach(x=>{const w=wed(x);w.fav=Math.max(0,w.fav-2)})}],
- ['dashe','大赦天下','糧 80','暴虐 −15；流民 +10；被你處置過的人會記得',8,()=>S.food>=80,()=>{S.food-=80;barAdd('tyranny',-15);S.pop=(S.pop||0)+10}],
- ['jinjiu','禁酒罷宴','行動 1','昏庸 −15；色慾、虛榮本性的夫人寵愛 −8',8,()=>S.ap>=1,()=>{S.ap--;barAdd('hedon',-15);spouses().forEach(x=>{if(['lust','vanity'].includes(craveOf(x))){const w=wed(x);w.fav=Math.max(0,w.fav-8)}})}]];
+const LREM=[['zuiji','下罪己詔',{ap:1,energy:30},'昏庸 −8、暴虐 −8；全宮寵愛 −2（她們覺得你示弱）',()=>{barAdd('hedon',-8);barAdd('tyranny',-8);spouses().forEach(x=>{const w=wed(x);w.fav=Math.max(0,w.fav-2)})}],
+ ['dashe','大赦天下',{food:80},'暴虐 −15；流民 +10；被你處置過的人會記得',()=>{barAdd('tyranny',-15);S.pop=(S.pop||0)+10}],
+ ['jinjiu','禁酒罷宴',{ap:1},'昏庸 −15；色慾、虛榮本性的夫人寵愛 −8',()=>{barAdd('hedon',-15);spouses().forEach(x=>{if(['lust','vanity'].includes(craveOf(x))){const w=wed(x);w.fav=Math.max(0,w.fav-8)}})}],
+ ['zhanning','斬佞臣',{ap:1},'暴虐 −10、昏庸 −5、威信 +3；一位男臣被當替罪羊（好感 −15）',()=>{barAdd('tyranny',-10);barAdd('hedon',-5);weiAdd(3);const m=S.order.filter(x=>H(x)&&H(x).sex==='m'&&!x.startsWith('kid')).sort((p,q)=>(hs(p).aff|0)-(hs(q).aff|0))[0];if(m){hs(m).aff=Math.max(0,(hs(m).aff|0)-15);feedPush(`【斬佞臣】${H(m).n}被推出來頂罪，他記住了`,'neg')}}],
+ ['qingeng','親耕籍田',{ap:1,energy:20},'昏庸 −10；流民 +5（百姓看見你下田）',()=>{barAdd('hedon',-10);S.pop=(S.pop||0)+5}],
+ ['sanfa','遣散宮人',{food:40},'昏庸 −10；虛榮本性的夫人寵愛 −5、她們少了使喚的人更放肆',()=>{barAdd('hedon',-10);spouses().forEach(x=>{if(craveOf(x)==='vanity'){const w=wed(x);w.fav=Math.max(0,w.fav-5)}if(Math.random()<.3)heatAdd(x,1)})}],
+ ['fuxu','撫恤陣亡',{food:60},'暴虐 −10；訓練 +3（陣亡將士的家人收到了糧）',()=>{barAdd('tyranny',-10);S.train=Math.min(100,(S.train||0)+3)}]];
+const lremN=k=>{const u=(S.lremUse||{})[k];if(!u)return 0;return Math.max(0,u.n-(S.t-u.t))};
+const lremCost=r=>{const m=2**lremN(r[0]);const c={};Object.entries(r[2]).forEach(([k,v])=>c[k]=v*m);return c};
+const lremCostTxt=c=>Object.entries(c).map(([k,v])=>`${k==='ap'?'行動':RESN[k]||k} ${v}`).join('、');
 function lordSheet(){const H0=S.hedon||0,T0=S.tyranny||0,cd=S.lremCD||{};
  const row=(n,v,L)=>`<div class="frame" style="padding:8px;margin-bottom:6px"><b>${n} ${v}</b>${lordTier(v)?` <b style="color:#ff8a8a">「${LORDT[n][lordTier(v)-1]}」</b>`:''}<div class="meter" style="margin:4px 0"><i style="width:${v}%;background:${v>=85?'#ff4a4a':v>=60?'#ff8a5a':v>=30?'#e8b86a':'#9aa'}"></i></div>${L.map(([th,s])=>`<div class="small" style="color:${v>=th?'#ffb0b0':'var(--dim)'}">${v>=th?'●':'○'} ${th}：${s}</div>`).join('')}</div>`;
  sheet(`<h3>天運者的德行</h3><p class="small" style="color:var(--dim)">昏庸與暴虐只會累積，不會自己消退。不會讓你輸掉遊戲，但會讓這座城一步步爛下去。</p>
  ${row('昏庸',H0,[[0,`甜頭：好感成長 +${Math.round(H0/5)}%`],[30,'失德：常常睡過頭，下旬可能少一點行動力'],[60,'昏暴：國庫被掏空，糧食與市集收入打折；紅顏胃口長得更快；昏暴事件大增'],[85,'亡國之象：外部勢力頻頻上門勒索；權勢最高的紅顏會替你頒布政令']])}
  ${row('暴虐',T0,[[0,`甜頭：我軍傷害 +${Math.round(T0/10)}%`],[30,'流民不敢來：流民增長下降'],[60,'將領離心：非後宮英靈好感慢慢下滑；逼宮兵變事件大增'],[85,'人人自危：好感低的英靈會連夜出逃；紅顏更容易自立門戶']])}
- <button class="btn ghost" id="lordX" style="position:sticky;top:0;float:right;z-index:2">✕ 關閉</button><div class="orn">回頭路</div>${LREM.map(r=>{const c=(cd[r[0]]||0)-S.t;return`<button class="opt frame" data-lrem="${r[0]}" ${c>0?'style="opacity:.5"':''}><span class="t"><b>${r[1]}</b> <span class="small">${r[2]}</span><div class="small">${r[3]}${c>0?`・還要 ${c} 旬`:''}</div></span></button>`}).join('')}`);$('#lordX').onclick=closeSheet;
- $$('[data-lrem]').forEach(b=>b.onclick=()=>{const r=LREM.find(x=>x[0]===b.dataset.lrem);if(((S.lremCD||{})[r[0]]||0)>S.t||!r[5]()){sfx('deny');return toast('現在做不到')}r[6]();(S.lremCD??={})[r[0]]=S.t+r[4];feedPush(`【${r[1]}】${r[3]}`);toast(r[1]);render();lordSheet()})}
+ <button class="btn ghost" id="lordX" style="position:sticky;top:0;float:right;z-index:2">✕ 關閉</button><div class="orn">回頭路</div><div class="small" style="color:var(--dim);margin-bottom:4px">隨時可用；短時間內重複用，代價每次翻倍，每過一旬恢復一級</div>${LREM.map(r=>{const c=lremCost(r),n=lremN(r[0]);const ok=Object.entries(c).every(([k,v])=>(S[k]||0)>=v);return`<button class="opt frame" data-lrem="${r[0]}" ${ok?'':'style="opacity:.5"'}><span class="t"><b>${r[1]}</b> <span class="small" style="color:${n?'#ff9a8a':'inherit'}">${lremCostTxt(c)}${n?`（第 ${n+1} 次，加倍）`:''}</span><div class="small">${r[3]}</div></span></button>`}).join('')}`);$('#lordX').onclick=closeSheet;
+ $$('[data-lrem]').forEach(b=>b.onclick=()=>{const r=LREM.find(x=>x[0]===b.dataset.lrem);const c=lremCost(r);const lack=Object.entries(c).filter(([k,v])=>(S[k]||0)<v);if(lack.length){sfx('deny');return toast('不夠：'+lremCostTxt(Object.fromEntries(lack)))}Object.entries(c).forEach(([k,v])=>S[k]-=v);r[4]();(S.lremUse??={})[r[0]]={n:lremN(r[0])+1,t:S.t};feedPush(`【${r[1]}】${r[3]}`);toast(r[1]);render();lordSheet()})}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.res.lord');if(!b)return;e.stopPropagation();lordSheet()},true);
 /* ===== 登用起就自主：未入宮紅顏的行動 ===== */
 const femFree=()=>S.order.filter(id=>H(id)&&H(id).sex==='f'&&!wed(id)&&!id.startsWith('kid'));
